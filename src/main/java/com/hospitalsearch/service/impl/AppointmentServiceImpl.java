@@ -6,13 +6,11 @@ import com.hospitalsearch.dao.UserDAO;
 import com.hospitalsearch.dao.UserDetailDAO;
 import com.hospitalsearch.entity.Appointment;
 import com.hospitalsearch.entity.DoctorInfo;
-import com.hospitalsearch.entity.User;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.AppointmentService;
 import com.hospitalsearch.dto.AppointmentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +26,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private UserDetailDAO userDetailDAO;
     @Autowired
-    private AppointmentDAO appointmentDao;
+    private AppointmentDAO appointmentDAO;
     @Autowired
     private DoctorInfoDAO doctorInfoDAO;
 
@@ -55,7 +53,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<Appointment> getAllByPatientEmail(String patientEmail) {
-        List<Appointment> appointments = appointmentDao.getAllByPatient(userDAO.getByEmail(patientEmail).getId());
+        List<Appointment> appointments = appointmentDAO.getAllByPatient(userDAO.getByEmail(patientEmail).getId());
         for (Appointment appointment : appointments) {
             appointment.setText(appointment.getDoctorInfo().getUserDetails().getFirstName()
                     + " " + appointment.getDoctorInfo().getUserDetails().getLastName());
@@ -65,7 +63,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<Appointment> getAllByDoctorEmail(String doctorEmail) {
-        List<Appointment> appointments = appointmentDao.getAllbyDoctorId(userDAO.getByEmail(doctorEmail).getUserDetails()
+        List<Appointment> appointments = appointmentDAO.getAllbyDoctorId(userDAO.getByEmail(doctorEmail).getUserDetails()
                 .getDoctorsDetails().getId());
         for (Appointment appointment : appointments) {
             appointment.setText(appointment.getUserDetail().getFirstName() + " " + appointment.getUserDetail().getLastName()
@@ -76,21 +74,21 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<Appointment> getAllbyDoctorId(Long doctorId) {
-        return appointmentDao.getAllbyDoctorId(doctorId);
+        return appointmentDAO.getAllbyDoctorId(doctorId);
     }
 
     @Override
     public void saveAppointment(Appointment appointment) {
-        appointmentDao.save(appointment);
+        appointmentDAO.save(appointment);
     }
 
     @Override
     public void deleteInterval(Appointment appointment) {
-        appointmentDao.delete(appointment);
+        appointmentDAO.delete(appointment);
     }
 
     @Override
     public void updateAppointment(Appointment appointment) {
-        appointmentDao.update(appointment);
+        appointmentDAO.update(appointment);
     }
 }
