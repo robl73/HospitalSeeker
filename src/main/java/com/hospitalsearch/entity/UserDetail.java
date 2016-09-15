@@ -24,9 +24,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.search.annotations.ContainedIn;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.*;
 
 import com.hospitalsearch.util.Gender;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -34,7 +32,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "userdetail")
-@Indexed
 @Cache(region="entityCache",usage=CacheConcurrencyStrategy.READ_WRITE)
 public class UserDetail{
 
@@ -46,13 +43,14 @@ public class UserDetail{
 
     @Column(name="firstname")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Solomon")
-    @Field
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
     private String firstName;
 
     @Column(name="lastname")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Kane")
-    @Field
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
     private String lastName;
+
     @Pattern(regexp = "^\\+38 \\(\\d{3}\\) \\d{3}-\\d{4}", message = "Not valid. Ex: +38 (095) 435-7132")
     private String phone;
 
@@ -82,6 +80,10 @@ public class UserDetail{
     @JoinColumn(name="patientcard_id")
     @JsonIgnore
     private PatientCard patientCard;
+
+    @OneToOne
+    @IndexedEmbedded
+    private User user;
 
     public UserDetail() {}
 
@@ -154,4 +156,11 @@ public class UserDetail{
         this.patientCard = patientCard;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

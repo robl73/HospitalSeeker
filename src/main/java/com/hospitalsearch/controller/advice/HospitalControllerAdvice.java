@@ -19,7 +19,7 @@ import com.hospitalsearch.util.PageConfigDTO;
 
 @ControllerAdvice(assignableTypes={HospitalController.class})
 public class HospitalControllerAdvice {
-	@Autowired(required = true)
+	@Autowired
 	private HospitalService service;
 	
 	@ResponseStatus(code=HttpStatus.NOT_FOUND)
@@ -29,7 +29,6 @@ public class HospitalControllerAdvice {
 		return view;
 	}
 	
-
 
 	@ModelAttribute(value = "hospitals")
 	public List<Hospital> hospitalList(){

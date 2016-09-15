@@ -5,8 +5,12 @@
  */
 package com.hospitalsearch.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import com.hospitalsearch.dto.DoctorSearchDTO;
+import com.hospitalsearch.entity.*;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
@@ -17,8 +21,6 @@ import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
-
-import com.hospitalsearch.entity.Hospital;
 
 
 /**
@@ -67,31 +69,84 @@ public final class Page<T>{
         return pageCount;
     }
 
-    public List<T> getPageList(Integer page) {
+    public List<T> getHospitalPageList(Integer page) {
     	FullTextSession session = Search.getFullTextSession(this.sessionFactory.openSession());
     	Order order = this.sortType.startsWith("Ascen")?Order.asc("name"):Order.desc("name");
         
     	QueryBuilder builder = session.getSearchFactory().buildQueryBuilder().forEntity(Hospital.class).get();
-        Query query = builder.keyword().fuzzy().onFields(projection).matching(this.query).createQuery();
-           
+
+       // Query query = builder.keyword().wildcard().onFields(projection).matching(this.query.toLowerCase()).createQuery();
+
+        Query query = builder.phrase().onField(projection[0])
+                .andField(projection[1])
+                .andField(projection[2])
+                .andField(projection[3])
+                .andField(projection[4])
+                .andField(projection[5])
+                .sentence(this.query.toLowerCase()).createQuery();
+
+
         FullTextQuery fullTextQuery = session.createFullTextQuery(query, Hospital.class).setCriteriaQuery(session.createCriteria(Hospital.class).addOrder(order));
         
         this.resultListCount = fullTextQuery.getResultSize();
-        
-        if (this.pageSize < this.resultListCount) {
-            this.pageCount = this.resultListCount / this.pageSize;
-            
-            this.paginated = true;
-        } else {
-            this.pageCount = 1;
-            this.paginated = false;
-        }
+        calcPageCount();
+
         fullTextQuery.setFirstResult((pageSize*(page-1))).setMaxResults(pageSize);
         fullTextQuery.setSort(new Sort(new SortField("name", Type.STRING_VAL)));
         List<T> result = (List<T>) fullTextQuery.list();
         
         session.close();
         return result;
+    }
+
+    public List<DoctorSearchDTO> getDoctorPageList(Integer page) {
+        FullTextSession session = Search.getFullTextSession(this.sessionFactory.openSession());
+        Order order = this.sortType.startsWith("Ascen")?Order.asc("userDetails.firstName"):Order.desc("userDetails.firstName");
+
+        QueryBuilder builder = session.getSearchFactory().buildQueryBuilder().forEntity(DoctorInfo.class).get();
+
+        Query query = builder.phrase().onField(projection[0])
+                .andField(projection[1])
+                .andField(projection[2])
+                .sentence(this.query.toLowerCase()).createQuery();
+
+        FullTextQuery fullTextQuery = session.createFullTextQuery(query, DoctorInfo.class).setCriteriaQuery(session.createCriteria(UserDetail.class).addOrder(order));
+
+        this.resultListCount = fullTextQuery.getResultSize();
+        calcPageCount();
+
+        fullTextQuery.setFirstResult((pageSize*(page-1))).setMaxResults(pageSize);
+        fullTextQuery.setSort(new Sort(new SortField("userDetails.firstName", Type.STRING_VAL)));
+        List<DoctorInfo> result = (List<DoctorInfo>) fullTextQuery.list();
+        session.close();
+        List<DoctorSearchDTO> resultList = new ArrayList<>();
+        for(DoctorInfo docInfo: result){
+            List<Department> doctorDepartments = docInfo.getDepartments();
+            List<String> doctorHospitals = new ArrayList<>();
+            for (Department department: doctorDepartments){
+                doctorHospitals.add(department.getHospital().getName());
+            }
+
+//            resultList.add(new DoctorSearchDTO(docInfo.getUserDetails().getImagePath(),
+//                    docInfo.getUserDetails().getFirstName(),
+//                    docInfo.getUserDetails().getLastName(),
+//                    docInfo.getUserDetails().getUser().getEmail(),
+//                    docInfo.getSpecialization(),
+//                    docInfo.getCategory(),
+//                    doctorHospitals));
+        }
+        return resultList;
+    }
+
+    private void calcPageCount(){
+        if (this.pageSize < this.resultListCount) {
+            this.pageCount = this.resultListCount / this.pageSize;
+
+            this.paginated = true;
+        } else {
+            this.pageCount = 1;
+            this.paginated = false;
+        }
     }
 
     public boolean isPaginated() {
@@ -102,4 +157,5 @@ public final class Page<T>{
     public String getSortType() {
 		return sortType;
 	}
+
 }

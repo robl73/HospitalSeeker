@@ -1,7 +1,10 @@
 package com.hospitalsearch.service;
 
+import com.hospitalsearch.dto.DoctorSearchDTO;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.entity.UserDetail;
+import org.apache.lucene.queryparser.classic.ParseException;
+import com.hospitalsearch.util.Page;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,12 +15,18 @@ import java.util.List;
  */
 
 public interface UserDetailService {
+
     void save(UserDetail newUserDetail);
+
     void delete(UserDetail userDetail);
+
     void update(UserDetail updatedUserDetail);
+
     UserDetail add(UserDetail userDetail);
+
     @Transactional(readOnly=true,propagation= Propagation.SUPPORTS)
     UserDetail getById(Long id);
+
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
     List<UserDetail> getAll();
 }

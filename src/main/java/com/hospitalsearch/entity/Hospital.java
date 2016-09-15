@@ -9,8 +9,11 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.core.StopFilterFactory;
 import org.apache.lucene.analysis.ngram.NGramFilterFactory;
+import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.annotations.Cache;
@@ -46,10 +49,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 			 tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
 			 filters = {
 						@TokenFilterDef(factory = StandardFilterFactory.class),
-						@TokenFilterDef(factory = StopFilterFactory.class),
+					 	@TokenFilterDef(factory = SnowballPorterFilterFactory.class),
+					 	@TokenFilterDef(factory = LowerCaseFilterFactory.class),
+					 	@TokenFilterDef(factory = StopFilterFactory.class,params = {
+								@Parameter(name="ignoreCase",value="true")
+						}),
 						@TokenFilterDef(factory = NGramFilterFactory.class,params={
-								@Parameter(name="minGramSize",value="5"),
-								@Parameter(name="maxGramSize",value="8")						
+								@Parameter(name="minGramSize",value="3"),
+								@Parameter(name="maxGramSize",value="10")
 						})
 			})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "entityCache")
@@ -99,6 +106,7 @@ public class Hospital {
 	
 	@Size(max = 150)
 	@Column(nullable = false)
+	@Field(analyze = Analyze.YES, analyzer = @Analyzer(definition = "ngram"))
 	private String description;
 
 	@Column(name = "imagepath")

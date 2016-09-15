@@ -38,6 +38,7 @@ public class HospitalController {
     private DoctorInfoService doctorInfoService;
 
     private List<Hospital> currentHospitalList;
+
     private Page pageableContent;
     
     @RequestMapping("/")
@@ -130,7 +131,7 @@ public class HospitalController {
     }
     
     public void initializeModel(Map<String,Object> model,Integer page){
-    	model.put("pagedList", this.pageableContent.getPageList(page));
+    	model.put("pagedList", this.pageableContent.getHospitalPageList(page));
         model.put("pagination", this.pageableContent.isPaginated());
         model.put("pageCount", this.pageableContent.getPageCount());
         model.put("pageSize", this.pageableContent.getPageSize());

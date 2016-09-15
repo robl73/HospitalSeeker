@@ -23,6 +23,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.search.annotations.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -30,7 +31,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="users")
-
 @NamedQueries({
 		@NamedQuery(name = "SELECT_BY_ROLE", query = "SELECT u FROM User u JOIN  u.userRoles r WHERE r.id = :id"),
 		@NamedQuery(name = "SELECT_ALL_ENABLED_USERS", query = "SELECT u FROM User u WHERE u.enabled = true"),
@@ -47,6 +47,7 @@ public class User implements Comparable<User> {
 	@Email
 	@NotEmpty
 	@Column(unique = true, nullable = false)
+	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
 	private String email;
 
 	@JsonIgnore
@@ -63,9 +64,12 @@ public class User implements Comparable<User> {
 	@Fetch(FetchMode.SELECT)
 	private Set<Role> userRoles = new HashSet<>();
 
+
 	@OneToOne(cascade= CascadeType.ALL)
 	@JoinColumn(name="userdetails_id")
 	@Fetch(FetchMode.SELECT)
+	@ContainedIn
+	@JsonIgnore
 	private UserDetail userDetails;
 
 	public String getEmail() {

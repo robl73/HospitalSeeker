@@ -1,10 +1,17 @@
 package com.hospitalsearch.dao.impl;
 
 import com.hospitalsearch.dao.DoctorInfoDAO;
+import com.hospitalsearch.dto.DoctorSearchDTO;
 import com.hospitalsearch.entity.DoctorInfo;
+import com.hospitalsearch.entity.Hospital;
+import com.hospitalsearch.entity.User;
 import com.hospitalsearch.entity.UserDetail;
+import com.hospitalsearch.util.Page;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -32,5 +39,15 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo,Long> implement
                 .createAlias("department.hospital", "hospital")
                 .createAlias("hospital.managers", "manager")
                 .add(Restrictions.eq("manager.id",id)).list();
+    }
+
+    public static final String[] DOCTOR_PROJECTION = new String[]{"userDetails.user.email", "userDetails.firstName", "userDetails.lastName"};
+    @Override
+    public Page<DoctorSearchDTO> advancedDoctorSearch(String query) throws ParseException, InterruptedException{
+        FullTextSession session = Search.getFullTextSession(this.getSessionFactory().openSession());
+        session.createIndexer(DoctorInfo.class).startAndWait();
+        session.close();
+
+        return new Page<DoctorSearchDTO>(getSessionFactory(), query, DOCTOR_PROJECTION);
     }
 }

@@ -9,7 +9,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("#search-form").validator();
+	$("#search-hospital-form").validator();
 });
 function sendPageConfig(event){
 		var itemPerPage = $('#pref-perpage option:selected').text();

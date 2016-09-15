@@ -17,7 +17,7 @@ public class GenderValidation implements ConstraintValidator<Gender,com.hospital
         if (gender==null){
             return true;
         }
-        Pattern p = Pattern.compile("MAN|WOMAN");
+        Pattern p = Pattern.compile("MALE|FEMALE");
         Matcher m = p.matcher(gender.toString());
         return m.matches();
     }

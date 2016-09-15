@@ -13,7 +13,6 @@ public class HospitalAddress {
 
 	@NotEmpty
 	@Size(max = 30)
-	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))	
 	private String country;
 
 	@NotEmpty
