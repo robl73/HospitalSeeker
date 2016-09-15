@@ -1,6 +1,7 @@
 package com.hospitalsearch.service;
 
 import com.hospitalsearch.dto.Bounds;
+import com.hospitalsearch.dto.HospitalDTO;
 import com.hospitalsearch.entity.Hospital;
 import com.hospitalsearch.util.HospitalFilterDTO;
 import com.hospitalsearch.util.Page;
@@ -21,8 +22,11 @@ import java.util.List;
 @Transactional
 public interface HospitalService {
     void save(Hospital newHospital);
+    void save(HospitalDTO hospitalDTO);
     void delete(Hospital hospital);
     void update(Hospital updatedHospital);
+    void update(HospitalDTO updatedHospitalDTO);
+    HospitalDTO toHospitalDTO(Hospital hospital);
     @Transactional(readOnly=true,propagation= Propagation.SUPPORTS)
     Hospital getById(Long id);
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

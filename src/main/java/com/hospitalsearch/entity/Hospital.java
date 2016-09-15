@@ -86,7 +86,9 @@ public class Hospital {
 
 	@Embedded
 	@Valid
-	@IndexedEmbedded
+/*	@NotEmpty 
+	@Size(min = 1, max = 150) 
+*/	@IndexedEmbedded
 	@AttributeOverrides({
 		@AttributeOverride(name = "city", column = @Column(name = "city")),
 		@AttributeOverride(name = "country", column = @Column(name = "country")),
@@ -94,7 +96,7 @@ public class Hospital {
 		@AttributeOverride(name = "building", column = @Column(name = "building"))
 	})
 	private HospitalAddress address = new HospitalAddress();
-
+	
 	@Size(max = 150)
 	@Column(nullable = false)
 	private String description;

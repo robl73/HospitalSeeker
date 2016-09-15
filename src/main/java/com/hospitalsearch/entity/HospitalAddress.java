@@ -21,11 +21,13 @@ public class HospitalAddress {
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))	
 	private String city;
 
+	@NotEmpty
 	@Size(max = 30)
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))	
 	private String street;
 
-	@Size(max = 5)
+	@NotEmpty
+	@Size(max = 10)
     @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
 	private String building;
 
@@ -68,11 +70,12 @@ public class HospitalAddress {
 
 	@Override
 	public String toString() {
-		return  new StringBuilder()
+		
+			return new StringBuilder()
 				.append(street).append(", ")
 				.append(building).append(", ")
 				.append(city).append(", ")
 				.append(country).toString();
-	}	
+	}
 
 }
