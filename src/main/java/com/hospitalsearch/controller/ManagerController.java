@@ -61,7 +61,7 @@ public class ManagerController {
     public String getManage(
             @PathVariable("d_id") Long doctorId, ModelMap model) {
         UserDetail userDetail = userDetailService.getById(doctorId);
-        model.addAttribute("id", userDetail.getDoctorsDetails().getId());
+        model.addAttribute("id", userDetail.getDoctorInfo().getId());
         model.addAttribute("doctor", userDetailService.getById(doctorId));
         return "manage";
     }

@@ -28,6 +28,7 @@ import com.hospitalsearch.util.PageConfigDTO;
 
 @Controller
 public class HospitalController {
+
     @Autowired(required = true)
     private HospitalService service;
 

@@ -28,14 +28,14 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo,Long> implement
     @Override
     public List<UserDetail> findByDepartmentId(Long id) {
         return (List<UserDetail>) getHibernateTemplate()
-        		.findByNamedParam("select u from UserDetail u join u.doctorsDetails d join d.departments dep where dep.id = :id ","id",id);
+        		.findByNamedParam("select u from UserDetail u join u.doctorInfo d join d.departments dep where dep.id = :id ","id",id);
     }
 
     @Override
     public List<UserDetail> findByManagerId(Long id){
         return (List<UserDetail>) getSessionFactory().openSession().createCriteria(UserDetail.class, "u").
-                createAlias("u.doctorsDetails", "doctorsDetails")
-                .createAlias("doctorsDetails.departments", "department")
+                createAlias("u.doctorInfo", "doctorInfo")
+                .createAlias("doctorInfo.departments", "department")
                 .createAlias("department.hospital", "hospital")
                 .createAlias("hospital.managers", "manager")
                 .add(Restrictions.eq("manager.id",id)).list();

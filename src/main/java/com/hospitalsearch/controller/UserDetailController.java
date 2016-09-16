@@ -2,6 +2,7 @@ package com.hospitalsearch.controller;
 
 import com.hospitalsearch.controller.advice.HospitalControllerAdvice;
 import com.hospitalsearch.entity.PatientCard;
+import com.hospitalsearch.entity.PatientInfo;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.DoctorInfoService;
@@ -50,7 +51,7 @@ public class UserDetailController {
 
     @PreAuthorize("hasAnyRole('PATIENT','DOCTOR')")
     @RequestMapping(value = {"/save/detail"}, method = RequestMethod.POST)
-    public String saveUserDetail(@Valid UserDetail userDetail, BindingResult bindingResult, ModelMap model) {
+    public String saveUserDetail(@Valid @ModelAttribute("userDetail") UserDetail userDetail, BindingResult bindingResult, ModelMap model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("edit", true);
             model.addAttribute("userDetail", userDetail);
@@ -58,8 +59,14 @@ public class UserDetailController {
             model.addAttribute("email", PrincipalConverter.getPrincipal());
             return "user/detail";
         }
-        userDetail.setPatientCard(userDetailService.getById(userDetail.getId()).getPatientCard());
+
+        UserDetail userDetail1 = userDetailService.getById(userDetail.getId());
+        PatientInfo patientInfo = userDetail1.getPatientInfo();
+        PatientCard patientCard = patientInfo.getPatientCard();
+        patientInfo.setPatientCard(patientCard);
+        userDetail.setPatientInfo(patientInfo);
         userDetailService.update(userDetail);
+
         model.addAttribute("edit", false);
         model.addAttribute("userDetail", userDetail);
         model.addAttribute("gender", Gender.values());

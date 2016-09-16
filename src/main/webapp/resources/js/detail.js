@@ -32,11 +32,11 @@ function submitForm(){
                 regex: /^[A-Z][a-z]+$/,
                 maxlength: 36
             },
-            lastName: {
-                required: true,
-                regex: /^[A-Z][a-z]+$/,
-                maxlength: 36
-            },
+            //lastName: {
+            //    required: true,
+            //    regex: /^[A-Z][a-z]+$/,
+            //    maxlength: 36
+            //},
             birthDate: {
                 required: true,
                 regex: /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/
@@ -59,9 +59,9 @@ function submitForm(){
                 regex: firstName
             },
 
-            lastName:{
-                regex: lastName
-            },
+            //lastName:{
+            //    regex: lastName
+            //},
 
             birthDate: {
                 regex: birthDate

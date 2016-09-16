@@ -1,9 +1,7 @@
 package com.hospitalsearch.controller;
 
 
-import com.hospitalsearch.entity.CardItem;
-import com.hospitalsearch.entity.PatientCard;
-import com.hospitalsearch.entity.User;
+import com.hospitalsearch.entity.*;
 import com.hospitalsearch.service.CardItemService;
 import com.hospitalsearch.service.PatientCardService;
 import com.hospitalsearch.service.UserService;
@@ -40,7 +38,9 @@ public class CardController {
     public String patientCard(@RequestParam(value = "page", defaultValue = "1") Integer page, ModelMap model) {
         User user = userService.getByEmail(PrincipalConverter.getPrincipal());
         List<CardItem> cardItems = cardItemService.getCardItemList(user, page, itemsPerPage);
-        PatientCard patientCard = user.getUserDetails().getPatientCard();
+        UserDetail userDetail = user.getUserDetails();
+        PatientInfo patientInfo = userDetail.getPatientInfo();
+        PatientCard patientCard = patientInfo.getPatientCard();
         Long cardItemsCount = cardItemService.countOfItems(patientCard);
         Integer pageCount = userService.pageCount(cardItemsCount, itemsPerPage);
         Boolean pagination = false;
@@ -61,7 +61,10 @@ public class CardController {
     public String patientCard(@RequestParam("userId") String userId, @RequestParam(value = "page", defaultValue = "1") Integer page, ModelMap model) {
         User user = userService.getById(Long.parseLong(userId));
         List<CardItem> cardItems = cardItemService.getCardItemList(user, page, itemsPerPage);
-        Long cardItemsCount = cardItemService.countOfItems(user.getUserDetails().getPatientCard());
+        UserDetail userDetail = user.getUserDetails();
+        PatientInfo patientInfo = userDetail.getPatientInfo();
+        PatientCard patientCard = patientInfo.getPatientCard();
+        Long cardItemsCount = cardItemService.countOfItems(patientCard);
         Boolean pagination = false;
         Integer pageCount = userService.pageCount(cardItemsCount, itemsPerPage);
         if (pageCount > 1) {
@@ -121,7 +124,6 @@ public class CardController {
     public String patients(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "sortBy", defaultValue = "firstName") String sortBy,
                            @RequestParam(value = "order", defaultValue = "false") Boolean order, ModelMap model) {
         List<User> patients = userService.getByRole("PATIENT", page, itemsPerPage, sortBy, order);
-
         Long patientsCount = userService.countOfUsersByRole("PATIENT");
         Boolean pagination = false;
         Integer pageCount = userService.pageCount(patientsCount, itemsPerPage);

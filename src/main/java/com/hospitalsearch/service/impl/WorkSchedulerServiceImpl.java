@@ -45,7 +45,7 @@ public class WorkSchedulerServiceImpl implements WorkSchedulerService {
     @Override
     public String getByDoctorEmail(String doctorEmail) {
         return workSchedulerDAO.getByDoctorId(userDAO.getByEmail(doctorEmail)
-                .getUserDetails().getDoctorsDetails().getId()).getWorkScheduler();
+                .getUserDetails().getDoctorInfo().getId()).getWorkScheduler();
     }
 
 }

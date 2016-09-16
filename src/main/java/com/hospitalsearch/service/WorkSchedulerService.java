@@ -14,6 +14,6 @@ public interface WorkSchedulerService {
 
     void saveWorkScheduler(String workScheduler, Long doctorId);
 
-    String getByDoctorEmail(String doctorEmail);
+    String  getByDoctorEmail(String doctorEmail);
 
 }

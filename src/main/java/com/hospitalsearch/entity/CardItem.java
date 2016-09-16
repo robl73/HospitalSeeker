@@ -26,25 +26,31 @@ public class CardItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "carditem_gen")
     @SequenceGenerator(name = "carditem_gen", sequenceName = "carditem_id_seq")
     private Long id;
+
     @OneDay(message = " Edit time is over")
     private Timestamp date;
+
     @ManyToOne
     @Fetch(FetchMode.JOIN)
     PatientCard patientCard;
+
     @NotNull
     @Column( name = "RESULT", columnDefinition = "TEXT")
     @Size(min = 5, max = 1000, message = "size = 5 < 255")
     private String result;
+
     @NotNull
     @Column( name = "PRESCRIPTION", columnDefinition = "TEXT")
     @Size(min = 5, max = 1000, message = "size = 5 < 255")
     private String prescription;
+
     @NotNull
     @Column( name = "COMPLAINT", columnDefinition = "TEXT")
     @Size(min = 5, max = 1000, message = "size = 5 < 255")
     private String complaint;
-    @ManyToOne
-    private User doctor;
+
+    @OneToOne
+    private DoctorInfo doctorInfo;
 
     public CardItem() {
 
@@ -82,14 +88,6 @@ public class CardItem implements Serializable {
         this.prescription = prescription;
     }
 
-    public User getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(User doctor) {
-        this.doctor = doctor;
-    }
-
     public String getResult() {
         return result;
     }
@@ -106,13 +104,20 @@ public class CardItem implements Serializable {
         this.complaint = complaint;
     }
 
+    public DoctorInfo getDoctorInfo() {
+        return doctorInfo;
+    }
+
+    public void setDoctorInfo(DoctorInfo doctorInfo) {
+        this.doctorInfo = doctorInfo;
+    }
+
     @Override
     public String toString() {
         return "CardItem{" +
                 "date=" + date +
                 ", result='" + result + '\'' +
                 ", prescription='" + prescription + '\'' +
-                ", doctor=" + doctor +
                 '}';
     }
 
