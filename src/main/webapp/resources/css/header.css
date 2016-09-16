@@ -199,9 +199,11 @@ a.localization-item{
     width: auto;
     height: auto;
 }
+
 /*.form-control {*/
     /*display: inline-block;*/
 /*}*/
+
 .form-group{
     float: inherit;
 }

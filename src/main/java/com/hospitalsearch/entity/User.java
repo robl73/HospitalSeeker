@@ -65,6 +65,7 @@ public class User implements Comparable<User> {
 	private Set<Role> userRoles = new HashSet<>();
 
 
+
 //	@OneToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL,mappedBy="user")
 //	//@JoinColumn(name="userdetail_id")
 //	@Fetch(FetchMode.SELECT)
