@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Embeddable
 public class HospitalAddress {
 
+
 	@NotEmpty(message = "This field is required.")
 	@Size(min = 2, max = 30, message = "Please enter at least 2 symbols and not more than 30 symbols.")
 	@Pattern(regexp = "^[a-zA-Zà-ÿÀ-ß¸¨³²¿¯ºªÛûÚú'\\-\\s]+$", message = "Contain only letters.")

@@ -9,8 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hospitalsearch.entity.User;
-import com.hospitalsearch.util.UserDetailRegisterDto;
-import com.hospitalsearch.util.UserDto;
+
 
 @Transactional
 public interface UserService {

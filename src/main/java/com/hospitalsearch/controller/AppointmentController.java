@@ -54,7 +54,7 @@ public class AppointmentController {
         model.put("formatter", DateTimeFormatter.ofPattern("d MMM uuuu hh:mm"));
         model.put("feedbacks", feedbackService.getByDoctorId(doctorId));
         UserDetail userDetail = userDetailService.getById(doctorId);
-        model.addAttribute("id", userDetail.getDoctorsDetails().getId());
+        model.addAttribute("id", userDetail.getDoctorInfo().getId());
         model.addAttribute("doctor", userDetailService.getById(doctorId));
         return "start";
     }

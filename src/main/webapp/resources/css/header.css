@@ -23,6 +23,11 @@
     height: 25px;
 
 }
+.navbar-marker {
+    width: 20px;
+    height: 20px;
+
+}
 a.localization-item{
     padding: 10px 14px !important;
 }
@@ -190,10 +195,16 @@ a.localization-item{
     background-color: #ebebeb;
     border-radius: 0;
     border-width: 0;
-    font-size: 24px;
-    height: auto
+    font-size: 20px;
+    width: auto;
+    height: auto;
 }
-
+.form-control {
+    display: inline-block;
+}
+.form-group{
+    float: inherit;
+}
 .navbar-bootsnipp .bootsnipp-search .form-control:focus {
     border-color: transparent;
     outline: 0;
@@ -209,7 +220,9 @@ a.localization-item{
 .navbar-bootsnipp .bootsnipp-search .input-group-btn>.btn-default {
     background-color: #f5f5f5
 }
-
+.input-group-btn{
+    display: inline-block;
+}
 .nav-padding {
     padding-top: 61px
 }
@@ -242,7 +255,7 @@ a.localization-item{
 
     .navbar-bootsnipp .bootsnipp-search {
         background-color: rgb(235, 235, 235);
-        display: block;
+        display: inline-block;;
         position: absolute;
         top: 100%;
         width: 100%;
@@ -265,6 +278,15 @@ a.localization-item{
         -ms-transform: rotateX(0deg);
         transform: rotateX(0deg);
         visibility: visible;	
+    }
+
+    .search-hospital-container{
+      width: 50%; !important;
+        display: inline-block; !important;
+    }
+    .search-doctor-container{
+        width: 50%; !important;
+        display: inline-block; !important;
     }
     .navbar-bootsnipp .bootsnipp-search > .container {
         padding: 0px;

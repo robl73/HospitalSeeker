@@ -64,7 +64,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Appointment> getAllByDoctorEmail(String doctorEmail) {
         List<Appointment> appointments = appointmentDAO.getAllbyDoctorId(userDAO.getByEmail(doctorEmail).getUserDetails()
-                .getDoctorsDetails().getId());
+                .getDoctorInfo().getId());
         for (Appointment appointment : appointments) {
             appointment.setText(appointment.getUserDetail().getFirstName() + " " + appointment.getUserDetail().getLastName()
                     +" - "+appointment.getText());

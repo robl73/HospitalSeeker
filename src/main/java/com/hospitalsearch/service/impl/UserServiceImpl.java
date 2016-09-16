@@ -3,17 +3,12 @@ package com.hospitalsearch.service.impl;
 import com.hospitalsearch.dao.UserDAO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
-import com.hospitalsearch.entity.PatientCard;
-import com.hospitalsearch.entity.Role;
-import com.hospitalsearch.entity.User;
-import com.hospitalsearch.entity.UserDetail;
+import com.hospitalsearch.entity.*;
 import com.hospitalsearch.exception.ResetPasswordException;
 import com.hospitalsearch.service.PatientCardService;
+import com.hospitalsearch.service.PatientInfoService;
 import com.hospitalsearch.service.RoleService;
 import com.hospitalsearch.service.UserService;
-import com.hospitalsearch.util.Gender;
-import com.hospitalsearch.util.UserDetailRegisterDto;
-import com.hospitalsearch.util.UserDto;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +36,20 @@ public class UserServiceImpl implements UserService {
     @Autowired
     PatientCardService patientCardService;
 
+    @Autowired
+    PatientInfoService patientInfoService;
+
     @Override
     public void save(User newUser) {
         try {
             logger.info("save user: " + newUser);
             PatientCard patientCard = patientCardService.add(new PatientCard());
+            PatientInfo patientInfo = patientInfoService.add(new PatientInfo());
             UserDetail userDetail = new UserDetail();
-            userDetail.setPatientCard(patientCard);
+            patientInfo.setPatientCard(patientCard);
+            patientInfo.setUserDetail(userDetail);
+            userDetail.setPatientInfo(patientInfo);
+            userDetail.setUser(newUser);
             newUser.setUserDetails(userDetail);
             dao.save(newUser);
         } catch (Exception e) {
