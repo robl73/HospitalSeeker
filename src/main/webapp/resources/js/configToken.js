@@ -3,6 +3,12 @@
  */
 
 $(document).ready(function () {
+	
+	$('#button-cancelToken').click(function(e) {
+	    e.preventDefault();
+	    //window.history.back();
+	    window.location.href = '/HospitalSeeker/';
+	});
 
     $("#configTokenForm").validate({
         rules: {
