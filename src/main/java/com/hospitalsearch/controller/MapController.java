@@ -81,7 +81,6 @@ public class MapController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = { "/admin/map/new" }, method = RequestMethod.GET)
 	public String newHospital(ModelMap model) {
-		System.out.println("GET");
 		model.put("hospitalDTO", new HospitalDTO());
 		return "mapadmin";
 	}

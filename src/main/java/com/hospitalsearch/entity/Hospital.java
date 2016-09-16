@@ -66,8 +66,8 @@ public class Hospital {
 	@DocumentId
 	private Long id;
 
-	@NotEmpty
-	@Size(min = 5, max = 50)
+	@NotEmpty(message = "This field is required.")
+	@Size(min = 5, max = 70, message = "Please enter at least 5 symbols and not more than 70 symbols.")
 	@Column(nullable = false)
 	@Field(analyze = Analyze.YES, analyzer = @Analyzer(definition = "ngram"))
 	private String name;
@@ -97,7 +97,7 @@ public class Hospital {
 	})
 	private HospitalAddress address = new HospitalAddress();
 	
-	@Size(max = 150)
+	@Size(max = 150, message = "Please enter not more than 150 symbols.")
 	@Column(nullable = false)
 	private String description;
 

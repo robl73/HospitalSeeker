@@ -67,7 +67,7 @@ function initialize() {
 			'name' : {
 				required : true,
 				minlength : 5,
-				maxlength : 50
+				maxlength : 70
 			},
 			'description' : {
 				maxlength : 150

@@ -66,7 +66,7 @@ $(window).load(function() {
 		//	equalTo: '',
 		//	extension: '',
 			maxlength: $.validator.format( 'Please enter not more than {0} symbols.' ),
-		//	minlength: $.validator.format( '' ),
+			minlength: $.validator.format( 'Please enter at least {0} symbols' ),
 			rangelength: $.validator.format( 'Please enter at least {0} symbols and not more than {1} symbols.' ),
 		//	range: $.validator.format( '' ),
 		//	max: $.validator.format( '' ),

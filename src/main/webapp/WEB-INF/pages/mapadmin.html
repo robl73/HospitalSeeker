@@ -48,10 +48,10 @@
 									id="addressGeo"
 					th:placeholder="#{admin.hospital.new.placeholder.address}" /> 
 
-								 <i id="geo-error" class="removable-i fade in"></i> 
-								<!-- <i
+								<!--  <i id="geo-error" class="removable-i fade in"></i>  -->
+								<i
 								th:if="${#fields.hasErrors('addressGeo')}"
-								th:errors="*{address.country}" class="removable-i fade in"></i>  -->
+								th:errors="*{addressGeo}" class="removable-i fade in"></i>  
 
 								<div class="input-group-btn">
 									<button type="button" th:onclick="'javascript:check();'"
@@ -119,6 +119,9 @@
 						<div class="col-sm-10">
 							<input th:field="*{description}" class="form-control"
 								id="description" />
+								<i
+								th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+								class="removable-i fade in"></i>
 						</div>
 					</div>
 

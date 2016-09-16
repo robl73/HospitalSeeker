@@ -1,6 +1,5 @@
 package com.hospitalsearch.config.web;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -133,7 +132,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public CacheManager cacheManager() {
         return new EhCacheCacheManager(ehCacheManagerFactoryBean().getObject());
     }
-
+    
 }
 
 
