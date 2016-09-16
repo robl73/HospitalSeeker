@@ -82,6 +82,8 @@ public class UserDetail{
     private PatientCard patientCard;
 
     @OneToOne
+//    @Fetch(FetchMode.SELECT)
+//    @JoinColumn(name="user_id")
     @IndexedEmbedded
     private User user;
 

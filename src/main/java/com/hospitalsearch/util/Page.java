@@ -99,34 +99,34 @@ public final class Page<T>{
         return result;
     }
 
-    public List<DoctorSearchDTO> getDoctorPageList(Integer page) {
-        FullTextSession session = Search.getFullTextSession(this.sessionFactory.openSession());
-        Order order = this.sortType.startsWith("Ascen")?Order.asc("userDetails.firstName"):Order.desc("userDetails.firstName");
-
-        QueryBuilder builder = session.getSearchFactory().buildQueryBuilder().forEntity(DoctorInfo.class).get();
-
-        Query query = builder.phrase().onField(projection[0])
-                .andField(projection[1])
-                .andField(projection[2])
-                .sentence(this.query.toLowerCase()).createQuery();
-
-        FullTextQuery fullTextQuery = session.createFullTextQuery(query, DoctorInfo.class).setCriteriaQuery(session.createCriteria(UserDetail.class).addOrder(order));
-
-        this.resultListCount = fullTextQuery.getResultSize();
-        calcPageCount();
-
-        fullTextQuery.setFirstResult((pageSize*(page-1))).setMaxResults(pageSize);
-        fullTextQuery.setSort(new Sort(new SortField("userDetails.firstName", Type.STRING_VAL)));
-        List<DoctorInfo> result = (List<DoctorInfo>) fullTextQuery.list();
-        session.close();
-        List<DoctorSearchDTO> resultList = new ArrayList<>();
-        for(DoctorInfo docInfo: result){
-            List<Department> doctorDepartments = docInfo.getDepartments();
-            List<String> doctorHospitals = new ArrayList<>();
-            for (Department department: doctorDepartments){
-                doctorHospitals.add(department.getHospital().getName());
-            }
-
+//    public List<DoctorSearchDTO> getDoctorPageList(Integer page) {
+//        FullTextSession session = Search.getFullTextSession(this.sessionFactory.openSession());
+//        Order order = this.sortType.startsWith("Ascen")?Order.asc("userDetails.firstName"):Order.desc("userDetails.firstName");
+//
+//        QueryBuilder builder = session.getSearchFactory().buildQueryBuilder().forEntity(DoctorInfo.class).get();
+//
+//        Query query = builder.phrase().onField(projection[0])
+//                .andField(projection[1])
+//                .andField(projection[2])
+//                .sentence(this.query.toLowerCase()).createQuery();
+//
+//        FullTextQuery fullTextQuery = session.createFullTextQuery(query, DoctorInfo.class).setCriteriaQuery(session.createCriteria(UserDetail.class).addOrder(order));
+//
+//        this.resultListCount = fullTextQuery.getResultSize();
+//        calcPageCount();
+//
+//        fullTextQuery.setFirstResult((pageSize*(page-1))).setMaxResults(pageSize);
+//        fullTextQuery.setSort(new Sort(new SortField("userDetails.firstName", Type.STRING_VAL)));
+//        List<DoctorInfo> result = (List<DoctorInfo>) fullTextQuery.list();
+//        session.close();
+//        List<DoctorSearchDTO> resultList = new ArrayList<>();
+//        for(DoctorInfo docInfo: result){
+//            List<Department> doctorDepartments = docInfo.getDepartments();
+//            List<String> doctorHospitals = new ArrayList<>();
+//            for (Department department: doctorDepartments){
+//                doctorHospitals.add(department.getHospital().getName());
+//            }
+//
 //            resultList.add(new DoctorSearchDTO(docInfo.getUserDetails().getImagePath(),
 //                    docInfo.getUserDetails().getFirstName(),
 //                    docInfo.getUserDetails().getLastName(),
@@ -134,9 +134,9 @@ public final class Page<T>{
 //                    docInfo.getSpecialization(),
 //                    docInfo.getCategory(),
 //                    doctorHospitals));
-        }
-        return resultList;
-    }
+//        }
+//        return resultList;
+//    }
 
     private void calcPageCount(){
         if (this.pageSize < this.resultListCount) {
