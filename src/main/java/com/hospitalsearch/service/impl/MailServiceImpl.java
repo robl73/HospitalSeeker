@@ -63,10 +63,7 @@ public class MailServiceImpl implements MailService {
     @Override
     public void sendMessage(User user, String subject, String text, String templateName) throws ConnectException {
         System.out.println("sendMessage");
-//        if (!pingURL("https://www.google.com.ua/", 300)) {
-//            throw new MailSendException("Connection failed");
-//        }
-        if (!pingURL("ch.039.test@gmail.com", 300)) {
+        if (!pingURL("https://www.google.com.ua/", 300)) {
             throw new MailSendException("Connection failed");
         }
         String encoding = properties.getProperty("email.encoding");
