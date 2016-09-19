@@ -1,0 +1,77 @@
+2016-09-19 12:03:29 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/confirmResetPassword],methods=[POST]}" onto public java.lang.String com.hospitalsearch.controller.UserController.confirmResetPass(com.hospitalsearch.dto.UserRegisterDTO,org.springframework.validation.BindingResult,org.springframework.ui.ModelMap)
+2016-09-19 12:03:29 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/resetPassword],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.UserController.resetPassword(java.lang.String) throws java.net.ConnectException
+2016-09-19 12:03:29 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/logout],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.UserController.logoutPage(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2016-09-19 12:03:29 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/user/detail],methods=[GET],consumes=[application/json]}" onto public java.lang.String com.hospitalsearch.controller.UserDetailController.userDetail(java.lang.Boolean,org.springframework.ui.ModelMap)
+2016-09-19 12:03:29 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/save/detail],methods=[POST]}" onto public java.lang.String com.hospitalsearch.controller.UserDetailController.saveUserDetail(com.hospitalsearch.entity.UserDetail,org.springframework.validation.BindingResult,org.springframework.ui.ModelMap)
+2016-09-19 12:03:29 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/user/profile],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.UserDetailController.userProfile(java.lang.Long,org.springframework.ui.ModelMap)
+2016-09-19 12:03:29 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/getWorkSchedulerByPrincipal],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.WorkSchedulerController.getWorkSchedulerByDoctor(java.lang.String)
+2016-09-19 12:03:29 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/workscheduler],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.WorkSchedulerController.getAppointments()
+2016-09-19 12:03:29 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/**/getWorkScheduler],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.WorkSchedulerController.getWorkScheduler(java.lang.Long)
+2016-09-19 12:03:29 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/**/supplyWorkScheduler],methods=[POST]}" onto public java.lang.String com.hospitalsearch.controller.WorkSchedulerController.supplyScheduler(java.lang.String,java.lang.Long)
+2016-09-19 12:03:29 INFO  SimpleUrlHandlerMapping:341 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-09-19 12:03:29 INFO  SimpleUrlHandlerMapping:341 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-09-19 12:03:29 INFO  SimpleUrlHandlerMapping:341 - Mapped URL path [/images/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-09-19 12:03:31 INFO  RequestMappingHandlerAdapter:532 - Looking for @ControllerAdvice: Root WebApplicationContext: startup date [Mon Sep 19 12:03:05 EEST 2016]; root of context hierarchy
+2016-09-19 12:03:31 INFO  RequestMappingHandlerAdapter:545 - Detected @ModelAttribute methods in hospitalControllerAdvice
+2016-09-19 12:03:31 INFO  RequestMappingHandlerAdapter:545 - Detected @ModelAttribute methods in userControllerAdvice
+2016-09-19 12:03:32 INFO  ExceptionHandlerExceptionResolver:267 - Detected @ExceptionHandler methods in hospitalControllerAdvice
+2016-09-19 12:03:32 INFO  ExceptionHandlerExceptionResolver:267 - Detected @ExceptionHandler methods in globalExceptionHandler
+2016-09-19 12:03:45 WARN  AnnotationConfigWebApplicationContext:546 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in com.hospitalsearch.config.SpringRootConfig: Invocation of init method failed; nested exception is liquibase.exception.MigrationFailedException: Migration failed for change set classpath:liquibase-changeLogForDiff.xml::1474274379046-1::Admin (generated):
+     Reason: liquibase.exception.DatabaseException: org.postgresql.util.PSQLException: ОШИБКА: столбец "emailADD" отношения "users" уже существует
+2016-09-19 12:03:45 ERROR ContextLoader:351 - Context initialization failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in com.hospitalsearch.config.SpringRootConfig: Invocation of init method failed; nested exception is liquibase.exception.MigrationFailedException: Migration failed for change set classpath:liquibase-changeLogForDiff.xml::1474274379046-1::Admin (generated):
+     Reason: liquibase.exception.DatabaseException: org.postgresql.util.PSQLException: ОШИБКА: столбец "emailADD" отношения "users" уже существует
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1578)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:545)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:482)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:772)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:839)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:538)
+	at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:444)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:326)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:107)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:4840)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5303)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:147)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:725)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:701)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:717)
+	at org.apache.catalina.startup.HostConfig.deployWAR(HostConfig.java:940)
+	at org.apache.catalina.startup.HostConfig$DeployWar.run(HostConfig.java:1816)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: liquibase.exception.MigrationFailedException: Migration failed for change set classpath:liquibase-changeLogForDiff.xml::1474274379046-1::Admin (generated):
+     Reason: liquibase.exception.DatabaseException: org.postgresql.util.PSQLException: ОШИБКА: столбец "emailADD" отношения "users" уже существует
+	at liquibase.changelog.ChangeSet.execute(ChangeSet.java:586)
+	at liquibase.changelog.visitor.UpdateVisitor.visit(UpdateVisitor.java:43)
+	at liquibase.changelog.ChangeLogIterator.run(ChangeLogIterator.java:73)
+	at liquibase.Liquibase.update(Liquibase.java:200)
+	at liquibase.integration.spring.SpringLiquibase.performUpdate(SpringLiquibase.java:353)
+	at liquibase.integration.spring.SpringLiquibase.afterPropertiesSet(SpringLiquibase.java:317)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1637)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1574)
+	... 25 more
+Caused by: liquibase.exception.DatabaseException: org.postgresql.util.PSQLException: ОШИБКА: столбец "emailADD" отношения "users" уже существует
+	at liquibase.executor.jvm.JdbcExecutor$ExecuteStatementCallback.doInStatement(JdbcExecutor.java:316)
+	at liquibase.executor.jvm.JdbcExecutor.execute(JdbcExecutor.java:55)
+	at liquibase.executor.jvm.JdbcExecutor.execute(JdbcExecutor.java:122)
+	at liquibase.database.AbstractJdbcDatabase.execute(AbstractJdbcDatabase.java:1227)
+	at liquibase.database.AbstractJdbcDatabase.executeStatements(AbstractJdbcDatabase.java:1210)
+	at liquibase.changelog.ChangeSet.execute(ChangeSet.java:550)
+	... 32 more
+Caused by: org.postgresql.util.PSQLException: ОШИБКА: столбец "emailADD" отношения "users" уже существует
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2103)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:1836)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:257)
+	at org.postgresql.jdbc2.AbstractJdbc2Statement.execute(AbstractJdbc2Statement.java:512)
+	at org.postgresql.jdbc2.AbstractJdbc2Statement.executeWithFlags(AbstractJdbc2Statement.java:374)
+	at org.postgresql.jdbc2.AbstractJdbc2Statement.execute(AbstractJdbc2Statement.java:366)
+	at liquibase.executor.jvm.JdbcExecutor$ExecuteStatementCallback.doInStatement(JdbcExecutor.java:314)
+	... 37 more

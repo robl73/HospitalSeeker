@@ -38,7 +38,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 })
 
 public class User implements Comparable<User> {
-
+    
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_gen")
 	@SequenceGenerator(name = "users_gen", sequenceName = "users_id_seq", initialValue = 1, allocationSize = 1)
@@ -48,7 +48,7 @@ public class User implements Comparable<User> {
 	@NotEmpty
 	@Column(unique = true, nullable = false)
 	private String email;
-
+        
 	@JsonIgnore
 	@NotNull
 	@Column(nullable = false)
