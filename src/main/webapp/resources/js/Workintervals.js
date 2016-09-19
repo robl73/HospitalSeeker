@@ -1,8 +1,10 @@
 /**
- * Created by igortsapyak on 27.05.16.
+ * Created by igortsapyak on 27.05.16.   18
  */
+var nextAvailableTime;
+var principal;
 $(document).ready(function () {
-    var principal = $('#principal').text();
+    principal = $('#principal').text();
     var did = document.getElementById("1").textContent;
     var begin;
     var end;
@@ -25,9 +27,9 @@ $(document).ready(function () {
                 var workDay = data[i].start_date.substring(0, 10);
                 var hourOne = data[i].start_date.substring(11, 13);
                 var hourLast = data[i].end_date.substring(11, 13);
-                    scheduler.blockTime(new Date(workDay), [0, hourOne * 60, hourLast * 60,
-                        24 * 60]);
-                    console.log(i + ": " + item.start_date + " " + item.end_date)
+                scheduler.blockTime(new Date(workDay), [0, hourOne * 60, hourLast * 60,
+                    24 * 60]);
+                console.log(i + ": " + item.start_date + " " + item.end_date)
             });
             blockYear = new Date(data[data.length - 1].start_date.substring(0, 10)).getFullYear();
             blockMonth = new Date(data[data.length - 1].start_date.substring(0, 10)).getMonth();
@@ -61,16 +63,14 @@ $(document).ready(function () {
     scheduler.config.details_on_dblclick = true;
     scheduler.config.details_on_create = true;
     switch (schedulerConfig.weekSize) {
-        case '5' :
-        {
+        case '5' : {
             scheduler.ignore_week = function (date) {
                 if (date.getDay() == 6 || date.getDay() == 0)
                     return true;
             };
         }
             break;
-        case '6':
-        {
+        case '6': {
             scheduler.ignore_week = function (date) {
                 if (date.getDay() == 0)
                     return true;
@@ -97,7 +97,7 @@ $(document).ready(function () {
                 var minutes2 = (end_date_hour * 60 + end_date_minutes) / step;
                 begin = minutes;
                 end = minutes2;
-                    scheduler.blockTime(new Date(dayOfAppointment), [begin * step, end * step]);
+                scheduler.blockTime(new Date(dayOfAppointment), [begin * step, end * step]);
             });
         }
     });
@@ -119,24 +119,60 @@ var html = function (id) {
 scheduler.showLightbox = function (id) {
     var tex_local_from = getMessage('workscheduler.modal.appointment.time.from');
     var tex_local_to = getMessage('workscheduler.modal.appointment.time.to');
-    $('#myModal').modal('show');
+   
+//IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII    
+    
     var ev = scheduler.getEvent(id);
+    var validationErrorMassage = getMessage('modal.workscheduler.validation.error');
+    var validationTimeMassage = getMessage('modal.workscheduler.validation.freetime');
+    
+    validateAppointment(ev) ? showModal() : $('#myAppointmentValidationErrorModal').modal('show');
+    $('#validationErrorMassage').text(validationErrorMassage + ' ' + validationTimeMassage + ' ' + nextAvailableTime.substr(11));
+ 
+    
+    function showModal() {
+        $('#myModal').modal('show');
+    }
     scheduler.startLightbox(id, html("myModal"));
-    $('#date').text(new Date(ev.start_date).toLocaleDateString() + ' ' + tex_local_from + ' '+
+    $('#date').text(new Date(ev.start_date).toLocaleDateString() + ' ' + tex_local_from + ' ' +
         new Date(ev.start_date).toLocaleTimeString().replace(':00', '') + ' ' + tex_local_to + ' ' +
         new Date(ev.end_date).toLocaleTimeString().replace(':00', ''));
     $('#doctorName').text($('#profDoctorsName').text());
+
+
+
+    // 111111111111111111111111111111
+
+    /* $('body').click(function(){ alert('test' )})
+
+     var foo = $.data( $('body').get(0), 'events' ).click
+     // you can query $.data( object, 'events' ) and get an object back, then see what events are attached to it.
+
+     $.each( foo, function(i,o) {
+     alert(i) // guid of the event
+     alert(o) // the function definition of the event handler
+     });*/
+
+    //1111111111111111111111111111111111111111111111
     html("TheReasonForVisit").focus();
 };
 function save_form() {
+
     blockAppointmensAdd();
     var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
+
+
     ev.text = html("TheReasonForVisit").value;
     scheduler.endLightbox(true, html("my_form"));
 }
 
 function close_form() {
     scheduler.endLightbox(false, html("my_form"));
+}
+
+function closeErrorModal() {
+    close_form();
+    location.reload();
 }
 
 function delete_event() {
@@ -160,8 +196,14 @@ function dismissMyModal(event) {
 }
 
 function startModal() {
+
+
+    if ($('#TheReasonForVisit').val().length >= 150) {
+        $('#lengthError').attr('style', 'display:block');
+        return;
+    }
     setTimeout(changeModalContentFirstStep, 500);
-    setTimeout(changeModalContentSecondStep, 4000);
+    setTimeout(changeModalContentSecondStep, 5000);
 }
 
 function changeModalContentFirstStep() {
@@ -173,9 +215,13 @@ function changeModalContentFirstStep() {
 
 function changeModalContentSecondStep() {
     save_form();
-    $('#myModal').modal('hide');
 }
 
+function closeModal() {
+    changeModalContentSecondStep();
+    $('#myModal').modal('hide');
+    $.modal.close();
+}
 
 $(document).keyup(function (e) {
     if (e.keyCode == 27) { // escape key maps to keycode `27`
@@ -185,6 +231,29 @@ $(document).keyup(function (e) {
 
 function goBack() {
     window.history.back();
+}
+
+
+//IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+function validateAppointment(ev) {
+    ev.principal = principal;
+    var result = false;
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "validate?ev="+JSON.stringify(ev),
+        datatype: "json",
+        contentType: "application/json",
+        mimeType: "application/json",
+        success: function (data) {
+            nextAvailableTime = data.nextAvailableTime;
+            result = data.result;
+        },
+        error: function (data) {
+            alert("error" + data)
+        }
+    });
+    return result;
 }
 
 
