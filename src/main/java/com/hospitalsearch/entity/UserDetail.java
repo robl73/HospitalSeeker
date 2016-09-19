@@ -163,4 +163,17 @@ public class UserDetail{
     public void setPatientInfo(PatientInfo patientInfo) {
         this.patientInfo = patientInfo;
     }
+
+    @Override
+    public String toString() {
+        return "UserDetail{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", birthDate=" + birthDate +
+                ", gender=" + gender +
+                ", address='" + address + '\'' +
+                '}';
+    }
 }

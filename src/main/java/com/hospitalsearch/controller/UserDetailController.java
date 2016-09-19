@@ -100,14 +100,14 @@ public class UserDetailController {
 //        return "";
 //    }
 
-public void initializeModel(Map<String,Object> model,Integer page){
-    model.put("doctorsdList", this.pageableContent.getDoctorPageList(page));
-    model.put("pagination", this.pageableContent.isPaginated());
-    model.put("pageCount", this.pageableContent.getPageCount());
-    model.put("pageSize", this.pageableContent.getPageSize());
-    model.put("currentPage", page);
-    model.put("itemNumber", this.pageableContent.getResultListCount());
-    model.put("pageConfig",new PageConfigDTO());
-    model.put("sortType",this.pageableContent.getSortType());
-}
+//public void initializeModel(Map<String,Object> model,Integer page){
+//    model.put("doctorsdList", this.pageableContent.getDoctorPageList(page));
+//    model.put("pagination", this.pageableContent.isPaginated());
+//    model.put("pageCount", this.pageableContent.getPageCount());
+//    model.put("pageSize", this.pageableContent.getPageSize());
+//    model.put("currentPage", page);
+//    model.put("itemNumber", this.pageableContent.getResultListCount());
+//    model.put("pageConfig",new PageConfigDTO());
+//    model.put("sortType",this.pageableContent.getSortType());
+//}
 }

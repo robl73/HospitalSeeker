@@ -29,7 +29,8 @@ public class CardItemDAOImpl extends GenericDAOImpl<CardItem,Long> implements Ca
         PatientInfo patientInfo = userDetail.getPatientInfo();
         PatientCard patientCard = patientInfo.getPatientCard();
         Criteria criteria = this.getSessionFactory().getCurrentSession().createCriteria(CardItem.class, "item")
-                .add(Restrictions.eq("item.patientCard", patientCard)).addOrder(Order.desc("item.date"));
+                .add(Restrictions.eq("item.patientCard", patientCard))
+                .addOrder(Order.desc("item.date"));
         criteria.setFirstResult((pageNumber-1)*pageSize);
         criteria.setMaxResults(pageSize);
         return criteria.list();

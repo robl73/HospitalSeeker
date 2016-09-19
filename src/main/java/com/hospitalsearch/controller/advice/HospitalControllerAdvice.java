@@ -2,6 +2,9 @@ package com.hospitalsearch.controller.advice;
 
 import java.util.List;
 
+import com.hospitalsearch.entity.User;
+import com.hospitalsearch.service.UserService;
+import com.hospitalsearch.util.PrincipalConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.ModelMap;
@@ -19,13 +22,19 @@ import com.hospitalsearch.util.PageConfigDTO;
 
 @ControllerAdvice(assignableTypes={HospitalController.class})
 public class HospitalControllerAdvice {
+
 	@Autowired
 	private HospitalService service;
+
+	@Autowired
+	private UserService userService;
 	
 	@ResponseStatus(code=HttpStatus.NOT_FOUND)
 	@ExceptionHandler(value={FilterHospitalListEmptyException.class})
 	public ModelAndView renderHospitalListException(Exception ex){
+		User user = userService.getByEmail(PrincipalConverter.getPrincipal());
 		ModelAndView view = new ModelAndView("error/hospitalList");
+		view.addObject("userName", user);
 		return view;
 	}
 	
@@ -38,7 +47,7 @@ public class HospitalControllerAdvice {
 	@ModelAttribute(value="filter")
 	public HospitalFilterDTO hospitalFilterDTO(){return new HospitalFilterDTO();}
 	
-        @ModelAttribute
+	@ModelAttribute
 	public void hospitalFilterDTO(ModelMap model){
             model.addAttribute("globalSearch",new PageConfigDTO());
         }

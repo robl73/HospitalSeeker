@@ -52,15 +52,11 @@ public class HospitalDTO {
 	public void setAddressGeo(String addressGeo) {
 		this.addressGeo = addressGeo;
 	}
-
 	
 	private String imagePath;
-
 	
 	@Size(max = 150)
 	private String description;
-
-
 
 	public Long getId() {
 		return id;
@@ -101,7 +97,6 @@ public class HospitalDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 
 	public HospitalAddress getAddress() {
 		return address;

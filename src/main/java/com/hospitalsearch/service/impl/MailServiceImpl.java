@@ -62,7 +62,11 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void sendMessage(User user, String subject, String text, String templateName) throws ConnectException {
-        if (!pingURL("https://www.google.com.ua/", 300)) {
+        System.out.println("sendMessage");
+//        if (!pingURL("https://www.google.com.ua/", 300)) {
+//            throw new MailSendException("Connection failed");
+//        }
+        if (!pingURL("ch.039.test@gmail.com", 300)) {
             throw new MailSendException("Connection failed");
         }
         String encoding = properties.getProperty("email.encoding");
@@ -87,17 +91,20 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public String createBannedMessage(User user, Locale locale) {
+        System.out.println("createBannedMessage");
         return messageSource.getMessage("mail.message.banned.prefix", null, locale) + " " + user.getEmail() + " " +
                 messageSource.getMessage("mail.message.banned.suffix", null, locale);
     }
 
     private String buildConfirmationURL(String token, String path) {
+        System.out.println("buildConfirmationURL");
         return "https://" + request.getServerName() + ":" + request.getServerPort() + context.getContextPath()
                 + path + token;
     }
 
     @Override
     public String createRegisterMessage(User user, String token, Locale locale) {
+        System.out.println("createRegisterMessage");
         return messageSource.getMessage("mail.message.registration.prefix", null, locale) + " " +
                 user.getEmail() + " " + messageSource.getMessage("mail.message.registration.text", null, locale) +
                 buildConfirmationURL(token, "/confirmRegistration?token=") +
@@ -106,6 +113,7 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public String createResetPasswordMessage(User user, String token, Locale locale) {
+        System.out.println("createResetPasswordMessage");
         return messageSource.getMessage("mail.message.registration.prefix", null, locale) + " " + user.getEmail() +
                 messageSource.getMessage("mail.message.forgot.password.text", null, locale) + buildConfirmationURL(token, "/confirmResetPassword?token=") +
                 messageSource.getMessage("mail.message.forgot.password.suffix", null, locale);
@@ -113,6 +121,7 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void sendMassageFromUserToUser(Map<String, String> massageData, Locale locale) throws ConnectException {
+        System.out.println("sendMassageFromUserToUser");
         String doctorEmail = userDAO.getById(appointmentDAO.getById(Long.parseLong(massageData.get("eventId"))).getDoctorInfo().getUserDetails().getId()).getEmail();
         String patientEmail = userDAO.getById(appointmentDAO.getById(Long.parseLong(massageData.get("eventId"))).getUserDetail().getId()).getEmail();
         String principalEmail = massageData.get("principal");
@@ -128,6 +137,7 @@ public class MailServiceImpl implements MailService {
 
     //ping some url
     public static boolean pingURL(String url, int timeout) {
+        System.out.println("pingURL");
         url = url.replaceFirst("^https", "http"); // Otherwise an exception may be thrown on invalid SSL certificates.
         HttpURLConnection connection = null;
         try {
