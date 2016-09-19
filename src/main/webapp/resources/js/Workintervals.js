@@ -124,10 +124,9 @@ scheduler.showLightbox = function (id) {
     
     var ev = scheduler.getEvent(id);
     var validationErrorMassage = getMessage('modal.workscheduler.validation.error');
-    var validationTimeMassage = getMessage('modal.workscheduler.validation.freetime');
-    
+      
     validateAppointment(ev) ? showModal() : $('#myAppointmentValidationErrorModal').modal('show');
-    $('#validationErrorMassage').text(validationErrorMassage + ' ' + validationTimeMassage + ' ' + nextAvailableTime.substr(11));
+    $('#validationErrorMassage').text(validationErrorMassage + ' ' + nextAvailableTime.substr(11));
  
     
     function showModal() {

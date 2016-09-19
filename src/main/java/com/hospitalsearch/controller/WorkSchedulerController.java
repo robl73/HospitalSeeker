@@ -27,11 +27,11 @@ public class WorkSchedulerController {
     @Autowired
     private AppointmentValidationService appointmentValidationService;
 
-    @ResponseBody
-    @RequestMapping(value = "/**/getWorkScheduler", method = RequestMethod.GET)
-    public String getWorkScheduler(@RequestParam("id") Long id) {
-        return workSchedulerService.getByDoctorId(id).getWorkScheduler();
-    }
+//   @ResponseBody
+  //  @RequestMapping(value = "/**/getWorkScheduler", method = RequestMethod.GET)
+//    public String getWorkScheduler(@RequestParam("id") Long id) {
+ //       return workSchedulerService.getByDoctorId(id).getWorkScheduler();
+ //   }
 
 
     @ResponseBody
