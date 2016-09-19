@@ -45,7 +45,7 @@ public class SpringRootConfig {
     private static final String PROP_HIBERNATE_EHCACHE_SHOWSQL = "hibernate.cache.use_query_cache";
     private static final String PROP_HIBERNATE_SEARCH_DEFAULT_DIRECTORY_PROVIDER = "hibernate.search.default.directory_provider";
     private static final String PROP_HIBERNATE_SEARCH_INDEX_BASE = "hibernate.search.default.indexBase";
-
+//    private static final String PROP_HIBERNATE_EJB_NAMING_STRATEGY = "hibernate.ejb.naming_strategy";
 
     @Bean
     public DataSource dataSource() {
@@ -78,7 +78,7 @@ public class SpringRootConfig {
         Properties props = new Properties();
         props.put(PROP_HIBERNATE_DIALECT, properties.getRequiredProperty(PROP_HIBERNATE_DIALECT));
         props.put(PROP_HIBERNATE_SHOW_SQL, properties.getRequiredProperty(PROP_HIBERNATE_SHOW_SQL));
-        props.put(PROP_HIBERNATE_EHCACHE, properties.getRequiredProperty(PROP_HIBERNATE_EHCACHE));
+//        props.put(PROP_HIBERNATE_EHCACHE, properties.getRequiredProperty(PROP_HIBERNATE_EHCACHE));
         props.put(PROP_HIBERNATE_EHCACHE_LEVEL, properties.getRequiredProperty(PROP_HIBERNATE_EHCACHE_LEVEL));
         props.put(PROP_HIBERNATE_EHCACHE_SHOWSQL, properties.getRequiredProperty(PROP_HIBERNATE_EHCACHE_SHOWSQL));
         props.put(PROP_HIBERNATE_EHCACHE_REGION_FACTORY, properties.getRequiredProperty(PROP_HIBERNATE_EHCACHE_REGION_FACTORY));
@@ -86,6 +86,7 @@ public class SpringRootConfig {
         props.put(PROP_HIBERNATE_SEARCH_INDEX_BASE, properties.getRequiredProperty(PROP_HIBERNATE_SEARCH_INDEX_BASE));
         props.put(PROP_HIBERNATE_HBM2DDL_AUTO, properties.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
         props.put(PROP_HIBERNATE_IMPORT_FILE, properties.getRequiredProperty(PROP_HIBERNATE_IMPORT_FILE));
+
         return props;
     }
 
