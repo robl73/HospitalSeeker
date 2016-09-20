@@ -2,20 +2,7 @@ package com.hospitalsearch.entity;
 
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.validation.constraints.Past;
+import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,17 +11,15 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
-
 import com.hospitalsearch.util.Gender;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
 @Table(name = "userdetail")
-@Indexed
 @Cache(region="entityCache",usage=CacheConcurrencyStrategy.READ_WRITE)
 public class UserDetail{
 
@@ -46,13 +31,14 @@ public class UserDetail{
 
     @Column(name="firstname")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Solomon")
-    @Field
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
     private String firstName;
 
     @Column(name="lastname")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Kane")
-    @Field
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
     private String lastName;
+
     @Pattern(regexp = "^\\+38 \\(\\d{3}\\) \\d{3}-\\d{4}", message = "Not valid. Ex: +38 (095) 435-7132")
     private String phone;
 
@@ -71,23 +57,37 @@ public class UserDetail{
 
     private String address;
 
-    @OneToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL,mappedBy="userDetails")
-    @Fetch(FetchMode.SELECT)
-    @ContainedIn
-    @JsonIgnore
-    private DoctorInfo doctorsDetails;
-
     @OneToOne
     @Fetch(FetchMode.SELECT)
-    @JoinColumn(name="patientcard_id")
+    @JoinColumn(name="doctorinfo_id")
+    @ContainedIn
     @JsonIgnore
-    private PatientCard patientCard;
+    private DoctorInfo doctorInfo;
+
+    @OneToOne(cascade= CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    @JoinColumn(name="patientinfo_id")
+    @JsonIgnore
+    private PatientInfo patientInfo;
+
+    @OneToOne
+    @IndexedEmbedded
+    private User user;
 
     public UserDetail() {}
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -95,12 +95,15 @@ public class UserDetail{
     public String getFirstName() {
         return firstName;
     }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
     public String getLastName() {
         return lastName;
     }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -108,6 +111,7 @@ public class UserDetail{
     public String getPhone() {
         return phone;
     }
+
     public void setPhone(String phone) {
         this.phone = phone;
     }
@@ -115,6 +119,7 @@ public class UserDetail{
     public LocalDate getBirthDate() {
         return birthDate;
     }
+
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
@@ -122,36 +127,40 @@ public class UserDetail{
     public Gender getGender() {
         return gender;
     }
+
     public void setGender(Gender gender) {
         this.gender = gender;
     }
+
     public String getAddress() {
         return address;
     }
+
     public void setAddress(String address) {
         this.address = address;
     }
 
-    public DoctorInfo getDoctorsDetails() {
-        return doctorsDetails;
+    public DoctorInfo getDoctorInfo() {
+        return doctorInfo;
     }
-    public void setDoctorsDetails(DoctorInfo doctorsDetails) {
-        this.doctorsDetails = doctorsDetails;
+
+    public void setDoctorInfo(DoctorInfo doctorInfo) {
+        this.doctorInfo = doctorInfo;
     }
 
     public String getImagePath() {
         return imagePath;
     }
+
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 
-    public PatientCard getPatientCard() {
-        return patientCard;
+    public PatientInfo getPatientInfo() {
+        return patientInfo;
     }
 
-    public void setPatientCard(PatientCard patientCard) {
-        this.patientCard = patientCard;
+    public void setPatientInfo(PatientInfo patientInfo) {
+        this.patientInfo = patientInfo;
     }
-
 }

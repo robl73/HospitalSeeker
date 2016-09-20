@@ -55,7 +55,7 @@ public class HospitalDAOImpl extends GenericDAOImpl<Hospital, Long> implements H
         return criteria.add(Restrictions.and(nameCriterion, countryCriterion, cityCriterion)).list();
     }
 
-    public static final String[] HOSPITAL_PROJECTION = new String[]{"name", "address.city", "address.street", "address.building", "departments.name"};
+    public static final String[] HOSPITAL_PROJECTION = new String[]{"name", "address.city", "address.street", "address.building", "description", "departments.name"};
 
     @Override
     public Page<Hospital> advancedHospitalSearch(String args) throws ParseException, InterruptedException {

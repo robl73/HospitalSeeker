@@ -18,7 +18,6 @@ public class PatientCardServiceImpl implements PatientCardService {
     @Autowired
     private PatientCardDAO dao;
 
-
     @Override
     public PatientCard add(PatientCard patientCard) {
         try{

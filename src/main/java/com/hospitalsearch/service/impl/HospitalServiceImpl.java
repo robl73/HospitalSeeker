@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.hospitalsearch.dao.HospitalDAO;
 import com.hospitalsearch.dto.Bounds;
+import com.hospitalsearch.dto.HospitalDTO;
 import com.hospitalsearch.entity.Hospital;
 import com.hospitalsearch.service.HospitalService;
 import com.hospitalsearch.util.HospitalFilterDTO;
@@ -27,7 +28,7 @@ public class HospitalServiceImpl implements HospitalService {
     public void save(Hospital newHospital) {
         dao.save(newHospital);
     }
-
+    
     @Override
     public void delete(Hospital hospital) {
         dao.delete(hospital);
@@ -62,4 +63,41 @@ public class HospitalServiceImpl implements HospitalService {
     public Page<Hospital> advancedHospitalSearch(String args) throws ParseException, InterruptedException {
         return dao.advancedHospitalSearch(args);
     }
+
+	@Override
+	public void save(HospitalDTO hospitalDTO) {
+		Hospital newHospital = new Hospital();
+    	newHospital.setAddress(hospitalDTO.getAddress());
+    	newHospital.setDescription(hospitalDTO.getDescription());
+    	newHospital.setImagePath(hospitalDTO.getImagePath());
+    	newHospital.setLatitude(hospitalDTO.getLatitude());
+    	newHospital.setLongitude(hospitalDTO.getLatitude());
+    	newHospital.setName(hospitalDTO.getName());
+		save(newHospital);
+	}
+
+	@Override
+	public void update(HospitalDTO updatedHospitalDTO) {
+		Hospital newHospital = getById(updatedHospitalDTO.getId());
+    	newHospital.setAddress(updatedHospitalDTO.getAddress());
+    	newHospital.setDescription(updatedHospitalDTO.getDescription());
+    	newHospital.setImagePath(updatedHospitalDTO.getImagePath());
+    	newHospital.setLatitude(updatedHospitalDTO.getLatitude());
+    	newHospital.setLongitude(updatedHospitalDTO.getLatitude());
+    	newHospital.setName(updatedHospitalDTO.getName());
+    	update(newHospital);
+	}
+
+	@Override
+	public HospitalDTO toHospitalDTO(Hospital hospital) {
+		HospitalDTO hospitalDTO = new HospitalDTO();
+		hospitalDTO.setId(hospital.getId());
+		hospitalDTO.setAddress(hospital.getAddress());
+		hospitalDTO.setDescription(hospital.getDescription());
+		hospitalDTO.setImagePath(hospital.getImagePath());
+		hospitalDTO.setLatitude(hospital.getLatitude());
+		hospitalDTO.setLongitude(hospital.getLongitude());
+		hospitalDTO.setName(hospital.getName());
+		return hospitalDTO;
+	}
 }

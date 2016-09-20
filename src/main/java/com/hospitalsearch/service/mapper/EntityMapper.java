@@ -7,6 +7,7 @@ package com.hospitalsearch.service.mapper;
  */
 
 public interface EntityMapper<Entity, Bean> {
+
     default Bean convertToBean(Entity entity) {
         return convertToBean(entity, null);
     }

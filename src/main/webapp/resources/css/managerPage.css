@@ -15,10 +15,17 @@ html, body {
 }
 
 #scheduler_here {
+    height: 100%;
     border-radius: 4px;
 }
 
 /* Important !!! */
 .dhx_scale_hour {
     line-height: normal;
+}
+
+.gray_section {
+    background-color: lightgrey;
+    opacity: 0.27;
+    filter:alpha(opacity=27);
 }

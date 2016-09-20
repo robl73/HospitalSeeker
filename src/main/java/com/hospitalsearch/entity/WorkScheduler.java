@@ -24,6 +24,9 @@ public class WorkScheduler {
     @JoinColumn(name="doctorinfo_id")
     private DoctorInfo doctorInfo;
 
+    public WorkScheduler() {
+    }
+
     public Long getId() {
         return id;
     }

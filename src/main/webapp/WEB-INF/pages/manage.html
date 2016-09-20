@@ -9,6 +9,12 @@
     <meta th:name="csrf-token" th:content="${_csrf.token}"/>
     <script th:src="@{/codebase/sources/ext/dhtmlxscheduler_key_nav.js}" type="text/javascript"
             charset="utf-8"></script>
+    <script th:src="@{/codebase/sources/ext/dhtmlxscheduler_recurring.js}" type="text/javascript"
+            charset="utf-8"></script>
+    <script th:src="@{/codebase/sources/ext/dhtmlxscheduler_collision.js}" type="text/javascript"
+            charset="utf-8"></script>
+    <script th:src="@{/codebase/sources/ext/dhtmlxscheduler_key_nav.js}" type="text/javascript"
+            charset="utf-8"></script>
     <script th:src="@{/codebase/locale/locale_ua.js}" th:remove="(__${#locale}__ == 'en')?'all':'none'"
             type="text/javascript" charset="utf-8"></script>
     <script th:src="@{/js/schedulerDatePicker.js}" type="text/javascript" charset="utf-8"></script>
@@ -29,7 +35,7 @@
                 <div align="center" class="col-lg-12 col-md-12 col-xs-12">
                     <form class="form-inline" role="form">
                         <div class="pull-right btn-group" style="padding-left: 13px">
-                            <button style="width: 135px" class="btn btn-success" th:onclick="'javascript:save()'"
+                            <button type="button" style="width: 135px" class="btn btn-success" id="saveData"
                                     th:text="#{manager.scheduler.save}"></button>
                         </div>
                         <div class="form-group pull-left">
@@ -43,22 +49,22 @@
                             </select>
                             <label class="filter-col" style="margin-right:0;" for="workdayBeginAt" th:text="#{manager.scheduler.dayshours}"></label>
                             <select id="workDayBeginAt" class="form-control">
-                                <option th:each="i : ${#numbers.sequence( 0, 24)}"
+                                <option th:each="i : ${#numbers.sequence( 0, 23)}"
                                         th:text="${i}+':00'" th:value="${i}"></option>
                             </select>
                             <label class="filter-col" style="margin-right:0;" for="workdayEndAt">-</label>
 
                             <select id="workDayEndAt" class="form-control">
-                                <option th:each="i : ${#numbers.sequence( 0, 24)}"
+                                <option th:each="i : ${#numbers.sequence( 1, 24)}"
                                         th:text="${i}+':00'" th:value="${i}"></option>
                             </select>
                             <label class="filter-col" style="margin-right:0;" for="appointmentTime"
                                    th:text="#{manager.scheduler.appsize}"></label>
                             <select id="appointmentTime" class="form-control">
-                                <option th:text="'15 '+#{manager.scheduler.size}"></option>
-                                <option th:text="'20 '+#{manager.scheduler.size}"></option>
-                                <option th:text="'30 '+#{manager.scheduler.size}"></option>
-                                <option th:text="'60 '+#{manager.scheduler.size}"></option>
+                                <option th:value="15" th:text="'15 '+#{manager.scheduler.size}"></option>
+                                <option th:value="20" th:text="'20 '+#{manager.scheduler.size}"></option>
+                                <option th:value="30" th:text="'30 '+#{manager.scheduler.size}"></option>
+                                <option th:value="60" th:text="'60 '+#{manager.scheduler.size}"></option>
                             </select>
 
                         </div>

@@ -1,9 +1,12 @@
 package com.hospitalsearch.service.impl;
 
 import com.hospitalsearch.dao.DoctorInfoDAO;
+import com.hospitalsearch.dto.DoctorSearchDTO;
 import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.DoctorInfoService;
+import com.hospitalsearch.util.Page;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,4 +49,8 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
         return dao.findByDepartmentId(id);
     }
 
+    @Override
+    public Page<DoctorSearchDTO> advancedDoctorSearch(String query) throws ParseException, InterruptedException{
+        return dao.advancedDoctorSearch(query);
+    }
 }

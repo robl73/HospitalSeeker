@@ -19,13 +19,13 @@ public class PatientCard{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patientcard_gen")
     @SequenceGenerator(name = "patientcard_gen", sequenceName = "patientcard_id_seq", initialValue = 1, allocationSize = 1)
-
     private Long id;
 
     @OneToMany(mappedBy = "patientCard", fetch = FetchType.EAGER)
     List<CardItem> cardItems;
+
     @OneToOne
-    UserDetail userDetail;
+    private PatientInfo patientInfo;
 
     public Long getId() {
         return id;
@@ -43,12 +43,12 @@ public class PatientCard{
         this.cardItems = cardItems;
     }
 
-    public UserDetail getUserDetail() {
-        return userDetail;
+    public PatientInfo getPatientInfo() {
+        return patientInfo;
     }
 
-    public void setUserDetail(UserDetail userDetail) {
-        this.userDetail = userDetail;
+    public void setPatientInfo(PatientInfo patientInfo) {
+        this.patientInfo = patientInfo;
     }
 
     @Override

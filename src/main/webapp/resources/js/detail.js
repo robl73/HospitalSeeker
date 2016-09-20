@@ -43,7 +43,7 @@ function submitForm(){
             },
             gender: {
                 required: true,
-                regex: /^MAN|WOMAN/
+                regex: /^MALE|FEMALE/
             },
             address: {
                 required: true

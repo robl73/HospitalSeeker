@@ -51,12 +51,16 @@
 													th:title="#{admin.hospital.list.tooltip.locate}">
 													<span class="glyphicon glyphicon-map-marker"></span>
 												</button>
+												
+												
+												
 												<a
 													th:href="@{'/admin/map/edithospital/' + ${hospital.id} + '/'}"
 													th:title="#{admin.hospital.list.tooltip.edit}"
 													class="btn btn-default"> <span
 													class="glyphicon glyphicon-pencil"></span>
 												</a>
+												
 												<button type="button" class="btn btn-default"
 													th:onclick="'javascript:$(\'#' + ${hospital.id} + '\').modal();'"
 													th:title="#{admin.hospital.list.tooltip.delete}">

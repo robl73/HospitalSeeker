@@ -5,7 +5,10 @@ import com.hospitalsearch.entity.Appointment;
 import com.hospitalsearch.entity.Department;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.*;
+
+//import org.codehaus.jackson.map.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +57,7 @@ public class AppointmentController {
         model.put("formatter", DateTimeFormatter.ofPattern("d MMM uuuu hh:mm"));
         model.put("feedbacks", feedbackService.getByDoctorId(doctorId));
         UserDetail userDetail = userDetailService.getById(doctorId);
-        model.addAttribute("id", userDetail.getDoctorsDetails().getId());
+        model.addAttribute("id", userDetail.getDoctorInfo().getId());
         model.addAttribute("doctor", userDetailService.getById(doctorId));
         return "start";
     }
@@ -95,6 +98,14 @@ public class AppointmentController {
         return "redirect:/";
 
     }
+    
+    @ResponseBody
+    @RequestMapping(value = "/**/validateAppointment", method = RequestMethod.GET)
+    public String validateAppointment(){
+    	System.out.println("hgfyf");
+    	return "appointments";
+    }
+    
 
 
 }

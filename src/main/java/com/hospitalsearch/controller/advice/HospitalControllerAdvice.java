@@ -13,23 +13,30 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hospitalsearch.controller.HospitalController;
 import com.hospitalsearch.entity.Hospital;
+import com.hospitalsearch.entity.User;
 import com.hospitalsearch.service.HospitalService;
+import com.hospitalsearch.service.UserService;
 import com.hospitalsearch.util.HospitalFilterDTO;
 import com.hospitalsearch.util.PageConfigDTO;
+import com.hospitalsearch.util.PrincipalConverter;
 
 @ControllerAdvice(assignableTypes={HospitalController.class})
 public class HospitalControllerAdvice {
-	@Autowired(required = true)
+	@Autowired
 	private HospitalService service;
+	
+	@Autowired
+	private UserService userService;
 	
 	@ResponseStatus(code=HttpStatus.NOT_FOUND)
 	@ExceptionHandler(value={FilterHospitalListEmptyException.class})
 	public ModelAndView renderHospitalListException(Exception ex){
-		ModelAndView view = new ModelAndView("error/hospitalList");
-		return view;
+		User user = userService.getByEmail(PrincipalConverter.getPrincipal());
+        ModelAndView view = new ModelAndView("error/hospitalList");
+        view.addObject("userName", user);
+        return view;
 	}
 	
-
 
 	@ModelAttribute(value = "hospitals")
 	public List<Hospital> hospitalList(){
