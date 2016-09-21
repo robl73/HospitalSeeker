@@ -107,14 +107,15 @@ public class UserController {
         try {
             String confirmationMessage = mailService.createRegisterMessage(user, token, locale);
             mailService.sendMessage(user, messageSource.getMessage("mail.message.registration.confirm", null, locale), confirmationMessage, emailTemplate);
+            model.addAttribute("emailSuccess", userDto.getEmail());
+            return "/user/endRegistration";
         } catch (MailException | ConnectException e) {
             model.addAttribute("emailError", userDto.getEmail());
             verificationTokenService.deleteTokenByUser(user);
             userService.changeStatus(user.getId());
-            return "/user/endRegistration";
+            userService.delete(user.getId());
+            return "/error/emailMessage";
         }
-        model.addAttribute("emailSuccess", userDto.getEmail());
-        return "/user/endRegistration";
     }
 
     @RequestMapping(value = "/confirmRegistration", method = RequestMethod.GET)
