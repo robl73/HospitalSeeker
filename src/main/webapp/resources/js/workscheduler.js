@@ -1,27 +1,27 @@
-
 $(document).ready(function () {
     var principal = $('#principal').text();
     var begin;
     var end;
     var dayOfAppointment;
-    var schedulerConfig;
+    var schedulerConfig = {};
     $.ajax({
         type: "GET",
         async: false,
         url: "getWorkSchedulerByPrincipal?doctor=" + principal,
-        datatype: "json",
+        dataType: "json",
         contentType: "application/json",
         mimeType: "application/json",
         success: function (data) {
-            schedulerConfig=data[data.length-1];
-            data.splice(data.length-1,1);
-            data.forEach(function (item, i) {
-                var workDay = data[i].start_date.substring(0, 10);
-                var hourOne = data[i].start_date.substring(11, 13);
-                var hourLast = data[i].end_date.substring(11, 13);
+            schedulerConfig.appSize = data.app_size;
+            schedulerConfig.weekSize = data.week_size;
+            schedulerConfig.dayStart = data.day_start;
+            schedulerConfig.dayEnd = data.day_end;
+            data.events.forEach(function (item, i) {
+                var workDay = data.events[i].start_date.substring(0, 10);
+                var hourOne = data.events[i].start_date.substring(11, 13);
+                var hourLast = data.events[i].end_date.substring(11, 13);
                     scheduler.blockTime(new Date(workDay), [0, hourOne * 60, hourLast * 60,
                     24 * 60]);
-                console.log(i + ": " + item.start_date + " " + item.end_date)
             });
         }
     });
@@ -30,7 +30,7 @@ $(document).ready(function () {
     var month = new Date().getMonth();
     var year = new Date().getFullYear();
     var hour = new Date().getHours() + 1;
-    var step = schedulerConfig.appSize.substring(0,2);
+    var step = schedulerConfig.appSize;
     var format = scheduler.date.date_to_str("%H:%i");
     scheduler.config.hour_size_px = (60 / step) * 44;
     scheduler.config.time_step = step;
@@ -48,19 +48,18 @@ $(document).ready(function () {
     scheduler.config.details_on_dblclick = true;
     scheduler.config.details_on_create = true;
     switch (schedulerConfig.weekSize) {
-        case '5' :
-        {
+        case 5:
             scheduler.ignore_week = function (date) {
                 if (date.getDay() == 6 || date.getDay() == 0)
                     return true;
             };
-        }break;
-        case '6':{
+            break;
+        case 6:
             scheduler.ignore_week = function (date) {
                 if (date.getDay() == 0)
                     return true;
             };
-        }break;
+            break;
     }
     scheduler.attachEvent("onBeforeDrag",function(){return false;})
     scheduler.attachEvent("onClick",function(){return false;})
@@ -190,4 +189,3 @@ function onCancelAppointment() {
 function getCard(appointmnetId) {
     window.location.href = "appointmentId?appointmentId=" + appointmnetId;
 }
-

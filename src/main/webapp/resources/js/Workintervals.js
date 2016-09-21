@@ -1,15 +1,13 @@
 /**
- * Created by igortsapyak on 27.05.16.   18
+ * Created by igortsapyak on 27.05.16.
  */
-var nextAvailableTime;
-var principal;
 $(document).ready(function () {
-    principal = $('#principal').text();
+    var principal = $('#principal').text();
     var did = document.getElementById("1").textContent;
     var begin;
     var end;
     var dayOfAppointment;
-    var schedulerConfig;
+    var schedulerConfig = {};
     var blockYear;
     var blockMonth;
     var blockDay;
@@ -17,23 +15,26 @@ $(document).ready(function () {
         type: "GET",
         async: false,
         url: "getWorkScheduler?id=" + did,
-        datatype: "json",
+        dataType: "json",
         contentType: "application/json",
         mimeType: "application/json",
         success: function (data) {
-            schedulerConfig = data[data.length - 1];
-            data.splice(data.length - 1, 1);
-            data.forEach(function (item, i) {
-                var workDay = data[i].start_date.substring(0, 10);
-                var hourOne = data[i].start_date.substring(11, 13);
-                var hourLast = data[i].end_date.substring(11, 13);
-                scheduler.blockTime(new Date(workDay), [0, hourOne * 60, hourLast * 60,
-                    24 * 60]);
-                console.log(i + ": " + item.start_date + " " + item.end_date)
+            if (data != null) {
+                schedulerConfig.appSize = data.app_size;
+                schedulerConfig.weekSize = data.week_size;
+                schedulerConfig.dayStart = data.day_start;
+                schedulerConfig.dayEnd = data.day_end;
+            }
+            data.events.forEach(function (item, i) {
+                var workDay = data.events[i].start_date.substring(0, 10);
+                var hourOne = data.events[i].start_date.substring(11, 13);
+                var hourLast = data.events[i].end_date.substring(11, 13);
+                    scheduler.blockTime(new Date(workDay), [0, hourOne * 60, hourLast * 60,
+                        24 * 60]);
             });
-            blockYear = new Date(data[data.length - 1].start_date.substring(0, 10)).getFullYear();
-            blockMonth = new Date(data[data.length - 1].start_date.substring(0, 10)).getMonth();
-            blockDay = new Date(data[data.length - 1].start_date.substring(0, 10)).getDate() + 1;
+            blockYear = new Date(data.events[data.events.length - 1].start_date.substring(0, 10)).getFullYear();
+            blockMonth = new Date(data.events[data.events.length - 1].start_date.substring(0, 10)).getMonth();
+            blockDay = new Date(data.events[data.events.length - 1].start_date.substring(0, 10)).getDate() + 1;
         },
         error: function () {
             $('#mySchedulerErrorModal').modal('show');
@@ -44,7 +45,7 @@ $(document).ready(function () {
     var month = new Date().getMonth();
     var year = new Date().getFullYear();
     var hour = new Date().getHours() + 1;
-    var step = schedulerConfig.appSize.substring(0, 2);
+    var step = schedulerConfig.appSize;
     var format = scheduler.date.date_to_str("%H:%i");
     scheduler.config.hour_size_px = (60 / step) * 44;
     scheduler.config.time_step = step;
@@ -63,27 +64,29 @@ $(document).ready(function () {
     scheduler.config.details_on_dblclick = true;
     scheduler.config.details_on_create = true;
     switch (schedulerConfig.weekSize) {
-        case '5' : {
+        case 5:
             scheduler.ignore_week = function (date) {
-                if (date.getDay() == 6 || date.getDay() == 0)
+                if (date.getDay() == 6 || date.getDay() == 0) {
                     return true;
+                }
             };
-        }
             break;
-        case '6': {
+
+        case 6:
             scheduler.ignore_week = function (date) {
-                if (date.getDay() == 0)
+                if (date.getDay() == 0) {
                     return true;
+                }
             };
-        }
             break;
     }
+    scheduler.ignore_month = scheduler.ignore_week;
 
     $.ajax({
         type: "GET",
         async: false,
         url: "getAppointments?id=" + did,
-        datatype: "json",
+        dataType: "json",
         contentType: "application/json",
         mimeType: "application/json",
         success: function (data) {
@@ -97,7 +100,7 @@ $(document).ready(function () {
                 var minutes2 = (end_date_hour * 60 + end_date_minutes) / step;
                 begin = minutes;
                 end = minutes2;
-                scheduler.blockTime(new Date(dayOfAppointment), [begin * step, end * step]);
+                    scheduler.blockTime(new Date(dayOfAppointment), [begin * step, end * step]);
             });
         }
     });
@@ -105,73 +108,52 @@ $(document).ready(function () {
     scheduler.config.readonly = (!$('#patient').val());
     scheduler.config.first_hour = schedulerConfig.dayStart;
     scheduler.config.last_hour = schedulerConfig.dayEnd;
-    scheduler.config.limit_time_select = true;
-    scheduler.init('scheduler_here', null, "week");
+    // scheduler.config.limit_time_select = true;
     scheduler.config.limit_start = new Date(year, month, day);
     scheduler.config.limit_end = new Date(blockYear, blockMonth, blockDay);
-    //scheduler.load('getAppointmentsByPatient?patient='+principal,'json');
+    scheduler.init('scheduler_here', null, "week");
     var dp = new dataProcessor("supplyAppointment?id=" + did + "&principal=" + principal);
     dp.init(scheduler);
+
+    // scheduler.attachEvent("onBeforeEventChanged", function (e) {
+    //     console.log(scheduler.config.time_step);
+    //     e.end_date = new Date(e.start_date + step * 60000);
+    //     return true;
+    // });
+    //
+    // scheduler.attachEvent("onBeforeEventCreated", function (e) {
+    //     e.end_date = new Date(e.start_date + step * 60000);
+    //     return true;
+    // });
 });
+
 var html = function (id) {
     return document.getElementById(id);
 };
+
 scheduler.showLightbox = function (id) {
     var tex_local_from = getMessage('workscheduler.modal.appointment.time.from');
     var tex_local_to = getMessage('workscheduler.modal.appointment.time.to');
-   
-//IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII    
-    
+    $('#myModal').modal('show');
     var ev = scheduler.getEvent(id);
-    var validationErrorMassage = getMessage('modal.workscheduler.validation.error');
-      
-    validateAppointment(ev) ? showModal() : $('#myAppointmentValidationErrorModal').modal('show');
-    $('#validationErrorMassage').text(validationErrorMassage + ' ' + nextAvailableTime.substr(11));
- 
-    
-    function showModal() {
-        $('#myModal').modal('show');
-    }
+    ev.end_date = new Date(ev.start_date.getTime() + scheduler.config.time_step * 60000);
     scheduler.startLightbox(id, html("myModal"));
-    $('#date').text(new Date(ev.start_date).toLocaleDateString() + ' ' + tex_local_from + ' ' +
+    $('#date').text(new Date(ev.start_date).toLocaleDateString() + ' ' + tex_local_from + ' '+
         new Date(ev.start_date).toLocaleTimeString().replace(':00', '') + ' ' + tex_local_to + ' ' +
         new Date(ev.end_date).toLocaleTimeString().replace(':00', ''));
     $('#doctorName').text($('#profDoctorsName').text());
-
-
-
-    // 111111111111111111111111111111
-
-    /* $('body').click(function(){ alert('test' )})
-
-     var foo = $.data( $('body').get(0), 'events' ).click
-     // you can query $.data( object, 'events' ) and get an object back, then see what events are attached to it.
-
-     $.each( foo, function(i,o) {
-     alert(i) // guid of the event
-     alert(o) // the function definition of the event handler
-     });*/
-
-    //1111111111111111111111111111111111111111111111
     html("TheReasonForVisit").focus();
 };
-function save_form() {
 
+function save_form() {
     blockAppointmensAdd();
     var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
-
-
     ev.text = html("TheReasonForVisit").value;
     scheduler.endLightbox(true, html("my_form"));
 }
 
 function close_form() {
     scheduler.endLightbox(false, html("my_form"));
-}
-
-function closeErrorModal() {
-    close_form();
-    location.reload();
 }
 
 function delete_event() {
@@ -195,14 +177,8 @@ function dismissMyModal(event) {
 }
 
 function startModal() {
-
-
-    if ($('#TheReasonForVisit').val().length >= 150) {
-        $('#lengthError').attr('style', 'display:block');
-        return;
-    }
     setTimeout(changeModalContentFirstStep, 500);
-    setTimeout(changeModalContentSecondStep, 5000);
+    setTimeout(changeModalContentSecondStep, 4000);
 }
 
 function changeModalContentFirstStep() {
@@ -214,12 +190,7 @@ function changeModalContentFirstStep() {
 
 function changeModalContentSecondStep() {
     save_form();
-}
-
-function closeModal() {
-    changeModalContentSecondStep();
     $('#myModal').modal('hide');
-    $.modal.close();
 }
 
 $(document).keyup(function (e) {
@@ -231,28 +202,3 @@ $(document).keyup(function (e) {
 function goBack() {
     window.history.back();
 }
-
-
-//IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-function validateAppointment(ev) {
-    ev.principal = principal;
-    var result = false;
-    $.ajax({
-        type: "GET",
-        async: false,
-        url: "validate?ev="+JSON.stringify(ev),
-        datatype: "json",
-        contentType: "application/json",
-        mimeType: "application/json",
-        success: function (data) {
-            nextAvailableTime = data.nextAvailableTime;
-            result = data.result;
-        },
-        error: function (data) {
-            alert("error" + data)
-        }
-    });
-    return result;
-}
-
-

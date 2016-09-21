@@ -1,12 +1,11 @@
 package com.hospitalsearch.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hospitalsearch.service.SchedulerService;
 import com.hospitalsearch.service.WorkSchedulerService;
-import com.hospitalsearch.service.impl.AppointmentValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 /**
  * Created by igortsapyak on 29.05.16.
@@ -17,6 +16,8 @@ public class WorkSchedulerController {
     @Autowired
     private WorkSchedulerService workSchedulerService;
 
+    @Autowired
+    private SchedulerService schedulerService;
 
 //    @ResponseBody
 //    @RequestMapping(value = "/**/getWorkScheduler", method = RequestMethod.GET)
@@ -24,27 +25,15 @@ public class WorkSchedulerController {
 //        return workSchedulerService.getByDoctorId(id).getWorkScheduler();
 //    }
 
-    @Autowired
-    private AppointmentValidationService appointmentValidationService;
-
-//   @ResponseBody
-  //  @RequestMapping(value = "/**/getWorkScheduler", method = RequestMethod.GET)
-//    public String getWorkScheduler(@RequestParam("id") Long id) {
- //       return workSchedulerService.getByDoctorId(id).getWorkScheduler();
- //   }
-
-
-    @ResponseBody
-    @RequestMapping(value = "/**/validate", method = RequestMethod.GET)
-    public Map<String, Object> validate(@RequestParam(value = "ev", required = false) String appointment) {
-        return appointmentValidationService.validateAppointment(appointment);
-    }
-
-
     @ResponseBody
     @RequestMapping(value = "/getWorkSchedulerByPrincipal", method = RequestMethod.GET)
     public String getWorkSchedulerByDoctor(@RequestParam("doctor") String doctorEmail) {
-        return workSchedulerService.getByDoctorEmail(doctorEmail);
+        try {
+            return schedulerService.getByDoctorEmail(doctorEmail);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 //
 //    @RequestMapping(value = "/**/supplyWorkScheduler", method = RequestMethod.POST)
@@ -57,6 +46,5 @@ public class WorkSchedulerController {
     public String getAppointments() {
         return "workscheduler";
     }
-
 
 }
