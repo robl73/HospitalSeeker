@@ -31,36 +31,35 @@
 			<br />
 			<div class="col-sm-12">
 				<form method="POST" class="form-horizontal" id="form-hospital"
-					th:object="${hospitalDTO}">
-				<input type="hidden" th:field="*{id}" id="id" />
-					<input type="hidden" th:name="${_csrf.parameterName}"
-						th:value="${_csrf.token}" />
-
-
-					<div class="form-group required">
-						<label class="control-label col-sm-2"
-							th:text="#{admin.hospital.new.label.address}"></label>
-						<div class="col-sm-10">
-							<div class="input-group">
-
+ 					th:object="${hospitalDTO}">
+ 				<input type="hidden" th:field="*{id}" id="id" />
+ 					<input type="hidden" th:name="${_csrf.parameterName}"
+ 						th:value="${_csrf.token}" />
+ 
+ 
+ 					<div class="form-group required">
+ 						<label class="control-label col-sm-2"
+ 							th:text="#{admin.hospital.new.label.address}"></label>
+ 						<div class="col-sm-10">
+ 							<div class="input-group">
+ 
 
 								<input th:field="*{addressGeo}" class="form-control"
 									id="addressGeo"
-					th:placeholder="#{admin.hospital.new.placeholder.address}" /> 
+					th:placeholder="#{admin.hospital.new.placeholder.address}"/> 
 
-								<!--  <i id="geo-error" class="removable-i fade in"></i>  -->
 								<i
 								th:if="${#fields.hasErrors('addressGeo')}"
 								th:errors="*{addressGeo}" class="removable-i fade in"></i>  
 
-								<div class="input-group-btn">
+							<div class="input-group-btn">
 									<button type="button" th:onclick="'javascript:check();'"
 										class="btn btn-default"
 										th:text="#{admin.hospital.new.button.find}" id="button-find"></button>
 									<button type="button" th:onclick="'javascript:fill();'"
 										class="btn btn-default"
 										th:text="#{admin.hospital.new.button.fill}" id="button-fill"></button>
-								</div>
+								</div> 
 							</div>
 						</div>
 

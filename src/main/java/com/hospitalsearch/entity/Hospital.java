@@ -93,9 +93,7 @@ public class Hospital {
 
 	@Embedded
 	@Valid
-/*	@NotEmpty 
-	@Size(min = 1, max = 150) 
-*/	@IndexedEmbedded
+	@IndexedEmbedded
 	@AttributeOverrides({
 		@AttributeOverride(name = "city", column = @Column(name = "city")),
 		@AttributeOverride(name = "country", column = @Column(name = "country")),

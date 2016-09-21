@@ -4,14 +4,15 @@
 
 $(document).ready(function () {
 	
-	$('#button-cancelToken').click(function(e) {
-	    e.preventDefault();
-	    //window.history.back();
-	    window.location.href = '/HospitalSeeker/';
-	});
+    	$('#button-cancelToken').click(function(e) {
+    		
+    		e.preventDefault();alert(e);
+//    		ignore: ".ignore"
+    	});
+	
 
-    $("#configTokenForm").validate({
-        rules: {
+    $("#configTokenForm").validate(
+    	{rules: {
             verificationToken: {
                 required: true,
                 number: true,
@@ -88,3 +89,39 @@ $(document).ready(function () {
     });
 
 });
+/*
+$('#button-cancelToken').click(function(e) {
+//function cancel(){
+	
+	e.preventDefault();
+	
+	  // $("#configTokenForm").validate().settings.ignore = "*";
+	
+	
+	var validator = $( "#configTokenForm" ).validate();
+	validator.resetForm();
+	
+	
+	
+	 $("#configTokenForm").validate({
+	        ignore: ".ignore, :hidden"
+	 });
+	 
+	
+	$("#configTokenForm").validate({
+		  ignore: ".ignore"
+		});
+	
+	
+	$("#configTokenForm").validate({
+		  onkeyup: false
+		});
+	
+	
+	
+	$("#configTokenForm").validate().settings.ignore = ":hidden";
+	
+	
+    window.location.href = '/HospitalSeeker/';
+});
+*/

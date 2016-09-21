@@ -82,10 +82,10 @@
                                 <input type="submit" th:value="#{admin.configure.token.button.save}"
                                        class="btn btn-primary btn-lg" id="button-saveToken"/>
                                 <span th:text="#{admin.configure.token.or}"></span>
-                              <!--   <input type="button" th:value="#{admin.configure.token.button.cancel}"
-                                       class="btn btn-default btn-lg" id="button-cancelToken" onclick="javascript:click()"/> -->
-                                <a class="btn btn-default btn-lg" th:href="@{/}"
-                                   th:text="#{admin.configure.token.button.cancel}"></a> 
+                          <!--   <input type="button" th:value="#{admin.configure.token.button.cancel}"
+                                       class="btn btn-default btn-lg" id="button-cancelToken" onclick="javascript:cancel()"/> -->
+                                 <a class="btn btn-default btn-lg" 
+                                   th:text="#{admin.configure.token.button.cancel}"  id="button-cancelToken"></a>  
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             </div>
                         </div>
