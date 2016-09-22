@@ -16,16 +16,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hospitalsearch.controller.HospitalController;
 import com.hospitalsearch.entity.Hospital;
+import com.hospitalsearch.entity.User;
 import com.hospitalsearch.service.HospitalService;
+import com.hospitalsearch.service.UserService;
 import com.hospitalsearch.util.HospitalFilterDTO;
 import com.hospitalsearch.util.PageConfigDTO;
+import com.hospitalsearch.util.PrincipalConverter;
 
 @ControllerAdvice(assignableTypes={HospitalController.class})
 public class HospitalControllerAdvice {
 
 	@Autowired
 	private HospitalService service;
-
+	
 	@Autowired
 	private UserService userService;
 	
@@ -37,7 +40,6 @@ public class HospitalControllerAdvice {
 		view.addObject("userName", user);
 		return view;
 	}
-	
 
 	@ModelAttribute(value = "hospitals")
 	public List<Hospital> hospitalList(){

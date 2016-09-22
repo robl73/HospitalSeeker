@@ -2,8 +2,8 @@
  * Created by igortsapyak on 08.06.16.
  */
 
-//TODO: refactor to normal view
 $(document).ready(function () {
+    console.log("it's work");
     var principal = $('#principal').text();
     var format = scheduler.date.date_to_str("%H:%i");
 

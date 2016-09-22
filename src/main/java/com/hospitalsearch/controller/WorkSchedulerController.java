@@ -1,5 +1,7 @@
 package com.hospitalsearch.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hospitalsearch.service.SchedulerService;
 import com.hospitalsearch.service.WorkSchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,9 @@ public class WorkSchedulerController {
     @Autowired
     private WorkSchedulerService workSchedulerService;
 
+    @Autowired
+    private SchedulerService schedulerService;
+
 //    @ResponseBody
 //    @RequestMapping(value = "/**/getWorkScheduler", method = RequestMethod.GET)
 //    public String getWorkScheduler(@RequestParam("id") Long id) {
@@ -23,7 +28,12 @@ public class WorkSchedulerController {
     @ResponseBody
     @RequestMapping(value = "/getWorkSchedulerByPrincipal", method = RequestMethod.GET)
     public String getWorkSchedulerByDoctor(@RequestParam("doctor") String doctorEmail) {
-        return workSchedulerService.getByDoctorEmail(doctorEmail);
+        try {
+            return schedulerService.getByDoctorEmail(doctorEmail);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 //
 //    @RequestMapping(value = "/**/supplyWorkScheduler", method = RequestMethod.POST)
@@ -36,6 +46,5 @@ public class WorkSchedulerController {
     public String getAppointments() {
         return "workscheduler";
     }
-
 
 }

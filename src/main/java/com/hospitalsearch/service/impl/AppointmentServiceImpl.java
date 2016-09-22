@@ -4,11 +4,11 @@ import com.hospitalsearch.dao.AppointmentDAO;
 import com.hospitalsearch.dao.DoctorInfoDAO;
 import com.hospitalsearch.dao.UserDAO;
 import com.hospitalsearch.dao.UserDetailDAO;
+import com.hospitalsearch.dto.AppointmentDto;
 import com.hospitalsearch.entity.Appointment;
 import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.AppointmentService;
-import com.hospitalsearch.dto.AppointmentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +30,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private DoctorInfoDAO doctorInfoDAO;
 
+
     @Override
     public void actionControl(Map<String, String[]> appointmentParams, Long doctorId, String principal) {
         UserDetail userDetail = userDetailDAO.getById(userDAO.getByEmail(principal).getId());
         DoctorInfo doctorInfo = doctorInfoDAO.getById(doctorId);
         AppointmentDto appointmentDto = AppointmentDtoService.createAppointmentDto(appointmentParams, doctorInfo);
         Appointment appointment = appointmentDto.getAppointment();
+
+
         appointment.setDoctorInfo(doctorInfo);
         appointment.setUserDetail(userDetail);
         switch (appointmentDto.getStatus()) {
@@ -67,7 +70,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .getDoctorInfo().getId());
         for (Appointment appointment : appointments) {
             appointment.setText(appointment.getUserDetail().getFirstName() + " " + appointment.getUserDetail().getLastName()
-                    +" - "+appointment.getText());
+                    + " - " + appointment.getText());
         }
         return appointments;
     }
@@ -91,4 +94,5 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void updateAppointment(Appointment appointment) {
         appointmentDAO.update(appointment);
     }
+
 }

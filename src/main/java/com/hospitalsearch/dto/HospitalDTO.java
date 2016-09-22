@@ -1,30 +1,22 @@
 package com.hospitalsearch.dto;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.hospitalsearch.entity.HospitalAddress;
-
 
 public class HospitalDTO {
 
 	private Long id;
 
-	@NotEmpty
-	@Size(min = 5, max = 50)
+	@NotEmpty(message = "This field is required.")
+	@Size(min = 5, max = 70, message = "Please enter at least 5 symbols and not more than 70 symbols.")
 	private String name;
 
 	@NotNull
@@ -40,11 +32,11 @@ public class HospitalDTO {
 	@Embedded
 	@Valid
 	private HospitalAddress address = new HospitalAddress();
-	
-	@NotEmpty 
-	@Size(min = 1, max = 150)
+
+	@NotEmpty(message = "This field is required.")
+	@Size(max = 150, message = "Please enter not more than 150 symbols.")
 	private String addressGeo;
-	
+
 	public String getAddressGeo() {
 		return addressGeo;
 	}
@@ -52,10 +44,10 @@ public class HospitalDTO {
 	public void setAddressGeo(String addressGeo) {
 		this.addressGeo = addressGeo;
 	}
-	
+
 	private String imagePath;
-	
-	@Size(max = 150)
+
+	@Size(max = 150, message = "Please enter not more than 150 symbols.")
 	private String description;
 
 	public Long getId() {
@@ -114,7 +106,4 @@ public class HospitalDTO {
 		this.imagePath = imagePath;
 	}
 
-	
-	
 }
-

@@ -15,6 +15,13 @@ $(document).ready(function() {
 });
 
 function init() {
+    scheduler.config.limit_time_select = true;
+    console.log(scheduler.config.lightbox.sections);
+    scheduler.config.lightbox.sections = [
+        {name:"description", height: 130, map_to: "text", type: "textarea" , focus: true},
+        {name:"recurring", height: 300, type: "recurring", map_to: "rec_type", button: "recurring"}
+    ];
+    console.log(scheduler.config.lightbox.sections);
     scheduler.config.time_step = 60;
     scheduler.config.collision_limit = 1;
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
@@ -40,7 +47,7 @@ function init() {
             alert("error");
         }
     });
-    workWeekSizeChanged();
+
     var appSize;
     var dayStart;
     var dayEnd;
@@ -74,7 +81,6 @@ function init() {
         workWeekSizeChanged();
         workDayBeginChanged();
         workDayEndChanged();
-        // workAppointmentChanged();
         scheduler.parse(workScheduler.events, "json");
     } else {
         $('#workDayBeginAt option:first').prop('selected', true);
@@ -106,24 +112,22 @@ function blockDays() {
         return true;
     });
     scheduler.config.limit_start = new Date();
-    scheduler.config.limit_end = new Date(9999, 1,1);
+    scheduler.config.limit_end = new Date(9999, 1, 1);
     setInterval(function() {
         scheduler.config.limit_start = new Date();
     }, 1000 * 60);
 }
 
 function workWeekSizeChanged() {
-    var selected = $("#workWeekSize").val;
-    $("#workWeekSize").change(function() {
-        var ignore = [];
-        if (selected == 5) {
-            ignore.push(0);
-            ignore.push(6);
-        } else if(selected == 6) {
-            ignore.push(0);
-        }
-        ignoreDays(ignore);
-    });
+    var selected = $("#workWeekSize").val();
+    var ignore = [];
+    if (selected == 5) {
+        ignore.push(0);
+        ignore.push(6);
+    } else if(selected == 6) {
+        ignore.push(0);
+    }
+    ignoreDays(ignore);
 }
 
 function save() {
@@ -156,15 +160,6 @@ function save() {
         }
     });
 }
-//
-// function showMessage(message) {
-//     $('#notify').show();
-//     console.log("show");
-//     setTimeout(function () {
-//         $('#notify').hide();
-//         console.log("hide");
-//     }, 5000);
-// }
 
 $(window).bind('beforeunload', function(e) {
     if (isSaved) {
@@ -209,12 +204,6 @@ function workDayEndChanged() {
     scheduler.config.last_hour = end;
     scheduler.setCurrentView();
 }
-//
-// function workAppointmentChanged() {
-//     var appSize = parseInt($('#appointmentTime').val());
-//     scheduler.config.time_step = appSize;
-//     scheduler.setCurrentView();
-// }
 
 function showRange(elementName, begin, end) {
     hideOptionElements(elementName, 0, begin);
@@ -232,16 +221,4 @@ function showOptionElements(elementName, begin, end) {
     for (var i = begin; i <= end; ++i) {
         $('#' + elementName + ' option[value=' + i + ']').show();
     }
-}
-
-function workWeekSizeChanged() {
-    var selected = $("#workWeekSize").val();
-    var ignore = [];
-    if (selected == 5) {
-        ignore.push(0);
-        ignore.push(6);
-    } else if(selected == 6) {
-        ignore.push(0);
-    }
-    ignoreDays(ignore);
 }
