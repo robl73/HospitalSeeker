@@ -31,7 +31,7 @@ public class FileUploadService {
 				.append(properties.getProperty("global.image.path")).append(File.separator)
 				.append(properties.getProperty(type + ".image.path")).append(File.separator)
 				.append(newFileName)
-				.toString();		
+				.toString();
 		try (OutputStream out = new FileOutputStream(path)) {
 			byte[] fileByte = multipartFile.getBytes();
 			out.write(fileByte);

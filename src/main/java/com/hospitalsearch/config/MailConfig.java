@@ -32,8 +32,8 @@ public class MailConfig {
         javaMailProperties.put("mail.smtp.auth",properties.getProperty("mail.smtp.auth"));
         javaMailProperties.put("mail.smtp.starttls.enable", properties.getProperty("mail.smtp.starttls.enable"));
         javaMailProperties.put("mail.smtp.quitwait", properties.getProperty("mail.smtp.quitwait"));
-        javaMailProperties.put("mail.debug", "true"); //enable to show debug
-        javaMailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        javaMailProperties.put("mail.debug", "true");
+        //javaMailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         mailSender.setJavaMailProperties(javaMailProperties);
         return mailSender;
     }
@@ -44,5 +44,4 @@ public class MailConfig {
         configurer.setResourceLoaderPath("/WEB-INF/velocity/");
         return configurer;
     }
-    //enable gmail "less secure on" https://www.google.com/settings/security/lesssecureapps page
 }
