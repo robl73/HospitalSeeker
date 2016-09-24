@@ -56,7 +56,12 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     public void createToken(String token, User user) {
         try {
             logger.info("create verification token by user: " + user);
-            VerificationToken verificationToken = new VerificationToken(token, user);
+            
+            AdminTokenConfigServiceImpl adminTokenConfigServiceImpl = new AdminTokenConfigServiceImpl();
+            
+            Integer VERIFICATION_TOKEN_EXPIRATION = adminTokenConfigServiceImpl.VERIFICATION_TOKEN_EXPIRATION();
+            
+            VerificationToken verificationToken = new VerificationToken(token, user, VERIFICATION_TOKEN_EXPIRATION);
             tokenDAO.save(verificationToken);
         } catch (Exception e) {
             logger.error("Error creating verification token: " + e);

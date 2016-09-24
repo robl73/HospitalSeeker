@@ -4,11 +4,10 @@
 
 $(document).ready(function () {
 	
-    	$('#button-cancelToken').click(function(e) {
-    		
-    		e.preventDefault();alert(e);
-//    		ignore: ".ignore"
-    	});
+	$('#button-cancelToken').mousedown(function() {
+	       window.location.href = '/HospitalSeeker/';
+	       return false;
+	   });
 	
 
     $("#configTokenForm").validate(
@@ -89,11 +88,11 @@ $(document).ready(function () {
     });
 
 });
-/*
-$('#button-cancelToken').click(function(e) {
-//function cancel(){
+
+//$('#button-cancelToken').click(function(e) {
+/*function cancel(){
 	
-	e.preventDefault();
+	//e.preventDefault();
 	
 	  // $("#configTokenForm").validate().settings.ignore = "*";
 	
@@ -121,7 +120,7 @@ $('#button-cancelToken').click(function(e) {
 	
 	$("#configTokenForm").validate().settings.ignore = ":hidden";
 	
-	
+
     window.location.href = '/HospitalSeeker/';
-});
+};
 */

@@ -3,6 +3,8 @@ package com.hospitalsearch.entity;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
+import com.hospitalsearch.service.impl.AdminTokenConfigServiceImpl;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -22,8 +24,14 @@ import java.util.Date;
 @Table(name = "password_reset_tokens")
 public class PasswordResetToken {
     //token valid 24 hours
-    public static Integer RESET_PASSWORD_TOKEN_EXPIRATION = 24;
+  //  public static Integer RESET_PASSWORD_TOKEN_EXPIRATION = 24;
 
+	/*private Integer RESET_PASSWORD_TOKEN_EXPIRATION(){
+		AdminTokenConfigServiceImpl adminTokenConfigServiceImpl = new AdminTokenConfigServiceImpl();
+		return adminTokenConfigServiceImpl.RESET_PASSWORD_TOKEN_EXPIRATION();
+	}
+	*/
+	
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "password_reset_token_gen")
     @SequenceGenerator(name = "password_reset_token_gen", sequenceName = "password_reset_token_gen_id_seq", initialValue = 1, allocationSize = 1)
@@ -44,7 +52,7 @@ public class PasswordResetToken {
         super();
     }
 
-    public PasswordResetToken(String token, User user) {
+    public PasswordResetToken(String token, User user, Integer RESET_PASSWORD_TOKEN_EXPIRATION) {
         super();
         this.token = token;
         this.user = user;

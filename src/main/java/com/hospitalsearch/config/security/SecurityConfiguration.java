@@ -2,6 +2,8 @@ package com.hospitalsearch.config.security;
 
 import com.hospitalsearch.handlers.CustomAuthenticationHandler;
 import com.hospitalsearch.handlers.ErrorAuthenticationHandler;
+import com.hospitalsearch.service.impl.AdminTokenConfigServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -32,9 +34,9 @@ import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	//token valid 24 hours
+	 //token valid 24 hours
 	public static Integer REMEMBER_ME_TOKEN_EXPIRATION = 24;
-
+	
 	@Autowired
 	@Qualifier("CustomUserDetailsService")
 	UserDetailsService userDetailsService;
@@ -94,7 +96,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.rememberMe()
 				.rememberMeParameter("remember-me")
 				.tokenRepository(tokenRepository)
-				.tokenValiditySeconds(REMEMBER_ME_TOKEN_EXPIRATION * 60)
+				.tokenValiditySeconds(REMEMBER_ME_TOKEN_EXPIRATION * 60 * 60)
 				.and().requiresChannel().anyRequest().requiresSecure();
 	}
 
