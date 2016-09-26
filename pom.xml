@@ -438,7 +438,7 @@
 			</execution>
 		</executions>       
         --> 
-        <!--
+        
                 <executions>
 			<execution>
 			    <phase>compile</phase>                                                                  
@@ -449,7 +449,7 @@
 			    </goals>
 			</execution>
 		</executions>  
-        -->        
+                
                 <extensions>true</extensions>            
                 <dependencies>
                     <dependency>
