@@ -96,7 +96,7 @@ public class SpringRootConfig {
     public CommonsMultipartResolver multipartResolver() {
         return new CommonsMultipartResolver();
     }
-
+/*
     @Bean
     public SpringLiquibase liquibase() {
         SpringLiquibase liquibase = new SpringLiquibase();
@@ -106,7 +106,7 @@ public class SpringRootConfig {
         liquibase.setIgnoreClasspathPrefix(true);
         return liquibase;
     }
-
+*/
     @Bean
     public ImageValidator imageValidator() {
         return new ImageValidator();
