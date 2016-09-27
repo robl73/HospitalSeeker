@@ -458,6 +458,7 @@
                         <artifactId>liquibase-hibernate4</artifactId>
                         <version>${liquibase.hibernate4}</version>
                     </dependency>
+                    <!--
                     <dependency>
                         <groupId>org.springframework</groupId>
                         <artifactId>spring-beans</artifactId>
@@ -468,6 +469,7 @@
                         <artifactId>spring-data-jpa</artifactId>
                         <version>${spring.data.jpa}</version>
                     </dependency>
+                    -->
                 </dependencies>
             </plugin>
         </plugins>
