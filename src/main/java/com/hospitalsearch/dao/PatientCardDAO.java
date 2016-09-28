@@ -6,5 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface PatientCardDAO extends GenericDAO<PatientCard, Long> {
+
     PatientCard add(PatientCard patientCard);
+
 }

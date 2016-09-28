@@ -5,10 +5,7 @@ import com.hospitalsearch.entity.PatientCard;
 import com.hospitalsearch.entity.PatientInfo;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.entity.UserDetail;
-import com.hospitalsearch.service.DoctorInfoService;
-import com.hospitalsearch.service.PatientCardService;
-import com.hospitalsearch.service.UserDetailService;
-import com.hospitalsearch.service.UserService;
+import com.hospitalsearch.service.*;
 import com.hospitalsearch.util.Gender;
 import com.hospitalsearch.util.Page;
 import com.hospitalsearch.util.PageConfigDTO;
@@ -35,6 +32,12 @@ public class UserDetailController {
     @Autowired
     DoctorInfoService doctorInfoService;
 
+    @Autowired
+    PatientInfoService patientInfoService;
+
+    @Autowired
+    PatientCardService patientCardService;
+
     private Page pageableContent;
 
     @PreAuthorize("isAuthenticated()")
@@ -59,14 +62,19 @@ public class UserDetailController {
             model.addAttribute("email", PrincipalConverter.getPrincipal());
             return "user/detail";
         }
-
-        UserDetail userDetail1 = userDetailService.getById(userDetail.getId());
-        PatientInfo patientInfo = userDetail1.getPatientInfo();
-        PatientCard patientCard = patientInfo.getPatientCard();
+        PatientInfo patientInfo = patientInfoService.getByUserDetailId(userDetail.getId());
+        PatientCard patientCard;
+        if (patientInfo == null) {
+            patientInfo = new PatientInfo(userDetail);
+            patientCard = new PatientCard(patientInfo);
+        } else {
+            patientCard = patientInfo.getPatientCard();
+        }
         patientInfo.setPatientCard(patientCard);
-        userDetail.setPatientInfo(patientInfo);
+        patientCard.setPatientInfo(patientInfo);
         userDetailService.update(userDetail);
-
+        patientInfo.setUserDetail(userDetail);
+        patientInfoService.add(patientInfo);
         model.addAttribute("edit", false);
         model.addAttribute("userDetail", userDetail);
         model.addAttribute("gender", Gender.values());

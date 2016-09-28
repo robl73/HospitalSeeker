@@ -44,7 +44,7 @@ function init() {
             }
         },
         error: function () {
-            alert("error");
+            // alert("error");
         }
     });
 
@@ -78,7 +78,6 @@ function init() {
             }
         });
 
-        workWeekSizeChanged();
         workDayBeginChanged();
         workDayEndChanged();
         scheduler.parse(workScheduler.events, "json");
@@ -86,6 +85,7 @@ function init() {
         $('#workDayBeginAt option:first').prop('selected', true);
         $('#workDayEndAt option:last').prop('selected', true);
     }
+    workWeekSizeChanged();
 
     scheduler.attachEvent("onEventCollision", function() {
         return true;

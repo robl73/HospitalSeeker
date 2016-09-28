@@ -37,7 +37,7 @@ public class SchedulerController {
     @ResponseBody
     @RequestMapping(value = "/**/getWorkScheduler", method = RequestMethod.GET)
     public String getWorkScheduler(@RequestParam("id") Long id) throws JsonProcessingException {
-        Scheduler scheduler = schedulerService.getByDoctorId(id); //is not null
+        Scheduler scheduler = schedulerService.getByUserDetailId(id); //is not null
         if (scheduler != null) {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(scheduler);

@@ -1,10 +1,13 @@
 package com.hospitalsearch.service.impl;
 
 import com.hospitalsearch.dao.CardItemDAO;
+import com.hospitalsearch.dao.PatientInfoDAO;
 import com.hospitalsearch.entity.*;
 import com.hospitalsearch.service.CardItemService;
 import com.hospitalsearch.service.UserService;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +28,9 @@ public class CardItemServiceImpl implements CardItemService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private PatientInfoDAO patientInfoDAO;
 
     @Override
     public void add(CardItem cardItem, String doctorEmail) {
@@ -72,7 +78,8 @@ public class CardItemServiceImpl implements CardItemService {
     public boolean persist(CardItem cardItem, String doctorEmail, Long userId) {
         User user = userService.getById(userId);
         UserDetail userDetail = user.getUserDetails();
-        PatientInfo patientInfo = userDetail.getPatientInfo();
+        PatientInfo patientInfo = patientInfoDAO.getById(userId);
+//        PatientInfo patientInfo = userDetail.getPatientInfo();
         PatientCard patientCard1 = patientInfo.getPatientCard();
         cardItem.setPatientCard(patientCard1);
         if (cardItem.getId() == null) {
