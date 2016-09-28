@@ -3,11 +3,17 @@ package com.hospitalsearch.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 
+import com.hospitalsearch.entity.User;
+import com.hospitalsearch.entity.UserDetail;
+import com.hospitalsearch.service.UserService;
+import com.hospitalsearch.util.PrincipalConverter;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,14 +47,14 @@ public class HospitalController {
     private List<Hospital> currentHospitalList;
 
     private Page pageableContent;
+
+    @Autowired
+    UserService userService;
     
     @RequestMapping("/")
     public String renderIndex(Map<String, Object> model) {
-
         return "layout";
     }
-
-
 
     @RequestMapping("/hospitals")
     public String renderHospitals(Map<String, Object> model,
@@ -84,7 +90,6 @@ public class HospitalController {
     }
 
     @RequestMapping(value = "/hospitals/config", method = RequestMethod.POST)
-    
     public String configurePage(Map<String,Object> model,
     		@ModelAttribute("pageConfig") 
     			PageConfigDTO config

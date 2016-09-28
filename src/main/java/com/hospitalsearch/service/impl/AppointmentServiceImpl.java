@@ -4,11 +4,11 @@ import com.hospitalsearch.dao.AppointmentDAO;
 import com.hospitalsearch.dao.DoctorInfoDAO;
 import com.hospitalsearch.dao.UserDAO;
 import com.hospitalsearch.dao.UserDetailDAO;
+import com.hospitalsearch.dto.AppointmentDto;
 import com.hospitalsearch.entity.Appointment;
 import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.AppointmentService;
-import com.hospitalsearch.dto.AppointmentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +30,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private DoctorInfoDAO doctorInfoDAO;
 
+
     @Override
     public void actionControl(Map<String, String[]> appointmentParams, Long doctorId, String principal) {
         UserDetail userDetail = userDetailDAO.getById(userDAO.getByEmail(principal).getId());
-        DoctorInfo doctorInfo = doctorInfoDAO.getById(doctorId);
+//        DoctorInfo doctorInfo = doctorInfoDAO.getById(doctorId);
+        DoctorInfo doctorInfo = doctorInfoDAO.getById(doctorInfoDAO.getIdByUserDetail(doctorId));
         AppointmentDto appointmentDto = AppointmentDtoService.createAppointmentDto(appointmentParams, doctorInfo);
         Appointment appointment = appointmentDto.getAppointment();
+
+
         appointment.setDoctorInfo(doctorInfo);
         appointment.setUserDetail(userDetail);
         switch (appointmentDto.getStatus()) {
@@ -63,18 +67,19 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<Appointment> getAllByDoctorEmail(String doctorEmail) {
-        List<Appointment> appointments = appointmentDAO.getAllbyDoctorId(userDAO.getByEmail(doctorEmail).getUserDetails()
-                .getDoctorInfo().getId());
+        Long userDetailId = userDAO.getByEmail(doctorEmail).getUserDetails().getId();
+
+        List<Appointment> appointments = appointmentDAO.getAllbyDoctorId(doctorInfoDAO.getIdByUserDetail(userDetailId));
         for (Appointment appointment : appointments) {
             appointment.setText(appointment.getUserDetail().getFirstName() + " " + appointment.getUserDetail().getLastName()
-                    +" - "+appointment.getText());
+                    + " - " + appointment.getText());
         }
         return appointments;
     }
 
     @Override
     public List<Appointment> getAllbyDoctorId(Long doctorId) {
-        return appointmentDAO.getAllbyDoctorId(doctorId);
+        return appointmentDAO.getAllbyDoctorId(doctorInfoDAO.getIdByUserDetail(doctorId));
     }
 
     @Override
@@ -91,4 +96,5 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void updateAppointment(Appointment appointment) {
         appointmentDAO.update(appointment);
     }
+
 }

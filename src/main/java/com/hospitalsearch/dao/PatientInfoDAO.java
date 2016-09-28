@@ -9,5 +9,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public interface PatientInfoDAO extends GenericDAO<PatientInfo, Long> {
+
     PatientInfo add(PatientInfo patientInfo);
+
+    PatientInfo getByUserDetailId(Long id);
+
 }

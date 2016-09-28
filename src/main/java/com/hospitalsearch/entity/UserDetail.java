@@ -3,14 +3,16 @@ package com.hospitalsearch.entity;
 import java.time.LocalDate;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hospitalsearch.service.annotation.Date;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -20,12 +22,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "userdetail")
+@Indexed
 @Cache(region="entityCache",usage=CacheConcurrencyStrategy.READ_WRITE)
 public class UserDetail{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userdetail_gen")
-    @SequenceGenerator(name = "userdetail_gen", sequenceName = "userdetail_id_seq", initialValue = 1, allocationSize = 1)
+    @Column(name = "id")
     @JsonIgnore
     private Long id;
 
@@ -57,19 +59,8 @@ public class UserDetail{
 
     private String address;
 
-    @OneToOne
-    @Fetch(FetchMode.SELECT)
-    @JoinColumn(name="doctorinfo_id")
-    @ContainedIn
-    @JsonIgnore
-    private DoctorInfo doctorInfo;
-
-    @OneToOne(cascade= CascadeType.ALL)
-    @Fetch(FetchMode.SELECT)
-    @JoinColumn(name="patientinfo_id")
-    @JsonIgnore
-    private PatientInfo patientInfo;
-
+    @MapsId
+    @JoinColumn(name = "id")
     @OneToOne
     @IndexedEmbedded
     private User user;
@@ -140,14 +131,6 @@ public class UserDetail{
         this.address = address;
     }
 
-    public DoctorInfo getDoctorInfo() {
-        return doctorInfo;
-    }
-
-    public void setDoctorInfo(DoctorInfo doctorInfo) {
-        this.doctorInfo = doctorInfo;
-    }
-
     public String getImagePath() {
         return imagePath;
     }
@@ -156,11 +139,16 @@ public class UserDetail{
         this.imagePath = imagePath;
     }
 
-    public PatientInfo getPatientInfo() {
-        return patientInfo;
-    }
-
-    public void setPatientInfo(PatientInfo patientInfo) {
-        this.patientInfo = patientInfo;
+    @Override
+    public String toString() {
+        return "UserDetail{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", birthDate=" + birthDate +
+                ", gender=" + gender +
+                ", address='" + address + '\'' +
+                '}';
     }
 }

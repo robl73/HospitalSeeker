@@ -24,4 +24,6 @@ public interface MailService {
     String createBannedMessage(User user, Locale locale);
 
     void sendMassageFromUserToUser(Map<String,String> massageData, Locale locale) throws ConnectException;
+
+    boolean pingURL(String url, int timeout);
 }

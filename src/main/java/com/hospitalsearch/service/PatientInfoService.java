@@ -25,6 +25,8 @@ public interface PatientInfoService {
     @Transactional(readOnly=true,propagation= Propagation.SUPPORTS)
     PatientInfo getById(Long id);
 
+    PatientInfo getByUserDetailId(Long id);
+
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
     List<PatientInfo> getAll();
 

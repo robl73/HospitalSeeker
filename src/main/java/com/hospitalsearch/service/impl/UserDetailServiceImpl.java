@@ -34,7 +34,7 @@ public class UserDetailServiceImpl implements UserDetailService {
         PatientCard patientCard = patientCardService.add(new PatientCard());
         PatientInfo patientInfo = patientInfoService.add(new PatientInfo());
         patientInfo.setPatientCard(patientCard);
-        newUserDetail.setPatientInfo(patientInfo);
+//        newUserDetail.setPatientInfo(patientInfo);
         dao.save(newUserDetail);
     }
 
@@ -53,7 +53,7 @@ public class UserDetailServiceImpl implements UserDetailService {
         PatientCard patientCard = patientCardService.add(new PatientCard());
         PatientInfo patientInfo = patientInfoService.add(new PatientInfo());
         patientInfo.setPatientCard(patientCard);
-        userDetail.setPatientInfo(patientInfo);
+//        userDetail.setPatientInfo(patientInfo);
         userDetail = dao.add(userDetail);
         return userDetail;
     }
