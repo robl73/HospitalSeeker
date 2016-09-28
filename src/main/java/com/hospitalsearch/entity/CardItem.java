@@ -49,12 +49,11 @@ public class CardItem implements Serializable {
     @Size(min = 5, max = 1000, message = "size = 5 < 255")
     private String complaint;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "doctorinfo_id")
     private DoctorInfo doctorInfo;
 
-    public CardItem() {
-
-    }
+    public CardItem() {}
 
     public Long getId() {
         return id;

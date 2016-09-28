@@ -3,7 +3,9 @@ package com.hospitalsearch.dao.impl;
 import com.hospitalsearch.dao.PatientInfoDAO;
 import com.hospitalsearch.entity.PatientCard;
 import com.hospitalsearch.entity.PatientInfo;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,5 +25,16 @@ public class PatientInfoDAOImpl extends GenericDAOImpl<PatientInfo, Long> implem
     public PatientInfo add(PatientInfo patientInfo) {
         PatientInfo patientInfoFromDB = (PatientInfo) this.getSessionFactory().getCurrentSession().merge(patientInfo);
         return patientInfoFromDB;
+    }
+
+    @Override
+    public PatientInfo getByUserDetailId(Long id) {
+//        PatientInfo patientInfo = (PatientInfo) getHibernateTemplate().findByNamedParam("select p from com.hospitalsearch.entity.PatientInfo p where p.userDetail = :id", "id", id);
+        PatientInfo patientInfo = (PatientInfo) getSessionFactory().getCurrentSession().createCriteria(PatientInfo.class, "p")
+                .createAlias("p.userDetail", "u")
+                .add(Restrictions.eq("u.id", id))
+                .uniqueResult();
+
+        return patientInfo;
     }
 }

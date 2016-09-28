@@ -4,6 +4,7 @@ package com.hospitalsearch.controller;
 import com.hospitalsearch.entity.*;
 import com.hospitalsearch.service.CardItemService;
 import com.hospitalsearch.service.PatientCardService;
+import com.hospitalsearch.service.PatientInfoService;
 import com.hospitalsearch.service.UserService;
 import com.hospitalsearch.util.PrincipalConverter;
 
@@ -33,13 +34,16 @@ public class CardController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    private PatientInfoService patientInfoService;
+
     @PreAuthorize("hasRole('PATIENT')")
     @RequestMapping(value = {"/card"}, method = RequestMethod.GET)
     public String patientCard(@RequestParam(value = "page", defaultValue = "1") Integer page, ModelMap model) {
         User user = userService.getByEmail(PrincipalConverter.getPrincipal());
         List<CardItem> cardItems = cardItemService.getCardItemList(user, page, itemsPerPage);
         UserDetail userDetail = user.getUserDetails();
-        PatientInfo patientInfo = userDetail.getPatientInfo();
+        PatientInfo patientInfo = patientInfoService.getById(userDetail.getId());
         PatientCard patientCard = patientInfo.getPatientCard();
         Long cardItemsCount = cardItemService.countOfItems(patientCard);
         Integer pageCount = userService.pageCount(cardItemsCount, itemsPerPage);
@@ -62,7 +66,7 @@ public class CardController {
         User user = userService.getById(Long.parseLong(userId));
         List<CardItem> cardItems = cardItemService.getCardItemList(user, page, itemsPerPage);
         UserDetail userDetail = user.getUserDetails();
-        PatientInfo patientInfo = userDetail.getPatientInfo();
+        PatientInfo patientInfo = patientInfoService.getById(userDetail.getId());
         PatientCard patientCard = patientInfo.getPatientCard();
         Long cardItemsCount = cardItemService.countOfItems(patientCard);
         Boolean pagination = false;

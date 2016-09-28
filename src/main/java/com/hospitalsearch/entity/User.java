@@ -4,19 +4,7 @@ package com.hospitalsearch.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Fetch;
@@ -41,7 +29,7 @@ public class User implements Comparable<User> {
     
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_gen")
-	@SequenceGenerator(name = "users_gen", sequenceName = "users_id_seq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "users_gen", sequenceName = "users_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
 
 	@Email
@@ -65,9 +53,8 @@ public class User implements Comparable<User> {
 	private Set<Role> userRoles = new HashSet<>();
 
 
-	@OneToOne(cascade= CascadeType.ALL)
-	@JoinColumn(name="userdetails_id")
-	@Fetch(FetchMode.SELECT)
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
 	@ContainedIn
 	@JsonIgnore
 	private UserDetail userDetails;

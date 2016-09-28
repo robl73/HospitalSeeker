@@ -17,9 +17,9 @@ $(document).ready(function () {
             schedulerConfig.dayStart = data.day_start;
             schedulerConfig.dayEnd = data.day_end;
             data.events.forEach(function (item, i) {
-                var workDay = data.events[i].start_date.substring(0, 10);
-                var hourOne = data.events[i].start_date.substring(11, 13);
-                var hourLast = data.events[i].end_date.substring(11, 13);
+                var workDay = item.start_date.substring(0, 10);
+                var hourOne = item.start_date.substring(11, 13);
+                var hourLast = item.end_date.substring(11, 13);
                     scheduler.blockTime(new Date(workDay), [0, hourOne * 60, hourLast * 60,
                     24 * 60]);
             });

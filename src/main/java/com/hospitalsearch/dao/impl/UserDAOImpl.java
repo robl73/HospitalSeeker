@@ -45,7 +45,7 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
     @Override
     public User getByEmail(String email) {
         try {
-            logger.info("getUserByEmail email: " + email);
+              logger.info("getUserByEmail email: " + email);
             Criteria criteria = this.getSessionFactory()
                     .getCurrentSession()
                     .createCriteria(User.class);

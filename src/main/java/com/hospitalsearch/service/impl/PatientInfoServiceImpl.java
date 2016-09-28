@@ -45,6 +45,11 @@ public class PatientInfoServiceImpl implements PatientInfoService {
     }
 
     @Override
+    public PatientInfo getByUserDetailId(Long id) {
+        return patientInfoDAO.getByUserDetailId(id);
+    }
+
+    @Override
     public List<PatientInfo> getAll() {
         return patientInfoDAO.getAll();
     }

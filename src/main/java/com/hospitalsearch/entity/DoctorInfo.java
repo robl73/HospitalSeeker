@@ -56,39 +56,15 @@ public class DoctorInfo{
     private String category;
 
     @OneToOne
-    @JoinColumn(name="userdetails_id")
+    @JoinColumn(name = "userdetails_id")
     @IndexedEmbedded
+    @JsonIgnore
     private UserDetail userDetails;
 
     @ManyToMany(mappedBy = "doctors")
     private List<Department> departments;
 
-    @OneToOne
-    @Fetch(FetchMode.SELECT)
-    @JoinColumn(name="carditem_id")
-    @JsonIgnore
-    private CardItem cardItem;
-
     public DoctorInfo() {
-    }
-
-    @OneToOne
-    private WorkScheduler workScheduler;
-
-    public WorkScheduler getWorkScheduler() {
-        return workScheduler;
-    }
-
-    public void setWorkScheduler(WorkScheduler workScheduler) {
-        this.workScheduler = workScheduler;
-    }
-
-    public CardItem getCardItem() {
-        return cardItem;
-    }
-
-    public void setCardItem(CardItem cardItem) {
-        this.cardItem = cardItem;
     }
 
     public Long getId() {
