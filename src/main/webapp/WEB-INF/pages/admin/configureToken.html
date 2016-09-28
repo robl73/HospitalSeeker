@@ -1,145 +1,94 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
-      layout:decorator="layout">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="layout">
 <head>
-    <meta charset="ISO-8859-1"/>
-    <meta charset="UTF-8"/>
-    <title>Configure Tokens</title>
-    <link rel="stylesheet" th:href="@{/css/stylish-portfolio.css}"/>
-    <link rel="stylesheet" th:href="@{/css/animate.css}"/>
-    <link rel="stylesheet" th:href="@{/css/theme.default.css}"/>
-    <script th:src="@{/js/jquery.validate.js}"></script>
-    <script th:src="@{/js/configToken.js}"></script>
-    <script th:src="@{/js/localization.js}"></script>
+<meta charset="ISO-8859-1" />
+<meta charset="UTF-8" />
+<title>Configure Tokens</title>
+<link rel="stylesheet" th:href="@{/css/stylish-portfolio.css}" />
+<link rel="stylesheet" th:href="@{/css/animate.css}" />
+<link rel="stylesheet" th:href="@{/css/theme.default.css}" />
+<script th:src="@{/js/jquery.validate.js}"></script>
+<script th:src="@{/js/configToken.js}"></script>
+<script th:src="@{/js/localization.js}"></script>
 </head>
 <body>
-<section layout:fragment="content" class="dashboard center">
-    <div class="content">
-        <div class="container">
-            <div class="row">
+	<section layout:fragment="content" class="dashboard center">
+		<div class="content">
+			<div class="container">
+				<div class="row">
 
-                <h1 class="all text-center" th:text="#{admin.configure.token.title}"></h1>
-                <br/>
-                <br/>
+					<h1 class="all text-center"
+						th:text="#{admin.configure.token.title}"></h1>
+					<br /> <br />
 
-               <div>
-                
-              
-                        
-                        <div class="form-group form-horizontal" th:each="config : ${configs}">
-                            <form th:action="@{/admin/configureToken}"  th:object="${config}" method="POST" 
-                          id="configTokenForm">
-                          
-                       <input type="hidden" name="id" value="config.id"/>  
-                        
-                            <label class="col-sm-4 control-label"
-                                   th:text="${config.token}"></label>
+					<div>
 
-                            <div class="col-sm-6">
-                                 <input id="valueToken" type="text" th:value="${config.value}"
-                                       th:class="form-controlNew"/> 
-                                       
-                              <!--  <span th:if="${(config ne null) and (#fields.hasErrors('adminTokenConfig'))}"
-                                      th:errors="*{adminTokenConfig}" class="has-error text-danger"></span>   -->
 
-                            </div>
-                             <div class="col-sm-6">
-                            <label  class="col-sm-4 control-label"
-                                   th:text="#{admin.configure.token.hours}"></label>
-                              </div>
-                              <div class="col-sm-6">
-                             <input type="submit" th:value="#{admin.configure.token.button.save}"
-                                       class="btn btn-primary btn-lg"/>
-                                       </div>
-                                   
-                </form>
-                        </div>
-                        
-                        <div class="form-group">
-                            <div class="row">
-                               <!--  <input type="submit" th:value="#{admin.configure.token.button.save}"
-                                       class="btn btn-primary btn-lg"/>
-                                <span th:text="#{admin.configure.token.or}"></span> -->
-                                <a class="btn btn-default btn-lg" 
-                                  th:text="#{admin.configure.token.button.cancel}"  id="button-cancelToken"></a>  
-                               <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            </div>
-                
-                        </div>
-                  </div>
-                <!-- 
-                    <form method="POST" th:object="${config}" class="form-horizontal"
-                          th:action="@{/admin/configureToken}" id="configTokenForm">
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="verificationToken"
-                                   th:text="#{admin.configure.token.verification}"></label>
+						<div class="form-group form-horizontal">
 
-                            <div class="col-sm-6">
-                                <input id="verificationToken" type="text" th:value="*{verificationToken}"
-                                       th:field="*{verificationToken}" class="form-control"
-                                       th:class="form-control" name="verificationToken"/>
 
-                                <span th:if="${(config ne null) and (#fields.hasErrors('verificationToken'))}"
-                                      th:errors="*{verificationToken}" class="has-error text-danger"></span>
 
-                            </div>
-                            <label class="col-sm-1 control-label" for="verificationToken"
-                                   th:text="#{admin.configure.token.hours}"></label>
-                        </div>
+							<form method="POST" id="configTokenForm"
+								th:action="@{/admin/configureToken}" th:object="${configs}"
+								class="form-horizontal">
 
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="resetPasswordToken"
-                                   th:text="#{admin.configure.token.reset.password}"></label>
+								<div class="form-group"
+									th:each="config,status : ${configs.getConfigs()}">
 
-                            <div class="col-sm-6">
-                                <input id="resetPasswordToken" type="text" th:value="*{resetPasswordToken}"
-                                       th:field="*{resetPasswordToken}" class="form-control"
-                                       th:class="form-control" name="resetPasswordToken"/>
 
-                                <span th:if="${(config ne null) and (#fields.hasErrors('resetPasswordToken'))}"
-                                      th:errors="*{resetPasswordToken}" class="has-error text-danger"></span>
+									<label for="value" class="col-sm-4 control-label"
+										th:text="${config.token}">
+										</label> 
+										<input type="hidden"
+										th:field="*{configs[__${status.index}__].token}"
+										th:value="${config.token}" />
 
-                            </div>
-                            <label class="col-sm-1 control-label" for="resetPasswordToken"
-                                   th:text="#{admin.configure.token.hours}"></label>
-                        </div>
+									<div class="col-sm-1">
+										<input type="text"
+											th:field="*{configs[__${status.index}__].value}"
+											th:value="${config.value}" class="form-controlNew"
+											th:class="form-controlNew" id="value" /> 
+											<span
+											th:if="${#fields.hasErrors('*{configs[__${status.index}__].value}')}"
+											th:errors="*{configs}" class="has-error text-danger">
+											</span>
+										<span th:if="${#fields.hasAnyErrors()}" th:errors="*{configs}"
+											class="has-error text-danger">
+											</span> <i
+											th:if="${#fields.hasErrors('configs[__${status.index}__].value')}"
+											th:errors="*{configs}" class="removable-i fade in"></i>
 
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="rememberMeToken"
-                                   th:text="#{admin.configure.token.remember.me}"></label>
 
-                            <div class="col-sm-6">
-                                <input id="rememberMeToken" type="text" th:value="*{rememberMeToken}"
-                                       th:field="*{rememberMeToken}" class="form-control"
-                                       th:class="form-control" name="rememberMeToken"/>
 
-                                 <span th:if="${(config ne null) and (#fields.hasErrors('rememberMeToken'))}"
-                                       th:errors="*{rememberMeToken}" class="has-error text-danger"></span>
+									</div>
+									<label class="col-sm-1 control-label" for="value"
+										th:text="#{admin.configure.token.hours}"></label>
+								</div>
 
-                            </div>
-                            <label class="col-sm-1 control-label" for="resetPasswordToken"
-                                   th:text="#{admin.configure.token.hours}"></label>
-                        </div>
+								<div class="form-group">
+									<div class="row">
+										<input type="submit"
+											th:value="#{admin.configure.token.button.save}"
+											class="btn btn-primary btn-lg" /> 
+											<span
+											th:text="#{admin.configure.token.or}">
+											</span> <a
+											class="btn btn-default btn-lg"
+											th:text="#{admin.configure.token.button.cancel}"
+											id="button-cancelToken"></a> 
+											<input type="hidden"
+											name="${_csrf.parameterName}" value="${_csrf.token}" />
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-                        <div class="form-group">
-                            <div class="row">
-                                <input type="submit" th:value="#{admin.configure.token.button.save}"
-                                       class="btn btn-primary btn-lg"/>
-                                <span th:text="#{admin.configure.token.or}"></span>
-                                <a class="btn btn-default btn-lg" 
-                                  th:text="#{admin.configure.token.button.cancel}"  id="button-cancelToken"></a>  
-                               <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            </div>
-                        </div>
-                    </form>
-                     -->
-                    
-                    
-                </div>
-            </div>
-        </div>
-     
-</section>
+	</section>
 </body>
 </html>

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hospitalsearch.dao.AdminTokenConfigDAO;
-import com.hospitalsearch.dao.GenericDAO;
 import com.hospitalsearch.entity.AdminTokenConfig;
 import com.hospitalsearch.entity.Token;
 
@@ -22,12 +21,6 @@ public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Lo
 		this.setSessionFactory(factory);
 	}
 
-	@Override
-	public AdminTokenConfig getById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<AdminTokenConfig> getAll() {
@@ -39,14 +32,14 @@ public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Lo
 
 	@Override
 	public void update(AdminTokenConfig instance) {
-		System.out.println("$$$$$$$$$$ update1");
-		if (instance.getValue()>23 || instance.getValue()<169){
-			System.out.println("$$$$$$$$$$ update2" + instance);
+		try{
 		org.hibernate.Query query = this.currentSession()
 				.createQuery("update AdminTokenConfig set value = :value where token = :token");
 		query.setParameter("value", instance.getValue());
 		query.setParameter("token", instance.getToken());
 		query.executeUpdate();
+		}catch(Exception e){
+			System.out.println("Exception in update(AdminTokenConfig instance). Enter valid data, please.");
 		}
 	}
 
@@ -68,10 +61,8 @@ public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Lo
 		for (AdminTokenConfig adminTokenConfig : getAll()) {
 			if (instance.getToken().equals(adminTokenConfig.getToken())) {
 				exists = true;
-				System.out.println("########### TRUE");
 			}
 		}
-		System.out.println("########### FALSE");
 		return exists;
 	}
 
@@ -79,6 +70,14 @@ public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Lo
 	public void delete(AdminTokenConfig instance) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public AdminTokenConfig getByToken(Token token) {
+		String sql = "SELECT * FROM AdminTokenConfig where token = '" + token + "'";
+		SQLQuery query = this.currentSession().createSQLQuery(sql);
+		query.addEntity(AdminTokenConfig.class);
+		return (AdminTokenConfig) query.uniqueResult();
 	}
 
 }

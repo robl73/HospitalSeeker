@@ -26,11 +26,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.hospitalsearch.dto.AdminTokenConfigDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.AdminTokenConfig;
 import com.hospitalsearch.entity.Role;
-import com.hospitalsearch.entity.Token;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.service.AdminTokenConfigService;
 import com.hospitalsearch.service.MailService;
@@ -162,69 +162,38 @@ public class AdminController {
         model.addAttribute("users", users);
         return "admin/users";
     }
-
+    
+    
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "admin/configureToken", method = RequestMethod.GET)
     public String configureToken(ModelMap model) throws Exception {
-/*    	System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + configService.getAll());
-    	AdminTokenConfig adminTokenConfig = new AdminTokenConfig();
-    	adminTokenConfig.setToken(Token.REMEMBER_ME_TOKEN_EXPIRATION);
-    	adminTokenConfig.setValue((Integer) 130);
-    	configService.update(adminTokenConfig);
-    	System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + configService.getAll());*/
-    	List<AdminTokenConfig> configs = configService.getAll();
+    	System.out.println("GET");
+    	AdminTokenConfigDTO configs = new AdminTokenConfigDTO();
+    		configs.setConfigs(configService.getAll());
     	model.addAttribute("configs", configs);
         return "admin/configureToken";
     }
 
- /*   @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "admin/configureToken", method = RequestMethod.POST)
-    public String configureTokens(ModelMap model, 
-                                  @Valid @ModelAttribute("config") AdminTokenConfig config, BindingResult result) throws Exception {
-    	System.out.println("!!!!!!! POST" + config);
-    	configService.update(config);
-    	System.out.println("!!!!!!! config = " + config);
-    	*/
-/*       if (result.hasErrors()) {
-        	System.out.println("!!!!!!! POST Errors");
-            return "admin/configureToken";
-        }*/
-    	
-    	
-        //TODO insert into DB 
-       // AdminTokenConfig adminTokenConfig = configService.getById(1);
-        
-       // configService.updateTokenConfig(config.getResetPasswordToken(), config.getVerificationToken(), config.getRememberMeToken());
-     /*  
-        RESET_PASSWORD_TOKEN_EXPIRATION = config.getResetPasswordToken();
-        VERIFICATION_TOKEN_EXPIRATION = config.getVerificationToken();
-        REMEMBER_ME_TOKEN_EXPIRATION = config.getRememberMeToken();
-     */ 
-/*    	List<AdminTokenConfig> configs = configService.getAll();
-    	model.addAttribute("configs", configs);
-        return "admin/configureToken";
-    }
-*/
-    
-    
+
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "admin/configureToken", method = RequestMethod.POST)
     public String configureTokens(ModelMap model, 
-                            @Valid @ModelAttribute("config") AdminTokenConfig config, BindingResult result) throws Exception {
-    	//System.out.println("!!!!!!! POST" + config);
+    		 @Valid @ModelAttribute("configs") AdminTokenConfigDTO configs, BindingResult result) throws Exception {
+    	System.out.println("!!!!!!! POST");
     	if (result.hasErrors()) {
-        	//System.out.println("!!!!!!! POST Errors");
-        	List<AdminTokenConfig> configs = configService.getAll();
+        	System.out.println("!!!!!!! POST Errors");
         	model.addAttribute("configs", configs);
             return "admin/configureToken";
         }
-    	//configService.update(config);
-    	//System.out.println("!!!!!!! config = " + config);
-    	List<AdminTokenConfig> configs = configService.getAll();
-    	model.addAttribute("configs", configs);
+    	System.out.println("!!!!!!! POST NOerrors");
+    	for (AdminTokenConfig config : configs.getConfigs()){
+    		configService.update(config);
+    	}
+    	AdminTokenConfigDTO configsNew = new AdminTokenConfigDTO();
+    	configsNew.setConfigs(configService.getAll());
+    	model.addAttribute("configs", configsNew);
         return "admin/configureToken";
     }
-    
     
     
     @PreAuthorize("hasRole('ADMIN')")

@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.hospitalsearch.dao.AdminTokenConfigDAO;
 import com.hospitalsearch.entity.AdminTokenConfig;
+import com.hospitalsearch.entity.Token;
 import com.hospitalsearch.service.AdminTokenConfigService;
 
-import antlr.Token;
 
 @Service
 public class AdminTokenConfigServiceImpl implements AdminTokenConfigService{
@@ -41,66 +41,28 @@ public class AdminTokenConfigServiceImpl implements AdminTokenConfigService{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public AdminTokenConfig getByToken(Token token) {
+		return configDAO.getByToken(token);
+	}
+
+	
 
 	@Override
 	public Integer VERIFICATION_TOKEN_EXPIRATION() {
-		// TODO !!!!! if token_name equalse VERIFICATION_TOKEN_EXPIRATION - return it
-		return null;
+		return configDAO.getByToken(Token.VERIFICATION_TOKEN_EXPIRATION).getValue();
 	}
 
 	@Override
 	public Integer RESET_PASSWORD_TOKEN_EXPIRATION() {
-		// TODO !!!!! if token_name equalse VERIFICATION_TOKEN_EXPIRATION - return it
-		return null;
+		return configDAO.getByToken(Token.RESET_PASSWORD_TOKEN_EXPIRATION).getValue();
 	}
 
 	@Override
 	public Integer REMEMBER_ME_TOKEN_EXPIRATION() {
-		// TODO !!!!! if token_name equalse VERIFICATION_TOKEN_EXPIRATION - return it
-		return null;
+		return configDAO.getByToken(Token.REMEMBER_ME_TOKEN_EXPIRATION).getValue();
 	}
 
 
-	
-	
-/*
-	@Override
-	public AdminTokenConfig getTokens() {
-		return configDAO.getTokens();
-	}
-	
-	@Override
-	public void updateTokenConfig(Integer resetPasswordToken, Integer verificationToken, Integer rememberMeToken) {
-		configDAO.updateTokenConfig(resetPasswordToken, verificationToken, rememberMeToken);
-	}
-
-	@Override
-	public Integer VERIFICATION_TOKEN_EXPIRATION(){
-		AdminTokenConfig adminTokenConfig = configDAO.getTokens();
-		return adminTokenConfig.getVerificationToken();
-	}
-
-	@Override
-	public Integer RESET_PASSWORD_TOKEN_EXPIRATION() {
-		AdminTokenConfig adminTokenConfig = configDAO.getTokens();
-		return adminTokenConfig.getResetPasswordToken();
-	}
-
-	@Override
-	public Integer REMEMBER_ME_TOKEN_EXPIRATION() {
-		AdminTokenConfig adminTokenConfig = configDAO.getTokens();
-		return adminTokenConfig.getRememberMeToken();
-	}
-
-/*	@Override
-	public void delete() {
-		configDAO.delete();
-	}*/
-	
-/*	public void add(Integer resetPasswordToken, Integer verificationToken, Integer rememberMeToken){
-		configDAO.add(resetPasswordToken, verificationToken, rememberMeToken);
-	}*/
-    
-    
-    
 }

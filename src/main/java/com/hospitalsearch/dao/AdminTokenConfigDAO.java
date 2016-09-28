@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hospitalsearch.entity.AdminTokenConfig;
+import com.hospitalsearch.entity.Token;
+
 
 
 @Component
@@ -20,9 +22,7 @@ public interface AdminTokenConfigDAO extends GenericDAO<AdminTokenConfig, Long> 
 	void save(AdminTokenConfig instance);
 	
 	void delete(AdminTokenConfig instance);
-
-	/*AdminTokenConfig getTokens();
-
-	void updateTokenConfig(Integer resetPasswordToken, Integer verificationToken, Integer rememberMeToken);*/
 	
+	AdminTokenConfig getByToken(Token token);
+
 }
