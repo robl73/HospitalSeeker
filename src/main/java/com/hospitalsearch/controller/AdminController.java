@@ -217,6 +217,14 @@ public class AdminController {
         }
     }
     
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/admin/allDepartmentsName", method = RequestMethod.GET)
+    public String allDepartmentsName() {
+     
+    return "";
+    } 
+    
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/admin/addDepartmentsName", method = RequestMethod.POST)
     public String addDepartmentsName() {
