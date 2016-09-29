@@ -416,7 +416,8 @@
                         hibernate:spring:com.hospitalsearch.entity?dialect=org.hibernate.dialect.PostgreSQLDialect
                     </referenceUrl>
                     <diffChangeLogFile>src/main/resources/liquibase-changeLogForDiff.xml</diffChangeLogFile> 
-     
+                    
+                    <diffTypes> tables, views, columns, indexes, foreignkeys, primarykeys, uniqueconstraints, data </diffTypes>
                     <outputChangeLogFile>src/main/resources/outputChangeLogFile.xml </outputChangeLogFile>
  
                 </configuration>
@@ -438,7 +439,16 @@
 		</executions>       
         --> 
         
-               
+                <executions>
+			<execution>
+			    <phase>compile</phase>                                                                  
+			    <goals>
+                                 <goal>status</goal>
+				 <goal>update</goal>
+                                 <goal>dbDoc</goal>                                   
+			    </goals>
+			</execution>
+		</executions>  
                 
                 <extensions>true</extensions>            
                 <dependencies>
@@ -448,6 +458,7 @@
                         <artifactId>liquibase-hibernate4</artifactId>
                         <version>${liquibase.hibernate4}</version>
                     </dependency>
+                    <!--
                     <dependency>
                         <groupId>org.springframework</groupId>
                         <artifactId>spring-beans</artifactId>
@@ -458,6 +469,7 @@
                         <artifactId>spring-data-jpa</artifactId>
                         <version>${spring.data.jpa}</version>
                     </dependency>
+                    -->
                 </dependencies>
             </plugin>
         </plugins>
