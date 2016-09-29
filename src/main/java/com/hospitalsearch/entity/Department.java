@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,9 +28,22 @@ public class Department{
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_gen")
 	@SequenceGenerator(name = "department_gen", sequenceName = "department_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
-	
-	@Field(boost=@Boost(1.2f))
-	private String name;
+
+    /*    
+	//@Field(boost=@Boost(1.2f))
+	//private String name;
+        
+       // @Embedded
+        private DepartmentsName departmentName;
+
+        public DepartmentsName getDepartmentName() {
+            return departmentName;
+        }
+
+        public void setDepartmentName(DepartmentsName departmentName) {
+            this.departmentName = departmentName;
+        }
+    */
 	
 	@ManyToMany(cascade=CascadeType.ALL)
 	private List<DoctorInfo> doctors;
@@ -51,7 +65,7 @@ public class Department{
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+/*
 	public String getName() {
 		return name;
 	}
@@ -59,7 +73,7 @@ public class Department{
 	public void setName(String name) {
 		this.name = name;
 	}
-
+*/
 	public List<DoctorInfo> getDoctors() {
 		return doctors;
 	}

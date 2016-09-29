@@ -216,4 +216,14 @@ public class AdminController {
             mailService.sendMessage(user, messageSource.getMessage("mail.message.banned.title", null, locale), bannedMessage, emailTemplate);
         }
     }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/admin/addDepartmentsName", method = RequestMethod.POST)
+    public String addDepartmentsName() {
+     
+    return "";
+    }  
+    
+    
+    
 }
