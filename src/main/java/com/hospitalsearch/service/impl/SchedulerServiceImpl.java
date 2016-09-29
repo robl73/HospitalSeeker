@@ -1,12 +1,10 @@
 package com.hospitalsearch.service.impl;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hospitalsearch.dao.DoctorInfoDAO;
 import com.hospitalsearch.dao.SchedulerDAO;
 import com.hospitalsearch.dao.UserDAO;
-import com.hospitalsearch.entity.Event;
 import com.hospitalsearch.entity.Scheduler;
 import com.hospitalsearch.service.SchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +31,8 @@ public class SchedulerServiceImpl implements SchedulerService {
     private UserDAO userDAO;
 
     @Override
-    public Scheduler getByDoctorId(Long doctorId) {
-        return schedulerDAO.getByDoctorId(doctorId);
+    public Scheduler getByUserDetailId(Long userDetailId) {
+        return schedulerDAO.getByDoctorId(doctorInfoDAO.getIdByUserDetail(userDetailId));
     }
 
     @Override
@@ -42,7 +40,9 @@ public class SchedulerServiceImpl implements SchedulerService {
         Scheduler scheduler = schedulerDAO.getByDoctorId(doctorId);
         ObjectMapper mapper = new ObjectMapper();
         Scheduler newScheduler = mapper.readValue(schedulerString, Scheduler.class);
-        newScheduler.setDoctorInfo(doctorInfoDAO.getById(doctorId));
+        Long doctorinfoId = doctorInfoDAO.getIdByUserDetail(doctorId);
+//        newScheduler.setDoctorInfo(doctorInfoDAO.getById(doctorId));
+        newScheduler.setDoctorInfo(doctorInfoDAO.getById(doctorinfoId));
         if (scheduler != null) {
             schedulerDAO.delete(scheduler);
         }
@@ -53,7 +53,7 @@ public class SchedulerServiceImpl implements SchedulerService {
     @Override
     public String getByDoctorEmail(String doctorEmail) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(schedulerDAO.getByDoctorId(userDAO.getByEmail(doctorEmail).getUserDetails().getDoctorsDetails().getId()));
+        String json = mapper.writeValueAsString(schedulerDAO.getByDoctorId(doctorInfoDAO.getIdByUserDetail(userDAO.getByEmail(doctorEmail).getId())));
         return json;
     }
 }

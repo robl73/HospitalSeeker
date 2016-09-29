@@ -1,5 +1,6 @@
 package com.hospitalsearch.service;
 
+import com.hospitalsearch.dto.DoctorDTO;
 import com.hospitalsearch.entity.UserDetail;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,7 @@ public interface ManagerService {
 
     void applyManager(Map<String, Long> hospitalData);
 
-    List<UserDetail> getDoctorsByManager();
+    List<DoctorDTO> getDoctorsByManager();
 
     void deleteHospitalManager(Long hospitalId);
 

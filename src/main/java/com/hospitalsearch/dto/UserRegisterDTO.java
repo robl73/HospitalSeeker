@@ -1,17 +1,17 @@
 package com.hospitalsearch.dto;
 
-import com.hospitalsearch.entity.Role;
-import com.hospitalsearch.service.annotation.PasswordMatch;
-import com.hospitalsearch.service.annotation.UniqueEmail;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.hospitalsearch.entity.Role;
+import com.hospitalsearch.service.annotation.PasswordMatch;
+import com.hospitalsearch.service.annotation.UniqueEmail;
 
 /**
  * @author Andrew Jasinskiy on 17.06.16

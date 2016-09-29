@@ -66,9 +66,9 @@ $(window).load(function() {
 		//	equalTo: '',
 		//	extension: '',
 			maxlength: $.validator.format( 'Please enter not more than {0} symbols.' ),
-		//	minlength: $.validator.format( '' ),
+			minlength: $.validator.format( 'Please enter at least {0} symbols' ),
 			rangelength: $.validator.format( 'Please enter at least {0} symbols and not more than {1} symbols.' ),
-		//	range: $.validator.format( '' ),
+			range: $.validator.format( 'Please enter a number from {0} to {1}' ),
 		//	max: $.validator.format( '' ),
 		//	min: $.validator.format( '' )
 			address: 'Please enter address in the field or find this location on the map.',

@@ -1,12 +1,13 @@
 package com.hospitalsearch.service.impl;
 
 import com.hospitalsearch.dao.CardItemDAO;
-import com.hospitalsearch.entity.CardItem;
-import com.hospitalsearch.entity.PatientCard;
-import com.hospitalsearch.entity.User;
+import com.hospitalsearch.dao.PatientInfoDAO;
+import com.hospitalsearch.entity.*;
 import com.hospitalsearch.service.CardItemService;
 import com.hospitalsearch.service.UserService;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,9 @@ public class CardItemServiceImpl implements CardItemService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    private PatientInfoDAO patientInfoDAO;
+
     @Override
     public void add(CardItem cardItem, String doctorEmail) {
         try{
@@ -35,7 +39,7 @@ public class CardItemServiceImpl implements CardItemService {
             LocalDateTime dateTime = LocalDateTime.now();
             Timestamp date = Timestamp.valueOf(dateTime);
             cardItem.setDate(date);
-            cardItem.setDoctor(doctor);
+            cardItem.getDoctorInfo().getUserDetails().setUser(doctor);
             dao.save(cardItem);
             log.info("Save card item" +cardItem);
         }catch (Exception e){
@@ -71,16 +75,19 @@ public class CardItemServiceImpl implements CardItemService {
     }
 
     @Override
-    public boolean persist(CardItem cardItem, String doctorEmail,Long userId) {
-
-        PatientCard patientCard = userService.getById(userId).getUserDetails().getPatientCard();
-        cardItem.setPatientCard(patientCard);
+    public boolean persist(CardItem cardItem, String doctorEmail, Long userId) {
+        User user = userService.getById(userId);
+        UserDetail userDetail = user.getUserDetails();
+        PatientInfo patientInfo = patientInfoDAO.getById(userId);
+//        PatientInfo patientInfo = userDetail.getPatientInfo();
+        PatientCard patientCard1 = patientInfo.getPatientCard();
+        cardItem.setPatientCard(patientCard1);
         if (cardItem.getId() == null) {
             add(cardItem, doctorEmail);
             return true;
         }
         CardItem cardItemFromDB = dao.getById(cardItem.getId());
-        if (cardItemFromDB.getDoctor().getEmail().equals(doctorEmail)) {
+        if (cardItemFromDB.getDoctorInfo().getUserDetails().getUser().getEmail().equals(doctorEmail)) {
             update(cardItem);
             return true;
         }
@@ -97,7 +104,7 @@ public class CardItemServiceImpl implements CardItemService {
     public List<CardItem> getCardItemList(User user, int pageNumber, int pageSize) {
         List<CardItem> cardItems = new ArrayList<>();
         try{
-            cardItems = dao.getCardItemList(user,pageNumber,pageSize);
+            cardItems = dao.getCardItemList(user, pageNumber, pageSize);
             log.info("Get card item list for user"+ user);
         }catch (Exception e){
             log.error("Getting card item list for user"+ user);

@@ -25,7 +25,7 @@
 </head>
 <body>
 <section layout:fragment="content">
-    <p th:text="${id}" id="did" hidden="hidden"></p>
+    <p th:text="${d_id}" id="did" hidden="hidden"></p>
     <input id="path" th:value="${#httpServletRequest.getContextPath()}"/>
     <input sec:authorize="hasRole('MANAGER')" value="true"
            id="manager" type="text" hidden="hidden"/>

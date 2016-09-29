@@ -2,6 +2,10 @@ package com.hospitalsearch.entity;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.hospitalsearch.service.AdminTokenConfigService;
+import com.hospitalsearch.service.impl.AdminTokenConfigServiceImpl;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -20,8 +24,6 @@ import java.util.Date;
         @NamedQuery(name = "GET_VERIFICATION_TOKEN_BY_USER", query = "SELECT t FROM VerificationToken t WHERE t.user = :user"),
 })
 public class VerificationToken {
-    //token valid 24 hours
-    public static Integer VERIFICATION_TOKEN_EXPIRATION = 24;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "verification_token_gen")
@@ -43,7 +45,7 @@ public class VerificationToken {
         super();
     }
 
-    public VerificationToken(String token, User user) {
+    public VerificationToken(String token, User user, Integer VERIFICATION_TOKEN_EXPIRATION) {
         super();
         this.token = token;
         this.user = user;

@@ -2,6 +2,7 @@ package com.hospitalsearch.service.impl;
 
 import com.hospitalsearch.dao.DepartmentDAO;
 import com.hospitalsearch.dao.DoctorInfoDAO;
+import com.hospitalsearch.dto.DoctorDTO;
 import com.hospitalsearch.dto.DoctorSearchDTO;
 import com.hospitalsearch.entity.Department;
 import com.hospitalsearch.entity.DoctorInfo;
@@ -42,6 +43,11 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
     }
 
     @Override
+    public Long getIdByUserDetail(Long userDetailId) {
+        return dao.getIdByUserDetail(userDetailId);
+    }
+
+    @Override
     public DoctorInfo getById(Long id) {
         return dao.getById(id);
     }
@@ -52,7 +58,7 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
     }
 
     @Override
-    public List<UserDetail> findByDepartmentId(Long id) {
+    public List<DoctorDTO> findByDepartmentId(Long id) {
         return dao.findByDepartmentId(id);
     }
 

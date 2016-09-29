@@ -32,7 +32,7 @@ public interface HospitalService {
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
     List<Hospital> getAll();
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-    List<Hospital> getAllByBounds(Bounds bounds);
+	List<Hospital> getAllByBounds(Bounds bounds);
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
     List<Hospital> filterHospitalsByAddress(HospitalFilterDTO filterInfo);
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

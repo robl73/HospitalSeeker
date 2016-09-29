@@ -22,6 +22,7 @@ import com.hospitalsearch.util.PageConfigDTO;
 
 @ControllerAdvice(assignableTypes={HospitalController.class})
 public class HospitalControllerAdvice {
+
 	@Autowired
 	private HospitalService service;
 

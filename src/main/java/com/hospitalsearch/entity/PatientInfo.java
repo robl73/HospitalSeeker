@@ -1,24 +1,50 @@
 package com.hospitalsearch.entity;
 
-import javax.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.*;
+
+import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "patientinfo")
-public class PatientInfo{
+public class PatientInfo {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patientinfo_gen")
 	@SequenceGenerator(name = "patientinfo_gen", sequenceName = "patientinfo_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
 
-	@Column(name="cardid")
-	private String cardId;
+	@OneToOne
+	@JoinColumn(name = "userdetail_id")
+	@JsonIgnore
+	UserDetail userDetail;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@Fetch(FetchMode.SELECT)
+	@JoinColumn(name="patientcard_id")
+	@PrimaryKeyJoinColumn
+	@JsonIgnore
+	private PatientCard patientCard;
+
+	@Column(name = "blood_group")
+	private String bloodGroup;
+
+	public PatientInfo(UserDetail userDetail) {
+		this.userDetail = userDetail;
+	}
+
+	public PatientInfo() {}
+
+	public String getBloodGroup() {
+		return bloodGroup;
+	}
+
+	public void setBloodGroup(String bloodGroup) {
+		this.bloodGroup = bloodGroup;
+	}
 
 	public Long getId() {
 		return id;
@@ -28,12 +54,19 @@ public class PatientInfo{
 		this.id = id;
 	}
 
-
-	public String getCardId() {
-		return cardId;
+	public UserDetail getUserDetail() {
+		return userDetail;
 	}
 
-	public void setCardId(String cardId) {
-		this.cardId = cardId;
+	public void setUserDetail(UserDetail userDetail) {
+		this.userDetail = userDetail;
+	}
+
+	public PatientCard getPatientCard() {
+		return patientCard;
+	}
+
+	public void setPatientCard(PatientCard patientCard) {
+		this.patientCard = patientCard;
 	}
 }

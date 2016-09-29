@@ -408,3 +408,4 @@
         <dropNotNullConstraint columnDataType="clob" columnName="RESULT" tableName="carditem"/>
     </changeSet>
 </databaseChangeLog>
+

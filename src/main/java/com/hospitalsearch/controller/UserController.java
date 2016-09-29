@@ -95,6 +95,29 @@ public class UserController {
         return "/registration";
     }
 
+//    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+//    public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
+//                               BindingResult result, ModelMap model, Locale locale) {
+//        if (result.hasErrors()) {
+//            return "registration";
+//        }
+//        User user = userService.register(userDto);
+//        String token = getRandomToken();
+//        verificationTokenService.createToken(token, user);
+//        try {
+//            String confirmationMessage = mailService.createRegisterMessage(user, token, locale);
+//            mailService.sendMessage(user, messageSource.getMessage("mail.message.registration.confirm", null, locale), confirmationMessage, emailTemplate);
+//            model.addAttribute("emailSuccess", userDto.getEmail());
+//            return "/user/endRegistration";
+//        } catch (MailException | ConnectException e) {
+//            model.addAttribute("emailError", userDto.getEmail());
+//            verificationTokenService.deleteTokenByUser(user);
+//            userService.changeStatus(user.getId());
+//            userService.delete(user.getId());
+//            return "/error/emailMessage";
+//        }
+//    }
+
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
                                BindingResult result, ModelMap model, Locale locale) {

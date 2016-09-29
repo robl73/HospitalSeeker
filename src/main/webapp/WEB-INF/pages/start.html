@@ -8,18 +8,19 @@
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 	<meta th:name="csrf-token" th:content="${_csrf.token}" />
 	<meta th:name="csrf-name" th:content="${_csrf.parameterName}" />
-	<script th:src="@{/js/Workintervals.js}"></script>
+	<script th:src="@{/codebase/sources/ext/dhtmlxscheduler_minical.js}" type="text/javascript" charset="utf-8"></script>
 	<script th:src="@{/codebase/sources/ext/dhtmlxscheduler_limit.js}" type="text/javascript" charset="utf-8"></script>
 	<script th:src="@{/codebase/sources/ext/dhtmlxscheduler_serialize.js}" type="text/javascript" charset="utf-8"></script>
 	<script th:src="@{/codebase/locale/locale_ua.js}" th:remove="(__${#locale}__ == 'en')?'all':'none'" type="text/javascript" charset="utf-8"></script>
 	<script th:src="@{/js/schedulerDatePicker.js}" type="text/javascript" charset="utf-8"></script>
 	<script th:src="@{/js/localization.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/js/Workintervals.js}"></script>
 	<link rel="stylesheet" th:href="@{/css/appointmentModal.css}"/>
 	<link rel="stylesheet" th:href="@{/css/workscheduler.css}"/>
 </head>
 <body>
 <section layout:fragment="content">
-	<p th:text="${id}" id="1" hidden="hidden"></p>
+	<p th:text="${d_id}" id="1" hidden="hidden"></p>
 	<input id="path" th:value="${#httpServletRequest.getContextPath()}"/>
 	<div class="modal bs-example-modal-sm" id="message_modal"
 		 tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -99,6 +100,11 @@
 					<div  id="cancelMassage" class="helper">
 						<div class="alert alert-info" role="alert">
 							<h4 id="cancelMassageText" class="success text-center" th:text="#{workscheduler.modal.appointment.add.success}"></h4>
+						
+							
+							<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+							
+							<button class="btn btn-default" onclick="closeModal()">Ok</button>
 						</div>
 					</div>
 				</div>
@@ -108,8 +114,18 @@
 					<label style="font-size: large" for="doctorName" th:text="#{workscheduler.modal.appointment.doctor}"></label>
 					<p style="font-size: large" id="doctorName"/>
 					<label style="font-size: large" for="TheReasonForVisit" th:text="#{workscheduler.modal.appointment.shortreason}"></label>
-					<input  type="text" class="form-control" id="TheReasonForVisit" th:placeholder="#{workscheduler.modal.appointment.cancel.reason.input}" required="required"/>
+					<input type="text" class="form-control" id="TheReasonForVisit" th:placeholder="#{workscheduler.modal.appointment.cancel.reason.input}" required="required"/>
+						
+						
+						<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+				
+					<span id="lengthError" style="display:none">Please, input the text that contains less than 150 symbols</span>
+					<span id="inputAppointmentError" style="display:none">You already have an appointment in this time. Your next free time is…</span>
+			
 				</div>
+			
+				
+				
 				<div class="modal-footer" id="modal-footer">
 					<button type="submit" class="btn btn-default" style="width: 80px"  onclick="startModal()" th:text="#{modal.button.confirm}"></button>
 					<button type="button"  class="btn btn-default" style="width: 80px" data-dismiss="modal" onclick="close_form()" th:text="#{modal.button.cancel}"></button>
@@ -129,6 +145,25 @@
 				</div>
 				<div class="modal-body">
 					<h3 th:text="#{modal.dashboad.error.message}"></h3>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" style="width: 80px" data-dismiss="modal">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="myAppointmentValidationErrorModal" class="modal fade" role="dialog" onclick="closeErrorModal()">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title ">
+						<span class="glyphicon glyphicon-alert" style="color: #ac2925"></span>
+					</h3>
+				</div>
+				<div class="modal-body">
+					<h3 id="validationErrorMassage"></h3>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" style="width: 80px" data-dismiss="modal">OK</button>

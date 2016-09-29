@@ -45,7 +45,7 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
     @Override
     public User getByEmail(String email) {
         try {
-            logger.info("getUserByEmail email: " + email);
+              logger.info("getUserByEmail email: " + email);
             Criteria criteria = this.getSessionFactory()
                     .getCurrentSession()
                     .createCriteria(User.class);
@@ -215,7 +215,7 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
 
     private Criterion notNullCriterion() {
         Criterion criterion = Restrictions.and()
-                .add(Restrictions.isNotNull("details.patientCard"))
+                .add(Restrictions.isNotNull("details.patientInfo"))
                 .add(Restrictions.isNotNull("details.firstName"))
                 .add(Restrictions.isNotNull("details.lastName"));
         return criterion;

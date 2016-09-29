@@ -9,3 +9,4 @@ HospitalSeeker.iml
 test-output/
 /bin/
 src/main/resources/app.properties
+src/main/resources/LiquiBaseReportTable/

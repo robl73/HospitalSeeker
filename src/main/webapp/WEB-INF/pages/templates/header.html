@@ -110,10 +110,11 @@
                         <span class="caret"></span> </a>
 
                     <ul class="dropdown-menu" id="dropdawn">
-                        <li><a class="menu glyphicon glyphicon-user" data-toggle="modal" data-target="#myModal" data-backdrop="false"
+                        <li>
+                            <a class="menu glyphicon glyphicon-user" data-toggle="modal" data-target="#myModal" data-backdrop="false"
                                th:onclick="${userName.userDetails.lastName==null}?'editProfile()':'showPage()'" th:text="' '+#{header.principal.menu.profile}">
-                            <span class="glyphicon glyphicon-user"></span>
-                        </a></li>
+                            <span class="glyphicon glyphicon-user"></span></a>
+                        </li>
                         <li><a class="menu" th:href="@{/logout}"> <span
                                 class="glyphicon glyphicon-log-out" th:text="' '+#{header.principal.log.out}"></span>
                         </a></li>

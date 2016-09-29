@@ -1,10 +1,7 @@
 package com.hospitalsearch.controller;
 
 import com.hospitalsearch.entity.UserDetail;
-import com.hospitalsearch.service.HospitalService;
-import com.hospitalsearch.service.ManagerService;
-import com.hospitalsearch.service.UserDetailService;
-import com.hospitalsearch.service.UserService;
+import com.hospitalsearch.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,13 +21,14 @@ public class ManagerController {
     @Autowired
     private UserService userService;
 
-
     @Autowired
     private ManagerService managerService;
 
     @Autowired
     private UserDetailService userDetailService;
 
+    @Autowired
+    private DoctorInfoService doctorInfoService;
 
     @RequestMapping(value = "/manageDoctors", method = RequestMethod.GET)
     public String getDoctorsByManager(Map<String, Object> model) {
@@ -61,7 +59,7 @@ public class ManagerController {
     public String getManage(
             @PathVariable("d_id") Long doctorId, ModelMap model) {
         UserDetail userDetail = userDetailService.getById(doctorId);
-        model.addAttribute("id", userDetail.getDoctorsDetails().getId());
+        model.addAttribute("id", doctorInfoService.getIdByUserDetail(userDetail.getId()));
         model.addAttribute("doctor", userDetailService.getById(doctorId));
         return "manage";
     }

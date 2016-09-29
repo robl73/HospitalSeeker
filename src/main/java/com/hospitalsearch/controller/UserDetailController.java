@@ -1,11 +1,14 @@
 package com.hospitalsearch.controller;
 
+
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.entity.UserDetail;
-import com.hospitalsearch.service.DoctorInfoService;
-import com.hospitalsearch.service.UserDetailService;
-import com.hospitalsearch.service.UserService;
+import com.hospitalsearch.service.*;
+import com.hospitalsearch.entity.PatientCard;
+import com.hospitalsearch.entity.PatientInfo;
+
 import com.hospitalsearch.util.Gender;
+import com.hospitalsearch.util.Page;
 import com.hospitalsearch.util.PrincipalConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +27,15 @@ public class UserDetailController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    DoctorInfoService doctorInfoService;
+
+    @Autowired
+    PatientInfoService patientInfoService;
+
+    @Autowired
+    PatientCardService patientCardService;
+
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = {"/user/detail"}, method = RequestMethod.GET, consumes = "application/json")
     public String userDetail(@RequestParam(value = "edit", defaultValue = "false") Boolean edit, ModelMap model) {
@@ -38,7 +50,7 @@ public class UserDetailController {
 
     @PreAuthorize("hasAnyRole('PATIENT','DOCTOR')")
     @RequestMapping(value = {"/save/detail"}, method = RequestMethod.POST)
-    public String saveUserDetail(@Valid UserDetail userDetail, BindingResult bindingResult, ModelMap model) {
+    public String saveUserDetail(@Valid @ModelAttribute("userDetail") UserDetail userDetail, BindingResult bindingResult, ModelMap model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("edit", true);
             model.addAttribute("userDetail", userDetail);
@@ -46,8 +58,19 @@ public class UserDetailController {
             model.addAttribute("email", PrincipalConverter.getPrincipal());
             return "user/detail";
         }
-        userDetail.setPatientCard(userDetailService.getById(userDetail.getId()).getPatientCard());
+        PatientInfo patientInfo = patientInfoService.getByUserDetailId(userDetail.getId());
+        PatientCard patientCard;
+        if (patientInfo == null) {
+            patientInfo = new PatientInfo(userDetail);
+            patientCard = new PatientCard(patientInfo);
+        } else {
+            patientCard = patientInfo.getPatientCard();
+        }
+        patientInfo.setPatientCard(patientCard);
+        patientCard.setPatientInfo(patientInfo);
         userDetailService.update(userDetail);
+        patientInfo.setUserDetail(userDetail);
+        patientInfoService.add(patientInfo);
         model.addAttribute("edit", false);
         model.addAttribute("userDetail", userDetail);
         model.addAttribute("gender", Gender.values());
@@ -67,4 +90,18 @@ public class UserDetailController {
         model.addAttribute("read", true);
         return "user/detail";
     }
+
+//    @RequestMapping("/doctors")
+//    public String renderSearchDoctors(Map<String, Object> model,
+//                                  @RequestParam(value = "d", required = false) String query) throws ParseException, InterruptedException, HospitalControllerAdvice.FilterHospitalListEmptyException {
+//        if (query != null && !query.isEmpty()) {
+//            this.pageableContent = doctorInfoService.advancedDoctorSearch(query);
+//        }
+//        this.initializeModel(model, 1);
+////        if(this.pageableContent.getResultListCount() == 0){
+////            throw new HospitalControllerAdvice.FilterHospitalListEmptyException("Empty list");
+////        }
+//        return "";
+//    }
+
 }

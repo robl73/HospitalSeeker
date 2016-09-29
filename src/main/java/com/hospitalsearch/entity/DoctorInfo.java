@@ -14,6 +14,7 @@ import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Parameter;
 
+
 @Entity
 @Table(name = "doctorinfo")
 @Indexed
@@ -31,6 +32,7 @@ import org.hibernate.search.annotations.Parameter;
                         @Parameter(name="maxGramSize",value="10")
                 })
         })
+
 public class DoctorInfo{
 
     @Id
@@ -44,7 +46,7 @@ public class DoctorInfo{
     private String category;
 
     @OneToOne
-    @JoinColumn(name="userdetails_id")
+    @JoinColumn(name = "userdetails_id")
     @IndexedEmbedded
     @JsonIgnore
     private UserDetail userDetails;
@@ -52,9 +54,13 @@ public class DoctorInfo{
     @ManyToMany(mappedBy = "doctors")
     private List<Department> departments;
 
+    public DoctorInfo() {
+    }
+
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -62,6 +68,7 @@ public class DoctorInfo{
     public String getSpecialization() {
         return specialization;
     }
+
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
     }
@@ -69,6 +76,7 @@ public class DoctorInfo{
     public List<Department> getDepartments() {
         return departments;
     }
+
     public void setDepartments(List<Department> departments) {
         this.departments = departments;
     }
@@ -76,13 +84,15 @@ public class DoctorInfo{
 	public UserDetail getUserDetails() {
 		return userDetails;
 	}
-	public void setUserDetails(UserDetail userDetails) {
+
+    public void setUserDetails(UserDetail userDetails) {
 		this.userDetails = userDetails;
 	}
 
     public String getCategory() {
         return category;
     }
+
     public void setCategory(String category) {
         this.category = category;
     }

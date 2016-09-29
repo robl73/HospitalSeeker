@@ -48,9 +48,9 @@ public final class Page<T>{
     }
 
     public void setSortType(String sortType) {
-		this.sortType = sortType;
-	}
-    
+        this.sortType = sortType;
+    }
+
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
     }

@@ -1,13 +1,15 @@
 package com.hospitalsearch.controller;
 
-import com.hospitalsearch.dto.AdminTokenConfigDTO;
-import com.hospitalsearch.dto.UserFilterDTO;
-import com.hospitalsearch.dto.UserRegisterDTO;
-import com.hospitalsearch.entity.Role;
-import com.hospitalsearch.entity.User;
-import com.hospitalsearch.service.MailService;
-import com.hospitalsearch.service.RoleService;
-import com.hospitalsearch.service.UserService;
+//import static com.hospitalsearch.config.security.SecurityConfiguration.REMEMBER_ME_TOKEN_EXPIRATION;
+//import static com.hospitalsearch.entity.PasswordResetToken.RESET_PASSWORD_TOKEN_EXPIRATION;
+//import static com.hospitalsearch.entity.VerificationToken.VERIFICATION_TOKEN_EXPIRATION;
+
+import java.net.ConnectException;
+import java.util.List;
+import java.util.Locale;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -15,24 +17,34 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
-import java.net.ConnectException;
-import java.util.List;
-import java.util.Locale;
-
-import static com.hospitalsearch.config.security.SecurityConfiguration.REMEMBER_ME_TOKEN_EXPIRATION;
-import static com.hospitalsearch.entity.PasswordResetToken.RESET_PASSWORD_TOKEN_EXPIRATION;
-import static com.hospitalsearch.entity.VerificationToken.VERIFICATION_TOKEN_EXPIRATION;
+import com.hospitalsearch.dto.AdminTokenConfigDTO;
+import com.hospitalsearch.dto.UserFilterDTO;
+import com.hospitalsearch.dto.UserRegisterDTO;
+import com.hospitalsearch.entity.AdminTokenConfig;
+import com.hospitalsearch.entity.Role;
+import com.hospitalsearch.entity.User;
+import com.hospitalsearch.service.AdminTokenConfigService;
+import com.hospitalsearch.service.MailService;
+import com.hospitalsearch.service.RoleService;
+import com.hospitalsearch.service.UserService;
 
 /**
  * @author Andrew Jasinskiy on 10.05.16
  */
 @Controller
 public class AdminController {
+	
+	@Autowired
+	private AdminTokenConfigService configService;
 
     @Autowired
     UserService userService;
@@ -54,7 +66,6 @@ public class AdminController {
     public List<Role> initializeRoles() {
         return roleService.getAll();
     }
-
 
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/**/changeStatus/{userId}", method = RequestMethod.GET)
@@ -151,29 +162,40 @@ public class AdminController {
         model.addAttribute("users", users);
         return "admin/users";
     }
-
+    
+    
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "admin/configureToken", method = RequestMethod.GET)
     public String configureToken(ModelMap model) throws Exception {
-        model.addAttribute("configDTO", new AdminTokenConfigDTO());
+    	System.out.println("GET");
+    	AdminTokenConfigDTO configs = new AdminTokenConfigDTO();
+    		configs.setConfigs(configService.getAll());
+    	model.addAttribute("configs", configs);
         return "admin/configureToken";
     }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "admin/configureToken", method = RequestMethod.POST)
-    public String configureTokens(ModelMap model,
-                                  @Valid @ModelAttribute("configDTO") AdminTokenConfigDTO configDTO,
-                                  BindingResult result) throws Exception {
-        if (result.hasErrors()) {
+    public String configureTokens(ModelMap model, 
+    		 @Valid @ModelAttribute("configs") AdminTokenConfigDTO configs, BindingResult result) throws Exception {
+    	System.out.println("!!!!!!! POST");
+    	if (result.hasErrors()) {
+        	System.out.println("!!!!!!! POST Errors");
+        	model.addAttribute("configs", configs);
             return "admin/configureToken";
         }
-        RESET_PASSWORD_TOKEN_EXPIRATION = configDTO.getResetPasswordToken();
-        VERIFICATION_TOKEN_EXPIRATION = configDTO.getVerificationToken();
-        REMEMBER_ME_TOKEN_EXPIRATION = configDTO.getRememberMeToken();
-        model.addAttribute("configDTO", configDTO);
+    	System.out.println("!!!!!!! POST NOerrors");
+    	for (AdminTokenConfig config : configs.getConfigs()){
+    		configService.update(config);
+    	}
+    	AdminTokenConfigDTO configsNew = new AdminTokenConfigDTO();
+    	configsNew.setConfigs(configService.getAll());
+    	model.addAttribute("configs", configsNew);
         return "admin/configureToken";
     }
-
+    
+    
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "admin/newUser", method = RequestMethod.GET)
     public String newRegistration(@ModelAttribute("userDto") UserRegisterDTO userDto, ModelMap model) {
