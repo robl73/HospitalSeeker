@@ -49,7 +49,7 @@ public class UniquTokenMinMaxValidator implements ConstraintValidator<UniquToken
 
 			}
 			if (config.getToken().equals(Token.VERIFICATION_TOKEN_EXPIRATION)) {
-				if (config.getValue() < 24 || config.getValue() > 168) {
+				if (config.getValue() < 24 || config.getValue() > 72) {
 					return false;
 				}
 			}

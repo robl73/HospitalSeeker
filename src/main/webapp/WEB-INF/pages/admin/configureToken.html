@@ -3,6 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="layout">
 <head>
+<script th:src="@{/js/configToken.js}"></script>
 <meta charset="ISO-8859-1" />
 <meta charset="UTF-8" />
 <title>Configure Tokens</title>
@@ -10,7 +11,6 @@
 <link rel="stylesheet" th:href="@{/css/animate.css}" />
 <link rel="stylesheet" th:href="@{/css/theme.default.css}" />
 <script th:src="@{/js/jquery.validate.js}"></script>
-<script th:src="@{/js/configToken.js}"></script>
 <script th:src="@{/js/localization.js}"></script>
 </head>
 <body>
@@ -26,47 +26,40 @@
 					<div>
 
 
-						<div class="form-group form-horizontal">
+						<div class="form-group form-horizontal" style="color: black">
 
 
 
 							<form method="POST" id="configTokenForm"
 								th:action="@{/admin/configureToken}" th:object="${configs}"
-								class="form-horizontal">
-
-								<div class="form-group"
-									th:each="config,status : ${configs.getConfigs()}">
+								>
+								<div class="form-group" style="color: black"
+									th:each="config,status	 : ${configs.getConfigs()}">
 
 
 									<label for="value" class="col-sm-4 control-label"
-										th:text="${config.token}">
+										th:text="${config.token}" style="color: black">
 										</label> 
 										<input type="hidden"
 										th:field="*{configs[__${status.index}__].token}"
 										th:value="${config.token}" />
 
-									<div class="col-sm-1">
+									<div class="col-sm-3" style="color: black">
 										<input type="text"
 											th:field="*{configs[__${status.index}__].value}"
-											th:value="${config.value}" class="form-controlNew"
-											th:class="form-controlNew" id="value" /> 
-											<span
-											th:if="${#fields.hasErrors('*{configs[__${status.index}__].value}')}"
-											th:errors="*{configs}" class="has-error text-danger">
-											</span>
-										<span th:if="${#fields.hasAnyErrors()}" th:errors="*{configs}"
-											class="has-error text-danger">
-											</span> <i
-											th:if="${#fields.hasErrors('configs[__${status.index}__].value')}"
-											th:errors="*{configs}" class="removable-i fade in"></i>
-
-
-
+											th:value="${config.value}"
+											class="form-control" 
+											/>
+											 
 									</div>
 									<label class="col-sm-1 control-label" for="value"
-										th:text="#{admin.configure.token.hours}"></label>
+										th:text="#{admin.configure.token.hours}" style="color: black"></label>
 								</div>
-
+								<div class="errors-configs">
+										<span th:if="${#fields.hasAnyErrors()}" th:errors="${configs}"
+											>
+											</span> 
+</div>
 								<div class="form-group">
 									<div class="row">
 										<input type="submit"

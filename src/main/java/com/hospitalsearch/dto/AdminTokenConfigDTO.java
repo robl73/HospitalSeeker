@@ -5,7 +5,7 @@ import java.util.List;
 import com.hospitalsearch.entity.AdminTokenConfig;
 import com.hospitalsearch.service.annotation.UniquTokenMinMax;
 
-@UniquTokenMinMax(message = "Token should be in valid margin")
+@UniquTokenMinMax(message = "Tokens should be in valid margin. Tokens are not update")
 public class AdminTokenConfigDTO {
 
 	private List<AdminTokenConfig> configs;

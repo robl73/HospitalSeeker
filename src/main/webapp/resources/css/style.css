@@ -861,6 +861,14 @@ li a.active {
 	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
 }
 
+.errors-configs{
+	 text-align: center;
+	color: red;
+	height: 40px;
+	font-size: 150%;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+}
+
 
 /*footer*/
 .footer-para {
