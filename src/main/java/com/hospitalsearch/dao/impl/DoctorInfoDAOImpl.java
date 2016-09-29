@@ -2,10 +2,7 @@ package com.hospitalsearch.dao.impl;
 
 import com.hospitalsearch.dao.DoctorInfoDAO;
 import com.hospitalsearch.dto.DoctorSearchDTO;
-import com.hospitalsearch.entity.DoctorInfo;
-import com.hospitalsearch.entity.Hospital;
-import com.hospitalsearch.entity.User;
-import com.hospitalsearch.entity.UserDetail;
+import com.hospitalsearch.entity.*;
 import com.hospitalsearch.util.Page;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.hibernate.SessionFactory;
@@ -43,11 +40,10 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo,Long> implement
 
     public static final String[] DOCTOR_PROJECTION = new String[]{"userDetails.user.email", "userDetails.firstName", "userDetails.lastName"};
     @Override
-    public Page<DoctorSearchDTO> advancedDoctorSearch(String query) throws ParseException, InterruptedException{
+    public Page<DoctorInfo> advancedDoctorSearch(String query) throws ParseException, InterruptedException{
         FullTextSession session = Search.getFullTextSession(this.getSessionFactory().openSession());
         session.createIndexer(DoctorInfo.class).startAndWait();
         session.close();
-
-        return new Page<DoctorSearchDTO>(getSessionFactory(), query, DOCTOR_PROJECTION);
+        return new Page<DoctorInfo>(getSessionFactory(), query, DOCTOR_PROJECTION, DoctorInfo.class);
     }
 }

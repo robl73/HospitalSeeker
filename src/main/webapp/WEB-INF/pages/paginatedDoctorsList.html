@@ -1,0 +1,79 @@
+        <div class="row" th:fragment="paginated-doctors-list" xmlns:th="http://www.w3.org/1999/xhtml">
+                <div class="col-lg-offset-1 col-lg-10 col-md-12">
+                    <div class="row"
+                         th:each="doctorSearchDTO:${pagedList}"
+                         th:object="${doctorSearchDTO}">
+
+                        <div class="col-lg-4 col-md-4 col-xs-5">
+                            <div class="single-about-detail">
+                                <div class="about-img">
+                                    <a href="#" th:href="@{|/doctors/${doctorSearchDTO.doctorId}|}">
+                                        <img class="img-responsive" src="/"
+                                             th:src="@{|/img/doctors/${doctorSearchDTO.imagePath}|}" />
+                                    </a>
+                                </div>
+                                <div class="about-details" th:href="@{|/doctors/${doctorSearchDTO.doctorId}|}">
+                                    <div class="pentagon-text">
+                                        <h1 th:text="${#strings.substring(doctorSearchDTO.firstName,0,1)} "/>
+                                    </div>
+                                    <h3 th:text="|${doctorSearchDTO.firstName} ${doctorSearchDTO.lastName}|" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-sm-8 col-md-7">
+                            <div class="card panel panel-default text-xs-right">
+                                <h3 class="panel-heading" th:text="|About ${doctorSearchDTO.firstName} ${doctorSearchDTO.lastName}|" />
+                                <h5 class="panel-body" th:text="|Email : ${doctorSearchDTO.email}|" />
+                                <h5 class="panel-body" th:text="|Specialization : ${doctorSearchDTO.specialization}|" />
+                                <h5 class="panel-body" th:text="|Category: ${doctorSearchDTO.category}|" />
+                                <h5 th:each="hospitalName:${doctorSearchDTO.hospitalsName}" th:object="${hospitalName}" class="panel-body" th:text="|Hospitals name: ${hospitalName}|" />
+                            </div>
+                        </div>
+                    </div>
+                    <ul th:if="${pagination}" class="pagination pagination-lg">
+                        <li class="page-item" th:if="${currentPage != 1}">
+                            <a class="page-link"
+                               th:href="@{/doctors/page/1/prams(type=${type},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}">
+                                First
+                            </a>
+                        </li>
+                        <li class="page-item" th:if="${currentPage != 1}">
+                            <a class="page-link"
+                                    th:href="@{/doctors/page/{currentPage}/prams(currentPage=${currentPage-1},type=${type},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}"
+                                    aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li
+
+                                th:each="number:${#numbers.sequence(1,pageCount)}"
+                                th:class="page-item"
+                                th:classappend="${pageConfig.currentPage == number }?'active': ''">
+                            <a th:class="page-link"
+                               th:classappend="${pageConfig.currentPage == number }?'active': ''"
+                               th:href="@{/doctors/page/{number}/prams(number=${number},type=${type},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}" th:text="${number}" />
+                        </li>
+
+
+                        <li class="page-item"
+                            th:if="${(pageConfig.currentPage+1) &lt;= pageCount}">
+                            <a class="page-link"
+                               th:href="@{/doctors/page/{currentPage}/prams(currentPage=${currentPage+1},type=${type},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}"
+                               aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                        <li class="page-item"
+                            th:if="${(pageConfig.currentPage+1) &lt;= pageCount}">
+                            <a class="page-link"
+                               th:href="@{/hospital/page/${pageCount}/prams(pageCount=${pageCount},type=${type},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}">
+                                Last
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+        </div>

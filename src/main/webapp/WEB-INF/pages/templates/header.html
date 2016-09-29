@@ -191,6 +191,7 @@
                                required="required"
                                data-error="minumum of 3 characters"
                                th:placeholder="#{header.menu.searchbar.placeholder.hospitals}"/>
+                         <!--<input type="hidden" name="itemsPerPage" value="3"/>-->
  				    	    <div class="help-block with-errors"></div>
 
                         </div>
@@ -203,18 +204,19 @@
             </div>
 
             <div class="[search-doctor-container]" style="display: inline-block; width: 50%; float: right;">
-                <form data-toggle="validator" th:action="@{/hospitals}" id="search-doctor-form" class="[ form-inline ]" method="GET" role="search">
+                <form data-toggle="validator" th:action="@{/doctors}" id="search-doctor-form" class="[ form-inline ]" method="GET" role="search">
                     <div class="[ input-group ]" style="z-index:1000000;width: 100%;">
 
 
                         <div class="form-group">
-                            <input id="select_doctor_search"  type="text" class="[ form-control ] dropdown-field" name="d"
+                            <input id="select_doctor_search"  type="text" class="[ form-control ] dropdown-field" name="q"
                                    minlength="3"
                                    length="30"
                                    maxlength="30"
                                    required="required"
                                    data-error="minumum of 3 characters"
                                    th:placeholder="#{header.menu.searchbar.placeholder.doctors}"/>
+                            <!--<input type="hidden" name="itemsPerPage" value="3"/>-->
                             <div class="help-block with-errors"></div>
 
                         </div>

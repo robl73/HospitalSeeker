@@ -14,13 +14,13 @@ $(document).ready(function(){
 function sendPageConfig(event){
 		var itemPerPage = $('#pref-perpage option:selected').text();
 		if(itemPerPage === "" || itemPerPage== null ){
-			itemPerPage = "10";
+			itemPerPage = "3";
 		}	
-		var sort = $("#pref-orderby").val();
-		var url = $('#path').val()+'/hospital/page/config';
+		var currentSearchQuery = $("#pref-query").val();
+		var type =$("#pref-type").val();
+		var url = $('#path').val()+'/'+type+'?q='+currentSearchQuery+"$itemsPerPage="+itemPerPage;
 		$.get(url,{
 			'itemPerPage':itemPerPage,
-			'type':sort
                     },
 			function(data){
 				window.location.replace($('#path').val()+"/hospitals");

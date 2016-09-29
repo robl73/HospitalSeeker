@@ -16,6 +16,6 @@ public interface DepartmentService {
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
     List<Department> getAll();
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-    public List<Department> findByHospitalId(Long id);
+    List<Department> findByHospitalId(Long id);
 }
 

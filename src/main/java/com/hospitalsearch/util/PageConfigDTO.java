@@ -4,10 +4,18 @@ public class PageConfigDTO {
 
     private String type;
     private Integer itemsPerPage;
+    private Integer currentPage;
     private String currentSearchQuery;
 
     public PageConfigDTO() {
 
+    }
+
+    public PageConfigDTO(String type, Integer itemsPerPage, Integer currentPage, String currentSearchQuery) {
+        this.type = type;
+        this.itemsPerPage = itemsPerPage;
+        this.currentPage = currentPage;
+        this.currentSearchQuery = currentSearchQuery;
     }
 
     public Integer getItemsPerPage() {
@@ -26,6 +34,14 @@ public class PageConfigDTO {
         this.type = type;
     }
 
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
+    }
+
     public void setCurrentSearchQuery(String currentSearchQuery) {
         this.currentSearchQuery = currentSearchQuery;
     }
@@ -34,4 +50,13 @@ public class PageConfigDTO {
         return currentSearchQuery;
     }
 
+    @Override
+    public String toString() {
+        return "PageConfigDTO{" +
+                "type='" + type + '\'' +
+                ", itemsPerPage=" + itemsPerPage +
+                ", currentPage=" + currentPage +
+                ", currentSearchQuery='" + currentSearchQuery + '\'' +
+                '}';
+    }
 }

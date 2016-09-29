@@ -22,5 +22,4 @@ public interface HospitalDAO extends GenericDAO<Hospital, Long> {
     List<Hospital> filterHospitalsByAddress(HospitalFilterDTO filterInfo);
 
     Page<Hospital> advancedHospitalSearch(String args) throws ParseException, InterruptedException;
-
 }

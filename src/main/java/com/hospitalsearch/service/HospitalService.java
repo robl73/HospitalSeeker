@@ -32,9 +32,9 @@ public interface HospitalService {
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
     List<Hospital> getAll();
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	public List<Hospital> getAllByBounds(Bounds bounds);	
+    List<Hospital> getAllByBounds(Bounds bounds);
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-    public List<Hospital> filterHospitalsByAddress(HospitalFilterDTO filterInfo);
+    List<Hospital> filterHospitalsByAddress(HospitalFilterDTO filterInfo);
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-    public Page<Hospital> advancedHospitalSearch(String args) throws ParseException, InterruptedException;
+    Page<Hospital> advancedHospitalSearch(String args) throws ParseException, InterruptedException;
 }
