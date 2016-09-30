@@ -37,17 +37,21 @@ public class SchedulerServiceImpl implements SchedulerService {
 
     @Override
     public void saveScheduler(String schedulerString, Long doctorId) throws IOException {
-        Scheduler scheduler = schedulerDAO.getByDoctorId(doctorId);
+        Long doctorInfoId = doctorInfoDAO.getIdByUserDetail(doctorId);
+        Scheduler scheduler = schedulerDAO.getByDoctorId(doctorInfoId);
         ObjectMapper mapper = new ObjectMapper();
         Scheduler newScheduler = mapper.readValue(schedulerString, Scheduler.class);
-        Long doctorinfoId = doctorInfoDAO.getIdByUserDetail(doctorId);
-//        newScheduler.setDoctorInfo(doctorInfoDAO.getById(doctorId));
-        newScheduler.setDoctorInfo(doctorInfoDAO.getById(doctorinfoId));
+        newScheduler.setDoctorInfo(doctorInfoDAO.getById(doctorInfoId));
         if (scheduler != null) {
-            schedulerDAO.delete(scheduler);
+            scheduler.setAppSize(newScheduler.getAppSize());
+            scheduler.setDayStart(newScheduler.getDayStart());
+            scheduler.setDayEnd(newScheduler.getDayEnd());
+            scheduler.setWeekSize(newScheduler.getWeekSize());
+            scheduler.setEvents(newScheduler.getEvents());
+        } else {
+            scheduler = newScheduler;
         }
-        schedulerDAO.save(newScheduler);
-
+        schedulerDAO.save(scheduler);
     }
 
     @Override

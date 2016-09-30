@@ -28,4 +28,9 @@ public class SchedulerDAOImpl extends GenericDAOImpl<Scheduler, Long> implements
         Scheduler scheduler = (Scheduler) criteria.uniqueResult();
         return scheduler;
     }
+
+    @Override
+    public void merge(Scheduler scheduler) {
+        getSessionFactory().getCurrentSession().merge(scheduler);
+    }
 }

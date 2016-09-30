@@ -29,3 +29,19 @@ html, body {
     opacity: 0.27;
     filter:alpha(opacity=27);
 }
+
+.showInfo {
+    position: fixed;
+    top: 7px;
+    left: 45vw;
+    z-index: 1000;
+    width: auto;
+    height: auto;
+}
+
+.showInfoSuccess {
+    display: none;
+}
+.showInfoError {
+    display: none;
+}

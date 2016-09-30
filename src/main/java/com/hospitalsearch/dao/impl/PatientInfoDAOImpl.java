@@ -29,7 +29,6 @@ public class PatientInfoDAOImpl extends GenericDAOImpl<PatientInfo, Long> implem
 
     @Override
     public PatientInfo getByUserDetailId(Long id) {
-//        PatientInfo patientInfo = (PatientInfo) getHibernateTemplate().findByNamedParam("select p from com.hospitalsearch.entity.PatientInfo p where p.userDetail = :id", "id", id);
         PatientInfo patientInfo = (PatientInfo) getSessionFactory().getCurrentSession().createCriteria(PatientInfo.class, "p")
                 .createAlias("p.userDetail", "u")
                 .add(Restrictions.eq("u.id", id))

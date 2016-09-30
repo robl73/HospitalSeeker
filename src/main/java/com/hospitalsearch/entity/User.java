@@ -53,7 +53,8 @@ public class User implements Comparable<User> {
 	private Set<Role> userRoles = new HashSet<>();
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn
+	@JoinColumn(name="userdetails_id")
+	@Fetch(FetchMode.SELECT)
 	@ContainedIn
 	@JsonIgnore
 	private UserDetail userDetails;
