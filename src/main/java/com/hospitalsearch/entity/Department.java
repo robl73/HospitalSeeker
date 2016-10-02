@@ -76,13 +76,13 @@ public class Department{
 		this.imagePath = imagePath;
 	}
 
-	@Override
-	public String toString() {
-		return "Department{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", doctors=" + doctors +
-				", hospital=" + hospital +
-				'}';
-	}
+//	@Override
+//	public String toString() {
+//		return "Department{" +
+//				"id=" + id +
+//				", name='" + name + '\'' +
+//				", doctors=" + doctors +
+//				", hospital=" + hospital +
+//				'}';
+//	}
 }

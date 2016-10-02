@@ -5,6 +5,7 @@ import com.hospitalsearch.dto.DoctorDTO;
 import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.util.Page;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo,Long> implements DoctorInfoDAO {
+public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implements DoctorInfoDAO {
 
     @Autowired
     public DoctorInfoDAOImpl(SessionFactory factory) {
@@ -66,4 +67,12 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo,Long> implement
         session.close();
         return new Page<DoctorInfo>(getSessionFactory(), query, DOCTOR_PROJECTION, DoctorInfo.class);
     }
+
+    @Override
+    public DoctorInfo getByEmail(String email) {
+        Query query = getSessionFactory().getCurrentSession().createQuery("select doc from DoctorInfo doc where doc.userDetails.user.email = :email");
+        query.setParameter("email", email);
+        return (DoctorInfo) query.uniqueResult();
+    }
+
 }
