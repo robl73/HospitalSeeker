@@ -58,6 +58,8 @@ public class UserDetailController {
             model.addAttribute("email", PrincipalConverter.getPrincipal());
             return "user/detail";
         }
+        User user = userService.getByEmail(PrincipalConverter.getPrincipal());
+        userDetail.setUser(user);
         PatientInfo patientInfo = patientInfoService.getByUserDetailId(userDetail.getId());
         PatientCard patientCard;
         if (patientInfo == null) {

@@ -9,15 +9,15 @@ import javax.persistence.*;
 public class PatientCard{
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patientcard_gen")
+    @SequenceGenerator(name = "patientcard_gen", sequenceName = "patientcard_id_seq", initialValue = 1, allocationSize = 1)
     private Long id;
 
     @OneToMany(mappedBy = "patientCard", fetch = FetchType.EAGER)
     List<CardItem> cardItems;
 
-    @MapsId
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "patientinfo_id")
     private PatientInfo patientInfo;
 
     public PatientCard(PatientInfo patientInfo) {

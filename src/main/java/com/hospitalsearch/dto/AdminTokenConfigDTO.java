@@ -3,9 +3,9 @@ package com.hospitalsearch.dto;
 import java.util.List;
 
 import com.hospitalsearch.entity.AdminTokenConfig;
-import com.hospitalsearch.service.annotation.UniquTokenMinMax;
+import com.hospitalsearch.service.annotation.TokensValid;
 
-@UniquTokenMinMax(message = "Tokens should be in valid margin. Tokens are not update")
+@TokensValid(message = "Tokens should be only numbers in valid margin. Tokens are not update")
 public class AdminTokenConfigDTO {
 
 	private List<AdminTokenConfig> configs;

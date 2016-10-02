@@ -25,7 +25,6 @@ public class PatientInfo {
 	@OneToOne(cascade = CascadeType.ALL)
 	@Fetch(FetchMode.SELECT)
 	@JoinColumn(name="patientcard_id")
-	@PrimaryKeyJoinColumn
 	@JsonIgnore
 	private PatientCard patientCard;
 

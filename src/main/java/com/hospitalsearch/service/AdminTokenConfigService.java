@@ -11,7 +11,6 @@ import com.hospitalsearch.entity.Token;
 @Transactional
 public interface AdminTokenConfigService {
 
-
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	List<AdminTokenConfig> getAll();
 

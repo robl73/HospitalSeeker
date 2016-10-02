@@ -34,11 +34,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void actionControl(Map<String, String[]> appointmentParams, Long doctorId, String principal) {
         UserDetail userDetail = userDetailDAO.getById(userDAO.getByEmail(principal).getId());
-//        DoctorInfo doctorInfo = doctorInfoDAO.getById(doctorId);
         DoctorInfo doctorInfo = doctorInfoDAO.getById(doctorInfoDAO.getIdByUserDetail(doctorId));
         AppointmentDto appointmentDto = AppointmentDtoService.createAppointmentDto(appointmentParams, doctorInfo);
         Appointment appointment = appointmentDto.getAppointment();
-
 
         appointment.setDoctorInfo(doctorInfo);
         appointment.setUserDetail(userDetail);

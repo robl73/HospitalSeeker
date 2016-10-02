@@ -45,15 +45,15 @@ public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Lo
 
 	@Override
 	public void save(AdminTokenConfig instance) {
-	/*	if (isExists(instance) == true) {
+		if (isExists(instance) == true) {
 			update(instance);
 		} else {
 			org.hibernate.Query query = this.currentSession()
 					.createQuery("insert into AdminTokenConfig (token, value) values (:token, :value)");
-			query.setParameter("token", Token.REMEMBER_ME_TOKEN_EXPIRATION);// instance.getToken());
-			query.setParameter("value", "45");//instance.getValue());
+			query.setParameter("value", instance.getValue());
+			query.setParameter("token", instance.getToken());
 			query.executeUpdate();
-		}*/
+		}
 	}
 
 	private boolean isExists(AdminTokenConfig instance) {

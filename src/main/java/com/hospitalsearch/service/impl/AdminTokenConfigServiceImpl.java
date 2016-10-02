@@ -2,8 +2,6 @@ package com.hospitalsearch.service.impl;
 
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +14,6 @@ import com.hospitalsearch.service.AdminTokenConfigService;
 @Service
 public class AdminTokenConfigServiceImpl implements AdminTokenConfigService{
 
-	 private final Logger logger = LogManager.getLogger(VerificationTokenServiceImpl.class);
-	
     @Autowired
     private AdminTokenConfigDAO configDAO;
 

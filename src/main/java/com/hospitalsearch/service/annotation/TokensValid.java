@@ -14,8 +14,8 @@ import javax.validation.Payload;
 @Documented
 @Retention(RUNTIME)
 @Target({TYPE, FIELD})
-@Constraint(validatedBy = UniquTokenMinMaxValidator.class)
-public @interface UniquTokenMinMax {
+@Constraint(validatedBy = TokensValidValidator.class)
+public @interface TokensValid {
 
 	String message();
 
