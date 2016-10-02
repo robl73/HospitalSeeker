@@ -1,9 +1,5 @@
 package com.hospitalsearch.controller;
 
-//import static com.hospitalsearch.config.security.SecurityConfiguration.REMEMBER_ME_TOKEN_EXPIRATION;
-//import static com.hospitalsearch.entity.PasswordResetToken.RESET_PASSWORD_TOKEN_EXPIRATION;
-//import static com.hospitalsearch.entity.VerificationToken.VERIFICATION_TOKEN_EXPIRATION;
-
 import java.net.ConnectException;
 import java.util.List;
 import java.util.Locale;
@@ -167,7 +163,6 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "admin/configureToken", method = RequestMethod.GET)
     public String configureToken(ModelMap model) throws Exception {
-    	System.out.println("GET");
     	AdminTokenConfigDTO configs = new AdminTokenConfigDTO();
     		configs.setConfigs(configService.getAll());
     	model.addAttribute("configs", configs);
@@ -179,13 +174,10 @@ public class AdminController {
     @RequestMapping(value = "admin/configureToken", method = RequestMethod.POST)
     public String configureTokens(ModelMap model, 
     		 @Valid @ModelAttribute("configs") AdminTokenConfigDTO configs, BindingResult result) throws Exception {
-    	System.out.println("!!!!!!! POST");
     	if (result.hasErrors()) {
-        	System.out.println("!!!!!!! POST Errors");
         	model.addAttribute("configs", configs);
             return "admin/configureToken";
         }
-    	System.out.println("!!!!!!! POST NOerrors");
     	for (AdminTokenConfig config : configs.getConfigs()){
     		configService.update(config);
     	}

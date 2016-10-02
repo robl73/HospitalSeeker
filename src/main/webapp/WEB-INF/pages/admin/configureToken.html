@@ -25,17 +25,13 @@
 
 					<div>
 
-
 						<div class="form-group form-horizontal" style="color: black">
-
-
 
 							<form method="POST" id="configTokenForm"
 								th:action="@{/admin/configureToken}" th:object="${configs}"
 								>
 								<div class="form-group" style="color: black"
 									th:each="config,status	 : ${configs.getConfigs()}">
-
 
 									<label for="value" class="col-sm-4 control-label"
 										th:text="${config.token}" style="color: black">

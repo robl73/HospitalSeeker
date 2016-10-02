@@ -7,16 +7,15 @@ import com.hospitalsearch.dto.AdminTokenConfigDTO;
 import com.hospitalsearch.entity.AdminTokenConfig;
 import com.hospitalsearch.entity.Token;
 
-public class UniquTokenMinMaxValidator implements ConstraintValidator<UniquTokenMinMax, AdminTokenConfigDTO> {
+public class TokensValidValidator implements ConstraintValidator<TokensValid, AdminTokenConfigDTO> {
 
 	
 	@Override
-	public void initialize(UniquTokenMinMax constraintAnnotation) {
+	public void initialize(TokensValid constraintAnnotation) {
 	}
 
 	@Override
 	public boolean isValid(AdminTokenConfigDTO configs, ConstraintValidatorContext context) {
-		System.out.println("\nVALIDATOR FOR CONFIG.DTO");
 		if(!isValidType(configs) || !isValidNumber(configs)){
 			return false;
 		}
