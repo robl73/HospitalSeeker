@@ -197,8 +197,8 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
 
     @Override
     public Long countOfUsersByRole(String role) {
-        List list = getHibernateTemplate().find("select count(*) from com.hospitalsearch.entity.PatientInfo");
-        return (Long) list.get(0);
+        Query query = getSessionFactory().getCurrentSession().createQuery("select count(*) from PatientInfo");
+        return (Long) query.uniqueResult();
     }
 
     @Override

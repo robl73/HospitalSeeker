@@ -1,6 +1,7 @@
 package com.hospitalsearch.service.impl;
 
 import com.hospitalsearch.dao.CardItemDAO;
+import com.hospitalsearch.dao.DoctorInfoDAO;
 import com.hospitalsearch.dao.PatientInfoDAO;
 import com.hospitalsearch.entity.*;
 import com.hospitalsearch.service.CardItemService;
@@ -32,18 +33,21 @@ public class CardItemServiceImpl implements CardItemService {
     @Autowired
     private PatientInfoDAO patientInfoDAO;
 
+    @Autowired
+    private DoctorInfoDAO doctorInfoDAO;
+
     @Override
     public void add(CardItem cardItem, String doctorEmail) {
-        try{
-            User doctor = userService.getByEmail(doctorEmail);
+        try {
             LocalDateTime dateTime = LocalDateTime.now();
             Timestamp date = Timestamp.valueOf(dateTime);
             cardItem.setDate(date);
-            cardItem.getDoctorInfo().getUserDetails().setUser(doctor);
+            DoctorInfo doctorInfo = doctorInfoDAO.getByEmail(doctorEmail);
+            cardItem.setDoctorInfo(doctorInfo);
             dao.save(cardItem);
-            log.info("Save card item" +cardItem);
-        }catch (Exception e){
-            log.error("Saving card item" + cardItem+" - " + e);
+            log.info("Save card item" + cardItem);
+        } catch (Exception e){
+            log.error("Saving card item" + cardItem + " - " + e);
         }
     }
 
@@ -76,9 +80,9 @@ public class CardItemServiceImpl implements CardItemService {
 
     @Override
     public boolean persist(CardItem cardItem, String doctorEmail, Long userId) {
-        User user = userService.getById(userId);
-        UserDetail userDetail = user.getUserDetails();
-        PatientInfo patientInfo = patientInfoDAO.getById(userId);
+//        User user = userService.getById(userId);
+//        UserDetail userDetail = user.getUserDetails();
+        PatientInfo patientInfo = patientInfoDAO.getByUserDetailId(userId);
 //        PatientInfo patientInfo = userDetail.getPatientInfo();
         PatientCard patientCard1 = patientInfo.getPatientCard();
         cardItem.setPatientCard(patientCard1);

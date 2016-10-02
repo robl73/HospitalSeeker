@@ -43,7 +43,7 @@ public class CardController {
         User user = userService.getByEmail(PrincipalConverter.getPrincipal());
         List<CardItem> cardItems = cardItemService.getCardItemList(user, page, itemsPerPage);
         UserDetail userDetail = user.getUserDetails();
-        PatientInfo patientInfo = patientInfoService.getById(userDetail.getId());
+        PatientInfo patientInfo = patientInfoService.getByUserDetailId(userDetail.getId());
         PatientCard patientCard = patientInfo.getPatientCard();
         Long cardItemsCount = cardItemService.countOfItems(patientCard);
         Integer pageCount = userService.pageCount(cardItemsCount, itemsPerPage);
@@ -66,7 +66,7 @@ public class CardController {
         User user = userService.getById(Long.parseLong(userId));
         List<CardItem> cardItems = cardItemService.getCardItemList(user, page, itemsPerPage);
         UserDetail userDetail = user.getUserDetails();
-        PatientInfo patientInfo = patientInfoService.getById(userDetail.getId());
+        PatientInfo patientInfo = patientInfoService.getByUserDetailId(userDetail.getId());
         PatientCard patientCard = patientInfo.getPatientCard();
         Long cardItemsCount = cardItemService.countOfItems(patientCard);
         Boolean pagination = false;

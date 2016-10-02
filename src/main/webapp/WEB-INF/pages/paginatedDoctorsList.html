@@ -33,13 +33,13 @@
                     <ul th:if="${pagination}" class="pagination pagination-lg">
                         <li class="page-item" th:if="${currentPage != 1}">
                             <a class="page-link"
-                               th:href="@{/doctors/page/1/prams(type=${type},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}">
+                               th:href="@{/doctors/page/1/params(itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}">
                                 First
                             </a>
                         </li>
                         <li class="page-item" th:if="${currentPage != 1}">
                             <a class="page-link"
-                                    th:href="@{/doctors/page/{currentPage}/prams(currentPage=${currentPage-1},type=${type},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}"
+                                    th:href="@{/doctors/page/{currentPage}/params(currentPage=${currentPage-1},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}"
                                     aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span class="sr-only">Previous</span>
@@ -49,26 +49,26 @@
 
                                 th:each="number:${#numbers.sequence(1,pageCount)}"
                                 th:class="page-item"
-                                th:classappend="${pageConfig.currentPage == number }?'active': ''">
+                                th:classappend="${currentPage == number }?'active': ''">
                             <a th:class="page-link"
-                               th:classappend="${pageConfig.currentPage == number }?'active': ''"
-                               th:href="@{/doctors/page/{number}/prams(number=${number},type=${type},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}" th:text="${number}" />
+                               th:classappend="${currentPage == number }?'active': ''"
+                               th:href="@{/doctors/page/{number}/params(number=${number},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}" th:text="${number}" />
                         </li>
 
 
                         <li class="page-item"
-                            th:if="${(pageConfig.currentPage+1) &lt;= pageCount}">
+                            th:if="${(currentPage+1) &lt;= pageCount}">
                             <a class="page-link"
-                               th:href="@{/doctors/page/{currentPage}/prams(currentPage=${currentPage+1},type=${type},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}"
+                               th:href="@{/doctors/page/{currentPage}/params(currentPage=${currentPage+1},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}"
                                aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Next</span>
                             </a>
                         </li>
                         <li class="page-item"
-                            th:if="${(pageConfig.currentPage+1) &lt;= pageCount}">
+                            th:if="${(currentPage+1) &lt;= pageCount}">
                             <a class="page-link"
-                               th:href="@{/hospital/page/${pageCount}/prams(pageCount=${pageCount},type=${type},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}">
+                               th:href="@{/doctors/page/{pageCount}/params(pageCount=${pageCount},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}">
                                 Last
                             </a>
                         </li>
