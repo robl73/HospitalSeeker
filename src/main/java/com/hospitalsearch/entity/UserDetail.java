@@ -62,6 +62,8 @@ public class UserDetail{
     @MapsId
     @JoinColumn(name = "id")
     @OneToOne
+//    @Fetch(FetchMode.SELECT)
+//    @JoinColumn(name="user_id")
     @IndexedEmbedded
     private User user;
 

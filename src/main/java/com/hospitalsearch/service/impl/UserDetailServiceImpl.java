@@ -1,15 +1,12 @@
 package com.hospitalsearch.service.impl;
 
 import com.hospitalsearch.dao.UserDetailDAO;
-import com.hospitalsearch.dto.DoctorSearchDTO;
 import com.hospitalsearch.entity.PatientCard;
 import com.hospitalsearch.entity.PatientInfo;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.PatientCardService;
 import com.hospitalsearch.service.PatientInfoService;
 import com.hospitalsearch.service.UserDetailService;
-import com.hospitalsearch.util.Page;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

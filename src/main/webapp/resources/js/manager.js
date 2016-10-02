@@ -1,9 +1,10 @@
 var scheduler;
 var idDoctorInfo;
 var workScheduler = null;
-var isSaved = true;
+var isSaved = false;
 var startHours = 0;
 var endHours = 23;
+var timeout;
 
 $(document).ready(function() {
     blockDays();
@@ -16,7 +17,6 @@ $(document).ready(function() {
 
 function init() {
     scheduler.config.limit_time_select = true;
-    console.log(scheduler.config.lightbox.sections);
     scheduler.config.lightbox.sections = [
         {name:"description", height: 130, map_to: "text", type: "textarea" , focus: true},
         {name:"recurring", height: 300, type: "recurring", map_to: "rec_type", button: "recurring"}
@@ -44,7 +44,6 @@ function init() {
             }
         },
         error: function () {
-            // alert("error");
         }
     });
 
@@ -80,12 +79,14 @@ function init() {
 
         workDayBeginChanged();
         workDayEndChanged();
+        isSaved = true;
         scheduler.parse(workScheduler.events, "json");
     } else {
         $('#workDayBeginAt option:first').prop('selected', true);
         $('#workDayEndAt option:last').prop('selected', true);
     }
-    workWeekSizeChanged();
+
+    selectWeekSize();
 
     scheduler.attachEvent("onEventCollision", function() {
         return true;
@@ -94,6 +95,31 @@ function init() {
     scheduler.attachEvent("onBeforeEventChanged", function() {
         isSaved = false;
         return true;
+    });
+
+    scheduler.attachEvent("onEventDeleted", function() {
+        isSaved = false;
+        return true;
+    });
+}
+
+function showInfoSuccess() {
+    showMessage('.showInfoSuccess');
+}
+
+function showInfoError() {
+    showMessage('.showInfoError');
+}
+
+function showMessage(selec) {
+    if ($(selec).is(':visible')) {
+        $(selec).slideUp(0);
+        clearTimeout(timeout);
+    }
+    $(selec).slideDown(300, function() {
+        timeout = setTimeout(function() {
+            $(selec).slideUp(300)
+        }, 4000);
     });
 }
 
@@ -119,6 +145,11 @@ function blockDays() {
 }
 
 function workWeekSizeChanged() {
+    selectWeekSize();
+    isSaved = false;
+}
+
+function selectWeekSize() {
     var selected = $("#workWeekSize").val();
     var ignore = [];
     if (selected == 5) {
@@ -132,6 +163,10 @@ function workWeekSizeChanged() {
 
 function save() {
     scheduler.updateView();
+    if (isSaved) {
+        showInfoSuccess();
+        return;
+    }
     isSaved = true;
     // $.ajaxSetup({
     //     headers: {
@@ -153,10 +188,10 @@ function save() {
         dataType: "text",
         contentType: 'application/json',
         success: function(data) {
-            // showMessage("dataSaved");
+            showInfoSuccess();
         },
         error: function (e) {
-            // showMessage("error to save data");
+            isSaved = false;
         }
     });
 }
@@ -194,6 +229,7 @@ function workDayBeginChanged() {
     showRange('workDayEndAt', start + 1, end);
     scheduler.config.first_hour = start;
     scheduler.setCurrentView();
+    isSaved = false;
 }
 
 function workDayEndChanged() {
@@ -203,6 +239,7 @@ function workDayEndChanged() {
     showRange('workDayBeginAt', start, end);
     scheduler.config.last_hour = end;
     scheduler.setCurrentView();
+    isSaved = false;
 }
 
 function showRange(elementName, begin, end) {

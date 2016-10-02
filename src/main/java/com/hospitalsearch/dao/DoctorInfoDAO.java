@@ -24,5 +24,5 @@ public interface DoctorInfoDAO extends GenericDAO<DoctorInfo,Long>{
 
     Long getIdByUserDetail(Long userDetailId);
 
-    Page<DoctorSearchDTO> advancedDoctorSearch(String query) throws ParseException, InterruptedException;
+    Page<DoctorInfo> advancedDoctorSearch(String query) throws ParseException, InterruptedException;
 }

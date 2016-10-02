@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>Search results</title>
+    <script th:src="@{/js/hospitals.js}"/>
+    <script th:src="@{/js/arrow-top.js}"/>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div id="content" class="content">
+        <div class="about text-center container">
+            <input type="hidden" id="path" th:value="${#httpServletRequest.getContextPath()}"/>
+            <input type="hidden" id="pref-query" th:value="${currentSearchQuery}"/>
+            <input type="hidden" id="pref-type" th:value="${type}"/>
+            <div th:remove="${itemsNumber} &gt; ${itemsPerPage}?'none':'all'" class="row">
+                <div id="filter-panel" class="collapse filter-panel">
+                    <div class="panel panelF-default">
+                        <div class="panel-body">
+                            <form class="form-inline" th:action="@{/${type}}"  method="GET" role="form">
+
+                                <div class="form-group">
+                                    <label class="filter-col" style="margin-right:0;" for="pref-perpage">Rows per page:</label>
+                                    <select id="pref-perpage" th:field="${itemsPerPage}" class="form-control">
+                                        <option th:each="number:${#numbers.sequence(1,20)}"
+                                                th:text="${number}"
+                                                th:value="${number}"
+                                                th:classappend="${number == itemsPerPage}?'selected':''"
+                                        />
+
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit"  class="btn btn-default filter-col" onclick="sendPageConfig(this)">
+                                        <span class="glyphicon glyphicon-record"></span> Save Settings
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#filter-panel" >
+                    <span class="glyphicon glyphicon-cog"></span> <th:block th:text="#{hospitals.list.page.button}"/>
+                </button>
+            </div>
+            <br/>
+            <div th:if="${type == 'hospitals'}">
+                <div th:replace="paginatedHospitalsList:: paginated-hospitals-list"/>
+            </div>
+            <div th:if="${type == 'doctors'}">
+                <div th:replace="paginatedDoctorsList:: paginated-doctors-list"/>
+            </div>
+
+        </div>
+
+        <p th:text='${itemsPerPage}'/>
+        <a href="#content" class="cd-top"/>
+
+    </div>
+</div>
+</body>
+</html>

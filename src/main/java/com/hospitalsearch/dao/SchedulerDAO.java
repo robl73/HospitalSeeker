@@ -11,4 +11,7 @@ import org.springframework.stereotype.Component;
 public interface SchedulerDAO extends GenericDAO<Scheduler, Long> {
 
     Scheduler getByDoctorId(Long doctorId);
+
+    void merge(Scheduler scheduler);
+
 }

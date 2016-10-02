@@ -13,6 +13,7 @@ import java.util.List;
  */
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
+
     @Autowired
     private DepartmentDAO dao;
 

@@ -2,15 +2,7 @@ package com.hospitalsearch.entity;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
@@ -20,10 +12,8 @@ import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.search.annotations.ContainedIn;
-import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Parameter;
+
 
 @Entity
 @Table(name = "doctorinfo")
@@ -105,5 +95,15 @@ public class DoctorInfo{
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "DoctorInfo{" +
+                "id=" + id +
+                ", specialization='" + specialization + '\'' +
+                ", category='" + category + '\'' +
+                ", userDetails=" + userDetails +
+                '}';
     }
 }

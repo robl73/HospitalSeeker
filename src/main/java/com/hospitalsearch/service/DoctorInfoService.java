@@ -35,6 +35,8 @@ public interface DoctorInfoService {
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
     List<DoctorDTO> findByDepartmentId(Long id);
 
+    List<DoctorSearchDTO> converToDoctorSearchDTO(List<DoctorInfo> doctorInfoList);
+
     @Transactional(readOnly=true,propagation= Propagation.SUPPORTS)
-    Page<DoctorSearchDTO> advancedDoctorSearch(String query) throws ParseException, InterruptedException;
+    Page<DoctorInfo> advancedDoctorSearch(String query) throws ParseException, InterruptedException;
 }

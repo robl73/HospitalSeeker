@@ -1,16 +1,15 @@
 package com.hospitalsearch.controller;
 
-import com.hospitalsearch.controller.advice.HospitalControllerAdvice;
-import com.hospitalsearch.entity.PatientCard;
-import com.hospitalsearch.entity.PatientInfo;
+
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.*;
+import com.hospitalsearch.entity.PatientCard;
+import com.hospitalsearch.entity.PatientInfo;
+
 import com.hospitalsearch.util.Gender;
 import com.hospitalsearch.util.Page;
-import com.hospitalsearch.util.PageConfigDTO;
 import com.hospitalsearch.util.PrincipalConverter;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Map;
 
 @Controller
 public class UserDetailController {
@@ -37,8 +35,6 @@ public class UserDetailController {
 
     @Autowired
     PatientCardService patientCardService;
-
-    private Page pageableContent;
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = {"/user/detail"}, method = RequestMethod.GET, consumes = "application/json")
@@ -62,6 +58,8 @@ public class UserDetailController {
             model.addAttribute("email", PrincipalConverter.getPrincipal());
             return "user/detail";
         }
+        User user = userService.getByEmail(PrincipalConverter.getPrincipal());
+        userDetail.setUser(user);
         PatientInfo patientInfo = patientInfoService.getByUserDetailId(userDetail.getId());
         PatientCard patientCard;
         if (patientInfo == null) {
@@ -108,14 +106,4 @@ public class UserDetailController {
 //        return "";
 //    }
 
-//public void initializeModel(Map<String,Object> model,Integer page){
-//    model.put("doctorsdList", this.pageableContent.getDoctorPageList(page));
-//    model.put("pagination", this.pageableContent.isPaginated());
-//    model.put("pageCount", this.pageableContent.getPageCount());
-//    model.put("pageSize", this.pageableContent.getPageSize());
-//    model.put("currentPage", page);
-//    model.put("itemNumber", this.pageableContent.getResultListCount());
-//    model.put("pageConfig",new PageConfigDTO());
-//    model.put("sortType",this.pageableContent.getSortType());
-//}
 }
