@@ -28,17 +28,16 @@ public class DoctorController {
     @Autowired
     DoctorInfoService doctorInfoService;
 
-    private Page pageableContent;
-
-        @RequestMapping("/doctors")
+     @RequestMapping("/doctors")
     public String renderSearchDoctors(Map<String, Object> model,
-                                  @RequestParam(value = "q", required = false) String query) throws ParseException, InterruptedException {
+                                  @RequestParam(value = "d", required = false) String query) throws ParseException, InterruptedException {
+         Page pageableContent = null;
         if (query != null && !query.isEmpty()) {
-            this.pageableContent = doctorInfoService.advancedDoctorSearch(query);
-            this.pageableContent.setPageSize(3);
+            pageableContent = doctorInfoService.advancedDoctorSearch(query);
+            pageableContent.setPageSize(3);
         }
-            this.initializeModel(model, 1, query);
-            if (this.pageableContent.getResultListCount() == 0){
+            this.initializeModel(model, pageableContent, 1, query);
+            if (pageableContent.getResultListCount() == 0){
                 User user = userService.getByEmail(PrincipalConverter.getPrincipal());
                 ModelAndView view = new ModelAndView("error/emptyList");
                 view.addObject("userName", user);
@@ -47,28 +46,27 @@ public class DoctorController {
         return "paginatedLayout";
     }
 
-    @RequestMapping("/doctors/page/{page}/prams")
+    @RequestMapping("/doctors/page/{page}/params")
     public String renderHospitalsByPage(Map<String, Object> model,
                                         @PathVariable("page") Integer currentPage,
-                                        @RequestParam("type") String type,
                                         @RequestParam("itemsPerPage") Integer pageSize,
                                         @RequestParam("currentSearchQuery") String currentSearchQuery
     ) throws ParseException, InterruptedException {
-        this.pageableContent = doctorInfoService.advancedDoctorSearch(currentSearchQuery);
-        this.pageableContent.setPageSize(pageSize);
-        this.initializeModel(model, currentPage, currentSearchQuery);
+        Page pageableContent = doctorInfoService.advancedDoctorSearch(currentSearchQuery);
+        pageableContent.setPageSize(pageSize);
+        this.initializeModel(model, pageableContent, currentPage, currentSearchQuery);
         return "paginatedLayout";
     }
 
-    public void initializeModel(Map<String,Object> model,Integer page, String query){
+    public void initializeModel(Map<String,Object> model,Page pageableContent, Integer page, String query){
 
         model.put("currentSearchQuery", query);
-        model.put("pagedList",  this.doctorInfoService.converToDoctorSearchDTO((List<DoctorInfo>)this.pageableContent.getPageList(page)));
-        model.put("pagination", this.pageableContent.isPaginated());
-        model.put("pageCount", this.pageableContent.getPageCount());
-        model.put("itemsPerPage", this.pageableContent.getPageSize());
+        model.put("pagedList",  this.doctorInfoService.converToDoctorSearchDTO((List<DoctorInfo>) pageableContent.getPageList(page)));
+        model.put("pagination", pageableContent.isPaginated());
+        model.put("pageCount", pageableContent.getPageCount());
+        model.put("itemsPerPage", pageableContent.getPageSize());
         model.put("currentPage", page);
-        model.put("itemsNumber", this.pageableContent.getResultListCount());
+        model.put("itemsNumber", pageableContent.getResultListCount());
         model.put("type", "doctors");
 }
 }

@@ -98,15 +98,15 @@ public class SpringRootConfig {
         return new CommonsMultipartResolver();
     }
 
-    @Bean
-    public SpringLiquibase liquibase() {
-        SpringLiquibase liquibase = new SpringLiquibase();
-     // liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
-        liquibase.setChangeLog("classpath:liquibase-changeLogForDiff.xml");
-        liquibase.setDataSource(dataSource());
-        liquibase.setIgnoreClasspathPrefix(true);
-        return liquibase;
-    }
+//    @Bean
+//    public SpringLiquibase liquibase() {
+//        SpringLiquibase liquibase = new SpringLiquibase();
+//     // liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
+//        liquibase.setChangeLog("classpath:liquibase-changeLogForDiff.xml");
+//        liquibase.setDataSource(dataSource());
+//        liquibase.setIgnoreClasspathPrefix(true);
+//        return liquibase;
+//    }
 
     @Bean
     public ImageValidator imageValidator() {
