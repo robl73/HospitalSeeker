@@ -98,7 +98,7 @@ public class SpringRootConfig {
         return new CommonsMultipartResolver();
     }
 
-    @Bean
+/*    @Bean
     public SpringLiquibase liquibase() {
         SpringLiquibase liquibase = new SpringLiquibase();
      // liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
@@ -106,7 +106,7 @@ public class SpringRootConfig {
         liquibase.setDataSource(dataSource());
         liquibase.setIgnoreClasspathPrefix(true);
         return liquibase;
-    }
+    }*/
 
     @Bean
     public ImageValidator imageValidator() {
