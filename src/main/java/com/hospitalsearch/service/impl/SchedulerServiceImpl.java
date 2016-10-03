@@ -57,7 +57,7 @@ public class SchedulerServiceImpl implements SchedulerService {
     @Override
     public String getByDoctorEmail(String doctorEmail) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(schedulerDAO.getByDoctorId(doctorInfoDAO.getIdByUserDetail(userDAO.getByEmail(doctorEmail).getId())));
+        String json = mapper.writeValueAsString(schedulerDAO.getByDoctorId(doctorInfoDAO.getByEmail(doctorEmail).getId()));
         return json;
     }
 }

@@ -2,6 +2,7 @@
  * Created by igortsapyak on 27.05.16.
  */
 $(document).ready(function () {
+    blockPast('dhx_time_block');
     var principal = $('#principal').text();
     var did = document.getElementById("1").textContent;
     var begin;

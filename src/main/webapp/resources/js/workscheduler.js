@@ -1,49 +1,33 @@
 $(document).ready(function () {
+    blockPast('dhx_time_block');
+    getData('getWorkSchedulerByPrincipal', init);
+});
+
+function init(data) {
     var principal = $('#principal').text();
-    var begin;
-    var end;
-    var dayOfAppointment;
     var schedulerConfig = {};
-    $.ajax({
-        type: "GET",
-        async: false,
-        url: "getWorkSchedulerByPrincipal?doctor=" + principal,
-        dataType: "json",
-        contentType: "application/json",
-        mimeType: "application/json",
-        success: function (data) {
-            schedulerConfig.appSize = data.app_size;
-            schedulerConfig.weekSize = data.week_size;
-            schedulerConfig.dayStart = data.day_start;
-            schedulerConfig.dayEnd = data.day_end;
-            data.events.forEach(function (item, i) {
-                var workDay = item.start_date.substring(0, 10);
-                var hourOne = item.start_date.substring(11, 13);
-                var hourLast = item.end_date.substring(11, 13);
-                    scheduler.blockTime(new Date(workDay), [0, hourOne * 60, hourLast * 60,
-                    24 * 60]);
-            });
+    schedulerConfig.appSize = data.app_size;
+    schedulerConfig.weekSize = data.week_size;
+    schedulerConfig.dayStart = data.day_start;
+    schedulerConfig.dayEnd = data.day_end;
+    var today = new Date();
+    var lastDate = today;
+    data.events.forEach(function (item) {
+        var workDay = item.start_date.substring(0, 10);
+        var hourLast = item.end_date.substring(11, 13);
+        var hourOne = item.start_date.substring(11, 13);
+        var current = new Date(workDay);
+        current.setHours(parseInt(hourLast));
+        if (current > today) {
+            scheduler.blockTime(new Date(workDay), [0, hourOne * 60, hourLast * 60, 24 * 60]);
+            if (current > lastDate) {
+                lastDate = current;
+            }
         }
     });
-    var dayOfWeek = new Date().getDay()-1;
-    var day = new Date().getDate() - 1;
-    var month = new Date().getMonth();
-    var year = new Date().getFullYear();
-    var hour = new Date().getHours() + 1;
     var step = schedulerConfig.appSize;
-    var format = scheduler.date.date_to_str("%H:%i");
     scheduler.config.hour_size_px = (60 / step) * 44;
     scheduler.config.time_step = step;
-    while (day >= 1) {
-        scheduler.blockTime(new Date(year, month, day), "fullday");
-        day--;
-    }
-    while (dayOfWeek >= 1){
-        scheduler.blockTime(new Date(year, month, day), "fullday");
-        dayOfWeek--;
-        day--;
-    }
-    scheduler.blockTime(new Date(), [0 * 60, hour * 60]);
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.config.details_on_dblclick = true;
     scheduler.config.details_on_create = true;
@@ -61,8 +45,9 @@ $(document).ready(function () {
             };
             break;
     }
-    scheduler.attachEvent("onBeforeDrag",function(){return false;})
-    scheduler.attachEvent("onClick",function(){return false;})
+    scheduler.ignore_month = scheduler.ignore_week;
+    scheduler.attachEvent("onBeforeDrag", function() {return false;});
+    scheduler.attachEvent("onClick", function() {return false;});
     scheduler.config.details_on_dblclick = true;
     scheduler.config.dblclick_create = false;
     scheduler.config.first_hour = schedulerConfig.dayStart;
@@ -72,12 +57,14 @@ $(document).ready(function () {
     scheduler.load('getAppointmentsByDoctor?doctor='+principal,'json');
     var dp = new dataProcessor("supplyAppointment?id=" + 300 + "&principal="+principal);
     dp.init(scheduler);
-});
+}
 
 var html = function (id) {
     return document.getElementById(id);
 };
+
 var ev;
+
 scheduler.showLightbox = function (id) {
     var tex_local_from = getMessage('workscheduler.modal.appointment.time.from');
     var tex_local_to = getMessage('workscheduler.modal.appointment.time.to');
@@ -139,7 +126,6 @@ function changeModalContentSecondStep() {
     $('#myModal').modal('hide');
     changeModalContentFirstStep();
 }
-
 
 $(document).keyup(function (e) {
     if (e.keyCode == 27) { // escape key maps to keycode `27`
