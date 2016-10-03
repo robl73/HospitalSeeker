@@ -10,11 +10,14 @@ import com.hospitalsearch.entity.DepartmentsName;
 import com.hospitalsearch.service.DepartmentsNameService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Admin
  */
+
+@Service
 public class DepartmentsNameServiceImpl implements DepartmentsNameService{
     
     @Autowired

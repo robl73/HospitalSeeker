@@ -5,6 +5,7 @@
  */
 package com.hospitalsearch.entity;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
@@ -23,22 +24,22 @@ import org.hibernate.search.annotations.DocumentId;
 //@Embeddable
 @Entity
 @Table(name = "departmenstname")
-public class DepartmentsName {
+public class DepartmentsName implements Serializable {
     
     @Id
 	@DocumentId
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "departmentname_gen")
-	@SequenceGenerator(name = "departmentname_gen", sequenceName = "departmentname_id_seq", initialValue = 1, allocationSize = 1)
+        @SequenceGenerator(name = "departmentname_gen", sequenceName = "departmentname_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
     
-    @Column(name="departmentName")   
+//    @Column(name="departmentname")   
     private String name;
     
-    @Column(name="departmentSpecialization")
+ //   @Column(name="departmentspecialization")
     private String specialization;
     
-    @Column(name="departmentNumber")
-    private int number;
+ //   @Column(name="departmentnumber")
+    private String number;
     
     public String getName() {
         return name;
@@ -56,13 +57,25 @@ public class DepartmentsName {
         this.specialization = specialization;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
+
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    
 
     public DepartmentsName() {
        
