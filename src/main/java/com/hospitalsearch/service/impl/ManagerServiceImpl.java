@@ -3,6 +3,7 @@ package com.hospitalsearch.service.impl;
 import com.hospitalsearch.dao.DoctorInfoDAO;
 import com.hospitalsearch.dao.HospitalDAO;
 import com.hospitalsearch.dao.UserDAO;
+import com.hospitalsearch.dto.DoctorDTO;
 import com.hospitalsearch.entity.Hospital;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.entity.UserDetail;
@@ -42,7 +43,7 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public List<UserDetail> getDoctorsByManager() {
+    public List<DoctorDTO> getDoctorsByManager() {
         return doctorInfoDAO.findByManagerId(userDAO.getByEmail(PrincipalConverter.getPrincipal()).getId());
     }
 

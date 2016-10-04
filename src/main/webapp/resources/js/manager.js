@@ -1,57 +1,47 @@
 var scheduler;
 var idDoctorInfo;
 var workScheduler = null;
-var isSaved = true;
+var isSaved = false;
 var startHours = 0;
 var endHours = 23;
+var timeout;
 
 $(document).ready(function() {
-    blockDays();
     init();
     $('#workWeekSize').change(workWeekSizeChanged);
     $('#workDayBeginAt').change(workDayBeginChanged);
     $('#workDayEndAt').change(workDayEndChanged);
     $('#saveData').click(save);
-});
-
-function init() {
-    scheduler.config.limit_time_select = true;
-    console.log(scheduler.config.lightbox.sections);
-    scheduler.config.lightbox.sections = [
-        {name:"description", height: 130, map_to: "text", type: "textarea" , focus: true},
-        {name:"recurring", height: 300, type: "recurring", map_to: "rec_type", button: "recurring"}
-    ];
-    console.log(scheduler.config.lightbox.sections);
     scheduler.config.time_step = 60;
     scheduler.config.collision_limit = 1;
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.init('scheduler_here', new Date(), "week");
     idDoctorInfo = document.getElementById("did").textContent;
-    $.ajax({
-        type: "GET",
-        async: false,
-        url: "getWorkScheduler?id=" + idDoctorInfo,
-        dataType: "json",
-        contentType: "application/json",
-        mimeType: "application/json",
-        success: function (data) {
-            if (data != null) {
-                appSize = data.app_size;
-                weekSize = data.week_size;
-                dayStart = data.day_start;
-                dayEnd = data.day_end;
-                workScheduler = data;
-            }
-        },
-        error: function () {
-            alert("error");
-        }
+    var promise = getData("getWorkScheduler?id=" + idDoctorInfo);
+    promise.success(function (data) {
+        init(data);
     });
 
+});
+
+function init(data) {
+    blockPast('discount');
     var appSize;
     var dayStart;
     var dayEnd;
     var weekSize;
+    if (data != null) {
+        appSize = data.app_size;
+        weekSize = data.week_size;
+        dayStart = data.day_start;
+        dayEnd = data.day_end;
+        workScheduler = data;
+    }
+
+    scheduler.ignore_month = ignoreDays(selectedWeekSize(weekSize));
+    scheduler.ignore_week = scheduler.ignore_month;
+
+
 
     if (! (jQuery.isEmptyObject(workScheduler))) {
         $("#workWeekSize option").each(function (item, i) {
@@ -78,14 +68,16 @@ function init() {
             }
         });
 
-        workWeekSizeChanged();
         workDayBeginChanged();
         workDayEndChanged();
+        isSaved = true;
         scheduler.parse(workScheduler.events, "json");
     } else {
         $('#workDayBeginAt option:first').prop('selected', true);
         $('#workDayEndAt option:last').prop('selected', true);
     }
+
+    selectWeekSize();
 
     scheduler.attachEvent("onEventCollision", function() {
         return true;
@@ -95,30 +87,39 @@ function init() {
         isSaved = false;
         return true;
     });
-}
 
-function blockDays() {
-    var block_id = null;
-    scheduler.attachEvent("onBeforeViewChange", function(old_mode, old_date, mode, date) {
-        if(block_id) scheduler.deleteMarkedTimespan(block_id);
-        var from = scheduler.date[mode + "_start"](new Date(date));
-        var to = new Date(Math.min(+new Date(), +scheduler.date.add(from, 1, mode)));
-        block_id = scheduler.addMarkedTimespan({
-            start_date: from,
-            end_date: to,
-            css: "gray_section",
-            type: "discount"
-        });
+    scheduler.attachEvent("onEventDeleted", function() {
+        isSaved = false;
         return true;
     });
-    scheduler.config.limit_start = new Date();
-    scheduler.config.limit_end = new Date(9999, 1, 1);
-    setInterval(function() {
-        scheduler.config.limit_start = new Date();
-    }, 1000 * 60);
+}
+
+function showInfoSuccess() {
+    showMessage('.showInfoSuccess');
+}
+
+function showInfoError() {
+    showMessage('.showInfoError');
+}
+
+function showMessage(selec) {
+    if ($(selec).is(':visible')) {
+        $(selec).slideUp(0);
+        clearTimeout(timeout);
+    }
+    $(selec).slideDown(300, function() {
+        timeout = setTimeout(function() {
+            $(selec).slideUp(300)
+        }, 4000);
+    });
 }
 
 function workWeekSizeChanged() {
+    selectWeekSize();
+    isSaved = false;
+}
+
+function selectWeekSize() {
     var selected = $("#workWeekSize").val();
     var ignore = [];
     if (selected == 5) {
@@ -132,12 +133,11 @@ function workWeekSizeChanged() {
 
 function save() {
     scheduler.updateView();
+    if (isSaved) {
+        showInfoSuccess();
+        return;
+    }
     isSaved = true;
-    // $.ajaxSetup({
-    //     headers: {
-    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //     }
-    // });
     var events = JSON.parse(scheduler.toJSON());
     var workSchedulerConfig = new Object();
     workSchedulerConfig.week_size = $("#workWeekSize").val();
@@ -153,10 +153,10 @@ function save() {
         dataType: "text",
         contentType: 'application/json',
         success: function(data) {
-            // showMessage("dataSaved");
+            showInfoSuccess();
         },
         error: function (e) {
-            // showMessage("error to save data");
+            isSaved = false;
         }
     });
 }
@@ -169,24 +169,6 @@ $(window).bind('beforeunload', function(e) {
     }
 });
 
-function ignoreDays(days) {
-    var ignore;
-    if (days.length > 0) {
-        ignore = function (date) {
-            for (var i = 0; i < days.length; ++i) {
-                if (date.getDay() == days[i]) {
-                    return true;
-                }
-            }
-        };
-    } else {
-        ignore = false;
-    }
-    scheduler.ignore_month = ignore;
-    scheduler.ignore_week = ignore;
-    scheduler.setCurrentView();
-}
-
 function workDayBeginChanged() {
     var start = parseInt($('#workDayBeginAt').val());
     startHours = start;
@@ -194,6 +176,7 @@ function workDayBeginChanged() {
     showRange('workDayEndAt', start + 1, end);
     scheduler.config.first_hour = start;
     scheduler.setCurrentView();
+    isSaved = false;
 }
 
 function workDayEndChanged() {
@@ -203,6 +186,7 @@ function workDayEndChanged() {
     showRange('workDayBeginAt', start, end);
     scheduler.config.last_hour = end;
     scheduler.setCurrentView();
+    isSaved = false;
 }
 
 function showRange(elementName, begin, end) {

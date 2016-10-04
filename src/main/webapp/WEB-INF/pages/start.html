@@ -14,13 +14,16 @@
 	<script th:src="@{/codebase/locale/locale_ua.js}" th:remove="(__${#locale}__ == 'en')?'all':'none'" type="text/javascript" charset="utf-8"></script>
 	<script th:src="@{/js/schedulerDatePicker.js}" type="text/javascript" charset="utf-8"></script>
 	<script th:src="@{/js/localization.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/js/scheduler.js}"></script>
+	<script th:src="@{/js/ajaxRequest.js}"></script>
 	<script th:src="@{/js/Workintervals.js}"></script>
 	<link rel="stylesheet" th:href="@{/css/appointmentModal.css}"/>
+	<link rel="stylesheet" th:href="@{/css/scheduler.css}"/>
 	<link rel="stylesheet" th:href="@{/css/workscheduler.css}"/>
 </head>
 <body>
 <section layout:fragment="content">
-	<p th:text="${id}" id="1" hidden="hidden"></p>
+	<p th:text="${d_id}" id="1" hidden="hidden"></p>
 	<input id="path" th:value="${#httpServletRequest.getContextPath()}"/>
 	<div class="modal bs-example-modal-sm" id="message_modal"
 		 tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">

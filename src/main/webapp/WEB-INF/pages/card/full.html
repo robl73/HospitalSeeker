@@ -46,9 +46,9 @@
                                    data-parent="#accordion2" th:href="${'#'+item.id}" aria-expanded="false"
                                    aria-controls="collapseOne">
                                 </a>
-                                <span th:text="#{card.full.doctor}+' '+${item.doctor.userDetails.firstName}+' '+${item.doctor.userDetails.lastName}"
+                                <span th:text="#{card.full.doctor}+' '+${item.doctorInfo.userDetails.firstName}+' '+${item.doctorInfo.userDetails.lastName}"
                                       style="margin-left: 20px;">Doctor:</span>
-                                <span sec:authorize="hasRole('DOCTOR')" th:if="${item.doctor.email} == ${doctor}">
+                                <span sec:authorize="hasRole('DOCTOR')" th:if="${item.doctorInfo.userDetails.user.email} == ${doctor}">
                                    <a th:if="${#dates.format(item.date,'dd-MM-yyyy')} == ${#dates.format(#dates.createNow(), 'dd-MM-yyyy')}"
                                       th:text="#{card.full.edit}"
                                       th:href="@{/edit(id=${item.id},userId=${userId})}"

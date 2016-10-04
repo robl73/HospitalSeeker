@@ -43,7 +43,7 @@ function initialize() {
 		rules : {
 			'addressGeo' : {
 				requiredGeo : true,
-				maxlength : 150,
+				maxlength : 150
 			},
 			'address.country' : {
 				required : true,

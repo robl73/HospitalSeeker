@@ -35,18 +35,14 @@ import com.hospitalsearch.util.PageConfigDTO;
 @Controller
 public class HospitalController {
 
-    @Autowired(required = true)
+    @Autowired
     private HospitalService service;
 
-    @Autowired(required = true)
+    @Autowired
     private DepartmentService departmentService;
 
-    @Autowired(required = true)
+    @Autowired
     private DoctorInfoService doctorInfoService;
-
-    private List<Hospital> currentHospitalList;
-
-    private Page pageableContent;
 
     @Autowired
     UserService userService;
@@ -59,14 +55,16 @@ public class HospitalController {
     @RequestMapping("/hospitals")
     public String renderHospitals(Map<String, Object> model,
             @RequestParam(value = "q", required = false) String query) throws ParseException, InterruptedException, FilterHospitalListEmptyException {
+        Page pageableContent = null;
         if (query != null && !query.isEmpty()) {
-                this.pageableContent = service.advancedHospitalSearch(query);
+                pageableContent = service.advancedHospitalSearch(query);
+                pageableContent.setPageSize(3);
         }
-        this.initializeModel(model, 1);
-        if(this.pageableContent.getResultListCount() == 0){
+        this.initializeModel(model,pageableContent, 1, query);
+        if(pageableContent.getResultListCount() == 0){
         	throw new HospitalControllerAdvice.FilterHospitalListEmptyException("Empty list");
         }
-        return "hospitals";
+        return "paginatedLayout";
     }
 
     @RequestMapping(value = "/hospitals/filter", method = RequestMethod.POST)
@@ -77,35 +75,27 @@ public class HospitalController {
             Map<String, Object> model) throws Exception {
 
         List<Hospital> hospitals = service.filterHospitalsByAddress(dto);
-
         if (hospitals.isEmpty()) {
             throw new HospitalControllerAdvice.FilterHospitalListEmptyException("Problem");
         } else {
             model.put("pagination", true);
             if (results.hasErrors()) {
-                return "hospitals";
+                return "paginatedLayout";
             }
-            return "hospitals";
+            return "paginatedLayout";
         }
     }
 
-    @RequestMapping(value = "/hospitals/config", method = RequestMethod.POST)
-    public String configurePage(Map<String,Object> model,
-    		@ModelAttribute("pageConfig") 
-    			PageConfigDTO config
-           ) {
-    	this.pageableContent.setPageSize(config.getItemsPerPage());
-
-    	this.initializeModel(model, 1);
-        return "hospitals";
-    }
-
-    @RequestMapping("/hospital/page/{page}")
+    @RequestMapping("/hospitals/page/{page}/params")
     public String renderHospitalsByPage(Map<String, Object> model,
-            @PathVariable("page") Integer currentPage
-    ) {
-    	this.initializeModel(model, currentPage);
-        return "hospitals";
+            @PathVariable("page") Integer currentPage,
+            @RequestParam("itemsPerPage") Integer pageSize,
+            @RequestParam("currentSearchQuery") String currentSearchQuery
+    ) throws ParseException, InterruptedException {
+            Page pageableContent = service.advancedHospitalSearch(currentSearchQuery);
+            pageableContent.setPageSize(pageSize);
+            initializeModel(model, pageableContent, currentPage, currentSearchQuery);
+            return "paginatedLayout";
     }
 
     @RequestMapping("/hospital/{id}")
@@ -117,7 +107,6 @@ public class HospitalController {
         model.put("departments", lst);
         model.put("hospital", service.getById(id));
         model.put("hid", id);
-
         return "departments";
     }
     @RequestMapping("/hospital/{hid}/department/{id}")
@@ -136,14 +125,14 @@ public class HospitalController {
         return "doctors";
     }
     
-    public void initializeModel(Map<String,Object> model,Integer page){
-    	model.put("pagedList", this.pageableContent.getHospitalPageList(page));
-        model.put("pagination", this.pageableContent.isPaginated());
-        model.put("pageCount", this.pageableContent.getPageCount());
-        model.put("pageSize", this.pageableContent.getPageSize());
+    public void initializeModel(Map<String,Object> model, Page pageableContent, Integer page, String query){
+        model.put("currentSearchQuery", query);
+    	model.put("pagedList", pageableContent.getPageList(page));
+        model.put("pagination", pageableContent.isPaginated());
+        model.put("pageCount", pageableContent.getPageCount());
+        model.put("itemsPerPage", pageableContent.getPageSize());
         model.put("currentPage", page);
-        model.put("itemNumber", this.pageableContent.getResultListCount());
-        model.put("pageConfig",new PageConfigDTO());
-        model.put("sortType",this.pageableContent.getSortType());
+        model.put("itemsNumber", pageableContent.getResultListCount());
+        model.put("type", "hospitals");
     }
 }

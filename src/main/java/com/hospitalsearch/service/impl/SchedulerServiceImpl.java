@@ -31,27 +31,27 @@ public class SchedulerServiceImpl implements SchedulerService {
     private UserDAO userDAO;
 
     @Override
-    public Scheduler getByDoctorId(Long doctorId) {
-        return schedulerDAO.getByDoctorId(doctorId);
+    public Scheduler getByUserDetailId(Long userDetailId) {
+        return schedulerDAO.getByDoctorId(doctorInfoDAO.getIdByUserDetail(userDetailId));
     }
 
     @Override
     public void saveScheduler(String schedulerString, Long doctorId) throws IOException {
-        Scheduler scheduler = schedulerDAO.getByDoctorId(doctorId);
+        Long doctorInfoId = doctorInfoDAO.getIdByUserDetail(doctorId);
+        Scheduler scheduler = schedulerDAO.getByDoctorId(doctorInfoId);
         ObjectMapper mapper = new ObjectMapper();
         Scheduler newScheduler = mapper.readValue(schedulerString, Scheduler.class);
-        newScheduler.setDoctorInfo(doctorInfoDAO.getById(doctorId));
+        newScheduler.setDoctorInfo(doctorInfoDAO.getById(doctorInfoId));
         if (scheduler != null) {
             schedulerDAO.delete(scheduler);
         }
         schedulerDAO.save(newScheduler);
-
     }
 
     @Override
     public String getByDoctorEmail(String doctorEmail) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(schedulerDAO.getByDoctorId(userDAO.getByEmail(doctorEmail).getUserDetails().getUser().getId()));
+        String json = mapper.writeValueAsString(schedulerDAO.getByDoctorId(doctorInfoDAO.getByEmail(doctorEmail).getId()));
         return json;
     }
 }

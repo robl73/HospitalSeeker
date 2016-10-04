@@ -18,6 +18,9 @@
     <script th:src="@{/codebase/locale/locale_ua.js}" th:remove="(__${#locale}__ == 'en')?'all':'none'"
             type="text/javascript" charset="utf-8"></script>
     <script th:src="@{/js/schedulerDatePicker.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/js/ajaxRequest.js}"></script>
+    <script th:src="@{/js/manager.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/js/scheduler.js}"></script>
     <link rel="stylesheet" th:href="@{/css/stylish-portfolio.css}"/>
     <link rel="stylesheet" th:href="@{/css/animate.css}"/>
     <link rel="stylesheet" th:href="@{/css/theme.default.css}"/>
@@ -25,12 +28,20 @@
 </head>
 <body>
 <section layout:fragment="content">
-    <p th:text="${id}" id="did" hidden="hidden"></p>
+    <p th:text="${d_id}" id="did" hidden="hidden"></p>
     <input id="path" th:value="${#httpServletRequest.getContextPath()}"/>
     <input sec:authorize="hasRole('MANAGER')" value="true"
            id="manager" type="text" hidden="hidden"/>
     <div class="content">
         <div class="container-fluid">
+            <div class="alert alert-success showInfo showInfoSuccess" role="alert" th:text="#{manager.scheduler.saveSuccess}">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+            </div>
+            <div class="alert alert-danger showInfo showInfoError" role="alert" th:text="#{manager.scheduler.saveError}">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+            </div>
             <div class="row">
                 <div align="center" class="col-lg-12 col-md-12 col-xs-12">
                     <form class="form-inline" role="form">
@@ -90,8 +101,6 @@
         </div>
 
     </div>
-    <script th:src="@{/js/manager.js}" type="text/javascript"
-            charset="utf-8"></script>
 
 </section>
 </body>

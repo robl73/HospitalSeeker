@@ -43,12 +43,7 @@ public class UserServiceImpl implements UserService {
     public void save(User newUser) {
         try {
             logger.info("save user: " + newUser);
-            PatientCard patientCard = patientCardService.add(new PatientCard());
-            PatientInfo patientInfo = patientInfoService.add(new PatientInfo());
             UserDetail userDetail = new UserDetail();
-            patientInfo.setPatientCard(patientCard);
-            patientInfo.setUserDetail(userDetail);
-            userDetail.setPatientInfo(patientInfo);
             userDetail.setUser(newUser);
             newUser.setUserDetails(userDetail);
             dao.save(newUser);

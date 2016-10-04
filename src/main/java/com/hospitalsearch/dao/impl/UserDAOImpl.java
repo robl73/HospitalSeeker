@@ -1,13 +1,18 @@
 package com.hospitalsearch.dao.impl;
 
 import com.hospitalsearch.dao.UserDAO;
+import com.hospitalsearch.dto.DoctorDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
+import com.hospitalsearch.entity.PatientInfo;
 import com.hospitalsearch.entity.User;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.log4j.helpers.Transform;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -45,7 +50,7 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
     @Override
     public User getByEmail(String email) {
         try {
-            logger.info("getUserByEmail email: " + email);
+              logger.info("getUserByEmail email: " + email);
             Criteria criteria = this.getSessionFactory()
                     .getCurrentSession()
                     .createCriteria(User.class);
@@ -170,17 +175,10 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
 
     @Override
     public List<User> getByRole(String role, int pageNumber, int pageSize, String sortBy, Boolean order) {
-        Criteria criteria;
-
-        if (sortBy.equals("firstName")) {
-            criteria = prepareGetByRole(role, pageNumber, pageSize, "details.firstName", order);
-        } else if (sortBy.equals("lastName")) {
-            criteria = prepareGetByRole(role, pageNumber, pageSize, "details.lastName", order);
-        } else {
-            criteria = prepareGetByRole(role, pageNumber, pageSize, "user.email", order);
-        }
-
-        return criteria.list();
+        Query query = getSessionFactory().getCurrentSession().createQuery("select user from PatientInfo p left join p.userDetail details left join details.user user order by " + sortBy + (order ? " asc" : " desc"));
+        query.setFirstResult((pageNumber - 1) * pageSize);
+        query.setMaxResults(pageSize);
+        return (List<User>) query.list();
     }
 
     @Override
@@ -199,10 +197,8 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
 
     @Override
     public Long countOfUsersByRole(String role) {
-        Criteria criteria = roleCriteria(role);
-        criteria.setProjection(Projections.rowCount());
-        Long count = (Long) criteria.uniqueResult();
-        return count;
+        Query query = getSessionFactory().getCurrentSession().createQuery("select count(*) from PatientInfo");
+        return (Long) query.uniqueResult();
     }
 
     @Override
@@ -215,18 +211,20 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
 
     private Criterion notNullCriterion() {
         Criterion criterion = Restrictions.and()
-                .add(Restrictions.isNotNull("details.patientInfo"))
+//                .add(Restrictions.isNotNull("details.patientInfo"))
                 .add(Restrictions.isNotNull("details.firstName"))
                 .add(Restrictions.isNotNull("details.lastName"));
         return criterion;
     }
 
     private Criteria roleCriteria(String role, String search) {
-        Criteria criteria = this.currentSession().createCriteria(User.class, "user").add(Restrictions.isNotNull("user.userDetails"))
+        Criteria criteria = this.currentSession().createCriteria(User.class, "user")
+                .add(Restrictions.isNotNull("user.userDetails"))
                 .createAlias("user.userRoles", "userRoles")
                 .add(Restrictions.eq("userRoles.type", role))
                 .add(notNullCriterion())
-                .createAlias("user.userDetails", "details").add(searchCriterion(search));
+                .createAlias("user.userDetails", "details")
+                .add(searchCriterion(search));
         return criteria;
     }
 
@@ -240,11 +238,22 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
     }
 
     private Criteria roleCriteria(String role) {
-        Criteria criteria = this.currentSession().createCriteria(User.class, "user").add(Restrictions.isNotNull("user.userDetails"))
-                .createAlias("user.userRoles", "userRoles")
-                .add(Restrictions.eq("userRoles.type", role))
-                .createAlias("user.userDetails", "details")
-                .add(notNullCriterion());
+        Criteria criteria = this.currentSession().createCriteria(PatientInfo.class, "patient")
+                .createAlias("patient.userDetail", "details")
+//                .createAlias("details.user", "user")
+                .setProjection(Projections.projectionList()
+                .add(Projections.property("user.id"), "id")
+                .add(Projections.property("user.email"), "email")
+                .add(Projections.property("user.password"), "password")
+                .add(Projections.property("user.enabled"), "enabled")
+                .add(Projections.property("user.userDetails"), "userDetails")
+                .add(Projections.property("user.userRoles"), "userRoles"));
+//        Criteria criteria = this.currentSession().createCriteria(User.class, "user")
+//                .add(Restrictions.isNotNull("user.userDetails"))
+//                .createAlias("user.userRoles", "userRoles")
+//                .add(Restrictions.eq("userRoles.type", role))
+//                .createAlias("user.userDetails", "details")
+//                .add(notNullCriterion());
         return criteria;
     }
 

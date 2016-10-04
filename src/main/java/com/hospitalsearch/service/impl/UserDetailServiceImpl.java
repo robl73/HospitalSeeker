@@ -1,15 +1,12 @@
 package com.hospitalsearch.service.impl;
 
 import com.hospitalsearch.dao.UserDetailDAO;
-import com.hospitalsearch.dto.DoctorSearchDTO;
 import com.hospitalsearch.entity.PatientCard;
 import com.hospitalsearch.entity.PatientInfo;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.PatientCardService;
 import com.hospitalsearch.service.PatientInfoService;
 import com.hospitalsearch.service.UserDetailService;
-import com.hospitalsearch.util.Page;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +31,7 @@ public class UserDetailServiceImpl implements UserDetailService {
         PatientCard patientCard = patientCardService.add(new PatientCard());
         PatientInfo patientInfo = patientInfoService.add(new PatientInfo());
         patientInfo.setPatientCard(patientCard);
-        newUserDetail.setPatientInfo(patientInfo);
+//        newUserDetail.setPatientInfo(patientInfo);
         dao.save(newUserDetail);
     }
 
@@ -53,7 +50,7 @@ public class UserDetailServiceImpl implements UserDetailService {
         PatientCard patientCard = patientCardService.add(new PatientCard());
         PatientInfo patientInfo = patientInfoService.add(new PatientInfo());
         patientInfo.setPatientCard(patientCard);
-        userDetail.setPatientInfo(patientInfo);
+//        userDetail.setPatientInfo(patientInfo);
         userDetail = dao.add(userDetail);
         return userDetail;
     }

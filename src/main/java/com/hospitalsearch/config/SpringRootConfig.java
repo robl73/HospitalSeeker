@@ -97,7 +97,8 @@ public class SpringRootConfig {
     public CommonsMultipartResolver multipartResolver() {
         return new CommonsMultipartResolver();
     }
-/*
+
+
     @Bean
     public SpringLiquibase liquibase() {
         SpringLiquibase liquibase = new SpringLiquibase();

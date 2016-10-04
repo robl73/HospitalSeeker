@@ -35,7 +35,7 @@ public class ErrorAuthenticationHandler extends SimpleUrlAuthenticationFailureHa
         String email = request.getParameter("email");
         user = userService.getByEmail(email);
         String error = "invalidAuthentication";
-        if (user != null) {
+        if (user.getId() != null) {
             if (tokenService.getByUser(user) != null) {
                 error = "invalidActivation";
             } else if (!user.getEnabled()) {

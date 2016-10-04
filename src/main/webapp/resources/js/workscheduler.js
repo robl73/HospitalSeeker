@@ -1,68 +1,70 @@
 $(document).ready(function () {
+    var today = new Date();
+    today.setHours(0);
+    blockDateTo(today);
+    var promise = getData('getWorkSchedulerByPrincipal');
+    promise.success(function (data) {
+        init(data);
+    });
+});
+
+function init(data) {
     var principal = $('#principal').text();
-    var begin;
-    var end;
-    var dayOfAppointment;
     var schedulerConfig = {};
-    $.ajax({
-        type: "GET",
-        async: false,
-        url: "getWorkSchedulerByPrincipal?doctor=" + principal,
-        dataType: "json",
-        contentType: "application/json",
-        mimeType: "application/json",
-        success: function (data) {
-            schedulerConfig.appSize = data.app_size;
-            schedulerConfig.weekSize = data.week_size;
-            schedulerConfig.dayStart = data.day_start;
-            schedulerConfig.dayEnd = data.day_end;
-            data.events.forEach(function (item, i) {
-                var workDay = data.events[i].start_date.substring(0, 10);
-                var hourOne = data.events[i].start_date.substring(11, 13);
-                var hourLast = data.events[i].end_date.substring(11, 13);
-                    scheduler.blockTime(new Date(workDay), [0, hourOne * 60, hourLast * 60,
-                    24 * 60]);
-            });
+    scheduler.config.drag_create = false;
+    schedulerConfig.appSize = data.app_size;
+    schedulerConfig.weekSize = data.week_size;
+    schedulerConfig.dayStart = data.day_start;
+    schedulerConfig.dayEnd = data.day_end;
+    var today = new Date();
+    var zones;
+    var lastDate = today;
+    data.events.forEach(function (item) {
+        var workDay = item.start_date.substring(0, 10);
+        var hourLast = item.end_date.substring(11, 13);
+        var hourOne = item.start_date.substring(11, 13);
+        var current = new Date(workDay);
+        current.setHours(parseInt(hourLast));
+        if (current > today) {
+            if (item['event_length'] != null) {
+                var d = new Date(item.end_date);
+                if (lastDate <  d) {
+                    lastDate = d;
+                }
+                var count = item['event_length'];
+                zones = [0, hourOne * 60, hourOne * 60 + count / 60, 24 * 60];
+                for (var i = 0; i <= daydiff(new Date(item.start_date), d); ++i) {
+                    scheduler.addMarkedTimespan({
+                        days: current,
+                        zones: zones,
+                        css: "green_section"
+                    });
+                    current = new Date(current.getFullYear(), current.getMonth(), current.getDate() + 1);
+                }
+            } else {
+                zones = [0, hourOne * 60, hourLast * 60, 24 * 60];
+                scheduler.addMarkedTimespan({
+                    days: new Date(workDay),
+                    zones: zones,
+                    css: "green_section"
+                });
+            }
+            if (current > lastDate) {
+                lastDate = current;
+            }
         }
     });
-    var dayOfWeek = new Date().getDay()-1;
-    var day = new Date().getDate() - 1;
-    var month = new Date().getMonth();
-    var year = new Date().getFullYear();
-    var hour = new Date().getHours() + 1;
+    blockDateFrom(new Date(lastDate.getFullYear(), lastDate.getMonth(), lastDate.getDate() + 1));
     var step = schedulerConfig.appSize;
-    var format = scheduler.date.date_to_str("%H:%i");
     scheduler.config.hour_size_px = (60 / step) * 44;
     scheduler.config.time_step = step;
-    while (day >= 1) {
-        scheduler.blockTime(new Date(year, month, day), "fullday");
-        day--;
-    }
-    while (dayOfWeek >= 1){
-        scheduler.blockTime(new Date(year, month, day), "fullday");
-        dayOfWeek--;
-        day--;
-    }
-    scheduler.blockTime(new Date(), [0 * 60, hour * 60]);
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.config.details_on_dblclick = true;
     scheduler.config.details_on_create = true;
-    switch (schedulerConfig.weekSize) {
-        case 5:
-            scheduler.ignore_week = function (date) {
-                if (date.getDay() == 6 || date.getDay() == 0)
-                    return true;
-            };
-            break;
-        case 6:
-            scheduler.ignore_week = function (date) {
-                if (date.getDay() == 0)
-                    return true;
-            };
-            break;
-    }
-    scheduler.attachEvent("onBeforeDrag",function(){return false;})
-    scheduler.attachEvent("onClick",function(){return false;})
+    scheduler.ignore_month = ignoreDays(selectedWeekSize(schedulerConfig.weekSize));
+    scheduler.ignore_week = scheduler.ignore_month;
+    scheduler.attachEvent("onBeforeDrag", function() {return false;});
+    scheduler.attachEvent("onClick", function() {return false;});
     scheduler.config.details_on_dblclick = true;
     scheduler.config.dblclick_create = false;
     scheduler.config.first_hour = schedulerConfig.dayStart;
@@ -70,14 +72,17 @@ $(document).ready(function () {
     scheduler.config.limit_time_select = true;
     scheduler.init('scheduler_here', null, "week");
     scheduler.load('getAppointmentsByDoctor?doctor='+principal,'json');
-    var dp = new dataProcessor("supplyAppointment?id=" + 300 + "&principal="+principal);
+    var dp = new dataProcessor("supplyAppointment?id=" + 0 + "&principal="+principal);
     dp.init(scheduler);
-});
+    scheduler.updateView(new Date());
+}
 
 var html = function (id) {
     return document.getElementById(id);
 };
+
 var ev;
+
 scheduler.showLightbox = function (id) {
     var tex_local_from = getMessage('workscheduler.modal.appointment.time.from');
     var tex_local_to = getMessage('workscheduler.modal.appointment.time.to');
@@ -132,14 +137,13 @@ function changeModalContentFirstStep() {
     $('#modal-header').slideToggle(500);
     $('#modal-footer').slideToggle(500);
     $('#modalBodySuccess').slideToggle(500);
-    
+
 }
 
 function changeModalContentSecondStep() {
     $('#myModal').modal('hide');
     changeModalContentFirstStep();
 }
-
 
 $(document).keyup(function (e) {
     if (e.keyCode == 27) { // escape key maps to keycode `27`
@@ -149,7 +153,7 @@ $(document).keyup(function (e) {
 
 function save_form() {
     blockAppointmensAdd();
-    var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
+    ev = scheduler.getEvent(scheduler.getState().lightbox_id);
     scheduler.endLightbox(true, html("my_form"));
 }
 function close_form() {

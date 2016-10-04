@@ -1,6 +1,5 @@
 package com.hospitalsearch.dao.impl;
 
-
 import com.hospitalsearch.dao.PatientCardDAO;
 import com.hospitalsearch.entity.PatientCard;
 import org.hibernate.SessionFactory;

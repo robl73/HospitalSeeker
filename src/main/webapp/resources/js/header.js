@@ -19,19 +19,35 @@ $(function() {
 			$('a[href="#toggle-search"]').trigger('click');
 		}
 	});
-	
-	
+
+
 
 });
 
 $(document).ready(function(e){
-	
-	
 	$('.search-panel .dropdown-menu').find('a').click(function(e) {
 		e.preventDefault();
 		var param = $(this).attr("href").replace("#","");
 		var concept = $(this).text();
 		$('.search-panel span#search_concept').text(concept);
 		$('.input-group #search_param').val(param);
+
+	});
+	$('#search-hospital-form').validate({
+		rules : {
+			'q' : {
+				minlength : 3,
+				maxlength : 30
+			}
+		}
+	});
+	$('#search-doctor-form').validate({
+		rules : {
+			'd' : {
+				minlength : 3,
+				maxlength : 30
+			}
+		}
 	});
 });
+
