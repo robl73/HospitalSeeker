@@ -1,8 +1,7 @@
-/**
- * Created by igortsapyak on 27.05.16.
- */
 $(document).ready(function () {
-    blockPast('dhx_time_block');
+    var today = new Date();
+    today.setHours(0);
+    blockDateTo(today);
     var principal = $('#principal').text();
     var did = document.getElementById("1").textContent;
     var begin;
@@ -12,6 +11,7 @@ $(document).ready(function () {
     var blockYear;
     var blockMonth;
     var blockDay;
+    var lastDate = new Date();
     $.ajax({
         type: "GET",
         async: false,
@@ -26,12 +26,44 @@ $(document).ready(function () {
                 schedulerConfig.dayStart = data.day_start;
                 schedulerConfig.dayEnd = data.day_end;
             }
-            data.events.forEach(function (item, i) {
-                var workDay = data.events[i].start_date.substring(0, 10);
-                var hourOne = data.events[i].start_date.substring(11, 13);
-                var hourLast = data.events[i].end_date.substring(11, 13);
-                    scheduler.blockTime(new Date(workDay), [0, hourOne * 60, hourLast * 60,
-                        24 * 60]);
+            var today = new Date();
+            data.events.forEach(function (item) {
+                var workDay = item.start_date.substring(0, 10);
+                var hourOne = item.start_date.substring(11, 13);
+                var hourLast = item.end_date.substring(11, 13);
+                var zones;
+                var current = new Date(workDay);
+                var temp = new Date(workDay);
+                temp.setHours(parseInt(hourLast));
+
+                if (temp > today) {
+                    if (item['event_length'] != null) {
+                        var d = new Date(item.end_date);
+                        if (lastDate <  d) {
+                            lastDate = d;
+                        }
+                        var count = item['event_length'];
+                        zones = [0, hourOne * 60, hourOne * 60 + count / 60, 24 * 60];
+                        for (var i = 0; i <= daydiff(new Date(item.start_date), d); ++i) {
+                            scheduler.addMarkedTimespan({
+                                days: current,
+                                zones: zones,
+                                css: "green_section"
+                            });
+                            current = new Date(current.getFullYear(), current.getMonth(), current.getDate() + 1);
+                        }
+                    } else {
+                        zones = [0, hourOne * 60, hourLast * 60, 24 * 60];
+                        scheduler.addMarkedTimespan({
+                            days: new Date(workDay),
+                            zones: zones,
+                            css: "green_section"
+                        });
+                    }
+                    if (temp > lastDate) {
+                        lastDate = temp;
+                    }
+                }
             });
             blockYear = new Date(data.events[data.events.length - 1].start_date.substring(0, 10)).getFullYear();
             blockMonth = new Date(data.events[data.events.length - 1].start_date.substring(0, 10)).getMonth();
@@ -41,48 +73,18 @@ $(document).ready(function () {
             $('#mySchedulerErrorModal').modal('show');
         }
     });
-    var dayOfWeek = new Date().getDay() - 1;
+    blockDateFrom(new Date(lastDate.getFullYear(), lastDate.getMonth(), lastDate.getDate() + 1));
     var day = new Date().getDate() - 1;
     var month = new Date().getMonth();
     var year = new Date().getFullYear();
-    var hour = new Date().getHours() + 1;
     var step = schedulerConfig.appSize;
-    var format = scheduler.date.date_to_str("%H:%i");
     scheduler.config.hour_size_px = (60 / step) * 44;
     scheduler.config.time_step = step;
-    while (day >= 1) {
-        scheduler.blockTime(new Date(year, month, day), "fullday");
-        day--;
-    }
-    while (dayOfWeek >= 1) {
-        scheduler.blockTime(new Date(year, month, day), "fullday");
-        dayOfWeek--;
-        day--;
-    }
-    scheduler.blockTime(new Date(), [0 * 60, hour * 60]);
-    var deysCount = schedulerConfig.weekSize;
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.config.details_on_dblclick = true;
     scheduler.config.details_on_create = true;
-    switch (schedulerConfig.weekSize) {
-        case 5:
-            scheduler.ignore_week = function (date) {
-                if (date.getDay() == 6 || date.getDay() == 0) {
-                    return true;
-                }
-            };
-            break;
-
-        case 6:
-            scheduler.ignore_week = function (date) {
-                if (date.getDay() == 0) {
-                    return true;
-                }
-            };
-            break;
-    }
-    scheduler.ignore_month = scheduler.ignore_week;
-
+    scheduler.ignore_month = ignoreDays(selectedWeekSize(schedulerConfig.weekSize));
+    scheduler.ignore_week = scheduler.ignore_month;
     $.ajax({
         type: "GET",
         async: false,
@@ -101,7 +103,7 @@ $(document).ready(function () {
                 var minutes2 = (end_date_hour * 60 + end_date_minutes) / step;
                 begin = minutes;
                 end = minutes2;
-                    scheduler.blockTime(new Date(dayOfAppointment), [begin * step, end * step]);
+                scheduler.blockTime(new Date(dayOfAppointment), [begin * step, end * step]);
             });
         }
     });
@@ -109,23 +111,11 @@ $(document).ready(function () {
     scheduler.config.readonly = (!$('#patient').val());
     scheduler.config.first_hour = schedulerConfig.dayStart;
     scheduler.config.last_hour = schedulerConfig.dayEnd;
-    // scheduler.config.limit_time_select = true;
     scheduler.config.limit_start = new Date(year, month, day);
-    scheduler.config.limit_end = new Date(blockYear, blockMonth, blockDay);
     scheduler.init('scheduler_here', null, "week");
     var dp = new dataProcessor("supplyAppointment?id=" + did + "&principal=" + principal);
     dp.init(scheduler);
 
-    // scheduler.attachEvent("onBeforeEventChanged", function (e) {
-    //     console.log(scheduler.config.time_step);
-    //     e.end_date = new Date(e.start_date + step * 60000);
-    //     return true;
-    // });
-    //
-    // scheduler.attachEvent("onBeforeEventCreated", function (e) {
-    //     e.end_date = new Date(e.start_date + step * 60000);
-    //     return true;
-    // });
 });
 
 var html = function (id) {

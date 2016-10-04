@@ -1,16 +1,23 @@
 $(document).ready(function () {
-    blockPast('dhx_time_block');
-    getData('getWorkSchedulerByPrincipal', init);
+    var today = new Date();
+    today.setHours(0);
+    blockDateTo(today);
+    var promise = getData('getWorkSchedulerByPrincipal');
+    promise.success(function (data) {
+        init(data);
+    });
 });
 
 function init(data) {
     var principal = $('#principal').text();
     var schedulerConfig = {};
+    scheduler.config.drag_create = false;
     schedulerConfig.appSize = data.app_size;
     schedulerConfig.weekSize = data.week_size;
     schedulerConfig.dayStart = data.day_start;
     schedulerConfig.dayEnd = data.day_end;
     var today = new Date();
+    var zones;
     var lastDate = today;
     data.events.forEach(function (item) {
         var workDay = item.start_date.substring(0, 10);
@@ -19,33 +26,43 @@ function init(data) {
         var current = new Date(workDay);
         current.setHours(parseInt(hourLast));
         if (current > today) {
-            scheduler.blockTime(new Date(workDay), [0, hourOne * 60, hourLast * 60, 24 * 60]);
+            if (item['event_length'] != null) {
+                var d = new Date(item.end_date);
+                if (lastDate <  d) {
+                    lastDate = d;
+                }
+                var count = item['event_length'];
+                zones = [0, hourOne * 60, hourOne * 60 + count / 60, 24 * 60];
+                for (var i = 0; i <= daydiff(new Date(item.start_date), d); ++i) {
+                    scheduler.addMarkedTimespan({
+                        days: current,
+                        zones: zones,
+                        css: "green_section"
+                    });
+                    current = new Date(current.getFullYear(), current.getMonth(), current.getDate() + 1);
+                }
+            } else {
+                zones = [0, hourOne * 60, hourLast * 60, 24 * 60];
+                scheduler.addMarkedTimespan({
+                    days: new Date(workDay),
+                    zones: zones,
+                    css: "green_section"
+                });
+            }
             if (current > lastDate) {
                 lastDate = current;
             }
         }
     });
+    blockDateFrom(new Date(lastDate.getFullYear(), lastDate.getMonth(), lastDate.getDate() + 1));
     var step = schedulerConfig.appSize;
     scheduler.config.hour_size_px = (60 / step) * 44;
     scheduler.config.time_step = step;
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.config.details_on_dblclick = true;
     scheduler.config.details_on_create = true;
-    switch (schedulerConfig.weekSize) {
-        case 5:
-            scheduler.ignore_week = function (date) {
-                if (date.getDay() == 6 || date.getDay() == 0)
-                    return true;
-            };
-            break;
-        case 6:
-            scheduler.ignore_week = function (date) {
-                if (date.getDay() == 0)
-                    return true;
-            };
-            break;
-    }
-    scheduler.ignore_month = scheduler.ignore_week;
+    scheduler.ignore_month = ignoreDays(selectedWeekSize(schedulerConfig.weekSize));
+    scheduler.ignore_week = scheduler.ignore_month;
     scheduler.attachEvent("onBeforeDrag", function() {return false;});
     scheduler.attachEvent("onClick", function() {return false;});
     scheduler.config.details_on_dblclick = true;
@@ -55,8 +72,9 @@ function init(data) {
     scheduler.config.limit_time_select = true;
     scheduler.init('scheduler_here', null, "week");
     scheduler.load('getAppointmentsByDoctor?doctor='+principal,'json');
-    var dp = new dataProcessor("supplyAppointment?id=" + 300 + "&principal="+principal);
+    var dp = new dataProcessor("supplyAppointment?id=" + 0 + "&principal="+principal);
     dp.init(scheduler);
+    scheduler.updateView(new Date());
 }
 
 var html = function (id) {
@@ -119,7 +137,7 @@ function changeModalContentFirstStep() {
     $('#modal-header').slideToggle(500);
     $('#modal-footer').slideToggle(500);
     $('#modalBodySuccess').slideToggle(500);
-    
+
 }
 
 function changeModalContentSecondStep() {
@@ -135,7 +153,7 @@ $(document).keyup(function (e) {
 
 function save_form() {
     blockAppointmensAdd();
-    var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
+    ev = scheduler.getEvent(scheduler.getState().lightbox_id);
     scheduler.endLightbox(true, html("my_form"));
 }
 function close_form() {

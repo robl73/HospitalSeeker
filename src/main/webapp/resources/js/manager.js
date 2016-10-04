@@ -12,21 +12,24 @@ $(document).ready(function() {
     $('#workDayBeginAt').change(workDayBeginChanged);
     $('#workDayEndAt').change(workDayEndChanged);
     $('#saveData').click(save);
-    scheduler.config.lightbox.sections = [
-        {name:"description", height: 130, map_to: "text", type: "textarea" , focus: true},
-        {name:"recurring", height: 300, type: "recurring", map_to: "rec_type", button: "recurring"}
-    ];
-    console.log(scheduler.config.lightbox.sections);
     scheduler.config.time_step = 60;
     scheduler.config.collision_limit = 1;
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.init('scheduler_here', new Date(), "week");
     idDoctorInfo = document.getElementById("did").textContent;
-    getData("getWorkScheduler?id=" + idDoctorInfo, init);
+    var promise = getData("getWorkScheduler?id=" + idDoctorInfo);
+    promise.success(function (data) {
+        init(data);
+    });
+
 });
 
 function init(data) {
     blockPast('discount');
+    var appSize;
+    var dayStart;
+    var dayEnd;
+    var weekSize;
     if (data != null) {
         appSize = data.app_size;
         weekSize = data.week_size;
@@ -35,10 +38,10 @@ function init(data) {
         workScheduler = data;
     }
 
-    var appSize;
-    var dayStart;
-    var dayEnd;
-    var weekSize;
+    scheduler.ignore_month = ignoreDays(selectedWeekSize(weekSize));
+    scheduler.ignore_week = scheduler.ignore_month;
+
+
 
     if (! (jQuery.isEmptyObject(workScheduler))) {
         $("#workWeekSize option").each(function (item, i) {
@@ -135,11 +138,6 @@ function save() {
         return;
     }
     isSaved = true;
-    // $.ajaxSetup({
-    //     headers: {
-    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //     }
-    // });
     var events = JSON.parse(scheduler.toJSON());
     var workSchedulerConfig = new Object();
     workSchedulerConfig.week_size = $("#workWeekSize").val();
@@ -170,24 +168,6 @@ $(window).bind('beforeunload', function(e) {
         return true;
     }
 });
-
-function ignoreDays(days) {
-    var ignore;
-    if (days.length > 0) {
-        ignore = function (date) {
-            for (var i = 0; i < days.length; ++i) {
-                if (date.getDay() == days[i]) {
-                    return true;
-                }
-            }
-        };
-    } else {
-        ignore = false;
-    }
-    scheduler.ignore_month = ignore;
-    scheduler.ignore_week = ignore;
-    scheduler.setCurrentView();
-}
 
 function workDayBeginChanged() {
     var start = parseInt($('#workDayBeginAt').val());
