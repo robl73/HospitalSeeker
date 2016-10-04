@@ -44,19 +44,22 @@
 <!-- ============================================================= -->   
 <div style="width: 50%">
   <div>  
-  <form class="form-horizontal" th:action="@{/admin/allDepartmentsName}" method="POST" >
+  <form class="form-horizontal" th:action="@{/admin/addDepartmentsName}" method="POST" 
+        th:object="${departmentsname}" >
   <fieldset>
     <legend th:text="#{admin.dashboard.department.show.form.header}">Legend</legend>
 	
-	
+  
     <div class="form-group">
       <label for="inputName" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.name}">name</label>
       <div class="col-lg-10">
           <input class="form-control" id="inputName" placeholder="name" type="text" 
-                 name="name"></input>         
+                 name="name" ></input>  <!-- th:field="*{name}"   -->
       </div>
-    </div>
+   <!--   <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Name Error</div> -->
+      </div>
+    
 	
 	
     <div class="form-group">
@@ -64,9 +67,10 @@
              th:text="#{admin.dashboard.department.show.table.header.specialization}">specialization</label>
       <div class="col-lg-10">
         <input class="form-control" id="inputSpecialization" placeholder="specialization" type="text"
-               name="specialization"></input>
+               name="specialization" ></input> <!-- th:field="*{specialization}" -->
 
       </div>
+  <!--    <div th:if="${#fields.hasErrors('specialization')}" th:errors="*{specialization}"> Specialization Error</div>  -->
     </div>
 	
 	<div class="form-group">
@@ -74,16 +78,17 @@
              th:text="#{admin.dashboard.department.show.table.header.number}">number</label>
       <div class="col-lg-10">
         <input class="form-control" id="inputNumber" placeholder="number" type="text"
-               name="number"></input>
+               name="number" ></input> <!-- th:field="*{number}"  -->
 
       </div>
+   <!--   <div th:if="${#fields.hasErrors('number')}" th:errors="*{number}"> Number Error</div>  -->     
     </div>
    
     
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
         <button type="reset" class="btn btn-default">Cancel</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Add</button>
       </div>
     </div>
   </fieldset>
@@ -130,7 +135,7 @@
                     
                     <td><a href="#" class="btn btn-primary" 
                            th:attr="data-id=${departmentname.id}" 
-                           th:href="@{/admin/allDepartmentsName(id=${departmentname.id})}">Delete</a></td>
+                           th:href="@{/admin/deleteDepartmentsName(id=${departmentname.id})}">Delete</a></td>
 
                 </tr>
                 </tbody>

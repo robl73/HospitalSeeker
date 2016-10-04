@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.hibernate.search.annotations.DocumentId;
 
 /**
@@ -32,13 +34,17 @@ public class DepartmentsName implements Serializable {
         @SequenceGenerator(name = "departmentname_gen", sequenceName = "departmentname_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
     
-//    @Column(name="departmentname")   
+//    @Column(name="departmentname")
+    @NotNull
+    @Size(min = 3, max = 20, message="you must enter from 3 to 20 chars")
     private String name;
     
  //   @Column(name="departmentspecialization")
+    @Size(min = 0, max = 20, message="you may enter up to 20 chars")
     private String specialization;
     
  //   @Column(name="departmentnumber")
+    @Size(min = 0, max = 2, message="you may enter up to 2 digits")
     private String number;
     
     public String getName() {
