@@ -2,7 +2,21 @@ package com.hospitalsearch.entity;
 
 import java.util.List;
 
+<<<<<<< HEAD
 import javax.persistence.*;
+=======
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+>>>>>>> taskDepartmentutil
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -19,12 +33,32 @@ public class Department{
 	@SequenceGenerator(name = "department_gen", sequenceName = "department_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
 
+<<<<<<< HEAD
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
 	private String name;
 
 	@ManyToMany
 	@JoinTable(name="DEPARTMENT_DOCTORINFO", joinColumns = @JoinColumn(name="DEPARTMENTS_ID"), inverseJoinColumns = @JoinColumn(name="DOCTORS_ID"))
 	@Fetch(FetchMode.SELECT)
+=======
+    /*    
+	//@Field(boost=@Boost(1.2f))
+	//private String name;
+        
+       // @Embedded
+        private DepartmentsName departmentName;
+
+        public DepartmentsName getDepartmentName() {
+            return departmentName;
+        }
+
+        public void setDepartmentName(DepartmentsName departmentName) {
+            this.departmentName = departmentName;
+        }
+    */
+	
+	@ManyToMany(cascade=CascadeType.ALL)
+>>>>>>> taskDepartmentutil
 	private List<DoctorInfo> doctors;
 	
 	@ManyToOne
@@ -43,7 +77,7 @@ public class Department{
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+/*
 	public String getName() {
 		return name;
 	}
@@ -51,7 +85,7 @@ public class Department{
 	public void setName(String name) {
 		this.name = name;
 	}
-
+*/
 	public List<DoctorInfo> getDoctors() {
 		return doctors;
 	}

@@ -1619,4 +1619,44 @@
 
    
    
+    <changeSet author="Admin (generated)" id="1475144899277-1">
+        <createTable tableName="departmenstname">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="departmentName" type="VARCHAR(255)"/>
+            <column name="departmentNumber" type="INT4"/>
+            <column name="departmentSpecialization" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475144899277-2">
+        <addPrimaryKey columnNames="id" constraintName="departmenstnamePK" tableName="departmenstname"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475144899277-3">
+        <dropColumn columnName="name" tableName="department"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475260053153-1">
+        <addColumn tableName="departmenstname">
+            <column name="name" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475260053153-2">
+        <addColumn tableName="departmenstname">
+            <column name="number" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475260053153-3">
+        <addColumn tableName="departmenstname">
+            <column name="specialization" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475260053153-4">
+        <dropColumn columnName="departmentName" tableName="departmenstname"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475260053153-5">
+        <dropColumn columnName="departmentNumber" tableName="departmenstname"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475260053153-6">
+        <dropColumn columnName="departmentSpecialization" tableName="departmenstname"/>
+    </changeSet>
 </databaseChangeLog>
