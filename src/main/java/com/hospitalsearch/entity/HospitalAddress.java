@@ -15,13 +15,13 @@ public class HospitalAddress {
 
 	@NotEmpty(message = "This field is required.")
 	@Size(min = 2, max = 30, message = "Please enter at least 2 symbols and not more than 30 symbols.")
-	@Pattern(regexp = "^[a-zA-Zà-ÿÀ-ß¸¨³²¿¯ºªÛûÚú'\\-\\s]+$", message = "Contain only letters.")
+	@Pattern(regexp = "^[a-zA-Z\u0430-\u044f\u0410-\u042f\u0451\u0401\u0456\u0406\u0457\u0407\u0454\u0404\u042b\u044b\u042a\u044a'\\-\\s]+$", message = "Contain only letters.")
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))	
 	private String country;
 
 	@NotEmpty(message = "This field is required.")
 	@Size(max = 30, message = "Please enter not more than 30 symbols.")
-	@Pattern(regexp = "^[a-zA-Zà-ÿÀ-ß¸¨³²¿¯ºªÛûÚú'\\-\\s]+$", message = "Contain only letters.")
+	@Pattern(regexp = "^[a-zA-Z\u0430-\u044f\u0410-\u042f\u0451\u0401\u0456\u0406\u0457\u0407\u0454\u0404\u042b\u044b\u042a\u044a'\\-\\s]+$", message = "Contain only letters.")
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))	
 	private String city;
 

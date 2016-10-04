@@ -2,24 +2,38 @@ package com.hospitalsearch.entity;
 
 import java.time.LocalDate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hospitalsearch.service.annotation.Date;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
-import com.hospitalsearch.util.Gender;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hospitalsearch.service.annotation.Date;
+import com.hospitalsearch.util.Gender;
 
 
 @Entity
 @Table(name = "userdetail")
+@Indexed
 @Cache(region="entityCache",usage=CacheConcurrencyStrategy.READ_WRITE)
 public class UserDetail{
 
@@ -59,18 +73,7 @@ public class UserDetail{
 
     @OneToOne
     @Fetch(FetchMode.SELECT)
-    @JoinColumn(name="doctorinfo_id")
-    @ContainedIn
-    @JsonIgnore
-    private DoctorInfo doctorInfo;
-
-    @OneToOne(cascade= CascadeType.ALL)
-    @Fetch(FetchMode.SELECT)
-    @JoinColumn(name="patientinfo_id")
-    @JsonIgnore
-    private PatientInfo patientInfo;
-
-    @OneToOne
+    @JoinColumn(name = "user_id")
     @IndexedEmbedded
     private User user;
 
@@ -140,28 +143,12 @@ public class UserDetail{
         this.address = address;
     }
 
-    public DoctorInfo getDoctorInfo() {
-        return doctorInfo;
-    }
-
-    public void setDoctorInfo(DoctorInfo doctorInfo) {
-        this.doctorInfo = doctorInfo;
-    }
-
     public String getImagePath() {
         return imagePath;
     }
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
-    }
-
-    public PatientInfo getPatientInfo() {
-        return patientInfo;
-    }
-
-    public void setPatientInfo(PatientInfo patientInfo) {
-        this.patientInfo = patientInfo;
     }
 
     @Override

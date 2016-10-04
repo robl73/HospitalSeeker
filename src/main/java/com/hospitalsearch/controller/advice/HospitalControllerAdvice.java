@@ -16,19 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hospitalsearch.controller.HospitalController;
 import com.hospitalsearch.entity.Hospital;
-import com.hospitalsearch.entity.User;
 import com.hospitalsearch.service.HospitalService;
-import com.hospitalsearch.service.UserService;
 import com.hospitalsearch.util.HospitalFilterDTO;
 import com.hospitalsearch.util.PageConfigDTO;
-import com.hospitalsearch.util.PrincipalConverter;
 
 @ControllerAdvice(assignableTypes={HospitalController.class})
 public class HospitalControllerAdvice {
 
 	@Autowired
 	private HospitalService service;
-	
+
 	@Autowired
 	private UserService userService;
 	
@@ -36,7 +33,7 @@ public class HospitalControllerAdvice {
 	@ExceptionHandler(value={FilterHospitalListEmptyException.class})
 	public ModelAndView renderHospitalListException(Exception ex){
 		User user = userService.getByEmail(PrincipalConverter.getPrincipal());
-		ModelAndView view = new ModelAndView("error/hospitalList");
+		ModelAndView view = new ModelAndView("error/emptyList");
 		view.addObject("userName", user);
 		return view;
 	}
@@ -48,12 +45,12 @@ public class HospitalControllerAdvice {
 	 
 	@ModelAttribute(value="filter")
 	public HospitalFilterDTO hospitalFilterDTO(){return new HospitalFilterDTO();}
-	
-	@ModelAttribute
+
+        @ModelAttribute
 	public void hospitalFilterDTO(ModelMap model){
             model.addAttribute("globalSearch",new PageConfigDTO());
         }
-	
+
 
 	public static class FilterHospitalListEmptyException extends Exception{
 		public FilterHospitalListEmptyException(String message) {

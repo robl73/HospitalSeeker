@@ -2,15 +2,7 @@ package com.hospitalsearch.entity;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
@@ -20,10 +12,8 @@ import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.search.annotations.ContainedIn;
-import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Parameter;
+
 
 @Entity
 @Table(name = "doctorinfo")
@@ -56,39 +46,15 @@ public class DoctorInfo{
     private String category;
 
     @OneToOne
-    @JoinColumn(name="userdetails_id")
+    @JoinColumn(name = "userdetails_id")
     @IndexedEmbedded
+    @JsonIgnore
     private UserDetail userDetails;
 
     @ManyToMany(mappedBy = "doctors")
     private List<Department> departments;
 
-    @OneToOne
-    @Fetch(FetchMode.SELECT)
-    @JoinColumn(name="carditem_id")
-    @JsonIgnore
-    private CardItem cardItem;
-
     public DoctorInfo() {
-    }
-
-    @OneToOne
-    private WorkScheduler workScheduler;
-
-    public WorkScheduler getWorkScheduler() {
-        return workScheduler;
-    }
-
-    public void setWorkScheduler(WorkScheduler workScheduler) {
-        this.workScheduler = workScheduler;
-    }
-
-    public CardItem getCardItem() {
-        return cardItem;
-    }
-
-    public void setCardItem(CardItem cardItem) {
-        this.cardItem = cardItem;
     }
 
     public Long getId() {
@@ -129,5 +95,15 @@ public class DoctorInfo{
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "DoctorInfo{" +
+                "id=" + id +
+                ", specialization='" + specialization + '\'' +
+                ", category='" + category + '\'' +
+                ", userDetails=" + userDetails +
+                '}';
     }
 }

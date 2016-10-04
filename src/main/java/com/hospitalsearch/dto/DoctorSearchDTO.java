@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class DoctorSearchDTO {
 
+    private Long doctorId;
     private String imagePath;
     private String firstName;
     private String lastName;
@@ -18,7 +19,9 @@ public class DoctorSearchDTO {
     public DoctorSearchDTO() {
     }
 
-    public DoctorSearchDTO(String imagePath, String firstName, String lastName, String email, String specialization, String category, List<String> hospitalsName) {
+    public DoctorSearchDTO(Long doctorId, String imagePath, String firstName, String lastName, String email,
+                           String specialization, String category, List<String> hospitalsName) {
+        this.doctorId = doctorId;
         this.imagePath = imagePath;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,6 +29,14 @@ public class DoctorSearchDTO {
         this.specialization = specialization;
         this.category = category;
         this.hospitalsName = hospitalsName;
+    }
+
+    public Long getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(Long doctorId) {
+        this.doctorId = doctorId;
     }
 
     public String getImagePath() {

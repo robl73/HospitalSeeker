@@ -13,7 +13,7 @@ import java.io.IOException;
 @Transactional
 public interface SchedulerService {
 
-    Scheduler getByDoctorId(Long doctorId);
+    Scheduler getByUserDetailId(Long doctorId);
 
     void saveScheduler(String schedulerString, Long doctorId) throws IOException;
 

@@ -7,6 +7,8 @@
     <title th:text="#{title.workscheduler}"></title>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <meta th:name="csrf-token" th:content="${_csrf.token}"/>
+    <script th:src="@{/js/scheduler.js}"></script>
+    <script th:src="@{/js/ajaxRequest.js}"></script>
     <script th:src="@{/js/workscheduler.js}"></script>
     <script th:src="@{/codebase/locale/locale_ua.js}" th:remove="(__${#locale}__ == 'en')?'all':'none'"
             type="text/javascript" charset="utf-8"></script>
@@ -14,6 +16,7 @@
     <script th:src="@{/js/localization.js}" type="text/javascript" charset="utf-8"></script>
     <script th:src="@{/js/appointmentsMassageSender.js}" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" th:href="@{/css/appointmentModal.css}"/>
+    <link rel="stylesheet" th:href="@{/css/scheduler.css}"/>
     <link rel="stylesheet" th:href="@{/css/workscheduler.css}"/>
 </head>
 

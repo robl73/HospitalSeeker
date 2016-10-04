@@ -1,12 +1,24 @@
 package com.hospitalsearch.entity;
 
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
-
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 /**
  * @author Andrew Jasinskiy on 19.06.16
@@ -20,8 +32,6 @@ import java.util.Date;
         @NamedQuery(name = "GET_VERIFICATION_TOKEN_BY_USER", query = "SELECT t FROM VerificationToken t WHERE t.user = :user"),
 })
 public class VerificationToken {
-    //token valid 24 hours
-    public static Integer VERIFICATION_TOKEN_EXPIRATION = 24;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "verification_token_gen")
@@ -43,7 +53,7 @@ public class VerificationToken {
         super();
     }
 
-    public VerificationToken(String token, User user) {
+    public VerificationToken(String token, User user, Integer VERIFICATION_TOKEN_EXPIRATION) {
         super();
         this.token = token;
         this.user = user;

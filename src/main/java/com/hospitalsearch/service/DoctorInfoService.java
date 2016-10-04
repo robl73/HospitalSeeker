@@ -1,5 +1,6 @@
 package com.hospitalsearch.service;
 
+import com.hospitalsearch.dto.DoctorDTO;
 import com.hospitalsearch.dto.DoctorSearchDTO;
 import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.entity.User;
@@ -23,6 +24,8 @@ public interface DoctorInfoService {
 
     void update(DoctorInfo updatedDoctor);
 
+    Long getIdByUserDetail(Long userDetailId);
+
     @Transactional(readOnly=true,propagation= Propagation.SUPPORTS)
     DoctorInfo getById(Long id);
 
@@ -30,8 +33,10 @@ public interface DoctorInfoService {
     List<DoctorInfo> getAll();
 
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-    List<UserDetail> findByDepartmentId(Long id);
+    List<DoctorDTO> findByDepartmentId(Long id);
+
+    List<DoctorSearchDTO> converToDoctorSearchDTO(List<DoctorInfo> doctorInfoList);
 
     @Transactional(readOnly=true,propagation= Propagation.SUPPORTS)
-    Page<DoctorSearchDTO> advancedDoctorSearch(String query) throws ParseException, InterruptedException;
+    Page<DoctorInfo> advancedDoctorSearch(String query) throws ParseException, InterruptedException;
 }

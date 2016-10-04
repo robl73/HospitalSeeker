@@ -1,14 +1,16 @@
 package com.hospitalsearch.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "patientinfo")
-public class PatientInfo{
+public class PatientInfo {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patientinfo_gen")
@@ -16,13 +18,32 @@ public class PatientInfo{
 	private Long id;
 
 	@OneToOne
+	@JoinColumn(name = "userdetail_id")
+	@JsonIgnore
 	UserDetail userDetail;
 
-	@OneToOne(cascade= CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	@Fetch(FetchMode.SELECT)
 	@JoinColumn(name="patientcard_id")
 	@JsonIgnore
 	private PatientCard patientCard;
+
+	@Column(name = "blood_group")
+	private String bloodGroup;
+
+	public PatientInfo(UserDetail userDetail) {
+		this.userDetail = userDetail;
+	}
+
+	public PatientInfo() {}
+
+	public String getBloodGroup() {
+		return bloodGroup;
+	}
+
+	public void setBloodGroup(String bloodGroup) {
+		this.bloodGroup = bloodGroup;
+	}
 
 	public Long getId() {
 		return id;

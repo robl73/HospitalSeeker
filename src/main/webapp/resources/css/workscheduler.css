@@ -34,3 +34,8 @@ html, body {
     width: 200px;
 }
 
+.gray_section {
+    background-color: lightgrey;
+    opacity: 0.27;
+    filter:alpha(opacity=27);
+}

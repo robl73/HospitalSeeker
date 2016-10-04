@@ -2,10 +2,12 @@ package com.hospitalsearch.dao.impl;
 
 import java.util.List;
 
+import com.hospitalsearch.entity.Department;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.search.FullTextSession;
@@ -63,7 +65,7 @@ public class HospitalDAOImpl extends GenericDAOImpl<Hospital, Long> implements H
         session.createIndexer(Hospital.class).startAndWait();
         session.close();
         
-        return new Page<Hospital>(getSessionFactory(),args,HOSPITAL_PROJECTION);
+        return new Page<Hospital>(getSessionFactory(),args,HOSPITAL_PROJECTION, Hospital.class);
     }
 
 }

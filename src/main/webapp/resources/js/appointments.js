@@ -3,7 +3,6 @@
  */
 
 $(document).ready(function () {
-    console.log("it's work");
     var principal = $('#principal').text();
     var format = scheduler.date.date_to_str("%H:%i");
 

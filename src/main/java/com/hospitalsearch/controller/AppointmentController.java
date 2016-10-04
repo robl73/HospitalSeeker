@@ -40,6 +40,9 @@ public class AppointmentController {
     @Autowired
     private MailService emailService;
 
+    @Autowired
+    private DoctorInfoService doctorInfoService;
+
     @ResponseBody
     @RequestMapping(value = "/**/getAppointments", method = RequestMethod.GET)
     public List<Appointment> listAllAppointments(@RequestParam("id") String id) {
@@ -57,7 +60,7 @@ public class AppointmentController {
         model.put("formatter", DateTimeFormatter.ofPattern("d MMM uuuu hh:mm"));
         model.put("feedbacks", feedbackService.getByDoctorId(doctorId));
         UserDetail userDetail = userDetailService.getById(doctorId);
-        model.addAttribute("id", userDetail.getDoctorInfo().getId());
+        model.addAttribute("id", doctorInfoService.getIdByUserDetail(userDetail.getId()));
         model.addAttribute("doctor", userDetailService.getById(doctorId));
         return "start";
     }

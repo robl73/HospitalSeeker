@@ -1,12 +1,24 @@
 package com.hospitalsearch.entity;
 
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
-
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 
 /**
@@ -21,9 +33,7 @@ import java.util.Date;
 @Entity
 @Table(name = "password_reset_tokens")
 public class PasswordResetToken {
-    //token valid 24 hours
-    public static Integer RESET_PASSWORD_TOKEN_EXPIRATION = 24;
-
+	
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "password_reset_token_gen")
     @SequenceGenerator(name = "password_reset_token_gen", sequenceName = "password_reset_token_gen_id_seq", initialValue = 1, allocationSize = 1)
@@ -44,7 +54,7 @@ public class PasswordResetToken {
         super();
     }
 
-    public PasswordResetToken(String token, User user) {
+    public PasswordResetToken(String token, User user, Integer RESET_PASSWORD_TOKEN_EXPIRATION) {
         super();
         this.token = token;
         this.user = user;
