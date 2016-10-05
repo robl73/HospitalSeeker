@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="col-lg-8 col-sm-8 col-md-7">
                                     <div class="card panel panel-default text-xs-right">
-                                        <h3 class="panel-heading" th:text="|About ${hospital.name}|" />
+                                        <h3 class="panel-heading" th:text="|#{paginatedlayout.resultsearchlist.about} ${hospital.name}|" />
                                         <h5 class="panel-body" th:text="${hospital.description}" />
                                     </div>
                                 </div>
@@ -30,9 +30,7 @@
                             <ul th:if="${pagination}" class="pagination pagination-lg">
                             <li class="page-item" th:if="${currentPage != 1}">
                                     <a class="page-link"
-                                       th:href="@{/hospitals/page/1/params(itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}">
-                                        First
-                                    </a>
+                                       th:href="@{/hospitals/page/1/params(itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}" th:text="#{paginatedlayout.page.first}"/>
                                 </li>
                                 <li class="page-item" th:if="${currentPage != 1}">
                                     <a
@@ -65,9 +63,7 @@
                                 <li class="page-item"
                                     th:if="${(currentPage+1) &lt;= pageCount}">
                                     <a class="page-link"
-                                       th:href="@{/hospitals/page/{pageCount}/params(pageCount=${pageCount},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}">
-                                        Last
-                                    </a>
+                                       th:href="@{/hospitals/page/{pageCount}/params(pageCount=${pageCount},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}" th:text="#{paginatedlayout.page.last}"/>
                                 </li>
 
                             </ul>
