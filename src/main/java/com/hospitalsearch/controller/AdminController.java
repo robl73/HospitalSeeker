@@ -1,10 +1,5 @@
 package com.hospitalsearch.controller;
 
-import java.net.ConnectException;
-import java.util.List;
-import java.util.Locale;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -22,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-<<<<<<< HEAD
+
 import com.hospitalsearch.dto.AdminTokenConfigDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
@@ -33,21 +28,16 @@ import com.hospitalsearch.service.AdminTokenConfigService;
 import com.hospitalsearch.service.MailService;
 import com.hospitalsearch.service.RoleService;
 import com.hospitalsearch.service.UserService;
-=======
+
 import javax.validation.Valid;
 import java.net.ConnectException;
 import java.util.List;
 import java.util.Locale;
 
-import static com.hospitalsearch.config.security.SecurityConfiguration.REMEMBER_ME_TOKEN_EXPIRATION;
 import com.hospitalsearch.entity.DepartmentsName;
-import static com.hospitalsearch.entity.PasswordResetToken.RESET_PASSWORD_TOKEN_EXPIRATION;
-import static com.hospitalsearch.entity.VerificationToken.VERIFICATION_TOKEN_EXPIRATION;
 import com.hospitalsearch.service.DepartmentsNameService;
-import java.util.ArrayList;
-import net.sf.cglib.core.Local;
 import org.springframework.web.servlet.view.RedirectView;
->>>>>>> taskDepartmentutil
+
 
 /**
  * @author Andrew Jasinskiy on 10.05.16

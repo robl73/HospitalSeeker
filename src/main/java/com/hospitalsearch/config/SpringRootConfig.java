@@ -14,6 +14,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Properties;
+import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
 
 /**
  * Created by speedfire on 4/28/16.
@@ -45,13 +46,13 @@ public class SpringRootConfig {
     private static final String PROP_HIBERNATE_EHCACHE_SHOWSQL = "hibernate.cache.use_query_cache";
     private static final String PROP_HIBERNATE_SEARCH_DEFAULT_DIRECTORY_PROVIDER = "hibernate.search.default.directory_provider";
     private static final String PROP_HIBERNATE_SEARCH_INDEX_BASE = "hibernate.search.default.indexBase";
-<<<<<<< HEAD
+
 //    private static final String PROP_HIBERNATE_EJB_NAMING_STRATEGY = "hibernate.ejb.naming_strategy";
 
-=======
+
     
     
->>>>>>> taskDepartmentutil
+
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -89,16 +90,17 @@ public class SpringRootConfig {
         props.put(PROP_HIBERNATE_EHCACHE_REGION_FACTORY, properties.getRequiredProperty(PROP_HIBERNATE_EHCACHE_REGION_FACTORY));
         props.put(PROP_HIBERNATE_SEARCH_DEFAULT_DIRECTORY_PROVIDER, properties.getRequiredProperty(PROP_HIBERNATE_SEARCH_DEFAULT_DIRECTORY_PROVIDER));
         props.put(PROP_HIBERNATE_SEARCH_INDEX_BASE, properties.getRequiredProperty(PROP_HIBERNATE_SEARCH_INDEX_BASE));
-<<<<<<< HEAD
+
         props.put(PROP_HIBERNATE_HBM2DDL_AUTO, properties.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
         props.put(PROP_HIBERNATE_IMPORT_FILE, properties.getRequiredProperty(PROP_HIBERNATE_IMPORT_FILE));
 
-=======
+
         
         props.put(PROP_HIBERNATE_HBM2DDL_AUTO, properties.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
    //     props.put(PROP_HIBERNATE_IMPORT_FILE, properties.getRequiredProperty(PROP_HIBERNATE_IMPORT_FILE));
         
->>>>>>> taskDepartmentutil
+
+   
         return props;
     }
 
@@ -110,7 +112,7 @@ public class SpringRootConfig {
         return new CommonsMultipartResolver();
     }
 
-
+/*
     @Bean
     public SpringLiquibase liquibase() {
         SpringLiquibase liquibase = new SpringLiquibase();

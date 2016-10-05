@@ -456,12 +456,12 @@
 		</executions>       
         --> 
         
-                <executions>
+        <executions>
 			<execution>
 			    <phase>compile</phase>                                                                  
 			    <goals>
                                  <goal>status</goal>
-				 <goal>update</goal>
+				                 <goal>update</goal>
                                  <goal>dbDoc</goal>                                   
 			    </goals>
 			</execution>

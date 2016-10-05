@@ -2,9 +2,9 @@ package com.hospitalsearch.entity;
 
 import java.util.List;
 
-<<<<<<< HEAD
+
 import javax.persistence.*;
-=======
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -16,7 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
->>>>>>> taskDepartmentutil
+
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -33,14 +33,14 @@ public class Department{
 	@SequenceGenerator(name = "department_gen", sequenceName = "department_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
 
-<<<<<<< HEAD
+
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
 	private String name;
 
 	@ManyToMany
 	@JoinTable(name="DEPARTMENT_DOCTORINFO", joinColumns = @JoinColumn(name="DEPARTMENTS_ID"), inverseJoinColumns = @JoinColumn(name="DOCTORS_ID"))
 	@Fetch(FetchMode.SELECT)
-=======
+
     /*    
 	//@Field(boost=@Boost(1.2f))
 	//private String name;
@@ -57,8 +57,7 @@ public class Department{
         }
     */
 	
-	@ManyToMany(cascade=CascadeType.ALL)
->>>>>>> taskDepartmentutil
+	
 	private List<DoctorInfo> doctors;
 	
 	@ManyToOne

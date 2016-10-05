@@ -9,7 +9,8 @@
     
     <!-- ===================================================================  -->
     
-    
+	
+	
     <changeSet author="Admin (generated)" id="1474872040478-1">
         <createTable tableName="appointment">
             <column name="id" type="BIGINT">
@@ -218,7 +219,7 @@
     </changeSet>
     <changeSet author="Admin (generated)" id="1474872040478-18">
         <createTable tableName="workscheduler">
-            <column name="workscheduler" type="VARCHAR(10000)"/> <!--changed by Roma -->
+            <column name="workscheduler" type="VARCHAR(10000)"/>  <!-- changed  by Roma -->
             <column name="doctorinfo_id" type="BIGINT"/>
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -1612,51 +1613,147 @@
     </changeSet>
 	
 	
-	
-
-    <!-- ====================================================================  -->  
-    
-
-   
-   
-    <changeSet author="Admin (generated)" id="1475144899277-1">
+    <changeSet author="Admin (generated)" id="1475681053542-1">
+        <createTable tableName="adminTokenConfig">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="adminTokenConfigPK"/>
+            </column>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="value" type="INT4"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-2">
         <createTable tableName="departmenstname">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="departmentName" type="VARCHAR(255)"/>
-            <column name="departmentNumber" type="INT4"/>
-            <column name="departmentSpecialization" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="number" type="VARCHAR(255)"/>
+            <column name="specialization" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="Admin (generated)" id="1475144899277-2">
+    <changeSet author="Admin (generated)" id="1475681053542-3">
+        <createTable tableName="events">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="BYTEA"/>
+            <column name="id_dhtmlx" type="BIGINT"/>
+            <column name="length" type="BIGINT"/>
+            <column name="pattern" type="VARCHAR(255)"/>
+            <column name="pid" type="BIGINT"/>
+            <column name="start_date" type="BYTEA"/>
+            <column name="text" type="VARCHAR(255)"/>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="scheduler_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-4">
+        <createTable tableName="scheduler">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="app_size" type="SMALLINT"/>
+            <column name="day_end" type="SMALLINT"/>
+            <column name="day_start" type="SMALLINT"/>
+            <column name="week_size" type="SMALLINT"/>
+            <column name="doctorinfo_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-5">
+        <addColumn tableName="patientinfo">
+            <column name="blood_group" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-6">
+        <addColumn tableName="doctorinfo">
+            <column name="category" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-7">
+        <addColumn tableName="carditem">
+            <column name="doctorinfo_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-8">
+        <addColumn tableName="patientinfo">
+            <column name="patientcard_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-9">
+        <addColumn tableName="patientcard">
+            <column name="patientinfo_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-10">
+        <addColumn tableName="userdetail">
+            <column name="user_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-11">
+        <addColumn tableName="patientinfo">
+            <column name="userdetail_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-12">
         <addPrimaryKey columnNames="id" constraintName="departmenstnamePK" tableName="departmenstname"/>
     </changeSet>
-    <changeSet author="Admin (generated)" id="1475144899277-3">
-        <dropColumn columnName="name" tableName="department"/>
+    <changeSet author="Admin (generated)" id="1475681053542-13">
+        <addPrimaryKey columnNames="id" constraintName="eventsPK" tableName="events"/>
     </changeSet>
-    <changeSet author="Admin (generated)" id="1475260053153-1">
-        <addColumn tableName="departmenstname">
-            <column name="name" type="varchar(255)"/>
-        </addColumn>
+    <changeSet author="Admin (generated)" id="1475681053542-14">
+        <addPrimaryKey columnNames="id" constraintName="schedulerPK" tableName="scheduler"/>
     </changeSet>
-    <changeSet author="Admin (generated)" id="1475260053153-2">
-        <addColumn tableName="departmenstname">
-            <column name="number" type="varchar(255)"/>
-        </addColumn>
+    <changeSet author="Admin (generated)" id="1475681053542-15">
+        <addForeignKeyConstraint baseColumnNames="userdetail_id" baseTableName="patientinfo" constraintName="FK_1m7wpycqebo4p1hb1ciew8lju" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userdetail"/>
     </changeSet>
-    <changeSet author="Admin (generated)" id="1475260053153-3">
-        <addColumn tableName="departmenstname">
-            <column name="specialization" type="varchar(255)"/>
-        </addColumn>
+    <changeSet author="Admin (generated)" id="1475681053542-16">
+        <addForeignKeyConstraint baseColumnNames="doctorinfo_id" baseTableName="carditem" constraintName="FK_32y3umi6mfuwbxmi9ub93ju9w" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="doctorinfo"/>
     </changeSet>
-    <changeSet author="Admin (generated)" id="1475260053153-4">
-        <dropColumn columnName="departmentName" tableName="departmenstname"/>
+    <changeSet author="Admin (generated)" id="1475681053542-17">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="userdetail" constraintName="FK_90967b34b8g7o7uyt8uujn4ya" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users"/>
     </changeSet>
-    <changeSet author="Admin (generated)" id="1475260053153-5">
-        <dropColumn columnName="departmentNumber" tableName="departmenstname"/>
+    <changeSet author="Admin (generated)" id="1475681053542-18">
+        <addForeignKeyConstraint baseColumnNames="patientcard_id" baseTableName="patientinfo" constraintName="FK_ft38uu60cjfl7q23ejvb78hk3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="patientcard"/>
     </changeSet>
-    <changeSet author="Admin (generated)" id="1475260053153-6">
-        <dropColumn columnName="departmentSpecialization" tableName="departmenstname"/>
+    <changeSet author="Admin (generated)" id="1475681053542-19">
+        <addForeignKeyConstraint baseColumnNames="scheduler_id" baseTableName="events" constraintName="FK_h25bu5arkbwfh9fwpabk0x9e2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="scheduler"/>
     </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-20">
+        <addForeignKeyConstraint baseColumnNames="doctorinfo_id" baseTableName="scheduler" constraintName="FK_io94dc8e3xgt37ggaiq0kcsl1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="doctorinfo"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-21">
+        <addForeignKeyConstraint baseColumnNames="patientinfo_id" baseTableName="patientcard" constraintName="FK_nl0kd9nw0gugyysura8qqpymw" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="patientinfo"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-22">
+        <dropForeignKeyConstraint baseTableName="workscheduler" constraintName="FK_a5ufm3i0ew6t3nfua44q1mqvw"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-23">
+        <dropForeignKeyConstraint baseTableName="userdetail" constraintName="fk_exlldeucxpa91uwds0hpc97o"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-24">
+        <dropForeignKeyConstraint baseTableName="carditem" constraintName="fk_ohvlr9w2h9pvsj2bg12ox9b9"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-25">
+        <dropForeignKeyConstraint baseTableName="patientcard" constraintName="fk_ov506nbhqxddqios9pxlb21ie"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-26">
+        <dropTable tableName="workscheduler"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-27">
+        <dropColumn columnName="cardid" tableName="patientinfo"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-28">
+        <dropColumn columnName="color" tableName="appointment"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-29">
+        <dropColumn columnName="doctor_id" tableName="carditem"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-30">
+        <dropColumn columnName="patientcard_id" tableName="userdetail"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1475681053542-31">
+        <dropColumn columnName="userdetail_id" tableName="patientcard"/>
+    </changeSet>
+
 </databaseChangeLog>
