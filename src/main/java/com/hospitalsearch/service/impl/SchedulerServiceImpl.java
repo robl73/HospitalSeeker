@@ -43,21 +43,15 @@ public class SchedulerServiceImpl implements SchedulerService {
         Scheduler newScheduler = mapper.readValue(schedulerString, Scheduler.class);
         newScheduler.setDoctorInfo(doctorInfoDAO.getById(doctorInfoId));
         if (scheduler != null) {
-            scheduler.setAppSize(newScheduler.getAppSize());
-            scheduler.setDayStart(newScheduler.getDayStart());
-            scheduler.setDayEnd(newScheduler.getDayEnd());
-            scheduler.setWeekSize(newScheduler.getWeekSize());
-            scheduler.setEvents(newScheduler.getEvents());
-        } else {
-            scheduler = newScheduler;
+            schedulerDAO.delete(scheduler);
         }
-        schedulerDAO.save(scheduler);
+        schedulerDAO.save(newScheduler);
     }
 
     @Override
     public String getByDoctorEmail(String doctorEmail) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(schedulerDAO.getByDoctorId(doctorInfoDAO.getIdByUserDetail(userDAO.getByEmail(doctorEmail).getId())));
+        String json = mapper.writeValueAsString(schedulerDAO.getByDoctorId(doctorInfoDAO.getByEmail(doctorEmail).getId()));
         return json;
     }
 }

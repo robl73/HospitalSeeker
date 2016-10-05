@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hospitalsearch.entity.Scheduler;
 import com.hospitalsearch.service.SchedulerService;
+import com.hospitalsearch.util.PrincipalConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -25,12 +26,15 @@ public class SchedulerController {
     @Transactional
     @RequestMapping(value = "/**/supplyWorkScheduler", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public void supplyScheduler(@RequestBody String data, @RequestParam Long doctorId) {
-        try {
-            schedulerService.saveScheduler(data, doctorId);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void supplyScheduler(@RequestBody String data, @RequestParam Long doctorId) throws IOException {
+        schedulerService.saveScheduler(data, doctorId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getWorkSchedulerByPrincipal", method = RequestMethod.GET)
+    public String getWorkSchedulerByDoctor() throws JsonProcessingException {
+        String doctorEmail = PrincipalConverter.getPrincipal();
+        return schedulerService.getByDoctorEmail(doctorEmail);
     }
 
     @Transactional

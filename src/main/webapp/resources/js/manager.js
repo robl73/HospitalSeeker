@@ -7,50 +7,41 @@ var endHours = 23;
 var timeout;
 
 $(document).ready(function() {
-    blockDays();
     init();
     $('#workWeekSize').change(workWeekSizeChanged);
     $('#workDayBeginAt').change(workDayBeginChanged);
     $('#workDayEndAt').change(workDayEndChanged);
     $('#saveData').click(save);
-});
-
-function init() {
-    scheduler.config.limit_time_select = true;
-    scheduler.config.lightbox.sections = [
-        {name:"description", height: 130, map_to: "text", type: "textarea" , focus: true},
-        {name:"recurring", height: 300, type: "recurring", map_to: "rec_type", button: "recurring"}
-    ];
-    console.log(scheduler.config.lightbox.sections);
     scheduler.config.time_step = 60;
     scheduler.config.collision_limit = 1;
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.init('scheduler_here', new Date(), "week");
     idDoctorInfo = document.getElementById("did").textContent;
-    $.ajax({
-        type: "GET",
-        async: false,
-        url: "getWorkScheduler?id=" + idDoctorInfo,
-        dataType: "json",
-        contentType: "application/json",
-        mimeType: "application/json",
-        success: function (data) {
-            if (data != null) {
-                appSize = data.app_size;
-                weekSize = data.week_size;
-                dayStart = data.day_start;
-                dayEnd = data.day_end;
-                workScheduler = data;
-            }
-        },
-        error: function () {
-        }
+    var promise = getData("getWorkScheduler?id=" + idDoctorInfo);
+    promise.success(function (data) {
+        init(data);
     });
 
+});
+
+function init(data) {
+    blockPast('discount');
     var appSize;
     var dayStart;
     var dayEnd;
     var weekSize;
+    if (data != null) {
+        appSize = data.app_size;
+        weekSize = data.week_size;
+        dayStart = data.day_start;
+        dayEnd = data.day_end;
+        workScheduler = data;
+    }
+
+    scheduler.ignore_month = ignoreDays(selectedWeekSize(weekSize));
+    scheduler.ignore_week = scheduler.ignore_month;
+
+
 
     if (! (jQuery.isEmptyObject(workScheduler))) {
         $("#workWeekSize option").each(function (item, i) {
@@ -123,27 +114,6 @@ function showMessage(selec) {
     });
 }
 
-function blockDays() {
-    var block_id = null;
-    scheduler.attachEvent("onBeforeViewChange", function(old_mode, old_date, mode, date) {
-        if(block_id) scheduler.deleteMarkedTimespan(block_id);
-        var from = scheduler.date[mode + "_start"](new Date(date));
-        var to = new Date(Math.min(+new Date(), +scheduler.date.add(from, 1, mode)));
-        block_id = scheduler.addMarkedTimespan({
-            start_date: from,
-            end_date: to,
-            css: "gray_section",
-            type: "discount"
-        });
-        return true;
-    });
-    scheduler.config.limit_start = new Date();
-    scheduler.config.limit_end = new Date(9999, 1, 1);
-    setInterval(function() {
-        scheduler.config.limit_start = new Date();
-    }, 1000 * 60);
-}
-
 function workWeekSizeChanged() {
     selectWeekSize();
     isSaved = false;
@@ -168,11 +138,6 @@ function save() {
         return;
     }
     isSaved = true;
-    // $.ajaxSetup({
-    //     headers: {
-    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //     }
-    // });
     var events = JSON.parse(scheduler.toJSON());
     var workSchedulerConfig = new Object();
     workSchedulerConfig.week_size = $("#workWeekSize").val();
@@ -203,24 +168,6 @@ $(window).bind('beforeunload', function(e) {
         return true;
     }
 });
-
-function ignoreDays(days) {
-    var ignore;
-    if (days.length > 0) {
-        ignore = function (date) {
-            for (var i = 0; i < days.length; ++i) {
-                if (date.getDay() == days[i]) {
-                    return true;
-                }
-            }
-        };
-    } else {
-        ignore = false;
-    }
-    scheduler.ignore_month = ignore;
-    scheduler.ignore_week = ignore;
-    scheduler.setCurrentView();
-}
 
 function workDayBeginChanged() {
     var start = parseInt($('#workDayBeginAt').val());
