@@ -2,18 +2,12 @@ package com.hospitalsearch.controller;
 
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 
-import com.hospitalsearch.entity.User;
-import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.UserService;
-import com.hospitalsearch.util.PrincipalConverter;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +24,6 @@ import com.hospitalsearch.service.DoctorInfoService;
 import com.hospitalsearch.service.HospitalService;
 import com.hospitalsearch.util.HospitalFilterDTO;
 import com.hospitalsearch.util.Page;
-import com.hospitalsearch.util.PageConfigDTO;
 
 @Controller
 public class HospitalController {
