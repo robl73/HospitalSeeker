@@ -134,16 +134,33 @@
                              th:src="(__${#locale}__ == 'en'? @{/img/en.png}:@{/img/ua.png})"/>
                     </a>
                     <ul class="dropdown-menu localization" id="dropdawn">
-                        <li>
-                            <a th:href="@{ |${#httpServletRequest.requestURL.toString()+'?lang=ua'}| }" class="menu">
-                                <img th:src="@{/img/ua.png}" th:text="#{ukrainian}"/>
-                            </a>
+                        <li th:with="currentUrl=(${@currentUrlWithoutParam.apply('lang')})">
+                                <a th:href="@{${currentUrl}(lang=ua)}" class="menu">
+                                    <img th:src="@{/img/ua.png}" th:text="#{ukrainian}"/>
+                                </a>
                         </li>
-                        <li>
-                            <a th:href="@{ |${#httpServletRequest.requestURL.toString()+'?lang=en'}|}" class="menu">
+
+                        <!--<li th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})">-->
+                                <!--<a th:href="@{${currentUrl}(lang=ua)}"  class="menu">-->
+                                    <!--<img th:src="@{/img/ua.png}" th:text="#{ukrainian}"/>-->
+                                <!--</a>-->
+                            <!--&lt;!&ndash;<a th:href="@{ |${#httpServletRequest.requestURL.toString()+'?lang=ua'}| }" class="menu">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<img th:src="@{/img/ua.png}" th:text="#{ukrainian}"/>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                        <!--</li>-->
+                        <li th:with="currentUrl=(${@currentUrlWithoutParam.apply('lang')})">
+                            <a th:href="@{${currentUrl}(lang=en)}" class="menu">
                                 <img th:src="@{/img/en.png}"/> english
                             </a>
                         </li>
+                        <!--<li  th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})">-->
+                            <!--<a th:href="@{${currentUrl}(lang=en)}"  class="menu">-->
+                                <!--<img th:src="@{/img/en.png}"/> english-->
+                            <!--</a>-->
+                            <!--&lt;!&ndash;<a th:href="@{ |${#httpServletRequest.requestURL.toString()+'?lang=en'}|}" class="menu">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<img th:src="@{/img/en.png}"/> english&ndash;&gt;-->
+                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                        <!--</li>-->
 
                     </ul>
                 </li>
@@ -184,40 +201,38 @@
     <!--Search hospitals and doctors-->
     <div class="[ bootsnipp-search animate ]">
         <div class="[ container ]">
-            <div class="[search-hospital-container]"  style="display: inline-block; float:left; width: 50%;">
+            <div class="[search-hospital-container]"  style="display: inline-block; float:left; width: 45%;">
                 <form th:action="@{/hospitals}" id="search-hospital-form" class="[ form-inline ]" method="GET">
                   <div class="[ input-group ]" style="z-index:1000000;width: 100%;">
 
 
-                     <div class="form-group" style="width: 100%;">
+                     <div class="form-group" style="width: 92%;">
                         	<input id="select_hospital_search"  style="border-color:#5bc0de; border-width:3px; width: 100%;" type="text" class="[ form-control ] dropdown-field" name="q"
                                    th:placeholder="#{header.menu.searchbar.placeholder.hospitals}"/>
 
                         </div>
-                        <span class="[ input-group-btn ]" style="float: inherit;">
-                        	<button type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;"><span class="[ glyphicon glyphicon-search ]"></span></button>
+                        <span class="[ input-group-btn ]" style="position: absolute;top:0;right:0; float: inherit; width:8%;">
+                        	<button type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;border-width:3px;"><span class="[ glyphicon glyphicon-search ]"></span></button>
                         </span>
                     </div>
                 </form>
-                <!--<button class="[ btn btn-danger ]" style="display: inherit; float: inherit;" type="reset"><span class="[ glyphicon glyphicon-remove ]"></span></button>-->
             </div>
 
-            <div class="[search-doctor-container]" style="display: inline-block; width: 50%; float: right;">
-                <form data-toggle="validator" th:action="@{/doctors}" id="search-doctor-form" class="[ form-inline ]" method="GET" role="search">
+            <div class="[search-doctor-container]" style="display: inline-block; width: 45%; float: right;">
+                <form th:action="@{/doctors}" id="search-doctor-form" class="[ form-inline ]" method="GET" role="search">
                     <div class="[ input-group ]" style="z-index:1000000;width: 100%;">
 
 
-                        <div class="form-group" style="width: 100%;">
+                        <div class="form-group" style="width: 92%;">
                             <input id="select_doctor_search" style="border-color:#5bc0de; border-width:3px; width: 100%;" type="text" class="[ form-control ] dropdown-field" name="d"
                                    th:placeholder="#{header.menu.searchbar.placeholder.doctors}"/>
 
                         </div>
-                        <span class="[ input-group-btn ]" style="float: inherit;">
-                        	<button type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;"><span class="[ glyphicon glyphicon-search ]"></span></button>
+                        <span class="[ input-group-btn ]" style="position: absolute;top:0;right:0;float: inherit; width:8%">
+                        	<button type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;border-width:3px;"><span class="[ glyphicon glyphicon-search ]"></span></button>
                         </span>
                     </div>
                 </form>
-                <!--<button class="[ btn btn-danger ]" type="reset" style="display: inherit; float: inherit;"><span class="[ glyphicon glyphicon-remove ]"></span></button>-->
             </div>
         </div>
 

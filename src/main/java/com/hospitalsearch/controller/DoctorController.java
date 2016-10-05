@@ -1,12 +1,10 @@
 package com.hospitalsearch.controller;
 
-import com.hospitalsearch.dto.DoctorSearchDTO;
 import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.service.DoctorInfoService;
 import com.hospitalsearch.service.UserService;
 import com.hospitalsearch.util.Page;
-import com.hospitalsearch.util.PageConfigDTO;
 import com.hospitalsearch.util.PrincipalConverter;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +57,6 @@ public class DoctorController {
     }
 
     public void initializeModel(Map<String,Object> model,Page pageableContent, Integer page, String query){
-
         model.put("currentSearchQuery", query);
         model.put("pagedList",  this.doctorInfoService.converToDoctorSearchDTO((List<DoctorInfo>) pageableContent.getPageList(page)));
         model.put("pagination", pageableContent.isPaginated());
