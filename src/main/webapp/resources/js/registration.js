@@ -2,14 +2,14 @@ $(document).ready(function () {
 
     //localization
     var patternPasswordM = getMessage('registration.message.error.patternPasswordM');
-    var whitespaceM = getMessage('registration.message.error.whitespaceM');
-    var patternEmailM = getMessage('registration.message.error.patternEmailM');
 
+    var whitespaceM = getMessage('registration.message.error.whitespaceM');
+
+    var patternEmailM = getMessage('registration.message.error.patternEmailM');
 
     $.validator.addMethod("patternPassword", function (value, element) {
         return this.optional(element) || /^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{6,20}$/i.test(value);
     });
-
 
     $.validator.addMethod("whitespace", function (value, element) {
         return this.optional(element) || /^\S+$/i.test(value);

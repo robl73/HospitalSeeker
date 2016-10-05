@@ -1,15 +1,24 @@
 package com.hospitalsearch.controller;
 
-import com.hospitalsearch.entity.UserDetail;
+import com.hospitalsearch.dto.NewDoctorRegistrationDTO;
+import com.hospitalsearch.dto.UserRegisterDTO;
+import com.hospitalsearch.entity.*;
 import com.hospitalsearch.service.HospitalService;
 import com.hospitalsearch.service.ManagerService;
 import com.hospitalsearch.service.UserDetailService;
 import com.hospitalsearch.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
+import java.net.ConnectException;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -31,6 +40,20 @@ public class ManagerController {
     @Autowired
     private UserDetailService userDetailService;
 
+    @PreAuthorize("hasRole('MANAGER')")
+    @RequestMapping(value = "/newDoctor", method = RequestMethod.GET)
+    public String getRegistration(@ModelAttribute("newDoctorDto") NewDoctorRegistrationDTO newDoctorRegistrationDTO,
+                                  ModelMap model) {
+        model.addAttribute("newDoctorDto", newDoctorRegistrationDTO);
+        model.addAttribute("edit", true);
+        return "/newDoctor";
+    }
+
+    @RequestMapping(value = "/newDoctor", method = RequestMethod.POST)
+    public String newDoctorRegistration(@ModelAttribute("newDoctorDto") NewDoctorRegistrationDTO newDoctorRegistrationDTO, ModelMap model) {
+        System.out.println(newDoctorRegistrationDTO);
+        return "/manageDoctors";
+    }
 
     @RequestMapping(value = "/manageDoctors", method = RequestMethod.GET)
     public String getDoctorsByManager(Map<String, Object> model) {

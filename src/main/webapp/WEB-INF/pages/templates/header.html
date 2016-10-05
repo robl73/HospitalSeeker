@@ -45,10 +45,20 @@
                 <li sec:authorize="hasRole('DOCTOR')"><a th:class="menu"
                                                          th:classappend="${#httpServletRequest.requestURL.toString().matches('.*/workscheduler.*')}?'active':''"
                                                          th:href="@{/workscheduler}" th:text="#{header.workscheduler}"></a></li>
-                <li sec:authorize="hasRole('MANAGER')"><a
-                        th:class="menu"
-                        th:classappend="${#httpServletRequest.requestURL.toString().matches('.*/manageDoctors.*')}?'active':''"
-                        th:href="@{/manageDoctors}" th:text="#{header.manage}"></a></li>
+                <li sec:authorize="hasRole('MANAGER')">
+                    <!--<a-->
+                        <!--th:class="menu"-->
+                        <!--th:classappend="${#httpServletRequest.requestURL.toString().matches('.*/manageDoctors.*')}?'active':''"-->
+                        <!--th:href="@{/manageDoctors}" th:text="#{header.manage}">-->
+                    <!--</a>-->
+                    <a href="#" class="nav navbar-nav dropdown dropdown-toggle" data-toggle="dropdown" th:text="#{manager.menu.actions}"><span class="caret"></span></a>
+                    <ul class="dropdown-menu" id="dropdawn">
+                        <li>
+                            <a th:href="@{/newDoctor}" class="menu">
+                                <span class="glyphicon glyphicon-plus-sign" th:text="' '+#{manager.menu.add.new.doctor}"></span></a>
+                        </li>
+                    </ul>
+                </li>
                 <li sec:authorize="hasRole('PATIENT')"><a
                         th:class="menu"
                         th:classappend="${#httpServletRequest.requestURL.toString().matches('.*/appointments.*')}?'active':''"
@@ -62,7 +72,6 @@
                     <a href="#" class="nav navbar-nav dropdown dropdown-toggle" data-toggle="dropdown" th:text="#{admin.menu.actions}"><span class="caret"></span></a>
                     <ul class="dropdown-menu" id="dropdawn">
                         <li>
-
                             <a th:href="@{/admin/users(status=true)}" class="menu">
                                 <span class="glyphicon glyphicon-list" th:text="' '+#{admin.menu.all.users}"></span></a>
                         </li>
