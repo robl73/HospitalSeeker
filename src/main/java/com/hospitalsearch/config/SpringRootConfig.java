@@ -48,7 +48,12 @@ public class SpringRootConfig {
     private static final String PROP_HIBERNATE_EHCACHE_SHOWSQL = "hibernate.cache.use_query_cache";
     private static final String PROP_HIBERNATE_SEARCH_DEFAULT_DIRECTORY_PROVIDER = "hibernate.search.default.directory_provider";
     private static final String PROP_HIBERNATE_SEARCH_INDEX_BASE = "hibernate.search.default.indexBase";
+
 //    private static final String PROP_HIBERNATE_EJB_NAMING_STRATEGY = "hibernate.ejb.naming_strategy";
+
+
+    
+    
 
     @Bean
     public DataSource dataSource() {
@@ -87,9 +92,17 @@ public class SpringRootConfig {
         props.put(PROP_HIBERNATE_EHCACHE_REGION_FACTORY, properties.getRequiredProperty(PROP_HIBERNATE_EHCACHE_REGION_FACTORY));
         props.put(PROP_HIBERNATE_SEARCH_DEFAULT_DIRECTORY_PROVIDER, properties.getRequiredProperty(PROP_HIBERNATE_SEARCH_DEFAULT_DIRECTORY_PROVIDER));
         props.put(PROP_HIBERNATE_SEARCH_INDEX_BASE, properties.getRequiredProperty(PROP_HIBERNATE_SEARCH_INDEX_BASE));
+
         props.put(PROP_HIBERNATE_HBM2DDL_AUTO, properties.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
         props.put(PROP_HIBERNATE_IMPORT_FILE, properties.getRequiredProperty(PROP_HIBERNATE_IMPORT_FILE));
 
+
+        
+        props.put(PROP_HIBERNATE_HBM2DDL_AUTO, properties.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
+   //     props.put(PROP_HIBERNATE_IMPORT_FILE, properties.getRequiredProperty(PROP_HIBERNATE_IMPORT_FILE));
+        
+
+   
         return props;
     }
 
@@ -101,7 +114,7 @@ public class SpringRootConfig {
         return new CommonsMultipartResolver();
     }
 
-
+/*
     @Bean
     public SpringLiquibase liquibase() {
         SpringLiquibase liquibase = new SpringLiquibase();
@@ -111,7 +124,7 @@ public class SpringRootConfig {
         liquibase.setIgnoreClasspathPrefix(true);
         return liquibase;
     }
-
+*/
     @Bean
     public Function<String, String> currentUrlWithoutParam() {
         return param -> currentUrlWithoutParamWrapped(param);
