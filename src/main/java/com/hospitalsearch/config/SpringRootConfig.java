@@ -10,10 +10,13 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.net.URLDecoder;
 import java.util.Properties;
+import java.util.function.Function;
 
 /**
  * Created by speedfire on 4/28/16.
@@ -45,7 +48,12 @@ public class SpringRootConfig {
     private static final String PROP_HIBERNATE_EHCACHE_SHOWSQL = "hibernate.cache.use_query_cache";
     private static final String PROP_HIBERNATE_SEARCH_DEFAULT_DIRECTORY_PROVIDER = "hibernate.search.default.directory_provider";
     private static final String PROP_HIBERNATE_SEARCH_INDEX_BASE = "hibernate.search.default.indexBase";
+
 //    private static final String PROP_HIBERNATE_EJB_NAMING_STRATEGY = "hibernate.ejb.naming_strategy";
+
+
+    
+    
 
     @Bean
     public DataSource dataSource() {
@@ -78,15 +86,23 @@ public class SpringRootConfig {
         Properties props = new Properties();
         props.put(PROP_HIBERNATE_DIALECT, properties.getRequiredProperty(PROP_HIBERNATE_DIALECT));
         props.put(PROP_HIBERNATE_SHOW_SQL, properties.getRequiredProperty(PROP_HIBERNATE_SHOW_SQL));
-//        props.put(PROP_HIBERNATE_EHCACHE, properties.getRequiredProperty(PROP_HIBERNATE_EHCACHE));
+        props.put(PROP_HIBERNATE_EHCACHE, properties.getRequiredProperty(PROP_HIBERNATE_EHCACHE));
         props.put(PROP_HIBERNATE_EHCACHE_LEVEL, properties.getRequiredProperty(PROP_HIBERNATE_EHCACHE_LEVEL));
         props.put(PROP_HIBERNATE_EHCACHE_SHOWSQL, properties.getRequiredProperty(PROP_HIBERNATE_EHCACHE_SHOWSQL));
         props.put(PROP_HIBERNATE_EHCACHE_REGION_FACTORY, properties.getRequiredProperty(PROP_HIBERNATE_EHCACHE_REGION_FACTORY));
         props.put(PROP_HIBERNATE_SEARCH_DEFAULT_DIRECTORY_PROVIDER, properties.getRequiredProperty(PROP_HIBERNATE_SEARCH_DEFAULT_DIRECTORY_PROVIDER));
         props.put(PROP_HIBERNATE_SEARCH_INDEX_BASE, properties.getRequiredProperty(PROP_HIBERNATE_SEARCH_INDEX_BASE));
+
         props.put(PROP_HIBERNATE_HBM2DDL_AUTO, properties.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
         props.put(PROP_HIBERNATE_IMPORT_FILE, properties.getRequiredProperty(PROP_HIBERNATE_IMPORT_FILE));
 
+
+        
+        props.put(PROP_HIBERNATE_HBM2DDL_AUTO, properties.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
+   //     props.put(PROP_HIBERNATE_IMPORT_FILE, properties.getRequiredProperty(PROP_HIBERNATE_IMPORT_FILE));
+        
+
+   
         return props;
     }
 
@@ -98,16 +114,30 @@ public class SpringRootConfig {
         return new CommonsMultipartResolver();
     }
 
+/*
+    @Bean
+    public SpringLiquibase liquibase() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+     // liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
+        liquibase.setChangeLog("classpath:liquibase-changeLogForDiff.xml");
+        liquibase.setDataSource(dataSource());
+        liquibase.setIgnoreClasspathPrefix(true);
+        return liquibase;
+    }
+*/
+    @Bean
+    public Function<String, String> currentUrlWithoutParam() {
+        return param -> currentUrlWithoutParamWrapped(param);
+    }
 
-    // @Bean
-    // public SpringLiquibase liquibase() {
-    //     SpringLiquibase liquibase = new SpringLiquibase();
-    //  // liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
-    //     liquibase.setChangeLog("classpath:liquibase-changeLogForDiff.xml");
-    //     liquibase.setDataSource(dataSource());
-    //     liquibase.setIgnoreClasspathPrefix(true);
-    //     return liquibase;
-    // }
+    public String currentUrlWithoutParamWrapped(String param) {
+        try {
+            return URLDecoder.decode(
+                    ServletUriComponentsBuilder.fromCurrentRequest().replaceQueryParam(param).toUriString(), "UTF-8");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Bean
     public ImageValidator imageValidator() {
