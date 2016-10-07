@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -21,7 +25,9 @@ public class Feedback{
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "feedback_gen")
 	@SequenceGenerator(name = "feedback_gen", sequenceName = "feedback_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
-	
+
+	@NotNull
+	@Size(min = 3, max = 30)
 	private String message;
 	
 	@ManyToOne(fetch=FetchType.EAGER)

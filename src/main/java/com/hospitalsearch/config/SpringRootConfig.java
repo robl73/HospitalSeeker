@@ -1,7 +1,7 @@
 package com.hospitalsearch.config;
 
 import com.hospitalsearch.validator.ImageValidator;
-import liquibase.integration.spring.SpringLiquibase;
+//import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -99,15 +99,15 @@ public class SpringRootConfig {
     }
 
 
-    @Bean
-    public SpringLiquibase liquibase() {
-        SpringLiquibase liquibase = new SpringLiquibase();
-     // liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
-        liquibase.setChangeLog("classpath:liquibase-changeLogForDiff.xml");
-        liquibase.setDataSource(dataSource());
-        liquibase.setIgnoreClasspathPrefix(true);
-        return liquibase;
-    }
+    // @Bean
+    // public SpringLiquibase liquibase() {
+    //     SpringLiquibase liquibase = new SpringLiquibase();
+    //  // liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
+    //     liquibase.setChangeLog("classpath:liquibase-changeLogForDiff.xml");
+    //     liquibase.setDataSource(dataSource());
+    //     liquibase.setIgnoreClasspathPrefix(true);
+    //     return liquibase;
+    // }
 
     @Bean
     public ImageValidator imageValidator() {
