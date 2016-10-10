@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.w3.org/1999/xhtml"
       layout:decorator="layout">
 <head>
     <meta charset="ISO-8859-1"/>
@@ -19,7 +20,7 @@
 
 <body>
 <section layout:fragment="content" class="dashboard">
-    <div class="content" name="top">
+    <div class="content" th:name="top">
 
         <div th:if="${messageError!=null}" id="messageError" class="helper col-md-12 col-lg-12 col-sm-12">
             <div class="alert alert-danger alert-dismissible col-md-6 col-sm-6 col-lg-6
@@ -55,35 +56,66 @@
              th:text="#{admin.dashboard.department.show.table.header.name}">name</label>
       <div class="col-lg-10">
           <input class="form-control" id="inputName" placeholder="name" type="text" 
-                 name="name" ></input>  <!-- th:field="*{name}"   -->
+                 name="name" ></input>     
       </div>
-   <!--   <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Name Error</div> -->
+    </div>
+   
+   <!-- 
+    <div class="form-group">
+      <label for="name" class="col-lg-2 control-label"
+             th:text="#{admin.dashboard.department.show.table.header.name}">name</label>
+      <div class="col-lg-10">
+          <input class="form-control"  placeholder="name" type="text" 
+                 th:field="*{name}" ></input>
+          
       </div>
-    
-	
-	
+       
+    </div>
+    -->
+   
     <div class="form-group">
       <label for="inputSpecialization" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.specialization}">specialization</label>
       <div class="col-lg-10">
         <input class="form-control" id="inputSpecialization" placeholder="specialization" type="text"
-               name="specialization" ></input> <!-- th:field="*{specialization}" -->
+               name="specialization" ></input> 
+      </div>
+    </div>
+   
+   <!--
+    <div class="form-group">
+      <label for="specialization" class="col-lg-2 control-label"
+             th:text="#{admin.dashboard.department.show.table.header.specialization}">specialization</label>
+      <div class="col-lg-10">
+        <input class="form-control" placeholder="specialization" type="text"
+               th:field="*{specialization}" ></input> 
 
       </div>
-  <!--    <div th:if="${#fields.hasErrors('specialization')}" th:errors="*{specialization}"> Specialization Error</div>  -->
+  
     </div>
-	
-	<div class="form-group">
+   -->
+   
+    <div class="form-group">
       <label for="inputNumber" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.number}">number</label>
       <div class="col-lg-10">
         <input class="form-control" id="inputNumber" placeholder="number" type="text"
-               name="number" ></input> <!-- th:field="*{number}"  -->
-
+               name="number" ></input> 
       </div>
-   <!--   <div th:if="${#fields.hasErrors('number')}" th:errors="*{number}"> Number Error</div>  -->     
     </div>
    
+   <!--
+    <div class="form-group">
+      <label for="number" class="col-lg-2 control-label"
+             th:text="#{admin.dashboard.department.show.table.header.number}">number</label>
+      <div class="col-lg-10">
+        <input class="form-control" placeholder="number" type="text"
+               th:field="*{number}"></input>
+          
+      </div>
+        
+    </div>
+    -->
     
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">

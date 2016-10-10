@@ -226,11 +226,12 @@ public class AdminController {
         }
     }
     
+
     
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "admin/allDepartmentsName", method = RequestMethod.GET)
     public String allDepartmentsName(ModelMap model) {
-       List departmentnames = departmentsNameService.getAll();
+       List<DepartmentsName> departmentnames = departmentsNameService.getAll();
        model.addAttribute("departmentnames", departmentnames);
        return "admin/departmentsName";
     } 
@@ -275,6 +276,5 @@ public class AdminController {
         departmentsNameService.delete(departmentsNameService.getById(id));
         return new RedirectView("/admin/allDepartmentsName",true);
     }
-    
-  
 }
+    
