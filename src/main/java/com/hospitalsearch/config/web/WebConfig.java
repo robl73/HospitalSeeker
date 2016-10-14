@@ -139,22 +139,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return new EhCacheCacheManager(ehCacheManagerFactoryBean().getObject());
     }
 
-
-    @Bean
-    public EmbeddedServletContainerFactory servletContainer() {
-        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory(8443);
-        factory.addConnectorCustomizers((TomcatConnectorCustomizer) con -> {
-        Http11NioProtocol proto = (Http11NioProtocol) con.getProtocolHandler();
-        proto.setSSLEnabled(true);
-        con.setScheme("https");
-        con.setSecure(true);
-        proto.setKeystoreFile("/home/george/.keystore");
-        proto.setKeystorePass("password");
-        });
-
-        return factory;
-    }
-
 }
 
 

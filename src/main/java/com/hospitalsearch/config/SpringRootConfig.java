@@ -1,7 +1,6 @@
 package com.hospitalsearch.config;
 
 import com.hospitalsearch.validator.ImageValidator;
-//import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -50,10 +49,6 @@ public class SpringRootConfig {
     private static final String PROP_HIBERNATE_SEARCH_INDEX_BASE = "hibernate.search.default.indexBase";
 
 //    private static final String PROP_HIBERNATE_EJB_NAMING_STRATEGY = "hibernate.ejb.naming_strategy";
-
-
-    
-    
 
     @Bean
     public DataSource dataSource() {
@@ -114,17 +109,6 @@ public class SpringRootConfig {
         return new CommonsMultipartResolver();
     }
 
-/*
-    @Bean
-    public SpringLiquibase liquibase() {
-        SpringLiquibase liquibase = new SpringLiquibase();
-     // liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
-        liquibase.setChangeLog("classpath:liquibase-changeLogForDiff.xml");
-        liquibase.setDataSource(dataSource());
-        liquibase.setIgnoreClasspathPrefix(true);
-        return liquibase;
-    }
-*/
     @Bean
     public Function<String, String> currentUrlWithoutParam() {
         return param -> currentUrlWithoutParamWrapped(param);

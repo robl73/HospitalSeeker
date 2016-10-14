@@ -352,7 +352,7 @@
         </dependency>
         <!-- Liquibase -->
 
-     <!--   <dependency>
+  <!--      <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.core}</version>
@@ -432,7 +432,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.hospitalsearch.config.web.WebApplicationInitializer</mainClass>
+                    <mainClass>com.hospitalsearch.config.web.SpringBoot</mainClass>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -440,6 +440,27 @@
                         <artifactId>springloaded</artifactId>
                         <version>1.2.6.RELEASE</version>
                     </dependency>
+
+                    <dependency>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-core</artifactId>
+                        <version>${liquibase.core}</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${liquibase.plugin}</version>
+                        <!--<scope>test</scope>-->
+                    </dependency>
+
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate4</artifactId>
+                        <version>${liquibase.hibernate4}</version>
+                        <!--<scope>test</scope>-->
+                    </dependency>
+
                 </dependencies>
             </plugin>
             <plugin>
@@ -459,7 +480,7 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-            <!--<plugin>
+            <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.plugin}</version>
@@ -499,7 +520,7 @@
 
 		</executions>
 
-
+<!--
         <executions>
 			<execution>
 			    <phase>compile</phase>                                                                  
@@ -510,12 +531,12 @@
 			    </goals>
 			</execution>
 		</executions>  
-                
+                -->
                 <extensions>true</extensions>            
                 <dependencies>
                     <dependency>
                         <groupId>org.liquibase.ext</groupId>
-                   &lt;!&ndash; <artifactId>liquibase-hibernate4.2</artifactId> &ndash;&gt;
+                   <!-- <artifactId>liquibase-hibernate4.2</artifactId> -->
                         <artifactId>liquibase-hibernate4</artifactId>
                         <version>${liquibase.hibernate4}</version>
                     </dependency>
@@ -532,7 +553,7 @@
                     </dependency>
                     
                 </dependencies>
-            </plugin>-->
+            </plugin>
         </plugins>
     </build>
 
