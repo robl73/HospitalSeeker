@@ -58,7 +58,7 @@ public class AppointmentController {
         model.put("department", d);
         model.put("hospital", d.getHospital());
         model.put("formatter", DateTimeFormatter.ofPattern("d MMM uuuu hh:mm"));
-        model.put("feedbacks", feedbackService.getByDoctorId(doctorId));
+        model.put("feedbacks", feedbackService.getByDoctorId(doctorInfoService.getIdByUserDetail(doctorId)));
         UserDetail userDetail = userDetailService.getById(doctorId);
         model.addAttribute("id", doctorInfoService.getIdByUserDetail(userDetail.getId()));
         model.addAttribute("doctor", userDetailService.getById(doctorId));
@@ -94,6 +94,7 @@ public class AppointmentController {
     public String getCardByapointmentId(@RequestParam("appointmentId") Long appointmentId) {
         return "redirect:/card/items?userId="+appointmentDAO.getById(appointmentId).getUserDetail().getId();
     }
+
 
     @RequestMapping(value = "/**/sendMassage", method = RequestMethod.POST)
     public String sendMassageToEmail(@RequestBody Map<String, String> massageData, Locale locale) throws ConnectException {

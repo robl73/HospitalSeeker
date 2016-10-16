@@ -36,7 +36,7 @@ public class Feedback{
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.JOIN)
-	private User consumer;
+	private DoctorInfo consumer;
 	
 	private LocalDateTime date;
 
@@ -65,11 +65,11 @@ public class Feedback{
 		this.producer = producer;
 	}
 
-	public User getConsumer() {
+	public DoctorInfo getConsumer() {
 		return consumer;
 	}
 
-	public void setConsumer(User consumer) {
+	public void setConsumer(DoctorInfo consumer) {
 		this.consumer = consumer;
 	}
 

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 
 
 @Entity
-@Table(name = "adminTokenConfig")
+@Table(name = "admintokenconfig")
 public class AdminTokenConfig {
 
 	@Id

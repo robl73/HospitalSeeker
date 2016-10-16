@@ -75,4 +75,10 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
         return (DoctorInfo) query.uniqueResult();
     }
 
+    public DoctorInfo getByUserDetailId(Long userDetailId) {
+        Query query = getSessionFactory().getCurrentSession().createQuery("select d from DoctorInfo d where d.userDetails.id = :userDetailId");
+        query.setParameter("userDetailId", userDetailId);
+        return (DoctorInfo) query.uniqueResult();
+    }
+
 }

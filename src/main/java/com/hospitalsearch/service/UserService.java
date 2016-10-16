@@ -39,6 +39,8 @@ public interface UserService {
 
     User register(UserRegisterDTO dto);
 
+    void addNewUser(User newUser);
+
     void resetPassword(String email, String newPassword) throws ResetPasswordException;
 
     //Illia

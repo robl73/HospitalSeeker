@@ -2,6 +2,7 @@ package com.hospitalsearch.util;
 
 import java.time.LocalDateTime;
 
+import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.entity.Feedback;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.entity.UserDetail;
@@ -23,12 +24,9 @@ public class FeedbackDTO {
 		this.userEmail = userEmail;
 		this.doctorId = doctorId;
 		this.message = message;
-		
-		
 	}
 
-
-	public Feedback buildFeedback(User consumer,User producer){
+	public Feedback buildFeedback(DoctorInfo consumer, User producer){
 		Feedback feedback = new Feedback();
 		feedback.setDate(LocalDateTime.now());
 		feedback.setMessage(message);

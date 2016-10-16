@@ -53,6 +53,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void addNewUser(User newUser) {
+        try {
+            logger.info("save user: " + newUser);
+            dao.save(newUser);
+        } catch (Exception e) {
+            logger.error("Error saving user: " + newUser, e);
+        }
+    }
+
+    @Override
     public User register(UserRegisterDTO userRegisterDTO) {
         User user = new User();
         try {
@@ -61,12 +71,15 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
             user.setUserRoles(userRegisterDTO.getUserRoles());
             user.setEnabled(userRegisterDTO.getEnabled());
+
             if (!userRegisterDTO.getUserRoles().isEmpty()) {
                 user.setUserRoles(userRegisterDTO.getUserRoles());
             } else {
                 user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("PATIENT"))));
             }
-            save(user);
+//            save(user);
+
+            addNewUser(user);
         } catch (Exception e) {
             logger.error("Error register user: " + userRegisterDTO, e);
         }

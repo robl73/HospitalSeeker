@@ -1,5 +1,7 @@
 package com.hospitalsearch.controller;
 
+import com.hospitalsearch.entity.DoctorInfo;
+import com.hospitalsearch.service.DoctorInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,18 +24,16 @@ public class FeedbackController {
     private UserService userService;
 
     @Autowired
-    private UserDetailService detailService;
-
+    private DoctorInfoService doctorInfoService;
     
     @Autowired
     private FeedbackService feedbackService;
-    @RequestMapping(value="/doctor/feedback",method = RequestMethod.POST)
+
+    @RequestMapping(value="/doctor/feedback", method = RequestMethod.POST)
     @ResponseBody
     public String profile(@RequestBody FeedbackDTO dto){
-        
-    	User producer = feedbackService.getByUserEmail(dto.getUserEmail());
-    	User consumer = userService.getById(dto.getDoctorId());
-    		
+        User producer = feedbackService.getByUserEmail(dto.getUserEmail());
+        DoctorInfo consumer = doctorInfoService.getByUserDetailId(dto.getDoctorId());
     	feedbackService.save(dto.buildFeedback(consumer, producer));
     	return "true";
     }

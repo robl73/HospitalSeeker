@@ -1,0 +1,46 @@
+.row-centered {
+    text-align:center;
+}
+
+.col-centered {
+    display:inline-block;
+    float:none;
+    text-align:left;
+    margin-right:-4px;
+}
+
+.fixed-panel {
+    min-height: 198px;
+    max-height: 100%;
+}
+
+.row-weight {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+/*
+#input-feedback {
+    margin: 1vh 1vw;
+}
+*/
+
+.form-layout {
+    margin: 1vh 1vw;
+}
+
+textarea {
+       resize: both;
+    } /* none|horizontal|vertical|both */
+textarea.vert {
+       resize: vertical;
+    }
+textarea.noResize {
+       resize: none;
+    }
+
+textarea {
+    width: 100%;
+}

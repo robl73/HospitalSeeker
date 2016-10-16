@@ -65,10 +65,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         		"/" + properties.getProperty("global.resource.path") + "/" + properties.getProperty("global.image.path") + "/");
     }
 
+    /**
+     * If disable Spring Boot, then setCahceable to true (by default it's true)
+     */
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         return new SpringResourceTemplateResolver() {{
-            setCacheable(Boolean.parseBoolean(properties.getProperty("thymeleaf.cache")));
+            setCacheable(false);
             setTemplateMode("HTML5");
             setPrefix("/WEB-INF/pages/");
             setSuffix(".html");
