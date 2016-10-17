@@ -2,6 +2,7 @@ package com.hospitalsearch.dao.impl;
 
 import java.util.List;
 
+import com.hospitalsearch.entity.DoctorInfo;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
@@ -35,6 +36,14 @@ public class FeedbackDAOImpl extends GenericDAOImpl<Feedback, Long> implements F
 	@Override
 	public Feedback getByProducer(User user) {
 		return (Feedback) getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(Feedback.class).add(Restrictions.eq("producer.id", user.getId()))).get(0);
+	}
+
+	@Override
+	public boolean isUserCreateFeedback(Long producerId, Long consumerId) {
+		Query query = getSessionFactory().getCurrentSession().createQuery("select count(*) from Feedback f where f.producer.id = :producerId and f.consumer.id = :consumerId");
+		query.setParameter("producerId", producerId);
+		query.setParameter("consumerId", consumerId);
+		return ((Long) query.uniqueResult()) > 0;
 	}
 
 }

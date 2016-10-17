@@ -16,4 +16,6 @@ public interface FeedbackDAO extends GenericDAO<Feedback, Long>{
 
 	Feedback getByProducer(User user);
 
+	boolean isUserCreateFeedback(Long producerId, Long consumerId);
+
 }

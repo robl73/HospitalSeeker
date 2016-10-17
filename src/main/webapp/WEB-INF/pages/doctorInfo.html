@@ -4,9 +4,11 @@
 <head>
     <title th:text="|${doctor.userDetails.firstName} ${doctor.userDetails.lastName}|"></title>
     <link rel="stylesheet" th:href="@{/css/doctorInfo.css}"/>
+    <script th:src="@{/js/doctorInfo.js}"></script>
 </head>
 <body>
 <section layout:fragment="content">
+    <input type="hidden" th:id="doctorId" th:value="${doctor.id}" />
     <div class="content">
         <div class="container">
             <div class="row">
@@ -17,7 +19,7 @@
                     <div class="col-lg-8 col-md-8 col-sm-7">
                         <div class="panel panel-default">
                             <div class="panel-heading text-center">
-                                <h3 th:text="|#{user.detail.doctor}: ${doctor.userDetails.firstName} ${doctor.userDetails.lastName}|"></h3>
+                                <a th:href="@{|/doctor/${doctor.id}/scheduler|}"><h3 th:text="|#{user.detail.doctor}: ${doctor.userDetails.firstName} ${doctor.userDetails.lastName}|"></h3></a>
                             </div>
                             <div class="panel-body">
                                 <h5 th:text="|#{user.detail.email} ${doctor.userDetails.user.email}|"></h5>
@@ -25,85 +27,44 @@
                                 <h5 th:text="|#{doctor.category}: ${doctor.category}|"></h5>
                             </div>
                             <div class="panel-footer">
-                                Hospitals: there, and here
-                                asdf
+                                Hospitals:
+                                <span th:text="${departments}"></span>
+                                <span th:each="item: ${departments}" th:text="${item.hospital}"></span>
                             </div>
+
+                        </div>
+                        <div class="text-center">
+                            <a th:href="@{|/doctor/${doctor.id}/scheduler|}"><button type="button" id="addAppointment" class="btn btn-primary btn-lg">
+                                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                                Add appointment
+                            </button></a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row" th:text="${feedbacks}">
-                <h1>kjflas</h1>
-                <!--<div th:replace="templates/feedback::feedback-panel(${feedback})" />-->
+
+
+            <div class="feedbacks">
+                <div class="row">
+                    <div class="col-sm-2 col-md-2 col-lg-2 col-centered" th:each="item: ${feedbacks}">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" th:text="|${item.producer.userDetails.firstName} ${item.producer.userDetails.lastName}|">
+                            </div>
+                            <div class="panel-body fixed-panel" th:text="${item.message}"></div>
+                            <div class="panel-footer" th:text="${item.date.format(formatter)}"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 
-<!--
-    <div class="row row-centered text-center row-weight">
-        <div class="col-sm-2 col-md-2 col-lg-2 col-centered">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="text-right">vasd</div>
-                </div>
-                <div class="panel-body fixed-panel">Panel Contint</div>
-            </div>
-        </div>
-
-        <div class="col-sm-2 col-md-2 col-lg-2 col-centered">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="text-right">vasd</div>
-                </div>
-                <div class="panel-body fixed-panel">Panel Contint</div>
-            </div>
-        </div>
-
-        <div class="col-sm-2 col-md-2 col-lg-2 col-centered">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="text-right">vasd</div>
-                </div>
-                <div class="panel-body fixed-panel">Panel Contint</div>
-            </div>
-        </div>
-
-        <div class="col-sm-2 col-md-2 col-lg-2 col-centered">
-            <div class="panel panel-default">
-                <div class="panel-heading">Panel Heading</div>
-                <div class="panel-body fixed-panel">Panel Content</div>
-            </div>
-        </div>
-
-        <div class="col-sm-2 col-md-2 col-lg-2 col-centered">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="text-right">vasd</div>
-                </div>
-                <div class="panel-body fixed-panel">Panel Contint</div>
-            </div>
-        </div>
-
-        <div class="col-sm-2 col-md-2 col-lg-2 col-centered">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="text-right">vasd</div>
-                </div>
-                <div class="panel-body fixed-panel">Panel Contint</div>
-            </div>
-        </div>
-    </div>
--->
-
-    <div class="row">
-        <div class="col-md-12"></div>
-    </div>
-
-    <form>
-        <div class="form-group form-layout">
-            <label for="input-feedback">Email address:</label>
-            <textarea class="form-control" cols="40" rows="1" id="input-feedback" placeholder="Feedback"></textarea>
-            <button type="button" class="btn btn-success">Send</button>
+    <form th:if="${allowAddFeedback}">
+        <div class="form-group form-layout" >
+            <label for="input-feedback">Feedback:</label>
+            <textarea class="form-control" rows="5" id="input-feedback" placeholder="Feedback"></textarea>
+            <button type="button" class="btn btn-success" id="sendFeedback">Send</button>
         </div>
     </form>
 </section>

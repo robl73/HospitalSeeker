@@ -30,13 +30,10 @@ public class DoctorController {
     @Autowired
     DoctorInfoService doctorInfoService;
 
-    @Autowired
-    private FeedbackService feedbackService;
-
     @RequestMapping("/doctors")
     public String renderSearchDoctors(Map<String, Object> model,
                                   @RequestParam(value = "d", required = false) String query) throws ParseException, InterruptedException {
-         Page pageableContent = null;
+        Page pageableContent = null;
         if (query != null && !query.isEmpty()) {
             pageableContent = doctorInfoService.advancedDoctorSearch(query);
             pageableContent.setPageSize(3);
@@ -72,17 +69,6 @@ public class DoctorController {
         model.put("currentPage", page);
         model.put("itemsNumber", pageableContent.getResultListCount());
         model.put("type", "doctors");
-    }
-
-    @RequestMapping("/doctor")
-    public String doctorInfo(@RequestParam(value = "id", required = true) Long userDetailId, ModelMap model) {
-        Long doctorId = doctorInfoService.getIdByUserDetail(userDetailId);
-        DoctorInfo doctorInfo = doctorInfoService.getById(doctorId);
-        List<Feedback> feedbacks = feedbackService.getByDoctorId(doctorId);
-        model.put("doctor", doctorInfo);
-        model.put("formatter", DateTimeFormatter.ofPattern("d MMM uuuu hh:mm"));
-        model.put("feedbacks", feedbacks);
-        return "doctorInfo";
     }
 
 }

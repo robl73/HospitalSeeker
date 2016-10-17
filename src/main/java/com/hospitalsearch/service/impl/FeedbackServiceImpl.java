@@ -51,4 +51,9 @@ public class FeedbackServiceImpl implements FeedbackService{
 		return dao.getByProducer(user);
 	}
 
+	@Override
+	public boolean isUserCreateFeedback(Long producerId, Long consumerId) {
+		return dao.isUserCreateFeedback(producerId, consumerId);
+	}
+
 }

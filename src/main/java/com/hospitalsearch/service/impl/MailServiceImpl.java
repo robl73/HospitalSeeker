@@ -60,6 +60,7 @@ public class MailServiceImpl implements MailService {
     @Autowired
     private AppointmentDAO appointmentDAO;
 
+/*
     @Override
     public void sendMessage(User user, String subject, String text, String templateName) throws ConnectException {
         for(int i = 0; i < 3; i++){
@@ -88,7 +89,7 @@ public class MailServiceImpl implements MailService {
             }
         }
     }
-/*
+*/
 
     @Override
     public void sendMessage(User user, String subject, String text, String templateName) throws ConnectException {
@@ -114,7 +115,6 @@ public class MailServiceImpl implements MailService {
             logger.error(e);
         }
     }
-*/
 
     @Override
     public String createBannedMessage(User user, Locale locale) {

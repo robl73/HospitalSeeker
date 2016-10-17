@@ -37,56 +37,29 @@
 	<p th:id="currentUser" hidden="hidden" sec:authentication="name" />
 	<p th:id="doctorID" hidden="hidden" th:text="${doctor.id}" />
 	<div class="content" id="hoop">
+		<div class="text-center">
+			<a th:href="@{|/doctor/${doctorInfoId}|}"><h4 th:text="|${doctor.firstName} ${doctor.lastName}|"></h4></a>
+		</div>
 		<div class="container-fluid">
-			<div class="row">
-				<div class="col-lg-3 col-md-7 col-xs-7">
-					<div class="row">
-						<img id="profile-photo" th:class="'img-responsive img-circle'"
-							 th:src="@{|/img/doctors/${doctor.imagePath}|}" />
-						<h3 id="profDoctorsName" th:class="'text-center'"
-							th:text="${doctor.firstName + ' ' +doctor.lastName}"></h3>
-						<div class="btn-group">
-							<button type="button" class="btn btn-info dropdown-toggle"
-									data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">
-								Action <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu">
-								<li><a href="#">Profile</a></li>
-								<li><a onclick="focusToFeedback(event)" href="#">Give
-									feedback</a></li>
-								<li><a href="#">My medical card</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">Subscribe</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="row">
-						<div th:replace="templates/chat::feedback-panel(${feedbacks})" />
-					</div>
+			<div id="my_form">
+				<label for="description">Appointment</label><input type="text" name="description" hidden="hidden" id="description"/><br/>
+				<button class="btn btn-default" name="save" value="Save" id="save"  onclick="save_form()">Take</button>
+				<button class="btn btn-default" value="Close" id="close"  onclick="close_form()">Cancel</button>
+			</div>
+			<div class="dhx_cal_container panel" id="scheduler_here">
+				<div class="dhx_cal_navline">
+					<div class="dhx_cal_prev_button">&nbsp;</div>
+					<div class="dhx_cal_next_button">&nbsp;</div>
+					<div class="dhx_cal_today_button"></div>
+					<div class="dhx_cal_date"></div>
+					<div class="dhx_minical_icon" id="dhx_minical_icon"
+						 onclick="show_minical()">&nbsp;</div>
+					<div class="dhx_cal_tab" name="day_tab"></div>
+					<div class="dhx_cal_tab" name="week_tab"></div>
+					<div class="dhx_cal_tab" name="month_tab"></div>
 				</div>
-				<div class="col-lg-9 col-md-9 col-xs-10">
-					<div id="my_form">
-						<label for="description">Appointment</label><input type="text" name="description" hidden="hidden" id="description"/><br/>
-						<button class="btn btn-default" name="save" value="Save" id="save"  onclick="save_form()">Take</button>
-						<button class="btn btn-default" value="Close" id="close"  onclick="close_form()">Cancel</button>
-					</div>
-					<div class="dhx_cal_container panel" id="scheduler_here">
-						<div class="dhx_cal_navline">
-							<div class="dhx_cal_prev_button">&nbsp;</div>
-							<div class="dhx_cal_next_button">&nbsp;</div>
-							<div class="dhx_cal_today_button"></div>
-							<div class="dhx_cal_date"></div>
-							<div class="dhx_minical_icon" id="dhx_minical_icon"
-								 onclick="show_minical()">&nbsp;</div>
-							<div class="dhx_cal_tab" name="day_tab"></div>
-							<div class="dhx_cal_tab" name="week_tab"></div>
-							<div class="dhx_cal_tab" name="month_tab"></div>
-						</div>
-						<div class="dhx_cal_header"></div>
-						<div class="dhx_cal_data"></div>
-					</div>
-				</div>
+				<div class="dhx_cal_header"></div>
+				<div class="dhx_cal_data"></div>
 			</div>
 		</div>
 		<p id="principal" sec:authorize="isAuthenticated()" sec:authentication="principal.username" hidden="hidden"></p>

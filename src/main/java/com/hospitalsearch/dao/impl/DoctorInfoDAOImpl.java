@@ -28,7 +28,7 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
     @Override
     public List<DoctorDTO> findByDepartmentId(Long id) {
         return (List<DoctorDTO>) getHibernateTemplate()
-        		.findByNamedParam("select new com.hospitalsearch.dto.DoctorDTO(u.id, u.firstName, u.lastName, u.imagePath, d.specialization) from DoctorInfo d join d.userDetails u join d.departments dep where dep.id = :id ", "id", id);
+        		.findByNamedParam("select new com.hospitalsearch.dto.DoctorDTO(d.id, u.firstName, u.lastName, u.imagePath, d.specialization) from DoctorInfo d join d.userDetails u join d.departments dep where dep.id = :id ", "id", id);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
                 .createAlias("department.hospital", "hospital")
                 .createAlias("hospital.managers", "manager")
                 .setProjection(Projections.projectionList()
-                        .add(Projections.property("userDetail.id"), "userDetailId")
+                        .add(Projections.property("doctor.id"), "id")
                         .add(Projections.property("userDetail.firstName"), "firstName")
                         .add(Projections.property("userDetail.lastName"), "lastName")
                         .add(Projections.property("userDetail.imagePath"), "imagePath")

@@ -10,8 +10,8 @@
 }
 
 .fixed-panel {
-    min-height: 198px;
-    max-height: 100%;
+    min-height: 148px;
+    max-height: 148px;
 }
 
 .row-weight {
@@ -21,26 +21,27 @@
     margin-right: 0px;
 }
 
-/*
-#input-feedback {
-    margin: 1vh 1vw;
-}
-*/
-
 .form-layout {
-    margin: 1vh 1vw;
+    margin: 1vh 4vw;
 }
-
-textarea {
-       resize: both;
-    } /* none|horizontal|vertical|both */
-textarea.vert {
-       resize: vertical;
-    }
-textarea.noResize {
-       resize: none;
-    }
 
 textarea {
     width: 100%;
+}
+
+.panel-heading:hover {
+    background-color: #dfdfdf;
+}
+
+.feedbacks .panel-body:hover {
+    cursor: pointer;
+    overflow: hidden;
+}
+
+#addAppointment {
+    margin: 5px;
+}
+
+#addAppointment:before {
+    /*content: '+';*/
 }

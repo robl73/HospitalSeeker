@@ -69,11 +69,6 @@ public class UserController {
         return "login";
     }
 
-    @RequestMapping(value = "/del")
-    public void del() {
-        userService.delete(4L);
-    }
-
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -95,7 +90,7 @@ public class UserController {
         return "/registration";
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+/*    @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
                                BindingResult result, ModelMap model, Locale locale) {
         if (result.hasErrors()) {
@@ -117,9 +112,9 @@ public class UserController {
             return "/error/emailMessage";
         }
 
-    }
+    }*/
 
-  /*  @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
                                BindingResult result, ModelMap model, Locale locale) {
         if (result.hasErrors()) {
@@ -139,7 +134,7 @@ public class UserController {
         }
         model.addAttribute("emailSuccess", userDto.getEmail());
         return "/user/endRegistration";
-    }*/
+    }
 
     @RequestMapping(value = "/confirmRegistration", method = RequestMethod.GET)
     public String confirmRegistration(@RequestParam("token") String token, ModelMap model) {

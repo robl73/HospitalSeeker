@@ -77,9 +77,8 @@ public class UserServiceImpl implements UserService {
             } else {
                 user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("PATIENT"))));
             }
-//            save(user);
-
-            addNewUser(user);
+            save(user);
+//            addNewUser(user);
         } catch (Exception e) {
             logger.error("Error register user: " + userRegisterDTO, e);
         }
