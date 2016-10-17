@@ -32,11 +32,11 @@ $(document).ready(function () {
     });
 
     $.validator.addMethod("patternEducation", function (value, element) {
-        return this.optional(element) || /^\S+$/i.test(value);
+        return this.optional(element) || /^[a-zA-Z0-9\s,'-]*$/i.test(value);
     });
 
     $.validator.addMethod("patternAddress", function (value, element) {
-        return this.optional(element) || /^\S+$/i.test(value);
+        return this.optional(element) || /^[a-zA-Z0-9\s,'-]*$/i.test(value);
     });
 
     $("#registerNewUser").validate({

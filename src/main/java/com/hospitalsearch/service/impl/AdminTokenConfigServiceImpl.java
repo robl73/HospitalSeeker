@@ -39,7 +39,7 @@ public class AdminTokenConfigServiceImpl implements AdminTokenConfigService{
 	}
 	
 	@Override
-	public AdminTokenConfig getByToken(Token token) {
+	public Integer getByToken(Token token) {
 		return configDAO.getByToken(token);
 	}
 
@@ -47,17 +47,17 @@ public class AdminTokenConfigServiceImpl implements AdminTokenConfigService{
 
 	@Override
 	public Integer VERIFICATION_TOKEN_EXPIRATION() {
-		return configDAO.getByToken(Token.VERIFICATION_TOKEN_EXPIRATION).getValue();
+		return configDAO.getByToken(Token.VERIFICATION_TOKEN_EXPIRATION);
 	}
 
 	@Override
 	public Integer RESET_PASSWORD_TOKEN_EXPIRATION() {
-		return configDAO.getByToken(Token.RESET_PASSWORD_TOKEN_EXPIRATION).getValue();
+		return configDAO.getByToken(Token.RESET_PASSWORD_TOKEN_EXPIRATION);
 	}
 
 	@Override
 	public Integer REMEMBER_ME_TOKEN_EXPIRATION() {
-		return configDAO.getByToken(Token.REMEMBER_ME_TOKEN_EXPIRATION).getValue();
+		return configDAO.getByToken(Token.REMEMBER_ME_TOKEN_EXPIRATION);
 	}
 
 

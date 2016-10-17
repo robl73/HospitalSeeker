@@ -1,6 +1,7 @@
 package com.hospitalsearch.service.impl;
 
 import com.hospitalsearch.dao.UserDAO;
+import com.hospitalsearch.dao.UserDetailDAO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.*;
@@ -12,6 +13,7 @@ import com.hospitalsearch.service.UserService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDAO dao;
+
+    @Autowired
+    private UserDetailDAO userDetailDAO;
 
     @Autowired
     private RoleService roleService;
@@ -68,6 +73,7 @@ public class UserServiceImpl implements UserService {
             }
             save(user);
         } catch (Exception e) {
+            System.out.println("Error register user");
             logger.error("Error register user: " + userRegisterDTO, e);
         }
         return user;
@@ -79,6 +85,7 @@ public class UserServiceImpl implements UserService {
         try {
             if (isAdmin(id)) return;
             logger.info("Delete user " + user);
+            userDetailDAO.delete(user.getUserDetails());
             dao.delete(user);
         } catch (Exception e) {
             logger.error("Error delete user: " + user, e);

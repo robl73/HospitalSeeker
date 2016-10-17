@@ -1,8 +1,12 @@
 package com.hospitalsearch.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -16,8 +20,8 @@ import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.Analyze;
@@ -110,10 +114,8 @@ public class Hospital {
 	@Column(name = "imagepath")
 	private String imagePath;
 
-	@JsonIgnore
-	@OneToMany(mappedBy="hospital",cascade=CascadeType.ALL)
-	@Cache(region="entityCache",usage=CacheConcurrencyStrategy.READ_ONLY)
-	@IndexedEmbedded
+	@OneToMany(mappedBy = "hospital", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Department> departments;
 
 	@JsonIgnore
@@ -190,5 +192,20 @@ public class Hospital {
 
 	public void setManagers(List<User> managers) {
 		this.managers = managers;
+	}
+
+	@Override
+	public String toString() {
+		return "Hospital{" +
+				"managers=" + managers +
+				", departments=" + departments +
+				", imagePath='" + imagePath + '\'' +
+				", description='" + description + '\'' +
+				", address=" + address +
+				", longitude=" + longitude +
+				", latitude=" + latitude +
+				", name='" + name + '\'' +
+				", id=" + id +
+				'}';
 	}
 }

@@ -1,15 +1,14 @@
 package com.hospitalsearch.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.hospitalsearch.entity.Department;
+import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
+import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,4 +67,11 @@ public class HospitalDAOImpl extends GenericDAOImpl<Hospital, Long> implements H
         return new Page<Hospital>(getSessionFactory(),args,HOSPITAL_PROJECTION, Hospital.class);
     }
 
+    @Override
+    public List<Hospital> getAllHospitalsByManager(Long manager_id) {
+        Criteria crit = this.getSessionFactory().getCurrentSession().createCriteria(Hospital.class);
+        crit.createAlias("managers", "managers");
+        crit.add(Restrictions.eq("managers.id", manager_id));
+        return crit.list();
+    }
 }

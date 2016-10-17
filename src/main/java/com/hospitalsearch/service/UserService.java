@@ -41,11 +41,15 @@ public interface UserService {
 
     void resetPassword(String email, String newPassword) throws ResetPasswordException;
 
-    //Illia
     List<User> getByRole(String role, int pageNumber, int pageSize, String sortBy, Boolean order);
+
     List<User> getByRole(String role);
+
     Long countOfUsersByRole(String role);
+
     Long countOfUsersByRole(String role, String search);
+
     List<User> searchByRole(String role, String search,int pageNumber, int pageSize, String sortBy, Boolean order);
+
     Integer pageCount(Long countOfItems, int itemsPerPage);
 }

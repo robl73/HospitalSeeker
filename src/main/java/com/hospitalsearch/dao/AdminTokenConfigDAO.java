@@ -23,6 +23,6 @@ public interface AdminTokenConfigDAO extends GenericDAO<AdminTokenConfig, Long> 
 	
 	void delete(AdminTokenConfig instance);
 	
-	AdminTokenConfig getByToken(Token token);
+	Integer getByToken(Token token);
 
 }

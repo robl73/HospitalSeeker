@@ -1,8 +1,16 @@
 package com.hospitalsearch.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
+import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
+import com.hospitalsearch.entity.Department;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +72,27 @@ public class HospitalServiceImpl implements HospitalService {
         return dao.advancedHospitalSearch(args);
     }
 
-	@Override
+    @Override
+    public List<NameHospitalsByManagerDTO> getAllNameHospitalsByManager(Long id) {
+        List<Hospital> hospitals =  dao.getAllHospitalsByManager(id);
+        List<NameHospitalsByManagerDTO> nameHospitalsByManagerDTOs = new ArrayList<>();
+        for (Hospital hospital : hospitals) {
+            nameHospitalsByManagerDTOs.add(new NameHospitalsByManagerDTO(hospital));
+        }
+        return nameHospitalsByManagerDTOs;
+    }
+
+    @Override
+    public List<NameDepartmensByHospitalDTO> getAllNameDepartmentsByHospitals(Long id) {
+        List<Department> departments = dao.getById(id).getDepartments();
+        List<NameDepartmensByHospitalDTO> nameDepartmensByHospitalDTOs = new ArrayList<>();
+        for (Department department : departments) {
+            nameDepartmensByHospitalDTOs.add(new NameDepartmensByHospitalDTO(department));
+        }
+        return nameDepartmensByHospitalDTOs;
+    }
+
+    @Override
 	public void save(HospitalDTO hospitalDTO) {
 		Hospital newHospital = new Hospital();
     	newHospital.setAddress(hospitalDTO.getAddress());

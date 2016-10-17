@@ -37,31 +37,15 @@ public class Department{
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
 	private String name;
 
-	@ManyToMany
-	@JoinTable(name="DEPARTMENT_DOCTORINFO", joinColumns = @JoinColumn(name="DEPARTMENTS_ID"), inverseJoinColumns = @JoinColumn(name="DOCTORS_ID"))
-	@Fetch(FetchMode.SELECT)
-
-    /*    
-	//@Field(boost=@Boost(1.2f))
-	//private String name;
-        
-       // @Embedded
-        private DepartmentsName departmentName;
-
-        public DepartmentsName getDepartmentName() {
-            return departmentName;
-        }
-
-        public void setDepartmentName(DepartmentsName departmentName) {
-            this.departmentName = departmentName;
-        }
-    */
-	
-	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "DEPARTMENT_DOCTORINFO", joinColumns = {
+			@JoinColumn(name = "DEPARTMENTS_ID", nullable = false, updatable = false) },
+			inverseJoinColumns = { @JoinColumn(name = "DOCTORS_ID",
+					nullable = false, updatable = false) })
 	private List<DoctorInfo> doctors;
-	
-	@ManyToOne
-	@ContainedIn
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.JOIN)
 	private Hospital hospital;
 
 	@Column(name="imagepath")
@@ -76,7 +60,7 @@ public class Department{
 	public void setId(Long id) {
 		this.id = id;
 	}
-/*
+
 	public String getName() {
 		return name;
 	}
@@ -84,7 +68,7 @@ public class Department{
 	public void setName(String name) {
 		this.name = name;
 	}
-*/
+
 	public List<DoctorInfo> getDoctors() {
 		return doctors;
 	}
@@ -109,13 +93,12 @@ public class Department{
 		this.imagePath = imagePath;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Department{" +
-//				"id=" + id +
-//				", name='" + name + '\'' +
-//				", doctors=" + doctors +
-//				", hospital=" + hospital +
-//				'}';
-//	}
+	@Override
+	public String toString() {
+		return "Department{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", doctors=" + doctors +
+				'}';
+	}
 }

@@ -27,12 +27,12 @@ public class ScheduledTokensService {
     @Autowired
     UserService userService;
 
-    @Scheduled(cron = "0 0 12  * * ?")
+    @Scheduled(cron = "0 0 0  * * ?")
     public void deleteResetPasswordToken() {
         passwordResetTokenService.deleteExpiredTokens();
     }
 
-    @Scheduled(cron = "0 0 12 * * ?")
+    @Scheduled(cron = "0 28 14 * * ?")
     public void deleteVerificationToken() {
         try {
             for (VerificationToken token : verificationTokenService.getAllExpiredTokens()) {

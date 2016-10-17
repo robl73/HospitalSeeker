@@ -9,10 +9,12 @@
     <link rel="stylesheet" th:href="@{/css/datepicker.css}"/>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/doctor.css}"/>
+    <script type="text/javascript" th:src="@{/js/jquery-2.2.4.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootstrap-formhelpers-phone.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.js}"></script>
     <script type="text/javascript" th:src="@{/js/uploader.js}"></script>
     <script type="text/javascript" th:src="@{/js/new.doctor.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.departments.name.js}"></script>
 </head>
 <body>
 <section layout:fragment="content" class="dashboard center">
@@ -28,59 +30,60 @@
 
                             <hr class="colorgraph"/>
 
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <input type="text" name="firstName" id="firstName" class="form-control input-lg"
-                                                       th:placeholder="#{manager.add.new.doctor.placeholder.firstname}" tabindex="1"
-                                                       th:value="(${newDoctorDto != null}) and (${newDoctorDto.firstName !=null}) ? ${newDoctorDto.firstName}:''"/>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input type="text" name="firstName" id="firstName" class="form-control input-lg"
+                                               th:placeholder="#{manager.add.new.doctor.placeholder.firstname}" tabindex="1"
+                                               th:value="(${newDoctorDto != null}) and (${newDoctorDto.firstName !=null}) ? ${newDoctorDto.firstName}:''"/>
 
                                                 <span th:if="${(newDoctorDto ne null) and (#fields.hasErrors('firstName'))}"
                                                       th:errors="*{firstName}" class="has-error text-danger" id="errorFirstName"></span>
-                                            </div>
+                                    </div>
 
-                                            <div class="form-group">
-                                                <input type="text" name="lastName" id="lastName" class="form-control input-lg"
-                                                       th:placeholder="#{manager.add.new.doctor.placeholder.lastname}" tabindex="1"
-                                                       th:value="(${newDoctorDto != null}) and (${newDoctorDto.lastName !=null}) ? ${newDoctorDto.lastName}:''"/>
+                                    <div class="form-group">
+                                        <input type="text" name="lastName" id="lastName" class="form-control input-lg"
+                                               th:placeholder="#{manager.add.new.doctor.placeholder.lastname}" tabindex="1"
+                                               th:value="(${newDoctorDto != null}) and (${newDoctorDto.lastName !=null}) ? ${newDoctorDto.lastName}:''"/>
 
                                                 <span th:if="${(newDoctorDto ne null) and (#fields.hasErrors('lastName'))}"
                                                       th:errors="*{lastName}" class="has-error text-danger" id="errorLastName"></span>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="email" name="email" id="email" class="form-control input-lg"
-                                                       th:placeholder="#{manager.add.new.doctor.placeholder.email}" tabindex="1"
-                                                       th:value="(${newDoctorDto != null}) and (${newDoctorDto.email !=null}) ? ${newDoctorDto.email}:''"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" name="email" id="email" class="form-control input-lg"
+                                               th:placeholder="#{manager.add.new.doctor.placeholder.email}" tabindex="1"
+                                               th:value="(${newDoctorDto != null}) and (${newDoctorDto.email !=null}) ? ${newDoctorDto.email}:''"/>
 
                                             <span th:if="${(newDoctorDto ne null) and (#fields.hasErrors('email'))}"
                                                   th:errors="*{email}" class="has-error text-danger" id="errorEmail"></span>
-                                            </div>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <div align="center">
-                                            <figure th:class="${edit}?' snip1494 img-thumbnail img-responsive img-block'">
-                                                <img th:if="${newDoctorDto.imagePath!=''}" alt="User Pic" id="image-uploaded"
-                                                     th:src="${newDoctorDto.imagePath==null}?@{/images/avatar/photo.png}:@{|/images/avatar/${newDoctorDto.imagePath}|}"
-                                                     class="img-responsive img-block"/>
-                                                <img th:if="${newDoctorDto.imagePath==''}" alt="User Pic" id="image-uploaded"
-                                                     th:src="@{/images/avatar/photo.png}"
-                                                     class="img-responsive img-block"/>
-                                                <figcaption th:if="${edit}">
-                                                    <div><i class="glyphicon glyphicon-circle-arrow-down"></i></div>
-
-                                                </figcaption>
-                                                <a th:onclick="${edit}?'javascript:$(\'#file\').click();'"></a>
-                                            </figure>
-
-                                            <input type="file" id="file" style="display: none;"
-                                                   th:onchange="'javascript:upload(\'avatar\');'"/>
-                                            <input
-                                                    type="hidden" th:field="*{imagePath}" class="form-control"
-                                                    id="imagePath"/>
-                                        </div>
                                     </div>
                                 </div>
+
+                                <div class="col-lg-6">
+                                    <div align="center">
+                                        <figure th:class="${edit}?' snip1494 img-thumbnail img-responsive img-block'">
+                                            <img th:if="${newDoctorDto.imagePath!=''}" alt="User Pic" id="image-uploaded"
+                                                 th:src="${newDoctorDto.imagePath==null}?@{/images/avatar/photo.png}:@{|/images/avatar/${newDoctorDto.imagePath}|}"
+                                                 class="img-responsive img-block"/>
+                                            <img th:if="${newDoctorDto.imagePath==''}" alt="User Pic" id="image-uploaded"
+                                                 th:src="@{/images/avatar/photo.png}"
+                                                 class="img-responsive img-block"/>
+                                            <figcaption th:if="${edit}">
+                                                <div><i class="glyphicon glyphicon-circle-arrow-down"></i></div>
+
+                                            </figcaption>
+                                            <a th:onclick="${edit}?'javascript:$(\'#file\').click();'"></a>
+                                        </figure>
+
+                                        <input type="file" id="file" style="display: none;"
+                                               th:onchange="'javascript:upload(\'avatar\');'"/>
+                                        <input
+                                                type="hidden" th:field="*{imagePath}" class="form-control"
+                                                id="imagePath"/>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="text-div">Specialization:</div>
@@ -88,16 +91,24 @@
                                 </div>
                                 <div class="col-sm-8">
 
-                                    <select class="form-control" style="margin-top: 10px; margin-bottom: 10px;">
-                                        <option>Mustard</option>
-                                        <option>Ketchup</option>
-                                        <option>Relish</option>
+                                    <select id="specialization" class="form-control" style="margin-top: 10px; margin-bottom: 10px;"
+                                            th:field="${newDoctorDto.specialization}"
+                                            th:value="${(newDoctorDto != null) and (newDoctorDto.specializations !=null)} ? ${newDoctorDto.specializations}:''">
+                                        <option
+                                                th:each="specialization : ${newDoctorDto.specializations}"
+                                                th:value="${specialization.name()}"
+                                                th:text="${specialization.name()}">
+                                        </option>
                                     </select>
 
-                                    <select class="form-control" style="margin-top: 10px; margin-bottom: 10px;">
-                                        <option>Mustard</option>
-                                        <option>Ketchup</option>
-                                        <option>Relish</option>
+                                    <select id="category" class="form-control" style="margin-top: 10px; margin-bottom: 10px;"
+                                            th:field="${newDoctorDto.category}"
+                                            th:value="${(newDoctorDto != null) and (newDoctorDto.categorys !=null)} ? ${newDoctorDto.categorys}:''">
+                                        <option
+                                                th:each="category : ${newDoctorDto.categorys}"
+                                                th:value="${category.name()}"
+                                                th:text="${category.name()}">
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -130,18 +141,22 @@
                                     <div class="text-div">Department:</div>
                                 </div>
                                 <div class="col-sm-8">
-
-                                    <select class="form-control" style="margin-top: 10px; margin-bottom: 10px;">
-                                        <option>Mustard</option>
-                                        <option>Ketchup</option>
-                                        <option>Relish</option>
+                                    <select id="hospital" class="form-control" style="margin-top: 10px; margin-bottom: 10px;" type="select"
+                                            th:field="${newDoctorDto.nameHospitalId}"
+                                            th:value="${(newDoctorDto != null) and (newDoctorDto.nameHospitals !=null)} ? ${newDoctorDto.nameHospitals}:''">
+                                        <option
+                                                th:each="namehospitals : ${newDoctorDto.nameHospitals}"
+                                                th:value="${namehospitals.getId()}"
+                                                th:text="${namehospitals.name}">
+                                        </option>
                                     </select>
 
-                                    <select class="form-control" style="margin-top: 10px; margin-bottom: 10px;">
-                                        <option>Mustard</option>
-                                        <option>Ketchup</option>
-                                        <option>Relish</option>
+                                    <select id="departmen" class="form-control" style="margin-top: 10px; margin-bottom: 10px;"
+                                            th:field="${newDoctorDto.nameDepartmentsId}">
+                                        <option th:value="0">
+                                        </option>
                                     </select>
+
                                 </div>
                             </div>
 
@@ -149,14 +164,20 @@
                                 <div class="col-sm-2">
                                     <div class="text-div">Gender:</div>
                                 </div>
+
                                 <div class="col-sm-3">
                                     <div class="radio">
-                                        <label><input style="font-size: 18px;" type="radio" name="optradio"/>Male</label>
+                                        <label>
+                                            <input style="font-size: 18px; margin-top: 5px;" type="radio" name="gender" th:value="MALE"/>Male
+                                        </label>
                                     </div>
                                 </div>
+
                                 <div class="col-sm-3">
                                     <div class="radio">
-                                        <label><input style="font-size: 18px;" type="radio" name="optradio"/>Female</label>
+                                        <label>
+                                            <input style="font-size: 18px; margin-top: 5px;" type="radio" name="gender" th:value="FEMALE"/>Female
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -166,18 +187,21 @@
                                     <div class="text-div">Date of Birth:</div>
                                 </div>
                                 <div class='col-sm-3'>
-                                    <input type='text' class="form-control" id='datepicker' style="margin-top: 5px;"/>
-                                <script type="text/javascript">
-                                    $(function () {
-                                        $('#datepicker').datepicker();
-                                    });
-                                </script>
+                                        <input type='text' class="form-control" id='birthDate' style="margin-top: 5px;"
+                                               th:field="*{birthDate}" name="birthDate"/>
+                                        <p class="error" th:if="${#fields.hasErrors('birthDate')}"
+                                           th:errors="*{birthDate}"></p>
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                $('#birthDate').datepicker({format: 'yyyy-mm-dd'});
+                                            });
+                                        </script>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="text-div">Phone:</div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group" th:if="${edit}">
+                                    <div class="form-group">
                                         <input type="text" id="phone" class="input-medium bfh-phone form-control"
                                                data-format="+38 (ddd) ddd-dddd"
                                                th:field="*{phone}" name="phone"/>
@@ -198,8 +222,7 @@
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 </div>
                                 <div class="col-sm-6">
-                                    <a th:href="@{/admin/users?status=true}"
-                                       class="btn btn-lg btn-default btn-block"
+                                    <a class="btn btn-lg btn-default btn-block"
                                        id="cancel" th:text="#{manager.add.new.doctor.button.cancel}"></a>
                                 </div>
                             </div>

@@ -73,11 +73,11 @@ public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Lo
 	}
 
 	@Override
-	public AdminTokenConfig getByToken(Token token) {
-		String sql = "SELECT * FROM AdminTokenConfig where token = '" + token + "'";
+	public Integer getByToken(Token token) {
+		String sql = "SELECT value FROM admintokenconfig WHERE token = " + token;
 		SQLQuery query = this.currentSession().createSQLQuery(sql);
 		query.addEntity(AdminTokenConfig.class);
-		return (AdminTokenConfig) query.uniqueResult();
+		return (Integer) query.uniqueResult();
 	}
 
 }
