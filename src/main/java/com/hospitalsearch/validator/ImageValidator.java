@@ -16,8 +16,14 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.Environment;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.hospitalsearch.entity.AdminTokenConfig;
+import com.hospitalsearch.service.AdminTokenConfigService;
+
 @PropertySource(value = "classpath:uploader.properties")
 public class ImageValidator {
+	
+	@Autowired
+	private AdminTokenConfigService configService;
 
 	@Resource
 	Environment properties;
@@ -46,7 +52,13 @@ public class ImageValidator {
 	}
 	
 	private boolean checkSize() {
-		Long FILE_MAX_SIZE = Long.parseLong(properties.getProperty(type + ".file.max.size"));
+		Long FILE_MAX_SIZE = (long) 0;
+		for (AdminTokenConfig config : configService.getAll()){
+			if (config.getToken().name().toLowerCase().contains("max_size".toLowerCase())){
+				FILE_MAX_SIZE = Long.parseLong(configService.getByToken(config.getToken()).getValue());
+			}
+		}
+		//Long FILE_MAX_SIZE = Long.parseLong(properties.getProperty(type + ".file.max.size"));
 		if (multipartFile.getSize() > FILE_MAX_SIZE) {
 			error = messageSource.getMessage("upload.image.filesize", null, locale);
 			return false;
@@ -69,6 +81,16 @@ public class ImageValidator {
 		String fileName = multipartFile.getOriginalFilename();
 		String extension = fileName.substring(fileName.length() - 3).toLowerCase();
 		String MAGICK_NUMBER = properties.getProperty(extension + ".magick.number");
+		
+	/*	
+		String MAGICK_NUMBER = ""; 
+		for (AdminTokenConfig config : configService.getAll()){
+			if (config.getToken().name().toLowerCase().contains(extension.toLowerCase())){
+				MAGICK_NUMBER = configService.getByToken(config.getToken()).getValue();
+			}
+		}
+	*/	
+		
 		byte [] magickNumber = Base64.getDecoder().decode(MAGICK_NUMBER);
 		try {
 			byte [] fileByte = multipartFile.getBytes();
@@ -85,6 +107,7 @@ public class ImageValidator {
 		return true;
 	}
 
+	
 	private boolean checkDimension() {
 		try {
 			BufferedImage image = ImageIO.read(multipartFile.getInputStream());

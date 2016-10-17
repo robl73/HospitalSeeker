@@ -19,4 +19,7 @@ public interface VerificationTokenDAO extends GenericDAO<VerificationToken,Long>
     void deleteTokenByUser(User user);
 
     List<VerificationToken> getAllExpiredTokens();
+    
+    void save(VerificationToken verificationToken);
+    
 }

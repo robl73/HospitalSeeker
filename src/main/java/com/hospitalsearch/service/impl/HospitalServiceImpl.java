@@ -71,7 +71,7 @@ public class HospitalServiceImpl implements HospitalService {
     	newHospital.setDescription(hospitalDTO.getDescription());
     	newHospital.setImagePath(hospitalDTO.getImagePath());
     	newHospital.setLatitude(hospitalDTO.getLatitude());
-    	newHospital.setLongitude(hospitalDTO.getLatitude());
+    	newHospital.setLongitude(hospitalDTO.getLongitude());
     	newHospital.setName(hospitalDTO.getName());
 		save(newHospital);
 	}
@@ -83,7 +83,7 @@ public class HospitalServiceImpl implements HospitalService {
     	newHospital.setDescription(updatedHospitalDTO.getDescription());
     	newHospital.setImagePath(updatedHospitalDTO.getImagePath());
     	newHospital.setLatitude(updatedHospitalDTO.getLatitude());
-    	newHospital.setLongitude(updatedHospitalDTO.getLatitude());
+    	newHospital.setLongitude(updatedHospitalDTO.getLongitude());
     	newHospital.setName(updatedHospitalDTO.getName());
     	update(newHospital);
 	}

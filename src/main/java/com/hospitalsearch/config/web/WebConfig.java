@@ -6,7 +6,13 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+
+import org.apache.catalina.connector.Connector;
+import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -63,6 +69,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         return new SpringResourceTemplateResolver() {{
+        	setCacheable(Boolean.parseBoolean(properties.getProperty("thymeleaf.cache")));
             setTemplateMode("HTML5");
             setPrefix("/WEB-INF/pages/");
             setSuffix(".html");
@@ -131,6 +138,21 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public CacheManager cacheManager() {
         return new EhCacheCacheManager(ehCacheManagerFactoryBean().getObject());
+    }
+    
+    @Bean
+    public EmbeddedServletContainerFactory servletContainer() {
+        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory(8443);
+        factory.addConnectorCustomizers((TomcatConnectorCustomizer) con -> {
+        Http11NioProtocol proto = (Http11NioProtocol) con.getProtocolHandler();
+        proto.setSSLEnabled(true);
+        con.setScheme("https");
+        con.setSecure(true);
+        proto.setKeystoreFile("D:\\.keystore");
+        proto.setKeystorePass("password");
+        });
+
+        return factory;
     }
 
 }

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.hospitalsearch.dao.AdminTokenConfigDAO;
 import com.hospitalsearch.entity.AdminTokenConfig;
-import com.hospitalsearch.entity.Token;
 import com.hospitalsearch.service.AdminTokenConfigService;
+import com.hospitalsearch.util.Token;
 
 
 @Service
@@ -34,8 +34,7 @@ public class AdminTokenConfigServiceImpl implements AdminTokenConfigService{
 
 	@Override
 	public void delete(AdminTokenConfig adminTokenConfig) {
-		// TODO Auto-generated method stub
-		
+		configDAO.delete(adminTokenConfig);
 	}
 	
 	@Override
@@ -47,18 +46,18 @@ public class AdminTokenConfigServiceImpl implements AdminTokenConfigService{
 
 	@Override
 	public Integer VERIFICATION_TOKEN_EXPIRATION() {
-		return configDAO.getByToken(Token.VERIFICATION_TOKEN_EXPIRATION).getValue();
+		return Integer.parseInt(configDAO.getByToken(Token.VERIFICATION_TOKEN_EXPIRATION).getValue());
 	}
 
 	@Override
 	public Integer RESET_PASSWORD_TOKEN_EXPIRATION() {
-		return configDAO.getByToken(Token.RESET_PASSWORD_TOKEN_EXPIRATION).getValue();
+		return Integer.parseInt(configDAO.getByToken(Token.RESET_PASSWORD_TOKEN_EXPIRATION).getValue());
 	}
 
 	@Override
 	public Integer REMEMBER_ME_TOKEN_EXPIRATION() {
-		return configDAO.getByToken(Token.REMEMBER_ME_TOKEN_EXPIRATION).getValue();
+		return Integer.parseInt(configDAO.getByToken(Token.REMEMBER_ME_TOKEN_EXPIRATION).getValue());
 	}
 
-
+	
 }

@@ -1,7 +1,7 @@
 package com.hospitalsearch.config;
 
 import com.hospitalsearch.validator.ImageValidator;
-import liquibase.integration.spring.SpringLiquibase;
+//import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;

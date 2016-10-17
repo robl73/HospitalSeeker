@@ -41,7 +41,8 @@ public class VerificationTokenDAOImpl extends GenericDAOImpl<VerificationToken, 
         return (VerificationToken) query.uniqueResult();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<VerificationToken> getAllExpiredTokens() {
         Criteria criteria = this.getSessionFactory()
                 .getCurrentSession()
@@ -50,4 +51,5 @@ public class VerificationTokenDAOImpl extends GenericDAOImpl<VerificationToken, 
         criteria.add(Restrictions.le("expiryDate", today));
         return criteria.list();
     }
+    
 }
