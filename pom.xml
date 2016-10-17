@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -31,9 +31,9 @@
         <thymeleafspringsecurity4.version>2.1.2.RELEASE</thymeleafspringsecurity4.version>
         <javax.mail>1.4.7</javax.mail>
         <guava>19.0</guava>
-   <!-- <liquibase.core>3.5.1</liquibase.core> -->
+        <!-- <liquibase.core>3.5.1</liquibase.core> -->
         <liquibase.core>3.3.2</liquibase.core>
-   <!-- <liquibase.plugin>3.5.1</liquibase.plugin> -->
+        <!-- <liquibase.plugin>3.5.1</liquibase.plugin> -->
         <liquibase.plugin>3.3.2</liquibase.plugin>
         <liquibase.hibernate4>3.5</liquibase.hibernate4>
         <spring.beans>4.2.6.RELEASE</spring.beans>
@@ -164,9 +164,9 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>slf4j-simple</artifactId>-->
-            <!--<version>1.7.21</version>-->
+        <!--<groupId>org.slf4j</groupId>-->
+        <!--<artifactId>slf4j-simple</artifactId>-->
+        <!--<version>1.7.21</version>-->
         <!--</dependency>-->
 
         <dependency>
@@ -256,8 +256,6 @@
         <!--<artifactId>jackson-mapper-asl</artifactId>-->
         <!--<version>1.9.13</version>-->
         <!--</dependency>-->
-        
-        <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -317,13 +315,13 @@
             <version>${guava}</version>
         </dependency>
         <!-- WebJAR libs -->
-         
-        <dependency>           
-           <groupId>org.webjars</groupId>
-           <artifactId>bootstrap</artifactId>
-           <version>3.3.6</version>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>3.3.6</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
@@ -354,26 +352,26 @@
         </dependency>
         <!-- Liquibase -->
 
-     <!--   <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>${liquibase.core}</version>
-        </dependency>
+        <!--      <dependency>
+                  <groupId>org.liquibase</groupId>
+                  <artifactId>liquibase-core</artifactId>
+                  <version>${liquibase.core}</version>
+              </dependency>
 
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-maven-plugin</artifactId>
-            <version>${liquibase.plugin}</version>
-            <scope>test</scope>
-        </dependency>
+              <dependency>
+                  <groupId>org.liquibase</groupId>
+                  <artifactId>liquibase-maven-plugin</artifactId>
+                  <version>${liquibase.plugin}</version>
+                  <scope>test</scope>
+              </dependency>
 
 
-        <dependency>
-            <groupId>org.liquibase.ext</groupId>
-            <artifactId>liquibase-hibernate4</artifactId>
-            <version>${liquibase.hibernate4}</version>
-            <scope>test</scope>
-        </dependency>-->
+              <dependency>
+                  <groupId>org.liquibase.ext</groupId>
+                  <artifactId>liquibase-hibernate4</artifactId>
+                  <version>${liquibase.hibernate4}</version>
+                  <scope>test</scope>
+              </dependency>-->
 
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -382,26 +380,26 @@
         </dependency>
 
         <!-- Apache Commons Upload -->
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.2.2</version>
-		</dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>commons-logging</groupId>-->
-            <!--<artifactId>commons-logging</artifactId>-->
-            <!--<version>1.2</version>-->
+        <!--<groupId>commons-logging</groupId>-->
+        <!--<artifactId>commons-logging</artifactId>-->
+        <!--<version>1.2</version>-->
         <!--</dependency>-->
 
-		<!-- Apache Commons Upload -->
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>1.3.2</version>
-		</dependency>
+        <!-- Apache Commons Upload -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+        </dependency>
 
-        
+
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
@@ -434,7 +432,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.hospitalsearch.config.web.WebApplicationInitializer</mainClass>
+                    <mainClass>com.hospitalsearch.develop.SpringBoot</mainClass>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -442,6 +440,27 @@
                         <artifactId>springloaded</artifactId>
                         <version>1.2.6.RELEASE</version>
                     </dependency>
+
+                    <dependency>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-core</artifactId>
+                        <version>${liquibase.core}</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${liquibase.plugin}</version>
+                        <!--<scope>test</scope>-->
+                    </dependency>
+
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate4</artifactId>
+                        <version>${liquibase.hibernate4}</version>
+                        <!--<scope>test</scope>-->
+                    </dependency>
+
                 </dependencies>
             </plugin>
             <plugin>
@@ -461,7 +480,7 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-            <!--<plugin>
+            <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.plugin}</version>
@@ -479,37 +498,49 @@
                     </referenceUrl>
                     <diffChangeLogFile>src/main/resources/liquibase-changeLogForDiff.xml</diffChangeLogFile>
 
+                    <diffTypes> tables, views, columns, indexes, foreignkeys, primarykeys, uniqueconstraints, data </diffTypes>
+
                     <outputChangeLogFile>src/main/resources/outputChangeLogFile.xml </outputChangeLogFile>
 
                 </configuration>
-        &lt;!&ndash;
                 <executions>
-			<execution>
-			    <phase>process-resources</phase>
-			    <goals>
-                                 <goal>status</goal>
-                                 <goal>tag</goal>
-				 <goal>update</goal>
-                                 <goal>rollback</goal>
-                                 <goal>dbDoc</goal>
-                                 <goal>generateChangeLog</goal>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>status</goal>
+                            <goal>tag</goal>
+                            <goal>update</goal>
+                            <goal>rollback</goal>
+                            <goal>dbDoc</goal>
+                            <goal>generateChangeLog</goal>
 
-                                 <goal>diff</goal>
-			    </goals>
-			</execution>
-		</executions>
-        &ndash;&gt;
+                            <goal>diff</goal>
+                        </goals>
+                    </execution>
 
+                </executions>
 
-
+                <!--
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                                 <goal>status</goal>
+                                                 <goal>update</goal>
+                                                 <goal>dbDoc</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                                -->
                 <extensions>true</extensions>
                 <dependencies>
                     <dependency>
                         <groupId>org.liquibase.ext</groupId>
-                   &lt;!&ndash; <artifactId>liquibase-hibernate4.2</artifactId> &ndash;&gt;
+                        <!-- <artifactId>liquibase-hibernate4.2</artifactId> -->
                         <artifactId>liquibase-hibernate4</artifactId>
                         <version>${liquibase.hibernate4}</version>
                     </dependency>
+
                     <dependency>
                         <groupId>org.springframework</groupId>
                         <artifactId>spring-beans</artifactId>
@@ -520,8 +551,9 @@
                         <artifactId>spring-data-jpa</artifactId>
                         <version>${spring.data.jpa}</version>
                     </dependency>
+
                 </dependencies>
-            </plugin>-->
+            </plugin>
         </plugins>
     </build>
 

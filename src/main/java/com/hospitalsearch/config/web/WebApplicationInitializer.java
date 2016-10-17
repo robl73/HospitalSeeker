@@ -4,15 +4,11 @@ package com.hospitalsearch.config.web;
 import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.hospitalsearch.config.SpringRootConfig;
 
-@SpringBootApplication
 public class WebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
@@ -43,10 +39,6 @@ public class WebApplicationInitializer extends AbstractAnnotationConfigDispatche
         if(!(registration.setInitParameter("throwExceptionIfNoHandlerFound", "true")))
             throw new RuntimeException();
     }
-    
-    public static void main(String... args) {
-    	SpringApplication.run(WebApplicationInitializer.class, args);
-    }
-    
+
 }
 

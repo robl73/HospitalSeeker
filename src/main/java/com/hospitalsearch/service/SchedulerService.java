@@ -19,4 +19,6 @@ public interface SchedulerService {
 
     String getByDoctorEmail(String doctorEmail) throws JsonProcessingException;
 
+    Scheduler getByDoctorId(Long doctorId);
+
 }

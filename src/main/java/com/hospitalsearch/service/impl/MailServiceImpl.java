@@ -60,11 +60,11 @@ public class MailServiceImpl implements MailService {
     @Autowired
     private AppointmentDAO appointmentDAO;
 
-    @SuppressWarnings("unused")
-	@Override
+/*
+    @Override
     public void sendMessage(User user, String subject, String text, String templateName) throws ConnectException {
         for(int i = 0; i < 3; i++){
-           if (pingURL("https://" + user.getEmail() , 300)) {
+            if (pingURL("https://" + user.getEmail() , 300)) {
                 String encoding = properties.getProperty("email.encoding");
                 MimeMessage message = mailSender.createMimeMessage();
                 MimeMessageHelper messageHelper = new MimeMessageHelper(message, encoding);
@@ -89,7 +89,8 @@ public class MailServiceImpl implements MailService {
             }
         }
     }
-/*
+*/
+
     @Override
     public void sendMessage(User user, String subject, String text, String templateName) throws ConnectException {
         if (!pingURL("https://www.google.com.ua/", 300)) {
@@ -114,7 +115,7 @@ public class MailServiceImpl implements MailService {
             logger.error(e);
         }
     }
-*/
+
     @Override
     public String createBannedMessage(User user, Locale locale) {
         return messageSource.getMessage("mail.message.banned.prefix", null, locale) + " " + user.getEmail() + " " +

@@ -3,6 +3,7 @@ package com.hospitalsearch.controller;
 import com.hospitalsearch.dao.AppointmentDAO;
 import com.hospitalsearch.entity.Appointment;
 import com.hospitalsearch.entity.Department;
+import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.*;
 
@@ -45,23 +46,15 @@ public class AppointmentController {
 
     @ResponseBody
     @RequestMapping(value = "/**/getAppointments", method = RequestMethod.GET)
-    public List<Appointment> listAllAppointments(@RequestParam("id") String id) {
-        return appointmentService.getAllbyDoctorId(Long.parseLong(id));
+    public List<Appointment> listAllAppointments(@RequestParam("id") Long id) {
+        return appointmentService.getAllbyDoctorId(id);
     }
 
-    @RequestMapping(value = "/hospital/{*}/department/{dep_id}/doctor/{d_id}/dashboard", method = RequestMethod.GET)
-    public String getDashboard(
-            @PathVariable("dep_id") Long departmentId,
-            @PathVariable("d_id") Long doctorId,
-            ModelMap model) {
-        Department d = departmentService.getById(departmentId);
-        model.put("department", d);
-        model.put("hospital", d.getHospital());
-        model.put("formatter", DateTimeFormatter.ofPattern("d MMM uuuu hh:mm"));
-        model.put("feedbacks", feedbackService.getByDoctorId(doctorId));
-        UserDetail userDetail = userDetailService.getById(doctorId);
-        model.addAttribute("id", doctorInfoService.getIdByUserDetail(userDetail.getId()));
-        model.addAttribute("doctor", userDetailService.getById(doctorId));
+    @RequestMapping(value = "/doctor/{d_id}/scheduler", method = RequestMethod.GET)
+    public String getDashboard(@PathVariable("d_id") Long doctorId, ModelMap model) {
+        DoctorInfo doctorInfo = doctorInfoService.getById(doctorId);
+        model.addAttribute("doctorInfoId", doctorInfo.getId());
+        model.addAttribute("doctor", doctorInfo.getUserDetails());
         return "start";
     }
 
@@ -94,6 +87,7 @@ public class AppointmentController {
     public String getCardByapointmentId(@RequestParam("appointmentId") Long appointmentId) {
         return "redirect:/card/items?userId="+appointmentDAO.getById(appointmentId).getUserDetail().getId();
     }
+
 
     @RequestMapping(value = "/**/sendMassage", method = RequestMethod.POST)
     public String sendMassageToEmail(@RequestBody Map<String, String> massageData, Locale locale) throws ConnectException {

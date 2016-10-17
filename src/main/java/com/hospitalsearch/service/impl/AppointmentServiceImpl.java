@@ -34,14 +34,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void actionControl(Map<String, String[]> appointmentParams, Long doctorId, String principal) {
         UserDetail userDetail = userDetailDAO.getById(userDAO.getByEmail(principal).getId());
-        Long doctorInfoId = doctorInfoDAO.getIdByUserDetail(doctorId);
         DoctorInfo doctorInfo = null;
-        if (doctorInfoId != null) {
-            doctorInfo = doctorInfoDAO.getById(doctorInfoId);
+        if (doctorId != null) {
+            doctorInfo = doctorInfoDAO.getById(doctorId);
         }
         AppointmentDto appointmentDto = AppointmentDtoService.createAppointmentDto(appointmentParams, doctorInfo);
         Appointment appointment = appointmentDto.getAppointment();
-
         appointment.setDoctorInfo(doctorInfo);
         appointment.setUserDetail(userDetail);
         switch (appointmentDto.getStatus()) {
@@ -70,7 +68,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Appointment> getAllByDoctorEmail(String doctorEmail) {
         Long userDetailId = userDAO.getByEmail(doctorEmail).getUserDetails().getId();
-
         List<Appointment> appointments = appointmentDAO.getAllbyDoctorId(doctorInfoDAO.getIdByUserDetail(userDetailId));
         for (Appointment appointment : appointments) {
             appointment.setText(appointment.getUserDetail().getFirstName() + " " + appointment.getUserDetail().getLastName()
@@ -81,7 +78,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<Appointment> getAllbyDoctorId(Long doctorId) {
-        return appointmentDAO.getAllbyDoctorId(doctorInfoDAO.getIdByUserDetail(doctorId));
+        return appointmentDAO.getAllbyDoctorId(doctorId);
     }
 
     @Override

@@ -1,18 +1,18 @@
 package com.hospitalsearch.dto;
 
 /**
- * Created by vanytate on 9/21/16.
+ * Created by george on 9/21/16.
  */
 public class DoctorDTO {
 
-    private Long userDetailId;
+    private Long id;
     private String firstName;
     private String lastName;
     private String imagePath;
     private String specialization;
 
-    public DoctorDTO(Long userDetailId, String firstName, String lastName, String imagePath, String specialization) {
-        this.userDetailId = userDetailId;
+    public DoctorDTO(Long id, String firstName, String lastName, String imagePath, String specialization) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.imagePath = imagePath;
@@ -22,12 +22,12 @@ public class DoctorDTO {
     public DoctorDTO() {
     }
 
-    public Long getUserDetailId() {
-        return userDetailId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserDetailId(Long userDetailId) {
-        this.userDetailId = userDetailId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
