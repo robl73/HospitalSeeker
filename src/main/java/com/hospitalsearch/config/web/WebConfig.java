@@ -148,7 +148,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         proto.setSSLEnabled(true);
         con.setScheme("https");
         con.setSecure(true);
-        proto.setKeystoreFile("/home/george/.keystore");
+        proto.setKeystoreFile("D:\\.keystore");
         proto.setKeystorePass("password");
         });
 

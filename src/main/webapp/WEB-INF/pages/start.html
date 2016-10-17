@@ -91,7 +91,7 @@
 		<p id="principal" sec:authorize="isAuthenticated()" sec:authentication="principal.username" hidden="hidden"></p>
 	</div>
 	<!-- Appointment confirmation modal -->
-	<div id="myModal" class="modal fade" role="dialog"  onclick="dismissMyModal(event)" onclose="close_form()">
+	<div id="appointmentModal" class="modal fade" role="dialog"  onclick="dismissMyModal(event)" onclose="close_form()">
 		<div class="modal-dialog">
 			<!-- Modal content-->
 			<div class="modal-content">
@@ -121,9 +121,9 @@
 						
 						
 						<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-				
-					<span id="lengthError" style="display:none">Please, input the text that contains less than 150 symbols</span>
-					<span id="inputAppointmentError" style="display:none">You already have an appointment in this time. Your next free time is…</span>
+
+					<span id="lengthError" style="display:none"><font color="red">Please, input the text that contains less than 150 symbols</font></span>
+
 			
 				</div>
 			
