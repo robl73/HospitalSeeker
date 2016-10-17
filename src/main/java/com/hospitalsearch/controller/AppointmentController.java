@@ -99,8 +99,7 @@ public class AppointmentController {
     @ResponseBody
     @RequestMapping(value = "/**/validateAppointment", method = RequestMethod.GET)
     public String validateAppointment(){
-    	System.out.println("hgfyf");
-    	return "appointments";
+    	 return "appointments";
     }
     
 

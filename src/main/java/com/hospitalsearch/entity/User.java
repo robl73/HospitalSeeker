@@ -59,6 +59,8 @@ public class User implements Comparable<User> {
 	@JsonIgnore
 	private UserDetail userDetails;
 
+
+
 	public String getEmail() {
 		return email;
 	}

@@ -30,7 +30,6 @@ public class FeedbackController {
     
     @Autowired
     private FeedbackService feedbackService;
-
     @RequestMapping(value="/doctor/feedback", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
     public void profile(@RequestParam("doctorId") Long doctorId, @RequestParam("message") String message) {

@@ -136,7 +136,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public CacheManager cacheManager() {
         return new EhCacheCacheManager(ehCacheManagerFactoryBean().getObject());
     }
-    
+
 }
 
 
