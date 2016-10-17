@@ -76,7 +76,7 @@ public class Department{
 	public void setId(Long id) {
 		this.id = id;
 	}
-/*
+
 	public String getName() {
 		return name;
 	}
@@ -84,7 +84,7 @@ public class Department{
 	public void setName(String name) {
 		this.name = name;
 	}
-*/
+
 	public List<DoctorInfo> getDoctors() {
 		return doctors;
 	}

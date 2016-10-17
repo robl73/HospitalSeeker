@@ -1,17 +1,21 @@
 package com.hospitalsearch.controller;
 
 import com.hospitalsearch.entity.DoctorInfo;
+import com.hospitalsearch.entity.Feedback;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.service.DoctorInfoService;
+import com.hospitalsearch.service.FeedbackService;
 import com.hospitalsearch.service.UserService;
 import com.hospitalsearch.util.Page;
 import com.hospitalsearch.util.PrincipalConverter;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -26,10 +30,10 @@ public class DoctorController {
     @Autowired
     DoctorInfoService doctorInfoService;
 
-     @RequestMapping("/doctors")
+    @RequestMapping("/doctors")
     public String renderSearchDoctors(Map<String, Object> model,
                                   @RequestParam(value = "d", required = false) String query) throws ParseException, InterruptedException {
-         Page pageableContent = null;
+        Page pageableContent = null;
         if (query != null && !query.isEmpty()) {
             pageableContent = doctorInfoService.advancedDoctorSearch(query);
             pageableContent.setPageSize(3);
@@ -65,5 +69,6 @@ public class DoctorController {
         model.put("currentPage", page);
         model.put("itemsNumber", pageableContent.getResultListCount());
         model.put("type", "doctors");
-}
+    }
+
 }

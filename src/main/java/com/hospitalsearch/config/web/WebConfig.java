@@ -6,7 +6,12 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.catalina.connector.Connector;
+import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -60,9 +65,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         		"/" + properties.getProperty("global.resource.path") + "/" + properties.getProperty("global.image.path") + "/");
     }
 
+    /**
+     * If disable Spring Boot, then setCahceable to true (by default it's true)
+     */
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         return new SpringResourceTemplateResolver() {{
+            setCacheable(false);
             setTemplateMode("HTML5");
             setPrefix("/WEB-INF/pages/");
             setSuffix(".html");

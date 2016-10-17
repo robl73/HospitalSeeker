@@ -27,21 +27,22 @@ public class SchedulerServiceImpl implements SchedulerService {
     @Autowired
     private DoctorInfoDAO doctorInfoDAO;
 
-    @Autowired
-    private UserDAO userDAO;
-
     @Override
     public Scheduler getByUserDetailId(Long userDetailId) {
         return schedulerDAO.getByDoctorId(doctorInfoDAO.getIdByUserDetail(userDetailId));
     }
 
     @Override
+    public Scheduler getByDoctorId(Long doctorId) {
+        return schedulerDAO.getByDoctorId(doctorId);
+    }
+
+    @Override
     public void saveScheduler(String schedulerString, Long doctorId) throws IOException {
-        Long doctorInfoId = doctorInfoDAO.getIdByUserDetail(doctorId);
-        Scheduler scheduler = schedulerDAO.getByDoctorId(doctorInfoId);
+        Scheduler scheduler = schedulerDAO.getByDoctorId(doctorId);
         ObjectMapper mapper = new ObjectMapper();
         Scheduler newScheduler = mapper.readValue(schedulerString, Scheduler.class);
-        newScheduler.setDoctorInfo(doctorInfoDAO.getById(doctorInfoId));
+        newScheduler.setDoctorInfo(doctorInfoDAO.getById(doctorId));
         if (scheduler != null) {
             schedulerDAO.delete(scheduler);
         }

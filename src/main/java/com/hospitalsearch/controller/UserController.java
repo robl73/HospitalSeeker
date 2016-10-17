@@ -1,10 +1,7 @@
 package com.hospitalsearch.controller;
 
 import com.hospitalsearch.dto.UserRegisterDTO;
-import com.hospitalsearch.entity.PasswordResetToken;
-import com.hospitalsearch.entity.Role;
-import com.hospitalsearch.entity.User;
-import com.hospitalsearch.entity.VerificationToken;
+import com.hospitalsearch.entity.*;
 import com.hospitalsearch.exception.ResetPasswordException;
 import com.hospitalsearch.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.ConnectException;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Andrew Jasinskiy on 16.05.16
@@ -95,28 +90,29 @@ public class UserController {
         return "/registration";
     }
 
-//    @RequestMapping(value = "/registration", method = RequestMethod.POST)
-//    public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
-//                               BindingResult result, ModelMap model, Locale locale) {
-//        if (result.hasErrors()) {
-//            return "registration";
-//        }
-//        User user = userService.register(userDto);
-//        String token = getRandomToken();
-//        verificationTokenService.createToken(token, user);
-//        try {
-//            String confirmationMessage = mailService.createRegisterMessage(user, token, locale);
-//            mailService.sendMessage(user, messageSource.getMessage("mail.message.registration.confirm", null, locale), confirmationMessage, emailTemplate);
-//            model.addAttribute("emailSuccess", userDto.getEmail());
-//            return "/user/endRegistration";
-//        } catch (MailException | ConnectException e) {
-//            model.addAttribute("emailError", userDto.getEmail());
-//            verificationTokenService.deleteTokenByUser(user);
-//            userService.changeStatus(user.getId());
-//            userService.delete(user.getId());
-//            return "/error/emailMessage";
-//        }
-//    }
+/*    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
+                               BindingResult result, ModelMap model, Locale locale) {
+        if (result.hasErrors()) {
+            return "registration";
+        }
+        User user = userService.register(userDto);
+        String token = getRandomToken();
+        verificationTokenService.createToken(token, user);
+        try {
+            String confirmationMessage = mailService.createRegisterMessage(user, token, locale);
+            mailService.sendMessage(user, messageSource.getMessage("mail.message.registration.confirm", null, locale), confirmationMessage, emailTemplate);
+            model.addAttribute("emailSuccess", userDto.getEmail());
+            return "/user/endRegistration";
+        } catch (MailException | ConnectException e) {
+            model.addAttribute("emailError", userDto.getEmail());
+            verificationTokenService.deleteTokenByUser(user);
+            userService.changeStatus(user.getId());
+            userService.delete(user.getId());
+            return "/error/emailMessage";
+        }
+
+    }*/
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
@@ -149,6 +145,11 @@ public class UserController {
         }
         User user = verificationToken.getUser();
         user.setEnabled(true);
+/*
+        UserDetail userDetail = new UserDetail();
+        user.setUserDetails(userDetail);
+        user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("PATIENT"))));
+        */
         userService.update(user);
         verificationTokenService.delete(verificationToken);
         model.addAttribute("confirmEmail", user.getEmail());

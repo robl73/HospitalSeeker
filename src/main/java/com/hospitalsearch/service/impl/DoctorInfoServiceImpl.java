@@ -6,7 +6,6 @@ import com.hospitalsearch.dto.DoctorDTO;
 import com.hospitalsearch.dto.DoctorSearchDTO;
 import com.hospitalsearch.entity.Department;
 import com.hospitalsearch.entity.DoctorInfo;
-import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.DoctorInfoService;
 import com.hospitalsearch.util.Page;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -22,44 +21,44 @@ import java.util.List;
 @Service
 public class DoctorInfoServiceImpl implements DoctorInfoService {
     @Autowired
-    private DoctorInfoDAO dao;
+    private DoctorInfoDAO doctorInfoDAO;
 
     @Autowired
     private DepartmentDAO departmentDAO;
 
     @Override
     public void save(DoctorInfo newDoctor) {
-        dao.save(newDoctor);
+        doctorInfoDAO.save(newDoctor);
     }
 
     @Override
     public void delete(DoctorInfo doctor) {
-        dao.delete(doctor);
+        doctorInfoDAO.delete(doctor);
     }
 
     @Override
     public void update(DoctorInfo updatedDoctor) {
-        dao.update(updatedDoctor);
+        doctorInfoDAO.update(updatedDoctor);
     }
 
     @Override
     public Long getIdByUserDetail(Long userDetailId) {
-        return dao.getIdByUserDetail(userDetailId);
+        return doctorInfoDAO.getIdByUserDetail(userDetailId);
     }
 
     @Override
     public DoctorInfo getById(Long id) {
-        return dao.getById(id);
+        return doctorInfoDAO.getById(id);
     }
 
     @Override
     public List<DoctorInfo> getAll() {
-        return dao.getAll();
+        return doctorInfoDAO.getAll();
     }
 
     @Override
     public List<DoctorDTO> findByDepartmentId(Long id) {
-        return dao.findByDepartmentId(id);
+        return doctorInfoDAO.findByDepartmentId(id);
     }
 
     @Override
@@ -86,6 +85,11 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
 
     @Override
     public Page<DoctorInfo> advancedDoctorSearch(String query) throws ParseException, InterruptedException{
-        return dao.advancedDoctorSearch(query);
+        return doctorInfoDAO.advancedDoctorSearch(query);
     }
+
+    public DoctorInfo getByUserDetailId(Long userDetailId) {
+        return doctorInfoDAO.getByUserDetailId(userDetailId);
+    }
+
 }

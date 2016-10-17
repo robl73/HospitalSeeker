@@ -7,7 +7,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +19,14 @@ public class RoleServiceImpl implements RoleService {
     private final Logger logger = LogManager.getLogger(RoleServiceImpl.class);
 
     @Autowired
-    RoleDAO dao;
+    RoleDAO roleDAO;
 
     @Override
     public List<Role> getAll() {
         List<Role> roles = new ArrayList<>();
         try {
             logger.info("Gel All Roles");
-            roles = dao.getAll();
+            roles = roleDAO.getAll();
             return roles;
         } catch (Exception e) {
             logger.error("Error getting all users", e);
@@ -40,7 +39,7 @@ public class RoleServiceImpl implements RoleService {
         Role role = new Role();
         try {
             logger.info("Gel Role by type " + type);
-            role = dao.getByType(type);
+            role = roleDAO.getByType(type);
             return role;
         } catch (Exception e) {
             logger.error("Error Role by type " + type, e);
@@ -53,7 +52,7 @@ public class RoleServiceImpl implements RoleService {
         Role role = new Role();
         try {
             logger.info("Gel Role by id " + id);
-            role = dao.getById(id);
+            role = roleDAO.getById(id);
             return role;
         } catch (Exception e) {
             logger.error("Error Role by id " + id, e);
