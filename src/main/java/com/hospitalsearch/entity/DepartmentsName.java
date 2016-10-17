@@ -18,6 +18,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.search.annotations.DocumentId;
@@ -39,16 +40,19 @@ public class DepartmentsName implements Serializable {
 	private Long id;
     
 //    @Column(name="departmentname")
-    @NotNull
+    @NotNull(message="this field can not be empty")
     @Size(min = 3, max = 20, message="you must enter from 3 to 20 chars")
+    @Pattern(regexp="(\\p{Alpha}){3,20}", message="you must enter from 3 to 20 chars only")
     private String name;
     
  //   @Column(name="departmentspecialization")
     @Size(min = 0, max = 20, message="you may enter up to 20 chars")
+    @Pattern(regexp="(\\p{Alpha}){0,20}", message="you may enter up to 20 chars only")
     private String specialization;
     
  //   @Column(name="departmentnumber")
     @Size(min = 0, max = 2, message="you may enter up to 2 digits")
+    @Pattern(regexp="(\\d){0,2}", message="you may enter up to 2 digits only")
     private String number;
 
     public String getName() {

@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout">
+    <!--  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" -->
+    <!-- xmlns:layout="http://www.w3.org/1999/xhtml" -->
 <head>
     <meta charset="ISO-8859-1"/>
     <meta charset="UTF-8"/>
@@ -46,11 +48,11 @@
 <div style="width: 50%">
   <div>  
   <form class="form-horizontal" th:action="@{/admin/addDepartmentsName}" method="POST" 
-        th:object="${departmentsname}" >
+        th:object="${departmentsName}" >
   <fieldset>
     <legend th:text="#{admin.dashboard.department.show.form.header}">Legend</legend>
 	
-  
+  <!--
     <div class="form-group">
       <label for="inputName" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.name}">name</label>
@@ -59,8 +61,8 @@
                  name="name" ></input>     
       </div>
     </div>
+  --> 
    
-   <!-- 
     <div class="form-group">
       <label for="name" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.name}">name</label>
@@ -68,11 +70,13 @@
           <input class="form-control"  placeholder="name" type="text" 
                  th:field="*{name}" ></input>
           
-      </div>
-       
+          <p th:if="${#fields.hasErrors('name')}"
+             th:errors="*{name}" 
+             class="has-error text-danger">Incorrect input</p>  
+      </div>      
     </div>
-    -->
-   
+    
+   <!--
     <div class="form-group">
       <label for="inputSpecialization" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.specialization}">specialization</label>
@@ -81,42 +85,47 @@
                name="specialization" ></input> 
       </div>
     </div>
+    -->
    
-   <!--
     <div class="form-group">
       <label for="specialization" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.specialization}">specialization</label>
       <div class="col-lg-10">
         <input class="form-control" placeholder="specialization" type="text"
-               th:field="*{specialization}" ></input> 
-
-      </div>
-  
+               th:field="*{specialization}" ></input>
+          
+        <p th:if="${#fields.hasErrors('specialization')}"
+           th:errors="*{specialization}" 
+           class="has-error text-danger">Incorrect input</p>
+      </div>  
     </div>
-   -->
-   
+ 
+   <!--
     <div class="form-group">
       <label for="inputNumber" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.number}">number</label>
       <div class="col-lg-10">
         <input class="form-control" id="inputNumber" placeholder="number" type="text"
-               name="number" ></input> 
+               name="number" ></input>
       </div>
     </div>
+   -->
    
-   <!--
+  
     <div class="form-group">
       <label for="number" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.number}">number</label>
       <div class="col-lg-10">
         <input class="form-control" placeholder="number" type="text"
-               th:field="*{number}"></input>
-          
-      </div>
-        
+               th:field="*{number}" th:errorclass="has-error"></input>
+ 
+        <p th:if="${#fields.hasErrors('number')}"
+           th:errors="*{number}" 
+           class="has-error text-danger">Incorrect input</p> 
+      </div>    
     </div>
-    -->
-    
+   
+   
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
         <button type="reset" class="btn btn-default">Cancel</button>
