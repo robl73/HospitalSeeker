@@ -29,4 +29,6 @@ public interface DoctorInfoDAO extends GenericDAO<DoctorInfo,Long>{
 
     DoctorInfo getByEmail(String email);
 
+    DoctorInfo getByUserDetailId(Long userDetailId);
+
 }

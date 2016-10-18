@@ -55,7 +55,7 @@ public class DoctorInfo{
     @JsonIgnore
     private UserDetail userDetails;
 
-    @ManyToMany(mappedBy = "doctors")
+    @ManyToMany(mappedBy = "doctors", fetch = FetchType.EAGER)
     private List<Department> departments;
 
     public DoctorInfo() {
@@ -85,13 +85,13 @@ public class DoctorInfo{
         this.departments = departments;
     }
 
-	public UserDetail getUserDetails() {
-		return userDetails;
-	}
+    public UserDetail getUserDetails() {
+        return userDetails;
+    }
 
     public void setUserDetails(UserDetail userDetails) {
-		this.userDetails = userDetails;
-	}
+        this.userDetails = userDetails;
+    }
 
     public Category getCategory() {
         return category;

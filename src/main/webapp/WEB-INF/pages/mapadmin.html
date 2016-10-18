@@ -41,18 +41,17 @@
  						<label class="control-label col-sm-2"
  							th:text="#{admin.hospital.new.label.address}"></label>
  						<div class="col-sm-10">
- 							<div class="input-group">
- 
-
+ 							<div class="input-group" style="width:100%;">
 								<input th:field="*{addressGeo}" class="form-control"
 									id="addressGeo"
-					th:placeholder="#{admin.hospital.new.placeholder.address}"/> 
+					th:placeholder="#{admin.hospital.new.placeholder.address}"  style="width:94%;"/> 
 
 								<i
 								th:if="${#fields.hasErrors('addressGeo')}"
 								th:errors="*{addressGeo}" class="removable-i fade in"></i>  
 
-							<div class="input-group-btn">
+							<div class="input-group-btn" 
+style="position: absolute; top:0; right:0; float: inherit; width:auto;">
 									<button type="button" th:onclick="'javascript:check();'"
 										class="btn btn-default"
 										th:text="#{admin.hospital.new.button.find}" id="button-find"></button>

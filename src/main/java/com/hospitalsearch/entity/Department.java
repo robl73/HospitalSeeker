@@ -26,7 +26,7 @@ public class Department{
 	@JoinTable(name="DEPARTMENT_DOCTORINFO", joinColumns = @JoinColumn(name="DEPARTMENTS_ID"), inverseJoinColumns = @JoinColumn(name="DOCTORS_ID"))
 	@Fetch(FetchMode.SELECT)
 	private List<DoctorInfo> doctors;
-	
+
 	@ManyToOne
 	@ContainedIn
 	private Hospital hospital;

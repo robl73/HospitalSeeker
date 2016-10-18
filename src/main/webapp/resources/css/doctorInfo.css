@@ -1,0 +1,47 @@
+.row-centered {
+    text-align:center;
+}
+
+.col-centered {
+    display:inline-block;
+    float:none;
+    text-align:left;
+    margin-right:-4px;
+}
+
+.fixed-panel {
+    min-height: 148px;
+    max-height: 148px;
+}
+
+.row-weight {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.form-layout {
+    margin: 1vh 4vw;
+}
+
+textarea {
+    width: 100%;
+}
+
+.panel-heading:hover {
+    background-color: #dfdfdf;
+}
+
+.feedbacks .panel-body:hover {
+    cursor: pointer;
+    overflow: hidden;
+}
+
+#addAppointment {
+    margin: 5px;
+}
+
+#addAppointment:before {
+    /*content: '+';*/
+}

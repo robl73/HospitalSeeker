@@ -136,6 +136,7 @@ public class ManagerController {
         return "redirect: /editHospitalsManagers";
     }
 
+
     @RequestMapping(value = "/docs", method = RequestMethod.GET)
     public String docs(Map<String, Object> model){
         model.put("doctors", userService.getByRole("DOCTOR"));

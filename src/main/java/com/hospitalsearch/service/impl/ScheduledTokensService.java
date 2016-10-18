@@ -30,6 +30,7 @@ public class ScheduledTokensService {
     @Scheduled(cron = "0 0 12  * * ?")
     public void deleteResetPasswordToken() {
         passwordResetTokenService.deleteExpiredTokens();
+        
     }
 
     @Scheduled(cron = "0 0 12 * * ?")

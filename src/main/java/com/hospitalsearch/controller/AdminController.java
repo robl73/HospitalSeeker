@@ -1,5 +1,6 @@
 package com.hospitalsearch.controller;
 
+
 import java.net.ConnectException;
 import java.util.List;
 import java.util.Locale;
@@ -21,22 +22,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.hospitalsearch.dto.AdminTokenConfigDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.AdminTokenConfig;
+import com.hospitalsearch.entity.DepartmentsName;
 import com.hospitalsearch.entity.Role;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.service.AdminTokenConfigService;
+import com.hospitalsearch.service.DepartmentsNameService;
 import com.hospitalsearch.service.MailService;
 import com.hospitalsearch.service.RoleService;
 import com.hospitalsearch.service.UserService;
+
 
 /**
  * @author Andrew Jasinskiy on 10.05.16
  */
 @Controller
+//@SessionAttributes("departmentnames")
 public class AdminController {
 	
 	@Autowired
@@ -50,6 +56,9 @@ public class AdminController {
 
     @Autowired
     MailService mailService;
+    
+    @Autowired
+    DepartmentsNameService departmentsNameService;
 
     @Autowired
     private MessageSource messageSource;
@@ -135,7 +144,7 @@ public class AdminController {
         dto.setSort(sort);
         dto.setPageSize(usersPerPage);
         dto.setStatus(status);
-        List users = userService.getUsers(dto);
+        List <User> users = userService.getUsers(dto);
         if (dto.getTotalPage() > 1) model.addAttribute("pagination", "pagination");
         model.addAttribute("userFilterDTO", dto);
         model.addAttribute("pageSize", dto.getPageSize());
@@ -150,7 +159,7 @@ public class AdminController {
                              @ModelAttribute("userFilterDTO") UserFilterDTO dto,
                              ModelMap model) throws Exception {
         dto.setPageSize(usersPerPage);
-        List users = userService.searchUser(dto);
+        List  <User> users = userService.searchUser(dto);
         if (dto.getTotalPage() > 1) model.addAttribute("pagination", "pagination");
         model.addAttribute("search", "search");
         model.addAttribute("userFilterDTO", dto);
@@ -230,4 +239,56 @@ public class AdminController {
             mailService.sendMessage(user, messageSource.getMessage("mail.message.banned.title", null, locale), bannedMessage, emailTemplate);
         }
     }
+    
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "admin/allDepartmentsName", method = RequestMethod.GET)
+    public String allDepartmentsName(ModelMap model) {
+       List departmentnames = departmentsNameService.getAll();
+       model.addAttribute("departmentnames", departmentnames);
+       return "admin/departmentsName";
+    } 
+           
+  
+   /* 
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "admin/allDepartmentsName", method = RequestMethod.GET)
+    public String allDepartmentsName(@ModelAttribute ArrayList<DepartmentsName>  departmentnames) {
+       departmentnames = (ArrayList<DepartmentsName>) departmentsNameService.getAll(); 
+       return "admin/departmentsName";
+    } 
+    
+    */
+ /*
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "admin/allDepartmentsName", method = RequestMethod.POST)
+    public String addDepartmentsName(@RequestParam DepartmentsName departmentsname) {
+        departmentsNameService.save(departmentsname);
+    return "admin/departmentsName";
+    }  
+  */
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "admin/addDepartmentsName", method = RequestMethod.POST)
+    public RedirectView addDepartmentsName(@Valid @ModelAttribute DepartmentsName departmentsname,
+                                     BindingResult result,
+                                     ModelMap model,
+                                     RedirectAttributes rda) {
+     
+        if(result.hasErrors()){
+            return new RedirectView("/admin/allDepartmentsName",true);
+        }
+     
+        departmentsNameService.save(departmentsname);
+    return new RedirectView("/admin/allDepartmentsName",true);
+    }
+ 
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "admin/deleteDepartmentsName", method = RequestMethod.GET, params="id")
+    public RedirectView deleteDepartmentsName(@RequestParam Long id){
+        departmentsNameService.delete(departmentsNameService.getById(id));
+        return new RedirectView("/admin/allDepartmentsName",true);
+    }
+    
+  
 }

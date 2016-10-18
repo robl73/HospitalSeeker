@@ -2,16 +2,14 @@ package com.hospitalsearch.service;
 
 import java.util.List;
 
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hospitalsearch.entity.AdminTokenConfig;
-import com.hospitalsearch.entity.Token;
+import com.hospitalsearch.util.Token;
 
 @Transactional
 public interface AdminTokenConfigService {
 
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	List<AdminTokenConfig> getAll();
 
 	void update(AdminTokenConfig adminTokenConfig);
@@ -27,5 +25,5 @@ public interface AdminTokenConfigService {
 	Integer RESET_PASSWORD_TOKEN_EXPIRATION();
 
 	Integer REMEMBER_ME_TOKEN_EXPIRATION();
-
+	
 }

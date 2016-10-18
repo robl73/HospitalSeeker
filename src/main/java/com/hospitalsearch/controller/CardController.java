@@ -85,7 +85,6 @@ public class CardController {
         return "card/full";
     }
 
-
     @PreAuthorize("hasRole('DOCTOR')")
     @RequestMapping(value = {"/new/record"}, method = RequestMethod.GET)
     public String newCardItem(@RequestParam("userId") Long userId, ModelMap model) {

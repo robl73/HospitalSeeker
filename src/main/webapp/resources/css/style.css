@@ -12,8 +12,15 @@
 ****/
 /*@import url(https://fonts.googleapis.com/css?family=Roboto);*/
 
-
-
+/* 
+.input-group-btn{
+ position: absolute;
+ top:0;
+ right:0; 
+ float: inherit; 
+ width:0;
+}
+ */
 .cd-top {
   display: inline-block;
   height: 40px;

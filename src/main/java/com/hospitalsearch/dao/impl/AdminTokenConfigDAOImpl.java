@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository;
 
 import com.hospitalsearch.dao.AdminTokenConfigDAO;
 import com.hospitalsearch.entity.AdminTokenConfig;
-import com.hospitalsearch.entity.Token;
+import com.hospitalsearch.util.Token;
 
 
 
 @Repository
 public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Long> implements AdminTokenConfigDAO {
 
-	@Autowired(required = true)
+	@Autowired//(required = true)
 	public AdminTokenConfigDAOImpl(SessionFactory factory) {
 		this.setSessionFactory(factory);
 	}
@@ -68,8 +68,7 @@ public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Lo
 
 	@Override
 	public void delete(AdminTokenConfig instance) {
-		// TODO Auto-generated method stub
-
+		super.delete(instance);
 	}
 
 	@Override

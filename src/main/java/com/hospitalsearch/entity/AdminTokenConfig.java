@@ -7,12 +7,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.hospitalsearch.util.Token;
 
 
 @Entity
-@Table(name = "adminTokenConfig")
+@Table(name = "admintokenconfig")
 public class AdminTokenConfig {
 
 	@Id
@@ -26,14 +28,14 @@ public class AdminTokenConfig {
 	private Token token;
 
 	@NotNull(message = "Token`s value cannot be empty")
-	@Digits(integer = 3, fraction = 0, message = "The value must only contain digits.")
+	@Size(min = 1, max = 70, message = "Please enter at least 1 symbols and not more than 70 symbols.")
 	@Column(name = "value")
-	private Integer value;
+	private String value;
 
 	public AdminTokenConfig() {
 	}
 
-	public AdminTokenConfig(Token token, Integer value) {
+	public AdminTokenConfig(Token token, String value) {
 		this.token = token;
 		this.value = value;
 	}
@@ -54,11 +56,11 @@ public class AdminTokenConfig {
 		this.token = token;
 	}
 
-	public Integer getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(Integer value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 

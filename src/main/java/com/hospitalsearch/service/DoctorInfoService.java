@@ -39,4 +39,7 @@ public interface DoctorInfoService {
 
     @Transactional(readOnly=true,propagation= Propagation.SUPPORTS)
     Page<DoctorInfo> advancedDoctorSearch(String query) throws ParseException, InterruptedException;
+
+    DoctorInfo getByUserDetailId(Long userDetailId);
+
 }

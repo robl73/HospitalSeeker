@@ -1,1 +1,0 @@
-put these in %CATALINA_HOME%

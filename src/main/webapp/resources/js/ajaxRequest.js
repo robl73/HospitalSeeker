@@ -3,18 +3,13 @@
  */
 
 function getData(url) {
+
     return $.ajax({
-        type: "GET",
-        // async: false,
+        type: 'GET',
         url: url,
-        dataType: "json",
-        contentType: "application/json",
-        mimeType: "application/json",
-        // success: function (data) {
-        //     suc(data);
-        // },
-        // error: function (e) {
-        //     err(e);
-        // }
+        dataType: 'json',
+        contentType: 'application/json',
+        mimeType: 'application/json'
     });
+
 }

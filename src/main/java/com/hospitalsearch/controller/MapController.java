@@ -2,7 +2,6 @@ package com.hospitalsearch.controller;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Scanner;
 
 import javax.validation.Valid;
 
@@ -27,7 +26,6 @@ import com.hospitalsearch.dto.Bounds;
 import com.hospitalsearch.dto.HospitalDTO;
 import com.hospitalsearch.entity.Hospital;
 import com.hospitalsearch.service.HospitalService;
-import com.hospitalsearch.service.impl.HospitalServiceImpl;
 
 /**
  *

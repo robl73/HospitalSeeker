@@ -1,6 +1,7 @@
 package com.hospitalsearch.util;
 
 
+import com.hospitalsearch.service.annotation.*;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -12,14 +13,6 @@ import java.time.LocalDate;
 
 
 public class UserDetailRegisterDto {
-
-
-
-    /**
-     *SHOULD BE REMOVED -> UserDto (validation)
-     */
-
-
 
     @NotEmpty
     @Size(min = 2, max = 25)
@@ -46,10 +39,6 @@ public class UserDetailRegisterDto {
 
     @NotEmpty
     private String address;
-
-
-
-
 
     public String getFirstName() {
         return firstName;

@@ -3,14 +3,15 @@ package com.hospitalsearch.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hospitalsearch.entity.Appointment;
+import com.hospitalsearch.entity.RelativesInfo;
+import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.AppointmentService;
+import com.hospitalsearch.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,12 +25,25 @@ import java.util.stream.Collectors;
 @Service
 public class AppointmentValidationService {
 
-    @Autowired
-    AppointmentService appointmentService;
-
     private static final String DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     private static final int TIME_ZONE_OFFSET = 3;
+
+    private static final String NEXT_AVAILABLE_TIME = "nextAvailableTime";
+
+    private static final String RESULT = "result";
+
+    private static final String FULL_USER_DETAIL_PRESENT = "fullUserDetailPresent";
+
+    private static final String PRINCIPAL = "principal";
+
+    private static final String BLANK_LINE = "";
+
+    @Autowired
+    AppointmentService appointmentService;
+
+    @Autowired
+    UserService userService;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -37,16 +51,18 @@ public class AppointmentValidationService {
 
     public Map<String, Object> validateAppointment(String appointmentString) {
         Appointment appointment = toAppointment(appointmentString);
-        List<Appointment> appointments = appointmentService.getAllByPatientEmail(data.get("principal"));
+        List<Appointment> appointments = appointmentService.getAllByPatientEmail(data.get(PRINCIPAL));
        
         Map<String, Object> validationInfo = new HashMap<>();
-        
-        validationInfo.put("result", validate(appointment, appointments));
-        validationInfo.put("nextAvailableTime", getFirstAvailibleTime(appointments, appointment));
+        validationInfo.put(RESULT, validate(appointment, appointments));
+        //check if patient has appointment
+        validationInfo.put(NEXT_AVAILABLE_TIME, getFirstAvailableTime(appointments, appointment));
+        validationInfo.put(FULL_USER_DETAIL_PRESENT,
+                checkFullUserDetailPresent(userService.getByEmail(data.get(PRINCIPAL)).getUserDetails()));
         return validationInfo;
     }
 
-    private Appointment toAppointment(String appointmentString) {
+     private Appointment toAppointment(String appointmentString) {
         try {
             data = mapper.readValue(appointmentString, new TypeReference<Map<String, String>>() {
             });
@@ -63,6 +79,9 @@ public class AppointmentValidationService {
     }
 
     private boolean validate(Appointment newAppointment, List<Appointment> patientAppointments) {
+        if(patientAppointments.isEmpty()){
+            return true;
+        }
         for (Appointment appointment : patientAppointments) {
             if (newAppointment.getStart_date().equals(appointment.getStart_date()) || newAppointment.getEnd_date()
                     .equals(appointment.getEnd_date())) {
@@ -81,13 +100,56 @@ public class AppointmentValidationService {
         return true;
     }
 
-    private String getFirstAvailibleTime(final List<Appointment> appointments, final Appointment appointment) {
+    private String getFirstAvailableTime(final List<Appointment> appointments, final Appointment appointment) {
+        if (appointments.isEmpty()){
+            return BLANK_LINE;
+        }
         List<Appointment> sortedAppointments = appointments.stream().sorted((o1, o2) -> o2.getStart_date()
                 .compareTo(o1.getStart_date())).collect(Collectors.toList());
-       
+
         Collections.reverse(sortedAppointments);
         Appointment appointment2 = sortedAppointments.get(sortedAppointments.size() - 1);
         return appointment2.getEnd_date().toString();
 
+    }
+
+    private boolean checkFullUserDetailPresent(UserDetail userDetails) {
+        if (userDetails.getFirstName() == null ||
+                userDetails.getBirthDate() == null ||
+                userDetails.getPhone() == null ||
+                userDetails.getAddress() == null ||
+                userDetails.getGender() == null ||
+                userDetails.getHeight() == null ||
+                userDetails.getWeight() == null ||
+                userDetails.getBloodType() == null ||
+                userDetails.getEyeColor() == null ||
+                userDetails.getHairColor() == null ||
+                userDetails.getAllergies() == null ||
+                userDetails.getCurrentMedication() == null ||
+                userDetails.getHeartProblems() == null ||
+                userDetails.getDiabetes() == null ||
+                userDetails.getEpilepsy() == null ||
+                userDetails.getRestrictions() == null || !validateRelativesInfos(userDetails.getRelativesInfos())){
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateRelativesInfos(List<RelativesInfo> relativesInfos) {
+        for (RelativesInfo relativesInfo: relativesInfos) {
+            if (!validateRelativesInfo(relativesInfo)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validateRelativesInfo(RelativesInfo relativesInfo) {
+        if (relativesInfo.getName() == null ||
+                relativesInfo.getPhone() == null ||
+                relativesInfo.getRelation() == null){
+            return false;
+        }
+        return true;
     }
 }

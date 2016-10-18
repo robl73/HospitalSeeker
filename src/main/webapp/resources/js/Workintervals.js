@@ -1,8 +1,12 @@
+var nextAvailableTime;
+var isPresentUserDetails;
+var principal;
+
 $(document).ready(function () {
     var today = new Date();
     today.setHours(0);
     blockDateTo(today);
-    var principal = $('#principal').text();
+    principal = $('#principal').text();
     var did = document.getElementById("1").textContent;
     var begin;
     var end;
@@ -122,13 +126,35 @@ var html = function (id) {
     return document.getElementById(id);
 };
 
+
 scheduler.showLightbox = function (id) {
     var tex_local_from = getMessage('workscheduler.modal.appointment.time.from');
     var tex_local_to = getMessage('workscheduler.modal.appointment.time.to');
-    $('#myModal').modal('show');
+
+
     var ev = scheduler.getEvent(id);
     ev.end_date = new Date(ev.start_date.getTime() + scheduler.config.time_step * 60000);
-    scheduler.startLightbox(id, html("myModal"));
+
+    var validationErrorMessage = getMessage('modal.workscheduler.validation.error');
+    var validationTimeMassage = getMessage('modal.workscheduler.validation.freetime');
+    var validationProfileMassage = getMessage('modal.workscheduler.validation.profile');
+
+    validateAppointment(ev) ? showModal() : showErrorModal();
+    function showErrorModal(){
+        $('#validationErrorMassage').text(validationErrorMessage + ' ' + validationTimeMassage
+            + ' ' + nextAvailableTime.substr(11));
+        $('#myAppointmentValidationErrorModal').modal('show');
+    }
+    function showModal() {
+        if (!isPresentUserDetails) {
+            $('#validationErrorMassage').text(validationProfileMassage);
+            $('#myAppointmentValidationErrorModal').modal('show');
+            return;
+        }
+        $('#appointmentModal').modal('show');
+    }
+
+    scheduler.startLightbox(id, html("appointmentModal"));
     $('#date').text(new Date(ev.start_date).toLocaleDateString() + ' ' + tex_local_from + ' '+
         new Date(ev.start_date).toLocaleTimeString().replace(':00', '') + ' ' + tex_local_to + ' ' +
         new Date(ev.end_date).toLocaleTimeString().replace(':00', ''));
@@ -147,6 +173,11 @@ function close_form() {
     scheduler.endLightbox(false, html("my_form"));
 }
 
+function closeErrorModal() {
+    close_form();
+    location.reload();
+}
+
 function delete_event() {
     var event_id = scheduler.getState().lightbox_id;
     scheduler.endLightbox(false, html("my_form"));
@@ -162,12 +193,18 @@ scheduler.attachEvent("onLimitViolation", function (id, obj) {
 });
 
 function dismissMyModal(event) {
-    if ($(event.target).is('#myModal')) {
+    if ($(event.target).is('#appointmentModal')) {
         close_form();
     }
 }
 
 function startModal() {
+
+    if ($('#TheReasonForVisit').val().length >= 150) {
+        $('#lengthError').attr('style', 'display:block');
+        return;
+    }
+
     setTimeout(changeModalContentFirstStep, 500);
     setTimeout(changeModalContentSecondStep, 4000);
 }
@@ -181,7 +218,13 @@ function changeModalContentFirstStep() {
 
 function changeModalContentSecondStep() {
     save_form();
-    $('#myModal').modal('hide');
+    $('#appointmentModal').modal('hide');
+}
+
+function closeModal() {
+    changeModalContentSecondStep();
+    $('#appointmentModal').modal('hide');
+    $.modal.close();
 }
 
 $(document).keyup(function (e) {
@@ -193,3 +236,26 @@ $(document).keyup(function (e) {
 function goBack() {
     window.history.back();
 }
+
+function validateAppointment(ev) {
+    ev.principal = principal;
+    var result = false;
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "validate?ev="+JSON.stringify(ev),
+        datatype: "json",
+        contentType: "application/json",
+        mimeType: "application/json",
+        success: function (data) {
+            isPresentUserDetails = data.fullUserDetailPresent;
+            nextAvailableTime = data.nextAvailableTime;
+            result = data.result;
+        },
+        error: function (data) {
+            alert("error" + data)
+        }
+    });
+    return result;
+}
+

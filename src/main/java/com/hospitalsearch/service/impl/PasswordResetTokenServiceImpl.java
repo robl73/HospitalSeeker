@@ -1,13 +1,15 @@
 package com.hospitalsearch.service.impl;
 
-import com.hospitalsearch.dao.PasswordResetTokenDAO;
-import com.hospitalsearch.entity.PasswordResetToken;
-import com.hospitalsearch.entity.User;
-import com.hospitalsearch.service.PasswordResetTokenService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.hospitalsearch.dao.PasswordResetTokenDAO;
+import com.hospitalsearch.entity.PasswordResetToken;
+import com.hospitalsearch.entity.User;
+import com.hospitalsearch.service.AdminTokenConfigService;
+import com.hospitalsearch.service.PasswordResetTokenService;
 
 /**
  * @author Andrew Jasinskiy on 20.06.16
@@ -17,6 +19,9 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
 
     private final Logger logger = LogManager.getLogger(PasswordResetTokenServiceImpl.class);
 
+    @Autowired
+    private AdminTokenConfigService configService;
+    
     @Autowired
     private PasswordResetTokenDAO resetTokenDAO;
 
@@ -54,8 +59,7 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
     public void createToken(String token, User user) {
         try {
             logger.info("create reset token by user: " + user);
-            AdminTokenConfigServiceImpl adminTokenConfigServiceImpl = new AdminTokenConfigServiceImpl();
-    		Integer RESET_PASSWORD_TOKEN_EXPIRATION = adminTokenConfigServiceImpl.RESET_PASSWORD_TOKEN_EXPIRATION();
+    		Integer RESET_PASSWORD_TOKEN_EXPIRATION = configService.RESET_PASSWORD_TOKEN_EXPIRATION();
             PasswordResetToken passwordResetToken = new PasswordResetToken(token, user, RESET_PASSWORD_TOKEN_EXPIRATION);
             resetTokenDAO.save(passwordResetToken);
         } catch (Exception e) {
