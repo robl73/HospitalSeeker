@@ -59,12 +59,6 @@ public class ManagerController {
     @Autowired
     private MessageSource messageSource;
 
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private DepartmentService departmentService;
-
     private static String emailTemplate = "emailTemplate.vm";
 
     @PreAuthorize("hasRole('MANAGER')")
@@ -92,49 +86,22 @@ public class ManagerController {
         response.getWriter().write(json);
     }
 
-    @PreAuthorize("hasRole('MANAGER')")
     @RequestMapping(value = "/newDoctor", method = RequestMethod.POST)
-    public String newDoctorRegistration(@Valid @ModelAttribute("newDoctorDto") NewDoctorRegistrationDTO newDoctorRegistrationDTO, ModelMap model,
-                                        HttpServletRequest request, BindingResult result, RedirectAttributes redirectAttributes, Locale locale) {
+    public String newDoctorRegistration(@Valid @ModelAttribute("newDoctorDto") NewDoctorRegistrationDTO newDoctorRegistrationDTO,
+                                        ModelMap model, BindingResult result, Locale locale) {
         if (result.hasErrors()) {
             return "/newDoctor";
         }
-        UserRegisterDTO userDto = new UserRegisterDTO();
-        userDto.setEmail(newDoctorRegistrationDTO.getEmail());
-        userDto.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("DOCTOR"))));
-        userDto.setPassword("111111");
-        userDto.setConfirmPassword("111111");
-        UserDetail userDetail = new UserDetail();
-        userDetail.setFirstName(newDoctorRegistrationDTO.getFirstName());
-        userDetail.setLastName(newDoctorRegistrationDTO.getLastName());
-        userDetail.setAddress(newDoctorRegistrationDTO.getAddress());
-        userDetail.setBirthDate(newDoctorRegistrationDTO.getBirthDate());
-        if(request.getParameter("gender").equals(Gender.MALE)){
-            userDetail.setGender(Gender.MALE);
-        } else {
-            userDetail.setGender(Gender.FEMALE);
-        }
-        userDetail.setImagePath(newDoctorRegistrationDTO.getImagePath());
-        User user = userService.register(userDto);
-        userDetail.setUser(user);
-        userDetail = userDetailService.add(userDetail);
-        DoctorInfo doctorInfo = new DoctorInfo();
-        doctorInfo.setCategory(newDoctorRegistrationDTO.getCategory());
-        doctorInfo.setSpecialization(newDoctorRegistrationDTO.getSpecialization());
-        List<Department> departments = new ArrayList<>();
-        departments.add(departmentService.getById(newDoctorRegistrationDTO.getNameDepartmentsId()));
-        doctorInfo.setDepartments(departments);
-        doctorInfo.setUserDetails(userDetail);
-        doctorInfoService.save(doctorInfo);
+        User user = userService.register(newDoctorRegistrationDTO);
         String token = getRandomToken();
         verificationTokenService.createToken(token, user);
         try {
             String confirmationMessage = mailService.createRegisterMessage(user, token, locale);
             mailService.sendMessage(user, messageSource.getMessage("mail.message.registration.confirm", null, locale), confirmationMessage, emailTemplate);
-            model.addAttribute("emailSuccess", userDto.getEmail());
+            model.addAttribute("emailSuccess", user.getEmail());
             return "/user/endRegistration";
         } catch (MailException | ConnectException e) {
-            model.addAttribute("emailError", userDto.getEmail());
+            model.addAttribute("emailError", user.getEmail());
             verificationTokenService.deleteTokenByUser(user);
             userService.changeStatus(user.getId());
             userService.delete(user.getId());

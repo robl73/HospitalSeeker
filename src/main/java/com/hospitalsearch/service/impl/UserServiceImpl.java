@@ -1,15 +1,14 @@
 package com.hospitalsearch.service.impl;
 
+import com.hospitalsearch.dao.DoctorInfoDAO;
 import com.hospitalsearch.dao.UserDAO;
 import com.hospitalsearch.dao.UserDetailDAO;
+import com.hospitalsearch.dto.NewDoctorRegistrationDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.*;
 import com.hospitalsearch.exception.ResetPasswordException;
-import com.hospitalsearch.service.PatientCardService;
-import com.hospitalsearch.service.PatientInfoService;
-import com.hospitalsearch.service.RoleService;
-import com.hospitalsearch.service.UserService;
+import com.hospitalsearch.service.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +43,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     PatientInfoService patientInfoService;
 
+    @Autowired
+    private DepartmentService departmentService;
+
     @Override
     public void save(User newUser) {
         try {
@@ -51,6 +53,16 @@ public class UserServiceImpl implements UserService {
             UserDetail userDetail = new UserDetail();
             userDetail.setUser(newUser);
             newUser.setUserDetails(userDetail);
+            dao.save(newUser);
+        } catch (Exception e) {
+            logger.error("Error saving user: " + newUser, e);
+        }
+    }
+
+    @Override
+    public void saveDoctor(User newUser) {
+        try {
+            logger.info("save user: " + newUser);
             dao.save(newUser);
         } catch (Exception e) {
             logger.error("Error saving user: " + newUser, e);
@@ -75,6 +87,38 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             System.out.println("Error register user");
             logger.error("Error register user: " + userRegisterDTO, e);
+        }
+        return user;
+    }
+
+    @Override
+    public User register(NewDoctorRegistrationDTO newDoctorRegistrationDTO) {
+        User user = new User();
+        try {
+            logger.info("register user: " + newDoctorRegistrationDTO);
+            user.setEmail(newDoctorRegistrationDTO.getEmail().toLowerCase());
+            user.setPassword(passwordEncoder.encode("password"));
+            user.setEnabled(newDoctorRegistrationDTO.getEnabled());
+            user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("DOCTOR"))));
+            UserDetail userDetail = new UserDetail();
+            userDetail.setFirstName(newDoctorRegistrationDTO.getFirstName());
+            userDetail.setLastName(newDoctorRegistrationDTO.getLastName());
+            userDetail.setAddress(newDoctorRegistrationDTO.getAddress());
+            userDetail.setBirthDate(newDoctorRegistrationDTO.getBirthDate());
+            userDetail.setPhone(newDoctorRegistrationDTO.getPhone());
+            userDetail.setImagePath(newDoctorRegistrationDTO.getImagePath());
+            DoctorInfo doctorInfo = new DoctorInfo();
+            List<Department> departments = new ArrayList<>();
+            departments.add(departmentService.getById(newDoctorRegistrationDTO.getNameDepartmentsId()));
+            doctorInfo.setDepartments(departments);
+            doctorInfo.setSpecialization(newDoctorRegistrationDTO.getSpecialization());
+            doctorInfo.setCategory(newDoctorRegistrationDTO.getCategory());
+            //userDetail.setDoctorInfo(doctorInfo);
+            user.setUserDetails(userDetail);
+            saveDoctor(user);
+        } catch (Exception e) {
+            System.out.println("Error register user");
+            logger.error("Error register user: " + newDoctorRegistrationDTO, e);
         }
         return user;
     }

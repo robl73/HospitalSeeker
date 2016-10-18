@@ -77,6 +77,12 @@ public class UserDetail{
     @IndexedEmbedded
     private User user;
 
+    @OneToOne
+    @JoinColumn(name = "doctorInfo_id")
+    @IndexedEmbedded
+    @JsonIgnore
+    private DoctorInfo doctorInfo;
+
     public UserDetail() {}
 
     public User getUser() {
@@ -149,6 +155,14 @@ public class UserDetail{
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public DoctorInfo getDoctorInfo() {
+        return doctorInfo;
+    }
+
+    public void setDoctorInfo(DoctorInfo doctorInfo) {
+        this.doctorInfo = doctorInfo;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.hospitalsearch.service;
 
 import java.util.List;
 
+import com.hospitalsearch.dto.NewDoctorRegistrationDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.exception.ResetPasswordException;
@@ -15,6 +16,8 @@ import com.hospitalsearch.entity.User;
 public interface UserService {
 
     void save(User newUser);
+
+    void saveDoctor(User newUser);
 
     void delete(Long id);
 
@@ -38,6 +41,8 @@ public interface UserService {
     User getByEmail(String email);
 
     User register(UserRegisterDTO dto);
+
+    User register(NewDoctorRegistrationDTO dto);
 
     void resetPassword(String email, String newPassword) throws ResetPasswordException;
 

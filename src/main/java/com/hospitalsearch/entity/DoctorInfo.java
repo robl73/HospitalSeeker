@@ -11,6 +11,8 @@ import org.apache.lucene.analysis.ngram.NGramFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Parameter;
 
@@ -45,9 +47,10 @@ public class DoctorInfo{
 
     private String category;
 
-    @OneToOne
-    @JoinColumn(name = "userdetails_id")
-    @IndexedEmbedded
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="userdetails_id")
+    @Fetch(FetchMode.SELECT)
+    @ContainedIn
     @JsonIgnore
     private UserDetail userDetails;
 

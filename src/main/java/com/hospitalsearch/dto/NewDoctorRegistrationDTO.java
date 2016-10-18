@@ -1,11 +1,15 @@
 package com.hospitalsearch.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hospitalsearch.entity.Department;
 import com.hospitalsearch.service.annotation.Date;
 import com.hospitalsearch.service.annotation.UniqueEmail;
 import com.hospitalsearch.util.Category;
 import com.hospitalsearch.util.Gender;
 import com.hospitalsearch.util.Specialization;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,21 +30,18 @@ public class NewDoctorRegistrationDTO {
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                     + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-    private static final String NAME_PATTERN = "([A-Z]{1}[a-z]{0,10})([\\\\s\\\\\\'-][A-Z]{1}[a-z]{0,10}){0,20}|([A-Z]{1}[a-z]{0,10})([' ']{1,10}[A-Z]{1}[a-z]{0,10}){0,20} " +
-            "| ([А-ЯЄІЇ]{1}[а-яєії]{0,10})([\\\\s\\\\\\'-][А-ЯЄІЇ]{1}[а-яєії]{0,10}){0,20}|([А-ЯЄІЇ]{1}[а-яєії]{0,10})([' ']{0,5}[А-ЯЄІЇ]{1}[а-яєії]{0,10}){0,20}";
-
     @NotEmpty(message = "Please enter your email")
     @Email
     @UniqueEmail(message = "User with this email is already exists")
     @Pattern(regexp = EMAIL_PATTERN, message = "Please enter email in correct format.")
     private String email;
 
-    @NotEmpty(message = "Plese enter your First Name")
-    @Pattern(regexp = NAME_PATTERN, message = "Please enter First Name in correct format.")
+    @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Solomon")
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
     private String firstName;
 
-    @NotEmpty(message = "Please enter your Last Name")
-    @Pattern(regexp = NAME_PATTERN, message = "Please enter Last Name in correct format.")
+    @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Kane")
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
     private  String lastName;
 
     private String imagePath;
@@ -55,6 +56,8 @@ public class NewDoctorRegistrationDTO {
 
     @Pattern(regexp = "^\\+38 \\(\\d{3}\\) \\d{3}-\\d{4}", message = "Not valid. Ex: +38 (095) 435-7132")
     private String phone;
+
+    private Boolean enabled = false;
 
     private List<NameHospitalsByManagerDTO> nameHospitals = new ArrayList<>();
 
@@ -188,6 +191,14 @@ public class NewDoctorRegistrationDTO {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

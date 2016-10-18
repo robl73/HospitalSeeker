@@ -9,7 +9,6 @@
     <link rel="stylesheet" th:href="@{/css/datepicker.css}"/>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/doctor.css}"/>
-    <script type="text/javascript" th:src="@{/js/jquery-2.2.4.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootstrap-formhelpers-phone.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.js}"></script>
     <script type="text/javascript" th:src="@{/js/uploader.js}"></script>
@@ -62,10 +61,12 @@
                                 <div class="col-lg-6">
                                     <div align="center">
                                         <figure th:class="${edit}?' snip1494 img-thumbnail img-responsive img-block'">
-                                            <img th:if="${newDoctorDto.imagePath!=''}" alt="User Pic" id="image-uploaded"
+                                            <img th:if="${newDoctorDto.imagePath!=''}" alt="User Pic"
+                                                 style="height: 260px;" id="image-uploaded"
                                                  th:src="${newDoctorDto.imagePath==null}?@{/images/avatar/photo.png}:@{|/images/avatar/${newDoctorDto.imagePath}|}"
                                                  class="img-responsive img-block"/>
-                                            <img th:if="${newDoctorDto.imagePath==''}" alt="User Pic" id="image-uploaded"
+                                            <img th:if="${newDoctorDto.imagePath==''}" alt="User Pic"
+                                                 style="height: 260px;" id="image-uploaded"
                                                  th:src="@{/images/avatar/photo.png}"
                                                  class="img-responsive img-block"/>
                                             <figcaption th:if="${edit}">
