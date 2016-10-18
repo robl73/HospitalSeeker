@@ -1,4 +1,4 @@
-        <div class="row" th:fragment="paginated-doctors-list" xmlns:th="http://www.w3.org/1999/xhtml">
+        <div class="row" th:fragment="paginated-doctors-list" xmlns:th="http://www.w3.org/1999/xhtml"  xmlns:sec="http://www.w3.org/1999/xhtml">
                 <div class="col-lg-offset-1 col-lg-10 col-md-12">
                     <div class="row"
                          th:each="doctorSearchDTO:${pagedList}"
@@ -7,12 +7,12 @@
                         <div class="col-lg-4 col-md-4 col-xs-5">
                             <div class="single-about-detail">
                                 <div class="about-img">
-                                    <a href="#" th:href="@{|/doctors/${doctorSearchDTO.doctorId}|}">
+                                    <a href="#" th:href="@{|/doctor/${doctorSearchDTO.doctorId}|}">
                                         <img class="img-responsive" src="/"
                                              th:src="@{|/img/doctors/${doctorSearchDTO.imagePath}|}" />
                                     </a>
                                 </div>
-                                <div class="about-details" th:href="@{|/doctors/${doctorSearchDTO.doctorId}|}">
+                                <div class="about-details" th:href="@{|/doctor/${doctorSearchDTO.doctorId}|}">
                                     <div class="pentagon-text">
                                         <h1 th:text="${#strings.substring(doctorSearchDTO.firstName,0,1)} "/>
                                     </div>

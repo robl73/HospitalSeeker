@@ -3,10 +3,10 @@ package com.hospitalsearch.service.impl;
 import com.hospitalsearch.dao.DoctorInfoDAO;
 import com.hospitalsearch.dao.HospitalDAO;
 import com.hospitalsearch.dao.UserDAO;
-import com.hospitalsearch.dto.DoctorDTO;
+import com.hospitalsearch.dto.DoctorSearchDTO;
+import com.hospitalsearch.dto.ViewForManagerDTO;
 import com.hospitalsearch.entity.Hospital;
 import com.hospitalsearch.entity.User;
-import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.ManagerService;
 import com.hospitalsearch.util.PrincipalConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +43,18 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public List<DoctorDTO> getDoctorsByManager() {
-        return doctorInfoDAO.findByManagerId(userDAO.getByEmail(PrincipalConverter.getPrincipal()).getId());
+    public List<Hospital> getHospitalsByManager() {
+        return hospitalDAO.getHospitalsByManagerId(userDAO.getByEmail(PrincipalConverter.getPrincipal()).getId());
+    }
+
+    @Override
+    public  List<DoctorSearchDTO> getDoctorsByManagerAndHospital(Long hospitalId, ViewForManagerDTO viewForManagerDTO) {
+        return doctorInfoDAO.findByManagerAndHospitalId(hospitalId, userDAO.getByEmail(PrincipalConverter.getPrincipal()).getId(), viewForManagerDTO);
+    }
+
+    @Override
+    public List<DoctorSearchDTO> searchDoctors(ViewForManagerDTO viewForManagerDTO, Long hospitalId){
+        return doctorInfoDAO.searchDoctorsForManager(viewForManagerDTO, hospitalId, userDAO.getByEmail(PrincipalConverter.getPrincipal()).getId());
     }
 
     @Override
@@ -52,7 +62,6 @@ public class ManagerServiceImpl implements ManagerService {
         Hospital hospital = hospitalDAO.getById(hospitalId);
         hospital.getManagers().clear();
         hospitalDAO.update(hospital);
-
     }
 
 }

@@ -135,27 +135,11 @@
                                 </a>
                         </li>
 
-                        <!--<li th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})">-->
-                                <!--<a th:href="@{${currentUrl}(lang=ua)}"  class="menu">-->
-                                    <!--<img th:src="@{/img/ua.png}" th:text="#{ukrainian}"/>-->
-                                <!--</a>-->
-                            <!--&lt;!&ndash;<a th:href="@{ |${#httpServletRequest.requestURL.toString()+'?lang=ua'}| }" class="menu">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<img th:src="@{/img/ua.png}" th:text="#{ukrainian}"/>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                        <!--</li>-->
                         <li th:with="currentUrl=(${@currentUrlWithoutParam.apply('lang')})">
                             <a th:href="@{${currentUrl}(lang=en)}" class="menu">
                                 <img th:src="@{/img/en.png}"/> english
                             </a>
                         </li>
-                        <!--<li  th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})">-->
-                            <!--<a th:href="@{${currentUrl}(lang=en)}"  class="menu">-->
-                                <!--<img th:src="@{/img/en.png}"/> english-->
-                            <!--</a>-->
-                            <!--&lt;!&ndash;<a th:href="@{ |${#httpServletRequest.requestURL.toString()+'?lang=en'}|}" class="menu">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<img th:src="@{/img/en.png}"/> english&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                        <!--</li>-->
 
                     </ul>
                 </li>
@@ -178,8 +162,8 @@
             </ol>
 
             <ol class="breadcrumb" th:remove="${hospitals }? none : all">
-                <li><a th:href="@{/hospitals}" th:class="${hospital}?:'active'"
-                       th:text="'Hospitals'" /></li>
+                <!--<li><a th:href="@{/hospitals}" th:class="${hospital}?:'active'"-->
+                       <!--th:text="'Hospitals'" /></li>-->
                 <li th:remove="${hospital}? none : all"><a
                         th:href="@{|/hospital/${hospital.id}|}" th:class="${department}?:'active'"
                         th:text="${hospital.name}" /></li>
@@ -196,8 +180,8 @@
     <!--Search hospitals and doctors-->
     <div class="[ bootsnipp-search animate ]">
         <div class="[ container ]">
-            <div class="[search-hospital-container]"  style="display: inline-block; float:left; width: 45%;">
-                <form th:action="@{/hospitals}" id="search-hospital-form" class="[ form-inline ]" method="GET">
+            <div class="[search-hospital-container]" style="display: inline-block; float:left; width: 45%;">
+                <form th:action="@{/hospitals}" id="search-hospital-form" class="[ form-inline ]" method="GET" role="search">
                   <div class="[ input-group ]" style="z-index:1000000;width: 100%;">
 
 
@@ -206,8 +190,8 @@
                                    th:placeholder="#{header.menu.searchbar.placeholder.hospitals}"/>
 
                         </div>
-                        <span class="[ input-group-btn ]" style="position: absolute;top:0;right:0; float: inherit; width:8%;">
-                        	<button type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;border-width:3px;"><span class="[ glyphicon glyphicon-search ]"></span></button>
+                        <span class="[ input-group-btn ]" style="position: absolute;top:0;right:0; float: inherit; width:8%;" th:title="#{header.menu.searchbar.hospital.tooltip}">
+                        	<button id="select_hospital_search_button" type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;border-width:3px;"><span class="[ glyphicon glyphicon-search ]"></span></button>
                         </span>
                     </div>
                 </form>
@@ -223,8 +207,8 @@
                                    th:placeholder="#{header.menu.searchbar.placeholder.doctors}"/>
 
                         </div>
-                        <span class="[ input-group-btn ]" style="position: absolute;top:0;right:0;float: inherit; width:8%">
-                        	<button type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;border-width:3px;"><span class="[ glyphicon glyphicon-search ]"></span></button>
+                        <span class="[ input-group-btn ]" style="position: absolute;top:0;right:0;float: inherit; width:8%" th:title="#{header.menu.searchbar.doctor.tooltip}">
+                        	<button id="select_doctor_search_button" type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;border-width:3px;"><span class="[ glyphicon glyphicon-search ]"></span></button>
                         </span>
                     </div>
                 </form>

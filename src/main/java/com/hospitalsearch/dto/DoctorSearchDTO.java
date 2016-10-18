@@ -1,5 +1,8 @@
 package com.hospitalsearch.dto;
 
+import com.hospitalsearch.util.Category;
+import com.hospitalsearch.util.Specialization;
+
 import java.util.List;
 
 /**
@@ -12,15 +15,15 @@ public class DoctorSearchDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private String specialization;
-    private String category;
+    private Specialization specialization;
+    private Category category;
     private List<String> hospitalsName;
 
     public DoctorSearchDTO() {
     }
 
     public DoctorSearchDTO(Long doctorId, String imagePath, String firstName, String lastName, String email,
-                           String specialization, String category, List<String> hospitalsName) {
+                           Specialization specialization, Category category, List<String> hospitalsName) {
         this.doctorId = doctorId;
         this.imagePath = imagePath;
         this.firstName = firstName;
@@ -71,11 +74,11 @@ public class DoctorSearchDTO {
         this.email = email;
     }
 
-    public String getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(String specialization) {
+    public void setSpecialization(Specialization specialization) {
         this.specialization = specialization;
     }
 
@@ -87,11 +90,11 @@ public class DoctorSearchDTO {
         this.hospitalsName = hospitalsName;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

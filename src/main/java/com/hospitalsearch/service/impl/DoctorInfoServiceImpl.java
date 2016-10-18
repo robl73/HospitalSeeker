@@ -65,9 +65,7 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
     @Override
     public List<DoctorSearchDTO> converToDoctorSearchDTO(List<DoctorInfo> doctorInfoList){
         List<DoctorSearchDTO> resultList = new ArrayList<>();
-        System.out.println("+++++++"+doctorInfoList+"++++++++++++");
         for(DoctorInfo docInfo: doctorInfoList) {
-          //  List<Department> doctorDepartments = docInfo.getDepartments();
             List<Department> doctorDepartments = departmentDAO.findDepartmentByDoctorId(docInfo.getId());
             List<String> doctorHospitals = new ArrayList<>();
             for (Department department : doctorDepartments) {
