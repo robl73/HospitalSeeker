@@ -1,15 +1,14 @@
 package com.hospitalsearch.controller;
 
 import java.net.ConnectException;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.hospitalsearch.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -27,10 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hospitalsearch.dto.UserRegisterDTO;
-import com.hospitalsearch.entity.PasswordResetToken;
-import com.hospitalsearch.entity.Role;
-import com.hospitalsearch.entity.User;
-import com.hospitalsearch.entity.VerificationToken;
 import com.hospitalsearch.exception.ResetPasswordException;
 import com.hospitalsearch.service.MailService;
 import com.hospitalsearch.service.PasswordResetTokenService;
@@ -155,7 +150,15 @@ public class UserController {
 		}
 		User user = verificationToken.getUser();
 		user.setEnabled(true);
-		userService.update(user);
+
+        UserDetail userDetail = new UserDetail();
+        user.setUserDetails(userDetail);
+        userDetail.setUser(user);
+        if (user.getUserRoles().isEmpty()) {
+            user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("PATIENT"))));
+        }
+
+        userService.update(user);
 		verificationTokenService.delete(verificationToken);
 		model.addAttribute("confirmEmail", user.getEmail());
 		return "/user/confirmRegistration";

@@ -52,8 +52,13 @@ public class FeedbackServiceImpl implements FeedbackService{
 	}
 
 	@Override
-	public boolean isUserCreateFeedback(Long producerId, Long consumerId) {
-		return dao.isUserCreateFeedback(producerId, consumerId);
+	public boolean isUserCreatedFeedback(Long producerId, Long consumerId) {
+		return dao.isUserCreatedFeedback(producerId, consumerId);
+	}
+
+	@Override
+	public List<Feedback> getFeedbacks(Long doctorId, int pageNumber, int pageSize) {
+		return dao.getFeedbacks(doctorId, pageNumber, pageSize);
 	}
 
 }

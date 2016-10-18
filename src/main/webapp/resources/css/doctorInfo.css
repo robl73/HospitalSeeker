@@ -12,6 +12,13 @@
 .fixed-panel {
     min-height: 148px;
     max-height: 148px;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-height: 1.5;
+    -webkit-line-clamp: 6;
 }
 
 .row-weight {
@@ -44,4 +51,8 @@ textarea {
 
 #addAppointment:before {
     /*content: '+';*/
+}
+
+#modal-body-text {
+    word-wrap: break-word;
 }

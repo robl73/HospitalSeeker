@@ -29,6 +29,8 @@ public interface FeedbackService {
 
 	Feedback getByProducer(User user);
 
-    boolean isUserCreateFeedback(Long producerId, Long consumerId);
+    boolean isUserCreatedFeedback(Long producerId, Long consumerId);
+
+	List<Feedback> getFeedbacks(Long doctorId, int pageNumber, int pageSize);
 
 }

@@ -3,10 +3,7 @@
  */
 
 (function () {
-    console.log('anonymus function');
     $('document').ready(function () {
-        console.log('ready');
-
         $('#sendFeedback').click(function () {
             var message = $('#input-feedback').val();
             var doctorId = $('#doctorId').val();
@@ -14,16 +11,19 @@
                 'message': message,
                 'doctorId': doctorId
             };
-            // console.log('id is ' + doctorId);
             var promise = $.post('/doctor/feedback', sendData);
             promise.success(function (data) {
-                console.log('success ' + data);
                 location.reload();
             });
             promise.error(function (e) {
-                console.log('error ' + e);
             });
         });
 
+        $('.fixed-panel').click(function (event) {
+            var panel = $(event.target).parent().closest('div');
+            $('#modal-body-text').text($(event.target).text());
+            $('#modal-title-text').text(panel.find('.panel-heading').text());
+            $('#feedbackModal').modal('show');
+        });
     });
 })();

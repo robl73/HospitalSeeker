@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
 @Repository ("cardItemDAO")
 public class CardItemDAOImpl extends GenericDAOImpl<CardItem,Long> implements CardItemDAO {
 
@@ -33,9 +32,6 @@ public class CardItemDAOImpl extends GenericDAOImpl<CardItem,Long> implements Ca
         PatientCard patientCard = patientInfo.getPatientCard();
         Query cardItemQuery = getSessionFactory().getCurrentSession().createQuery("select item from CardItem item where item.patientCard.id = :patientCardId order by item.date desc");
         cardItemQuery.setParameter("patientCardId", patientCard.getId());
-//        Criteria criteria = this.getSessionFactory().getCurrentSession().createCriteria(CardItem.class, "item")
-//                .add(Restrictions.eq("item.patientCard", patientCard))
-//                .addOrder(Order.desc(" "));
         cardItemQuery.setFirstResult((pageNumber - 1) * pageSize);
         cardItemQuery.setMaxResults(pageSize);
         return cardItemQuery.list();
@@ -45,11 +41,6 @@ public class CardItemDAOImpl extends GenericDAOImpl<CardItem,Long> implements Ca
     public Long countOfItems(PatientCard patientCard) {
         Query countQuery = getSessionFactory().getCurrentSession().createQuery("select count(*) from CardItem item where item.patientCard.id = :patientCardId");
         countQuery.setParameter("patientCardId", patientCard.getId());
-//        Criteria criteria = this.getSessionFactory().getCurrentSession().createCriteria(CardItem.class,"item")
-//                .add(Restrictions.eq("item.patientCard", patientCard));
-//        criteria.setProjection(Projections.rowCount());
-//        Long count = (Long) criteria.uniqueResult();
-//        return count;
         return (Long) countQuery.uniqueResult();
     }
 }

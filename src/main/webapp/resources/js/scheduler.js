@@ -63,7 +63,7 @@ function blockDateTo(to) {
         block_id = scheduler.addMarkedTimespan({
             start_date: getFirstDate(date, mode),
             end_date: to,
-            zones: "fullday",
+            // zones: "fullday",
             type:  "dhx_time_block"
         });
         return true;
@@ -98,4 +98,8 @@ function ignoreDays(days) {
 
 function daydiff(first, second) {
     return Math.round((second-first)/(1000*60*60*24));
+}
+
+function goBack() {
+    window.history.back();
 }
