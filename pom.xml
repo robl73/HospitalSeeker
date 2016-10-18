@@ -421,23 +421,6 @@
                     <outputChangeLogFile>src/main/resources/outputChangeLogFile.xml </outputChangeLogFile>
  
                 </configuration>
-        <!-- 
-                <executions>
-			<execution>
-			    <phase>process-resources</phase>                                                                  
-			    <goals>
-                                 <goal>status</goal>
-                                 <goal>tag</goal>
-				 <goal>update</goal>
-                                 <goal>rollback</goal>
-                                 <goal>dbDoc</goal>
-                                 <goal>generateChangeLog</goal>
-                                 
-                                 <goal>diff</goal>     
-			    </goals>
-			</execution>
-		</executions>       
-        --> 
         
                 <executions>
 			<execution>
