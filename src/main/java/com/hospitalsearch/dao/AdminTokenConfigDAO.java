@@ -3,18 +3,13 @@ package com.hospitalsearch.dao;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.hospitalsearch.entity.AdminTokenConfig;
-import com.hospitalsearch.entity.Token;
-
-
+import com.hospitalsearch.util.Token;
 
 @Component
 public interface AdminTokenConfigDAO extends GenericDAO<AdminTokenConfig, Long> {
 	
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	List<AdminTokenConfig> getAll();
 
 	void update(AdminTokenConfig instance);
@@ -23,6 +18,6 @@ public interface AdminTokenConfigDAO extends GenericDAO<AdminTokenConfig, Long> 
 	
 	void delete(AdminTokenConfig instance);
 	
-	Integer getByToken(Token token);
+	AdminTokenConfig getByToken(Token token);
 
 }

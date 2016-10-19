@@ -1,18 +1,22 @@
 package com.hospitalsearch.controller;
 
+import com.hospitalsearch.entity.DoctorInfo;
+import com.hospitalsearch.entity.Feedback;
+import com.hospitalsearch.service.DoctorInfoService;
+import com.hospitalsearch.util.PrincipalConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 import com.hospitalsearch.entity.User;
-import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.FeedbackService;
-import com.hospitalsearch.service.UserDetailService;
 import com.hospitalsearch.service.UserService;
-import com.hospitalsearch.util.FeedbackDTO;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 public class FeedbackController {
@@ -22,19 +26,43 @@ public class FeedbackController {
     private UserService userService;
 
     @Autowired
-    private UserDetailService detailService;
-
+    private DoctorInfoService doctorInfoService;
     
     @Autowired
     private FeedbackService feedbackService;
-    @RequestMapping(value="/doctor/feedback",method = RequestMethod.POST)
-    @ResponseBody
-    public String profile(@RequestBody FeedbackDTO dto){
-        
-    	User producer = feedbackService.getByUserEmail(dto.getUserEmail());
-    	User consumer = userService.getById(dto.getDoctorId());
-    		
-    	feedbackService.save(dto.buildFeedback(consumer, producer));
-    	return "true";
+    @RequestMapping(value="/doctor/feedback", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void profile(@RequestParam("doctorId") Long doctorId, @RequestParam("message") String message) {
+        String principal = PrincipalConverter.getPrincipal();
+        User producer = userService.getByEmail(principal);
+        DoctorInfo consumer = doctorInfoService.getById(doctorId);
+        Feedback feedback = new Feedback(message, producer, consumer, LocalDateTime.now());
+        feedbackService.save(feedback);
     }
+
+    @RequestMapping("/doctor/{id}")
+    public String doctorInfo(@PathVariable(value = "id") Long doctorId, ModelMap model) {
+        String principal = PrincipalConverter.getPrincipal();
+        DoctorInfo doctorInfo = doctorInfoService.getById(doctorId);
+        boolean allowAddFeedback = true;
+        if (principal.equals("anonymousUser")) {
+            allowAddFeedback = false;
+        } else {
+            Long producerId = userService.getByEmail(principal).getId();
+            if (producerId.equals(doctorInfo.getUserDetails().getUser().getId())) {
+                allowAddFeedback = false;
+            } else {
+                if (feedbackService.isUserCreatedFeedback(producerId, doctorId)) {
+                    allowAddFeedback = false;
+                }
+            }
+        }
+        List<Feedback> feedbacks = feedbackService.getByDoctorId(doctorId);
+        model.put("allowAddFeedback", allowAddFeedback);
+        model.put("doctor", doctorInfo);
+        model.put("formatter", DateTimeFormatter.ofPattern("d MMM uuuu hh:mm"));
+        model.put("feedbacks", feedbacks);
+        return "doctorInfo";
+    }
+
 }

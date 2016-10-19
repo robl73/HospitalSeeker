@@ -26,35 +26,51 @@ audio, canvas, progress, video {
 audio
 
 
+
+
 :not
 
+
  
+
 
 (
 [
 controls
 ]
 
+
  
+
 
 ){
 display
 
 
+
+
 :
+
 
  
 
+
 none
+
+
 
 
 ;
 height
 
 
+
+
 :
 
+
  
+
 
 0
 }
@@ -118,24 +134,36 @@ img {
 svg
 
 
+
+
 :not
 
+
  
+
 
 (
 :root
 
+
  
+
 
 ){
 overflow
 
 
+
+
 :
+
 
  
 
+
 hidden
+
+
 
 
 
@@ -3602,43 +3630,61 @@ tbody.collapse.in {
 .btn
 
 
+
+
 :not
 
+
  
+
 
 (
 :first-child
 
+
  
+
 
 )
 :not
 
+
  
+
 
 (
 :last-child
 
+
  
+
 
 )
 :not
 
+
  
+
 
 (
 .dropdown-toggle
 
 
+
 	
+
 
 ){
 border-radius
 
 
+
+
 :
 
+
  
+
 
 0
 }
@@ -3651,43 +3697,63 @@ border-radius
 .btn
 
 
+
+
 :first-child
+
+
 
 
 :not
 
+
  
+
 
 (
 :last-child
 
+
  
+
 
 )
 :not
 
+
  
+
 
 (
 .dropdown-toggle
 
+
  
+
 
 ){
 border-top-right-radius
 
 
+
+
 :
 
+
  
+
 
 0;
 border-bottom-right-radius
 
 
+
+
 :
 
+
  
+
 
 0
 }
@@ -3696,17 +3762,25 @@ border-bottom-right-radius
 .btn
 
 
+
+
 :last-child
+
+
 
 
 :not
 
+
  
+
 
 (
 :first-child
 
+
  
+
 
 ),
 .btn-group
@@ -3714,31 +3788,45 @@ border-bottom-right-radius
 .dropdown-toggle
 
 
+
+
 :not
+
 
 
 	
 
+
 (
 :first-child
 
+
  
+
 
 ){
 border-top-left-radius
 
 
+
+
 :
 
+
  
+
 
 0;
 border-bottom-left-radius
 
 
+
+
 :
 
+
  
+
 
 0
 }
@@ -3822,32 +3910,46 @@ border-bottom-left-radius
 .btn
 
 
+
+
 :not
 
+
  
+
 
 (
 :first-child
 
+
  
+
 
 )
 :not
 
+
  
+
 
 (
 :last-child
 
+
  
+
 
 ){
 border-radius
 
 
+
+
 :
 
+
  
+
 
 0
 }
@@ -3856,45 +3958,67 @@ border-radius
 .btn
 
 
+
+
 :first-child
+
+
 
 
 :not
 
+
  
+
 
 (
 :last-child
 
+
  
+
 
 ){
 border-top-right-radius
 
 
+
+
 :
+
 
  
 
+
 4
 px
+
+
 
 
 ;
 border-bottom-right-radius
 
 
+
+
 :
 
+
  
+
 
 0;
 border-bottom-left-radius
 
 
+
+
 :
 
+
  
+
 
 0
 }
@@ -3903,44 +4027,66 @@ border-bottom-left-radius
 .btn
 
 
+
+
 :last-child
+
+
 
 
 :not
 
+
  
+
 
 (
 :first-child
 
+
  
+
 
 ){
 border-top-left-radius
 
 
+
+
 :
 
+
  
+
 
 0;
 border-top-right-radius
 
 
+
+
 :
 
+
  
+
 
 0;
 border-bottom-left-radius
 
 
+
+
 :
+
 
  
 
+
 4
 px
+
+
 
 
 
@@ -4065,83 +4211,119 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
 .input-group-addon
 
 
+
+
 :not
 
+
  
+
 
 (
 :first-child
 
+
  
+
 
 )
 :not
 
+
  
+
 
 (
 :last-child
 
+
  
+
 
 ),
 .input-group-btn
 
 
+
+
 :not
 
+
  
+
 
 (
 :first-child
 
+
  
+
 
 )
 :not
 
+
  
+
 
 (
 :last-child
 
+
  
+
 
 ),
 .input-group
 
+
  
+
 
 .form-control
 
 
+
+
 :not
+
 
 
 	
 
+
 (
 :first-child
 
+
  
+
 
 )
 :not
 
+
  
+
 
 (
 :last-child
 
+
  
+
 
 ){
 border-radius
 
 
+
+
 :
 
+
  
+
 
 0
 }

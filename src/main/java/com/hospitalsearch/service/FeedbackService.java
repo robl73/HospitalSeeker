@@ -9,15 +9,28 @@ import com.hospitalsearch.entity.Feedback;
 import com.hospitalsearch.entity.User;
 @Transactional
 public interface FeedbackService {
+
 	void save(Feedback newFeedback);
+
 	void delete(Feedback feedback);
+
 	void update(Feedback updatedFeedback);
+
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	Feedback getById(Long id);
+
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	List<Feedback> getAll();
+
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	public List<Feedback> getByDoctorId(Long id);
-	public User getByUserEmail(String email);
-	public Feedback getByProducer(User user);
+	List<Feedback> getByDoctorId(Long id);
+
+	User getByUserEmail(String email);
+
+	Feedback getByProducer(User user);
+
+    boolean isUserCreatedFeedback(Long producerId, Long consumerId);
+
+	List<Feedback> getFeedbacks(Long doctorId, int pageNumber, int pageSize);
+
 }

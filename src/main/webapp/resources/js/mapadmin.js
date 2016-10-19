@@ -2,7 +2,7 @@ var geocoder = new google.maps.Geocoder();
 var marker = new google.maps.Marker();
 
 function initialize() {
-	
+
 	mapInit('googleMap');
 
 	google.maps.event.addListener(map, 'click', function(event) {
@@ -30,15 +30,34 @@ function initialize() {
 		}
 	});
 
-  	
 	$.validator.addMethod(
-		    'regexpLetters',
-		    function(value, element, regexpLetters) {
-		        var re = new RegExp(regexpLetters);
-		        return this.optional(element) || re.test(value);
-		    });
-	
-	
+
+	'regexpLetters', function(value, element, regexpLetters) {
+		var re = new RegExp(regexpLetters);
+		return this.optional(element) || re.test(value);
+	});
+
+	$.validator.addMethod(
+
+	'requiredGeo', function(value, element, param) {
+
+		// Check if dependency is met
+		if (!this.depend(param, element)) {
+			return "dependency-mismatch";
+		}
+		if (element.nodeName.toLowerCase() === "select") {
+
+			// Could be an array for select-multiple or a string, both are fine
+			// this way
+			var val = $(element).val();
+			return val && val.length > 0;
+		}
+		if (this.checkable(element)) {
+			return this.getLength(value, element) > 0;
+		}
+		return value.length > 0;
+	});
+
 	$('#form-hospital').validate({
 		rules : {
 			'addressGeo' : {
@@ -74,8 +93,7 @@ function initialize() {
 			}
 		}
 	});
-	
-	
+
 	if (document.getElementById('imagePath').value) {
 		$('#image-uploaded').attr(
 				'src',
@@ -96,10 +114,10 @@ function disabledAddressFields(boolean) {
 
 function resetAddress() {
 	marker.setMap(null);
-	
-	var validator = $( "#form-hospital" ).validate();
+
+	var validator = $("#form-hospital").validate();
 	validator.resetForm();
-	
+
 	if (document.getElementById('id').value != '') {
 		placeMarker(new google.maps.LatLng(parseFloat(document
 				.getElementById('latitude').value), parseFloat(document

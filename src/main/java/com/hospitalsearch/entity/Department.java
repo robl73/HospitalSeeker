@@ -2,25 +2,15 @@ package com.hospitalsearch.entity;
 
 import java.util.List;
 
-
 import javax.persistence.*;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
 
 
 @Entity
@@ -32,7 +22,6 @@ public class Department{
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_gen")
 	@SequenceGenerator(name = "department_gen", sequenceName = "department_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
-
 
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
 	private String name;
@@ -93,12 +82,4 @@ public class Department{
 		this.imagePath = imagePath;
 	}
 
-	@Override
-	public String toString() {
-		return "Department{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", doctors=" + doctors +
-				'}';
-	}
 }

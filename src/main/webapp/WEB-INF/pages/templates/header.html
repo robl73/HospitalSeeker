@@ -1,5 +1,11 @@
-<nav th:fragment="page-header" class="[ navbar navbar-fixed-top ][ navbar-bootsnipp animate ]" role="navigation"
-     xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" >
+    <head>
+        <title></title>
+    </head>
+    <body>
+<nav th:fragment="page-header" class="[ navbar navbar-fixed-top ][ navbar-bootsnipp animate ]" role="navigation">
     <div class="[ container ]">
         <!-- Brand and toggle get grouped for better mobile display -->
 
@@ -102,6 +108,16 @@
                         <li>
                             <a th:href="@{/admin/configureToken}" class="menu">
                                 <span class="glyphicon glyphicon-asterisk" th:text="' '+#{admin.menu.tokens.config}"></span></a>
+                        </li>
+                        
+                        <li>
+                            <a th:href="@{/admin/departmentsName}" class="menu">   
+                                <span class="glyphicon glyphicon-plus" th:text="' '+#{admin.menu.departments.name}"></span></a>
+                        </li>
+                        
+                        <li>
+                            <a th:href="@{/admin/allDepartmentsName}" class="menu">
+                                <span class="glyphicon glyphicon-plus" th:text="' '+#{admin.menu.departments.name}"></span></a>
                         </li>
                     </ul>
                 </li>
@@ -207,6 +223,9 @@
                     </div>
                 </form>
             </div>
+            
+            
+
 
             <div class="[search-doctor-container]" style="display: inline-block; width: 45%; float: right;">
                 <form th:action="@{/doctors}" id="search-doctor-form" class="[ form-inline ]" method="GET" role="search">
@@ -228,3 +247,5 @@
 
     </div>
 </nav>
+    </body>    
+</html>

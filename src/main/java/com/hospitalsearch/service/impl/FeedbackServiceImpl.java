@@ -40,18 +40,25 @@ public class FeedbackServiceImpl implements FeedbackService{
 	}
 	@Override
 	public List<Feedback> getByDoctorId(Long id) {
-		// TODO Auto-generated method stub
 		return dao.getByDoctorId(id);
 	}
 	@Override
 	public User getByUserEmail(String email) {
-		// TODO Auto-generated method stub
 		return dao.getByUserEmail(email);
 	}
 	@Override
 	public Feedback getByProducer(User user) {
-		// TODO Auto-generated method stub
 		return dao.getByProducer(user);
+	}
+
+	@Override
+	public boolean isUserCreatedFeedback(Long producerId, Long consumerId) {
+		return dao.isUserCreatedFeedback(producerId, consumerId);
+	}
+
+	@Override
+	public List<Feedback> getFeedbacks(Long doctorId, int pageNumber, int pageSize) {
+		return dao.getFeedbacks(doctorId, pageNumber, pageSize);
 	}
 
 }

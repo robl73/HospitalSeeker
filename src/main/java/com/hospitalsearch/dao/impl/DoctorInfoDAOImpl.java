@@ -28,7 +28,7 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
     @Override
     public List<DoctorDTO> findByDepartmentId(Long id) {
         return (List<DoctorDTO>) getHibernateTemplate()
-        		.findByNamedParam("select new com.hospitalsearch.dto.DoctorDTO(u.id, u.firstName, u.lastName, u.imagePath, d.specialization) from DoctorInfo d join d.userDetails u join d.departments dep where dep.id = :id ", "id", id);
+        		.findByNamedParam("select new com.hospitalsearch.dto.DoctorDTO(d.id, u.firstName, u.lastName, u.imagePath, d.specialization) from DoctorInfo d join d.userDetails u join d.departments dep where dep.id = :id ", "id", id);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
                 .createAlias("department.hospital", "hospital")
                 .createAlias("hospital.managers", "manager")
                 .setProjection(Projections.projectionList()
-                        .add(Projections.property("userDetail.id"), "userDetailId")
+                        .add(Projections.property("doctor.id"), "id")
                         .add(Projections.property("userDetail.firstName"), "firstName")
                         .add(Projections.property("userDetail.lastName"), "lastName")
                         .add(Projections.property("userDetail.imagePath"), "imagePath")
@@ -72,6 +72,12 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
     public DoctorInfo getByEmail(String email) {
         Query query = getSessionFactory().getCurrentSession().createQuery("select doc from DoctorInfo doc where doc.userDetails.user.email = :email");
         query.setParameter("email", email);
+        return (DoctorInfo) query.uniqueResult();
+    }
+
+    public DoctorInfo getByUserDetailId(Long userDetailId) {
+        Query query = getSessionFactory().getCurrentSession().createQuery("select d from DoctorInfo d where d.userDetails.id = :userDetailId");
+        query.setParameter("userDetailId", userDetailId);
         return (DoctorInfo) query.uniqueResult();
     }
 

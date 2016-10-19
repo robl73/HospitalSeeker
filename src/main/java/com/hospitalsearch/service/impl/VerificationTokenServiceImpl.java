@@ -3,6 +3,7 @@ package com.hospitalsearch.service.impl;
 import com.hospitalsearch.dao.VerificationTokenDAO;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.entity.VerificationToken;
+import com.hospitalsearch.service.AdminTokenConfigService;
 import com.hospitalsearch.service.VerificationTokenService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -19,6 +20,9 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 
     private final Logger logger = LogManager.getLogger(VerificationTokenServiceImpl.class);
 
+    @Autowired
+    private AdminTokenConfigService configService;
+    
     @Autowired
     private VerificationTokenDAO tokenDAO;
 
@@ -55,9 +59,9 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     @Override
     public void createToken(String token, User user) {
         try {
-            AdminTokenConfigServiceImpl adminTokenConfigServiceImpl = new AdminTokenConfigServiceImpl();
-            VerificationToken verificationToken = new VerificationToken(token, user,
-                    adminTokenConfigServiceImpl.VERIFICATION_TOKEN_EXPIRATION());
+            logger.info("create verification token by user: " + user);
+            Integer VERIFICATION_TOKEN_EXPIRATION = configService.VERIFICATION_TOKEN_EXPIRATION();
+            VerificationToken verificationToken = new VerificationToken(token, user, VERIFICATION_TOKEN_EXPIRATION);
             tokenDAO.save(verificationToken);
         } catch (Exception e) {
             logger.error("Error creating verification token: " + e);

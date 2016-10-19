@@ -52,12 +52,14 @@ public class User implements Comparable<User> {
 	@Fetch(FetchMode.SELECT)
 	private Set<Role> userRoles = new HashSet<>();
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="userdetails_id")
 	@Fetch(FetchMode.SELECT)
 	@ContainedIn
 	@JsonIgnore
 	private UserDetail userDetails;
+
+
 
 	public String getEmail() {
 		return email;

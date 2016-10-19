@@ -59,8 +59,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public void saveDoctor(User newUser) {
+    public void addNewUser(User newUser) {
         try {
             logger.info("save user: " + newUser);
             dao.save(newUser);
@@ -78,12 +77,14 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
             user.setUserRoles(userRegisterDTO.getUserRoles());
             user.setEnabled(userRegisterDTO.getEnabled());
+
             if (!userRegisterDTO.getUserRoles().isEmpty()) {
                 user.setUserRoles(userRegisterDTO.getUserRoles());
-            } else {
+            }/* else {
                 user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("PATIENT"))));
-            }
-            save(user);
+            }*/
+//            save(user);
+            addNewUser(user);
         } catch (Exception e) {
             System.out.println("Error register user");
             logger.error("Error register user: " + userRegisterDTO, e);
@@ -115,7 +116,7 @@ public class UserServiceImpl implements UserService {
             doctorInfo.setCategory(newDoctorRegistrationDTO.getCategory());
             //userDetail.setDoctorInfo(doctorInfo);
             user.setUserDetails(userDetail);
-            saveDoctor(user);
+            addNewUser(user);
         } catch (Exception e) {
             System.out.println("Error register user");
             logger.error("Error register user: " + newDoctorRegistrationDTO, e);

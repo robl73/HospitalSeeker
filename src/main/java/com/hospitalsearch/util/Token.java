@@ -1,0 +1,8 @@
+package com.hospitalsearch.util;
+
+public enum Token {
+
+	RESET_PASSWORD_TOKEN_EXPIRATION, REMEMBER_ME_TOKEN_EXPIRATION, VERIFICATION_TOKEN_EXPIRATION, 
+	FILE_MAX_SIZE
+
+}

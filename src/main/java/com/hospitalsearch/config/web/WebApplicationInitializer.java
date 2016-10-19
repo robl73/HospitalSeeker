@@ -39,5 +39,6 @@ public class WebApplicationInitializer extends AbstractAnnotationConfigDispatche
         if(!(registration.setInitParameter("throwExceptionIfNoHandlerFound", "true")))
             throw new RuntimeException();
     }
+
 }
 

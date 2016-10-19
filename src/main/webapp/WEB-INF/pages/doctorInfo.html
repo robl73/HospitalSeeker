@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title th:text="|${doctor.userDetails.firstName} ${doctor.userDetails.lastName}|"></title>
+    <link rel="stylesheet" th:href="@{/css/doctorInfo.css}"/>
+    <script th:src="@{/js/doctorInfo.js}"></script>
+</head>
+<body>
+<section layout:fragment="content">
+    <input type="hidden" th:id="doctorId" th:value="${doctor.id}" />
+    <div class="content">
+        <div id="feedbackModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">
+                            <span class="glyphicon glyphicon-info-sign" style="color: darkgray; margin: 0 auto;" ></span>
+                            <span id="modal-title-text"></span>
+                        </h4>
+                    </div>
+                    <div class="modal-body" id="modal-body-text"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" style="width: 80px" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="row-height">
+                    <div class="col-lg-4 col-md-4 col-sm-5">
+                        <img class="img-thumbnail" src="/" th:src="@{|/img/doctors/${doctor.userDetails.imagePath}|}" />
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-7">
+                        <div class="panel panel-default">
+                            <div class="panel-heading text-center">
+                                <a th:href="@{|/doctor/${doctor.id}/scheduler|}"><h3 th:text="|#{user.detail.doctor}: ${doctor.userDetails.firstName} ${doctor.userDetails.lastName}|"></h3></a>
+                            </div>
+                            <div class="panel-body">
+                                <h5 th:text="|#{user.detail.email} ${doctor.userDetails.user.email}|"></h5>
+                                <h5 th:text="|#{doctor.specialization}: ${doctor.specialization}|"></h5>
+                                <h5 th:text="|#{doctor.category}: ${doctor.category}|"></h5>
+                            </div>
+                            <div class="panel-footer">
+                                Hospitals:
+                                <span th:text="${departments}"></span>
+                                <span th:each="item: ${departments}" th:text="${item.hospital}"></span>
+                            </div>
+
+                        </div>
+                        <div class="text-center">
+                            <a th:href="@{|/doctor/${doctor.id}/scheduler|}"><button type="button" id="addAppointment" class="btn btn-primary btn-lg">
+                                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                                Add appointment
+                            </button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feedbacks">
+                <div class="row">
+                    <div class="col-sm-2 col-md-2 col-lg-2 col-centered" th:each="item: ${feedbacks}">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" th:text="|${item.producer.userDetails.firstName} ${item.producer.userDetails.lastName}|">
+                            </div>
+                            <div class="panel-body fixed-panel" th:text="${item.message}"></div>
+                            <div class="panel-footer">
+                                <small class="fa fa-clock-o" th:text="${item.date.format(formatter)}"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <form th:if="${allowAddFeedback}">
+        <div class="form-group form-layout" >
+            <label for="input-feedback">Feedback:</label>
+            <textarea class="form-control" rows="5" id="input-feedback" placeholder="Feedback"></textarea>
+            <button type="button" class="btn btn-success" id="sendFeedback">Send</button>
+        </div>
+    </form>
+</section>
+</body>
+</html>

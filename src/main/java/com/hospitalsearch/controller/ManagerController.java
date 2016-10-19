@@ -2,8 +2,9 @@ package com.hospitalsearch.controller;
 
 import com.google.gson.Gson;
 import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
+import com.hospitalsearch.entity.DoctorInfo;
+import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.*;
-
 import com.hospitalsearch.dto.NewDoctorRegistrationDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.*;
@@ -141,9 +142,10 @@ public class ManagerController {
     @RequestMapping(value = "/doctor/{d_id}/manage", method = RequestMethod.GET)
     public String getManage(
             @PathVariable("d_id") Long doctorId, ModelMap model) {
-        UserDetail userDetail = userDetailService.getById(doctorId);
-        model.addAttribute("id", doctorInfoService.getIdByUserDetail(userDetail.getId()));
-        model.addAttribute("doctor", userDetailService.getById(doctorId));
+        DoctorInfo doctorInfo = doctorInfoService.getById(doctorId);
+        UserDetail userDetail = doctorInfo.getUserDetails();
+        model.addAttribute("id", doctorId);
+        model.addAttribute("doctor", userDetail);
         return "manage";
     }
 

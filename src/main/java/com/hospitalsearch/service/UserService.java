@@ -17,8 +17,6 @@ public interface UserService {
 
     void save(User newUser);
 
-    void saveDoctor(User newUser);
-
     void delete(Long id);
 
     void update(User user);
@@ -43,6 +41,8 @@ public interface UserService {
     User register(UserRegisterDTO dto);
 
     User register(NewDoctorRegistrationDTO dto);
+
+    void addNewUser(User newUser);
 
     void resetPassword(String email, String newPassword) throws ResetPasswordException;
 

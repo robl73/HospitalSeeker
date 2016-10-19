@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository;
 
 import com.hospitalsearch.dao.AdminTokenConfigDAO;
 import com.hospitalsearch.entity.AdminTokenConfig;
-import com.hospitalsearch.entity.Token;
+import com.hospitalsearch.util.Token;
 
 
 
 @Repository
 public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Long> implements AdminTokenConfigDAO {
 
-	@Autowired(required = true)
+	@Autowired
 	public AdminTokenConfigDAOImpl(SessionFactory factory) {
 		this.setSessionFactory(factory);
 	}
@@ -33,11 +33,11 @@ public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Lo
 	@Override
 	public void update(AdminTokenConfig instance) {
 		try{
-		org.hibernate.Query query = this.currentSession()
-				.createQuery("update AdminTokenConfig set value = :value where token = :token");
-		query.setParameter("value", instance.getValue());
-		query.setParameter("token", instance.getToken());
-		query.executeUpdate();
+			org.hibernate.Query query = this.currentSession()
+					.createQuery("update AdminTokenConfig set value = :value where token = :token");
+			query.setParameter("value", instance.getValue());
+			query.setParameter("token", instance.getToken());
+			query.executeUpdate();
 		}catch(Exception e){
 			System.out.println("Exception in update(AdminTokenConfig instance). Enter valid data, please.");
 		}
@@ -68,16 +68,15 @@ public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Lo
 
 	@Override
 	public void delete(AdminTokenConfig instance) {
-		// TODO Auto-generated method stub
-
+		super.delete(instance);
 	}
 
 	@Override
-	public Integer getByToken(Token token) {
-		String sql = "SELECT value FROM admintokenconfig WHERE token = " + token;
+	public AdminTokenConfig getByToken(Token token) {
+		String sql = "SELECT * FROM AdminTokenConfig where token = '" + token + "'";
 		SQLQuery query = this.currentSession().createSQLQuery(sql);
 		query.addEntity(AdminTokenConfig.class);
-		return (Integer) query.uniqueResult();
+		return (AdminTokenConfig) query.uniqueResult();
 	}
 
 }

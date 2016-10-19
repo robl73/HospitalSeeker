@@ -7,14 +7,4 @@
                                         http://www.liquibase.org/xml/ns/dbchangelog 
                                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet author="ruslan (generated)" id="1475765455982-1">
-        <addDefaultValue columnDataType="bigint" columnName="id" defaultValueComputed="nextval('admintokenconfig_id_seq'::regclass)" tableName="adminTokenConfig"/>
-        <addAutoIncrement columnDataType="bigint" columnName="id" tableName="adminTokenConfig"/>
-    </changeSet>
-    <changeSet author="ruslan (generated)" id="1475765455982-2">
-        <dropNotNullConstraint columnDataType="varchar(255)" columnName="token" tableName="adminTokenConfig"/>
-    </changeSet>
-    <changeSet author="ruslan (generated)" id="1475765455982-3">
-        <dropNotNullConstraint columnDataType="int4" columnName="value" tableName="adminTokenConfig"/>
-    </changeSet>
 </databaseChangeLog>

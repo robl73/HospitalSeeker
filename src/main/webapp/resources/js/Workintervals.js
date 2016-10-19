@@ -1,17 +1,16 @@
+var nextAvailableTime;
+var isPresentUserDetails;
+var principal;
+
 $(document).ready(function () {
-    var today = new Date();
-    today.setHours(0);
-    blockDateTo(today);
-    var principal = $('#principal').text();
+    principal = $('#principal').text();
     var did = document.getElementById("1").textContent;
     var begin;
     var end;
     var dayOfAppointment;
     var schedulerConfig = {};
-    var blockYear;
-    var blockMonth;
-    var blockDay;
     var lastDate = new Date();
+    var firstDate = new Date();
     $.ajax({
         type: "GET",
         async: false,
@@ -27,6 +26,7 @@ $(document).ready(function () {
                 schedulerConfig.dayEnd = data.day_end;
             }
             var today = new Date();
+            firstDate = new Date(data.events[0].start_date);
             data.events.forEach(function (item) {
                 var workDay = item.start_date.substring(0, 10);
                 var hourOne = item.start_date.substring(11, 13);
@@ -35,8 +35,8 @@ $(document).ready(function () {
                 var current = new Date(workDay);
                 var temp = new Date(workDay);
                 temp.setHours(parseInt(hourLast));
-
                 if (temp > today) {
+                    if (firstDate > temp) firstDate = temp;
                     if (item['event_length'] != null) {
                         var d = new Date(item.end_date);
                         if (lastDate <  d) {
@@ -65,14 +65,12 @@ $(document).ready(function () {
                     }
                 }
             });
-            blockYear = new Date(data.events[data.events.length - 1].start_date.substring(0, 10)).getFullYear();
-            blockMonth = new Date(data.events[data.events.length - 1].start_date.substring(0, 10)).getMonth();
-            blockDay = new Date(data.events[data.events.length - 1].start_date.substring(0, 10)).getDate() + 1;
         },
         error: function () {
             $('#mySchedulerErrorModal').modal('show');
         }
     });
+    blockDateTo(firstDate);
     blockDateFrom(new Date(lastDate.getFullYear(), lastDate.getMonth(), lastDate.getDate() + 1));
     var day = new Date().getDate() - 1;
     var month = new Date().getMonth();
@@ -122,13 +120,35 @@ var html = function (id) {
     return document.getElementById(id);
 };
 
+
 scheduler.showLightbox = function (id) {
     var tex_local_from = getMessage('workscheduler.modal.appointment.time.from');
     var tex_local_to = getMessage('workscheduler.modal.appointment.time.to');
-    $('#myModal').modal('show');
+
+
     var ev = scheduler.getEvent(id);
     ev.end_date = new Date(ev.start_date.getTime() + scheduler.config.time_step * 60000);
-    scheduler.startLightbox(id, html("myModal"));
+
+    var validationErrorMessage = getMessage('modal.workscheduler.validation.error');
+    var validationTimeMassage = getMessage('modal.workscheduler.validation.freetime');
+    var validationProfileMassage = getMessage('modal.workscheduler.validation.profile');
+
+    validateAppointment(ev) ? showModal() : showErrorModal();
+    function showErrorModal(){
+        $('#validationErrorMassage').text(validationErrorMessage + ' ' + validationTimeMassage
+            + ' ' + nextAvailableTime.substr(11));
+        $('#myAppointmentValidationErrorModal').modal('show');
+    }
+    function showModal() {
+        if (!isPresentUserDetails) {
+            $('#validationErrorMassage').text(validationProfileMassage);
+            $('#myAppointmentValidationErrorModal').modal('show');
+            return;
+        }
+        $('#appointmentModal').modal('show');
+    }
+
+    scheduler.startLightbox(id, html("appointmentModal"));
     $('#date').text(new Date(ev.start_date).toLocaleDateString() + ' ' + tex_local_from + ' '+
         new Date(ev.start_date).toLocaleTimeString().replace(':00', '') + ' ' + tex_local_to + ' ' +
         new Date(ev.end_date).toLocaleTimeString().replace(':00', ''));
@@ -147,6 +167,11 @@ function close_form() {
     scheduler.endLightbox(false, html("my_form"));
 }
 
+function closeErrorModal() {
+    close_form();
+    location.reload();
+}
+
 function delete_event() {
     var event_id = scheduler.getState().lightbox_id;
     scheduler.endLightbox(false, html("my_form"));
@@ -162,12 +187,18 @@ scheduler.attachEvent("onLimitViolation", function (id, obj) {
 });
 
 function dismissMyModal(event) {
-    if ($(event.target).is('#myModal')) {
+    if ($(event.target).is('#appointmentModal')) {
         close_form();
     }
 }
 
 function startModal() {
+
+    if ($('#TheReasonForVisit').val().length >= 150) {
+        $('#lengthError').attr('style', 'display:block');
+        return;
+    }
+
     setTimeout(changeModalContentFirstStep, 500);
     setTimeout(changeModalContentSecondStep, 4000);
 }
@@ -181,7 +212,13 @@ function changeModalContentFirstStep() {
 
 function changeModalContentSecondStep() {
     save_form();
-    $('#myModal').modal('hide');
+    $('#appointmentModal').modal('hide');
+}
+
+function closeModal() {
+    changeModalContentSecondStep();
+    $('#appointmentModal').modal('hide');
+    $.modal.close();
 }
 
 $(document).keyup(function (e) {
@@ -190,6 +227,25 @@ $(document).keyup(function (e) {
     }
 });
 
-function goBack() {
-    window.history.back();
+function validateAppointment(ev) {
+    ev.principal = principal;
+    var result = false;
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "validate?ev="+JSON.stringify(ev),
+        dataType: "json",
+        contentType: "application/json",
+        mimeType: "application/json",
+        success: function (data) {
+            isPresentUserDetails = data.fullUserDetailPresent;
+            nextAvailableTime = data.nextAvailableTime;
+            result = data.result;
+        },
+        error: function (data) {
+            alert("error" + data)
+        }
+    });
+    return result;
 }
+
