@@ -39,4 +39,5 @@
     <changeSet author="lesia (generated)" id="1476977072005-6">
         <addDefaultValue columnDataType="bigint" columnName="id" defaultValueComputed="nextval('admintokenconfig_id_seq'::regclass)" tableName="admintokenconfig"/>
     </changeSet>
+
 </databaseChangeLog>

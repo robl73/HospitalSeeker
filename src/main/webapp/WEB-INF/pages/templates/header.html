@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" >
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
     <head>
         <title></title>
     </head>
@@ -8,12 +8,12 @@
 <nav th:fragment="page-header" class="[ navbar navbar-fixed-top ][ navbar-bootsnipp animate ]" role="navigation">
     <div class="[ container ]">
         <!-- Brand and toggle get grouped for better mobile display -->
-        
-            <div class="brand-logo ">
-                <br /> <a th:href="@{/}"><img th:src="@{/img/logo.png}" alt=""
-                                              class="img-responsive logo" /></a>
-            </div>
-        
+
+        <div class="brand-logo ">
+            <br /> <a th:href="@{/}"><img th:src="@{/img/logo.png}" alt=""
+                                          class="img-responsive logo" /></a>
+        </div>
+
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="[ collapse navbar-collapse ]" id="bs-example-navbar-collapse-1">
@@ -51,10 +51,18 @@
                 <li sec:authorize="hasRole('DOCTOR')"><a th:class="menu"
                                                          th:classappend="${#httpServletRequest.requestURL.toString().matches('.*/workscheduler.*')}?'active':''"
                                                          th:href="@{/workscheduler}" th:text="#{header.workscheduler}"></a></li>
-                <li sec:authorize="hasRole('MANAGER')"><a
-                        th:class="menu"
-                        th:classappend="${#httpServletRequest.requestURL.toString().matches('.*/manageDoctors.*')}?'active':''"
-                        th:href="@{/manageDoctors}" th:text="#{header.manage}"></a></li>
+
+                <li sec:authorize="hasRole('MANAGER')">
+                    <a href="#" class="nav navbar-nav dropdown dropdown-toggle" data-toggle="dropdown" th:text="#{manager.menu.actions}">
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu" id="dropdawn">
+                        <li>
+                            <a th:href="@{/newDoctor}" class="menu">
+                                <span class="glyphicon glyphicon-plus-sign" th:text="' '+#{manager.menu.add.new.doctor}"></span></a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li sec:authorize="hasRole('PATIENT')"><a
                         th:class="menu"
                         th:classappend="${#httpServletRequest.requestURL.toString().matches('.*/appointments.*')}?'active':''"
@@ -125,11 +133,14 @@
                         <li>
                             <a class="menu glyphicon glyphicon-user" data-toggle="modal" data-target="#myModal" data-backdrop="false"
                                th:onclick="${userName.userDetails.lastName==null}?'editProfile()':'showPage()'" th:text="' '+#{header.principal.menu.profile}">
-                            <span class="glyphicon glyphicon-user"></span></a>
+                                <span class="glyphicon glyphicon-user"></span></a>
                         </li>
-                        <li><a class="menu" th:href="@{/logout}"> <span
+
+                        <li>
+                            <a class="menu" th:href="@{/logout}"> <span
                                 class="glyphicon glyphicon-log-out" th:text="' '+#{header.principal.log.out}"></span>
-                        </a></li>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
@@ -142,9 +153,9 @@
                     </a>
                     <ul class="dropdown-menu localization" id="dropdawn">
                         <li th:with="currentUrl=(${@currentUrlWithoutParam.apply('lang')})">
-                                <a th:href="@{${currentUrl}(lang=ua)}" class="menu">
-                                    <img th:src="@{/img/ua.png}" th:text="#{ukrainian}"/>
-                                </a>
+                            <a th:href="@{${currentUrl}(lang=ua)}" class="menu">
+                                <img th:src="@{/img/ua.png}" th:text="#{ukrainian}"/>
+                            </a>
                         </li>
 
                         <li th:with="currentUrl=(${@currentUrlWithoutParam.apply('lang')})">
@@ -175,6 +186,7 @@
 
             <ol class="breadcrumb" th:remove="${hospitals }? none : all">
                 <!--<li><a th:href="@{/hospitals}" th:class="${hospital}?:'active'"-->
+
                        <!--th:text="'Hospitals'" /></li>-->
                 <li th:remove="${hospital}? none : all"><a
                         th:href="@{|/hospital/${hospital.id}|}" th:class="${department}?:'active'"
@@ -196,14 +208,13 @@
                 <form th:action="@{/hospitals}" id="search-hospital-form" class="[ form-inline ]" method="GET" role="search">
                   <div class="[ input-group ]" style="z-index:1000000;width: 100%;">
 
-
-                     <div class="form-group" style="width: 92%;">
-                        	<input id="select_hospital_search"  style="border-color:#5bc0de; border-width:3px; width: 100%;" type="text" class="[ form-control ] dropdown-field" name="q"
+                        <div class="form-group" style="width: 92%;">
+                            <input id="select_hospital_search"  style="border-color:#5bc0de; border-width:3px; width: 100%;" type="text" class="[ form-control ] dropdown-field" name="q"
                                    th:placeholder="#{header.menu.searchbar.placeholder.hospitals}"/>
 
                         </div>
                         <span class="[ input-group-btn ]" style="position: absolute;top:0;right:0; float: inherit; width:8%;" th:title="#{header.menu.searchbar.hospital.tooltip}">
-                        	<button id="select_hospital_search_button" type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;border-width:3px;"><span class="[ glyphicon glyphicon-search ]"></span></button>
+                            <button id="select_hospital_search_button" type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;border-width:3px;"><span class="[ glyphicon glyphicon-search ]"></span></button>
                         </span>
                     </div>
                 </form>

@@ -1,9 +1,6 @@
 package com.hospitalsearch.util;
 
-/**
- * Created by lesia on 17.10.2016.
- */
-public enum  Specialization {
+public enum Specialization {
     DIAGNOSIS,
     PEDIATRICS,
     DENTISTRY,

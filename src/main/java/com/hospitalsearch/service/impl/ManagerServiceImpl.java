@@ -24,11 +24,12 @@ import java.util.Map;
 @Transactional
 public class ManagerServiceImpl implements ManagerService {
 
-
     @Autowired
     private DoctorInfoDAO doctorInfoDAO;
+
     @Autowired
     private HospitalDAO hospitalDAO;
+
     @Autowired
     private UserDAO userDAO;
 

@@ -2,6 +2,8 @@ package com.hospitalsearch.service;
 
 import com.hospitalsearch.dto.Bounds;
 import com.hospitalsearch.dto.HospitalDTO;
+import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
+import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
 import com.hospitalsearch.entity.Hospital;
 import com.hospitalsearch.util.HospitalFilterDTO;
 import com.hospitalsearch.util.Page;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -37,4 +40,6 @@ public interface HospitalService {
     List<Hospital> filterHospitalsByAddress(HospitalFilterDTO filterInfo);
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
     Page<Hospital> advancedHospitalSearch(String args) throws ParseException, InterruptedException;
+    List<NameHospitalsByManagerDTO> getAllNameHospitalsByManager(Long id);
+    List<NameDepartmensByHospitalDTO> getAllNameDepartmentsByHospitals(Long id);
 }

@@ -1,8 +1,12 @@
 package com.hospitalsearch.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
+import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
 import com.hospitalsearch.entity.DoctorInfo;
+import com.hospitalsearch.entity.Hospital;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;

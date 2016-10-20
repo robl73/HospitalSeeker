@@ -3,18 +3,7 @@ package com.hospitalsearch.entity;
 import java.util.List;
 
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -26,7 +15,6 @@ import org.hibernate.search.annotations.*;
 public class Department{
 
 	@Id
-	@DocumentId
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_gen")
 	@SequenceGenerator(name = "department_gen", sequenceName = "department_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
@@ -34,12 +22,16 @@ public class Department{
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
 	private String name;
 
-	@ManyToMany
-	@JoinTable(name="DEPARTMENT_DOCTORINFO", joinColumns = @JoinColumn(name="DEPARTMENTS_ID"), inverseJoinColumns = @JoinColumn(name="DOCTORS_ID"))
-	@Fetch(FetchMode.SUBSELECT)
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "DEPARTMENT_DOCTORINFO", joinColumns = {
+			@JoinColumn(name = "DEPARTMENTS_ID", nullable = false, updatable = false) },
+			inverseJoinColumns = { @JoinColumn(name = "DOCTORS_ID",
+					nullable = false, updatable = false) })
 	private List<DoctorInfo> doctors;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.JOIN)
 	@ContainedIn
 	private Hospital hospital;
 
