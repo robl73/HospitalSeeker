@@ -309,14 +309,7 @@
             <artifactId>h2</artifactId>
             <version>1.4.191</version>
         </dependency>
-        <!-- Liquibase -->
-
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>${liquibase.core}</version>
-        </dependency>
-
+        
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
@@ -349,6 +342,14 @@
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
             <version>${apache.velocity}</version>
+        </dependency>
+        
+        <!-- Liquibase -->
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.core}</version>
         </dependency>
     
         <dependency>

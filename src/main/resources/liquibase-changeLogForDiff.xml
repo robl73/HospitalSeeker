@@ -1612,10 +1612,8 @@
     </changeSet>
 	
     <!-- ====================================================================  -->  
-    
-
-  
-    <changeSet author="Admin (generated)" id="1476809226278-1">
+       
+    <changeSet author="Admin (generated)" id="1476993162905-1">
         <createTable tableName="departmentname">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -1625,7 +1623,11 @@
             <column name="specialization" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="Admin (generated)" id="1476809226278-2">
+    <changeSet author="Admin (generated)" id="1476993162905-2">
         <addPrimaryKey columnNames="id" constraintName="departmentnamePK" tableName="departmentname"/>
     </changeSet>
+<!-- ====================================================================  -->  
+
+        
+    
 </databaseChangeLog>
