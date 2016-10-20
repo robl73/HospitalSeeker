@@ -145,6 +145,7 @@
                                     <select id="hospital" class="form-control" style="margin-top: 10px; margin-bottom: 10px;" type="select"
                                             th:field="${newDoctorDto.nameHospitalId}"
                                             th:value="${(newDoctorDto != null) and (newDoctorDto.nameHospitals !=null)} ? ${newDoctorDto.nameHospitals}:''">
+                                        <option th:value="hospital">Hospital</option>
                                         <option
                                                 th:each="namehospitals : ${newDoctorDto.nameHospitals}"
                                                 th:value="${namehospitals.getId()}"

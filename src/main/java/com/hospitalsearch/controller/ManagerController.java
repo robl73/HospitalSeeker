@@ -2,6 +2,7 @@ package com.hospitalsearch.controller;
 
 import com.google.gson.Gson;
 import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
+import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
 import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.*;
@@ -66,8 +67,7 @@ public class ManagerController {
     @RequestMapping(value = "/newDoctor", method = RequestMethod.GET)
     public String getRegistration(@ModelAttribute("newDoctorDto") NewDoctorRegistrationDTO newDoctorRegistrationDTO,
                                   ModelMap model) {
-        newDoctorRegistrationDTO.setNameHospitals(hospitalService.getAllNameHospitalsByManager(
-                userService.getByEmail(PrincipalConverter.getPrincipal()).getId()));
+        newDoctorRegistrationDTO.setNameHospitals(hospitalService.getAllNameHospitalsByManager(userService.getByEmail(PrincipalConverter.getPrincipal()).getId()));
         newDoctorRegistrationDTO.setCategorys(Arrays.asList( Category.values()));
         newDoctorRegistrationDTO.setSpecializations(Arrays.asList(Specialization.values()));
         model.addAttribute("newDoctorDto", newDoctorRegistrationDTO);;
