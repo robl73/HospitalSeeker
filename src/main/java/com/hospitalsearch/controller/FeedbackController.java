@@ -52,7 +52,7 @@ public class FeedbackController {
             if (producerId.equals(doctorInfo.getUserDetails().getUser().getId())) {
                 allowAddFeedback = false;
             } else {
-                if (feedbackService.isUserCreateFeedback(producerId, doctorId)) {
+                if (feedbackService.isUserCreatedFeedback(producerId, doctorId)) {
                     allowAddFeedback = false;
                 }
             }

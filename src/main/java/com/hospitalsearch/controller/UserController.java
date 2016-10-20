@@ -1,42 +1,33 @@
 package com.hospitalsearch.controller;
 
-import java.net.ConnectException;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.mail.MailException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.PasswordResetToken;
 import com.hospitalsearch.entity.Role;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.entity.VerificationToken;
 import com.hospitalsearch.exception.ResetPasswordException;
-import com.hospitalsearch.service.MailService;
-import com.hospitalsearch.service.PasswordResetTokenService;
-import com.hospitalsearch.service.RoleService;
-import com.hospitalsearch.service.UserService;
-import com.hospitalsearch.service.VerificationTokenService;
+import com.hospitalsearch.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSendException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.net.ConnectException;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 /**
  * @author Andrew Jasinskiy on 16.05.16
@@ -78,7 +69,6 @@ public class UserController {
 
 	@RequestMapping(value = "/login")
 	public String loginPage(ModelMap model) {
-			
 		model.addAttribute("email", request.getParameter("email"));
 		model.addAttribute("error", request.getParameter("error"));
 		return "login";
@@ -104,10 +94,33 @@ public class UserController {
 		model.addAttribute("userRegisterDto", userDto);
 		return "/registration";
 	}
-
+	/*
+        @RequestMapping(value = "/registration", method = RequestMethod.POST)
+        public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
+                                   BindingResult result, ModelMap model, Locale locale) {
+            if (result.hasErrors()) {
+                return "registration";
+            }
+            User user = userService.register(userDto);
+            String token = getRandomToken();
+            verificationTokenService.createToken(token, user);
+            try {
+                String confirmationMessage = mailService.createRegisterMessage(user, token, locale);
+                mailService.sendMessage(user, messageSource.getMessage("mail.message.registration.confirm", null, locale), confirmationMessage, emailTemplate);
+                model.addAttribute("emailSuccess", userDto.getEmail());
+                return "/user/endRegistration";
+            } catch (MailException | ConnectException e) {
+                model.addAttribute("emailError", userDto.getEmail());
+                verificationTokenService.deleteTokenByUser(user);
+                userService.changeStatus(user.getId());
+                userService.delete(user.getId());
+                return "/error/emailMessage";
+            }
+    }
+    */
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto, BindingResult result,
-			ModelMap model, Locale locale) {
+	public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
+							   BindingResult result, ModelMap model, Locale locale) {
 		if (result.hasErrors()) {
 			return "registration";
 		}
@@ -116,36 +129,17 @@ public class UserController {
 		verificationTokenService.createToken(token, user);
 		try {
 			String confirmationMessage = mailService.createRegisterMessage(user, token, locale);
-			mailService.sendMessage(user, messageSource.getMessage("mail.message.registration.confirm", null, locale),
-					confirmationMessage, emailTemplate);
-			model.addAttribute("emailSuccess", userDto.getEmail());
-			return "/user/endRegistration";
+			mailService.sendMessage(user, messageSource.getMessage("mail.message.registration.confirm", null, locale), confirmationMessage, emailTemplate);
 		} catch (MailException | ConnectException e) {
 			model.addAttribute("emailError", userDto.getEmail());
 			verificationTokenService.deleteTokenByUser(user);
 			userService.changeStatus(user.getId());
-			userService.delete(user.getId());
-			return "/error/emailMessage";
+			return "/user/endRegistration";
 		}
+		model.addAttribute("emailSuccess", userDto.getEmail());
+		return "/user/endRegistration";
 	}
 
-	/*
-	 * @RequestMapping(value = "/registration", method = RequestMethod.POST)
-	 * public String registerUser(@Valid @ModelAttribute("userDto")
-	 * UserRegisterDTO userDto, BindingResult result, ModelMap model, Locale
-	 * locale) { if (result.hasErrors()) { return "registration"; } User user =
-	 * userService.register(userDto); String token = getRandomToken();
-	 * verificationTokenService.createToken(token, user); try { String
-	 * confirmationMessage = mailService.createRegisterMessage(user, token,
-	 * locale); mailService.sendMessage(user,
-	 * messageSource.getMessage("mail.message.registration.confirm", null,
-	 * locale), confirmationMessage, emailTemplate); } catch (MailException |
-	 * ConnectException e) { model.addAttribute("emailError",
-	 * userDto.getEmail()); verificationTokenService.deleteTokenByUser(user);
-	 * userService.changeStatus(user.getId()); return "/user/endRegistration"; }
-	 * model.addAttribute("emailSuccess", userDto.getEmail()); return
-	 * "/user/endRegistration"; }
-	 */
 	@RequestMapping(value = "/confirmRegistration", method = RequestMethod.GET)
 	public String confirmRegistration(@RequestParam("token") String token, ModelMap model) {
 		VerificationToken verificationToken = verificationTokenService.getByToken(token);
@@ -174,8 +168,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/confirmResetPassword", method = RequestMethod.POST)
-	public String confirmResetPass(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto, BindingResult result,
-			ModelMap model) {
+	public String confirmResetPass(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
+								   BindingResult result, ModelMap model) {
 		if (result.hasFieldErrors("password") || result.hasFieldErrors("confirmPassword")) {
 			return "user/confirmResetPassword";
 		}
@@ -211,12 +205,11 @@ public class UserController {
 		String token = getRandomToken();
 		passwordResetTokenService.createToken(token, user);
 		String resetPasswordMessage = mailService.createResetPasswordMessage(user, token, locale);
-		mailService.sendMessage(user, messageSource.getMessage("mail.message.forgot.password", null, locale),
-				resetPasswordMessage, emailTemplate);
+		mailService.sendMessage(user, messageSource.getMessage("mail.message.forgot.password", null, locale), resetPasswordMessage, emailTemplate);
 		return "success";
 	}
 
-	// utility methods
+	//utility methods
 	private String getRandomToken() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}

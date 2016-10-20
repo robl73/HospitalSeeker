@@ -36,12 +36,12 @@ function init(data) {
         dayStart = data.day_start;
         dayEnd = data.day_end;
         workScheduler = data;
+    } else {
+        weekSize = 5;
     }
 
     scheduler.ignore_month = ignoreDays(selectedWeekSize(weekSize));
     scheduler.ignore_week = scheduler.ignore_month;
-
-
 
     if (! (jQuery.isEmptyObject(workScheduler))) {
         $("#workWeekSize option").each(function (item, i) {

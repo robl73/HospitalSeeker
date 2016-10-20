@@ -1613,4 +1613,37 @@
     </changeSet>
 	
 	
+    <changeSet author="lesia (generated)" id="1476976718625-1">
+        <createTable tableName="admintokenconfig">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="INT4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="lesia (generated)" id="1476976718625-2">
+        <insert tableName="admintokenconfig">
+            <column name="id" valueNumeric="1"/>
+            <column name="token" value="RESET_PASSWORD_TOKEN_EXPIRATION"/>
+            <column name="value" valueNumeric="24"/>
+        </insert>
+        <insert tableName="admintokenconfig">
+            <column name="id" valueNumeric="2"/>
+            <column name="token" value="VERIFICATION_TOKEN_EXPIRATION"/>
+            <column name="value" valueNumeric="24"/>
+        </insert>
+        <insert tableName="admintokenconfig">
+            <column name="id" valueNumeric="3"/>
+            <column name="token" value="REMEMBER_ME_TOKEN_EXPIRATION"/>
+            <column name="value" valueNumeric="24"/>
+        </insert>
+    </changeSet>
+    <changeSet author="lesia (generated)" id="1476976718625-3">
+        <addPrimaryKey columnNames="id" constraintName="admintokenconfig_pkey" tableName="admintokenconfig"/>
+    </changeSet>
 </databaseChangeLog>

@@ -28,7 +28,6 @@ public class DepartmentDAOImpl extends GenericDAOImpl<Department,Long> implement
     public List<Department> findDepartmentByDoctorId(Long id){
         Criteria criteria = this.getSessionFactory().getCurrentSession().createCriteria(Department.class, "department")
                 .createAlias("department.doctors", "depAlias")
-                .createAlias("depAlias.departments", "docAlias")
                 .add(Restrictions.eq("depAlias.id", id));
         return (List<Department>) criteria.list();
     }

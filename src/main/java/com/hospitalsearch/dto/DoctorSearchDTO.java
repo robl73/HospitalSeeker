@@ -3,6 +3,9 @@ package com.hospitalsearch.dto;
 import com.hospitalsearch.util.Category;
 import com.hospitalsearch.util.Specialization;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**

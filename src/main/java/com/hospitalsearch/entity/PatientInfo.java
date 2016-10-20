@@ -28,22 +28,11 @@ public class PatientInfo {
 	@JsonIgnore
 	private PatientCard patientCard;
 
-	@Column(name = "blood_group")
-	private String bloodGroup;
-
 	public PatientInfo(UserDetail userDetail) {
 		this.userDetail = userDetail;
 	}
 
 	public PatientInfo() {}
-
-	public String getBloodGroup() {
-		return bloodGroup;
-	}
-
-	public void setBloodGroup(String bloodGroup) {
-		this.bloodGroup = bloodGroup;
-	}
 
 	public Long getId() {
 		return id;

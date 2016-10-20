@@ -43,6 +43,7 @@ public class DoctorInfo{
     @DocumentId
     private Long id;
 
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
     @Enumerated(EnumType.STRING)
     private Specialization specialization;
 
@@ -55,7 +56,7 @@ public class DoctorInfo{
     @JsonIgnore
     private UserDetail userDetails;
 
-    @ManyToMany(mappedBy = "doctors", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "doctors")
     private List<Department> departments;
 
     public DoctorInfo() {

@@ -2,7 +2,19 @@ package com.hospitalsearch.entity;
 
 import java.util.List;
 
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -24,7 +36,7 @@ public class Department{
 
 	@ManyToMany
 	@JoinTable(name="DEPARTMENT_DOCTORINFO", joinColumns = @JoinColumn(name="DEPARTMENTS_ID"), inverseJoinColumns = @JoinColumn(name="DOCTORS_ID"))
-	@Fetch(FetchMode.SELECT)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<DoctorInfo> doctors;
 
 	@ManyToOne

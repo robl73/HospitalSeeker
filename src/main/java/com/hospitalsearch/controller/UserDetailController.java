@@ -24,9 +24,6 @@ public class UserDetailController {
     @Autowired
     UserDetailService userDetailService;
 
-   /* @Autowired
-    RelativesInfo relativesInfo;*/
-
     @Autowired
     UserService userService;
 
@@ -44,15 +41,9 @@ public class UserDetailController {
     public String userDetail(@RequestParam(value = "edit", defaultValue = "false") Boolean edit, ModelMap model) {
         User user = userService.getByEmail(PrincipalConverter.getPrincipal());
         UserDetail userDetail = user.getUserDetails();
-        createRelatieves(userDetail);
-      //  RelativesInfo relativesInfo = userDetail.getRelativesInfo();
         model.addAttribute("edit", edit);
         model.addAttribute("userDetail", userDetail);
-      //  model.addAttribute("relativesInfo", relativesInfo);
         model.addAttribute("gender", Gender.values());
-        model.addAttribute("heartProblems", Disease.values());
-        model.addAttribute("diabetes", Disease.values());
-        model.addAttribute("epilepsy", Disease.values());
         model.addAttribute("email", user.getEmail());
         return "user/detail";
     }
@@ -64,9 +55,6 @@ public class UserDetailController {
             model.addAttribute("edit", true);
             model.addAttribute("userDetail", userDetail);
             model.addAttribute("gender", Gender.values());
-            model.addAttribute("heartProblems", Disease.values());
-            model.addAttribute("diabetes", Disease.values());
-            model.addAttribute("epilepsy", Disease.values());
             model.addAttribute("email", PrincipalConverter.getPrincipal());
             return "user/detail";
         }
@@ -87,11 +75,7 @@ public class UserDetailController {
         patientInfoService.add(patientInfo);
         model.addAttribute("edit", false);
         model.addAttribute("userDetail", userDetail);
-     //   model.addAttribute("relativesInfo", relativesInfo);
         model.addAttribute("gender", Gender.values());
-        model.addAttribute("heartProblems", Disease.values());
-        model.addAttribute("diabetes", Disease.values());
-        model.addAttribute("epilepsy", Disease.values());
         model.addAttribute("email", PrincipalConverter.getPrincipal());
         return "user/detail";
     }
@@ -101,41 +85,12 @@ public class UserDetailController {
     public String userProfile(@RequestParam("userId") Long userId, ModelMap model) {
         User user = userService.getById(userId);
         UserDetail userDetail = user.getUserDetails();
-     //   RelativesInfo relativesInfo = userDetail.getRelativesInfo();
         model.addAttribute("edit", false);
         model.addAttribute("userDetail", userDetail);
 
-      //  model.addAttribute("relativesInfo", relativesInfo);
         model.addAttribute("gender", Gender.values());
-     //   model.addAttribute("heartProblems", Disease.values());
-     //   model.addAttribute("diabetes", Disease.values());
-      //  model.addAttribute("epilepsy", Disease.values());
         model.addAttribute("email", user.getEmail());
         model.addAttribute("read", true);
         return "user/detail";
     }
-
-//    @RequestMapping("/doctors")
-//    public String renderSearchDoctors(Map<String, Object> model,
-//                                  @RequestParam(value = "d", required = false) String query) throws ParseException, InterruptedException, HospitalControllerAdvice.FilterHospitalListEmptyException {
-//        if (query != null && !query.isEmpty()) {
-//            this.pageableContent = doctorInfoService.advancedDoctorSearch(query);
-//        }
-//        this.initializeModel(model, 1);
-////        if(this.pageableContent.getResultListCount() == 0){
-////            throw new HospitalControllerAdvice.FilterHospitalListEmptyException("Empty list");
-////        }
-//        return "";
-//    }
-
-    private void createRelatieves(UserDetail userDetail){
-        if (userDetail.getRelativesInfos().isEmpty()) {
-            List<RelativesInfo> relativesInfos = new ArrayList<>();
-            relativesInfos.add(new RelativesInfo());
-            relativesInfos.add(new RelativesInfo());
-            relativesInfos.add(new RelativesInfo());
-            userDetail.setRelativesInfos(relativesInfos);
-        }
-    }
-
 }
