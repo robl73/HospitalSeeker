@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+<head>
+
+<script th:src="@{/js/maplistadmin.js}"></script>
+<script th:src="@{/js/gmaps.js}"></script>
+<link rel="stylesheet" th:href="@{/css/map.css}" />
+
+<title th:text="#{admin.hospital.list.header}"></title>
+</head>
+<body>
+	<section layout:fragment="content">
+		<div class="content">
+
+
+<div th:each="availableTest : ${availableTests}" th:object="${availableTest}">
+
+<table class="table table-bordered">
+  
+  <tbody>
+    <tr>
+      <td th:text="*{name}"></td>
+      
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+</div>
+</section>
+</body>
+</html>

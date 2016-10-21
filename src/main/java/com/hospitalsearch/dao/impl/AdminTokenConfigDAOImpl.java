@@ -16,7 +16,7 @@ import com.hospitalsearch.util.Token;
 @Repository
 public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Long> implements AdminTokenConfigDAO {
 
-	@Autowired//(required = true)
+	@Autowired
 	public AdminTokenConfigDAOImpl(SessionFactory factory) {
 		this.setSessionFactory(factory);
 	}

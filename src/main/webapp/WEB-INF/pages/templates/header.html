@@ -1,5 +1,6 @@
 <nav th:fragment="page-header" class="[ navbar navbar-fixed-top ][ navbar-bootsnipp animate ]" role="navigation"
      xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+       
     <div class="[ container ]">
         <!-- Brand and toggle get grouped for better mobile display -->
         
@@ -170,8 +171,29 @@
                         class="[ glyphicon glyphicon-search ]"></span></a></li>
             </ul>
         </div>
-        <h3>
-            <ol class="breadcrumb" th:remove="${patients}? none : all">
+        
+        
+        
+       <!--    <div th:rel="import" th:href="breadcrumb.html"  style="width: 100px; height: 100px;"></div>  -->
+       
+ <!--      <div  style="width: 100px; height: 100px;"> <script>
+            $(function(){
+                $("#includedContent").load("breadcrumb.html");
+            });
+        </script>
+     </div> 
+      -->
+     
+  <!-- <div w3-include-html="breadcrumb.html" style="width: 100px; height: 100px;"></div>  -->
+  
+  <!-- <div layout:include="breadcrumb :: breadcrumbs" th:with="type='info', header='Info'" th:remove="tag">
+   -->
+  
+  <div th:replace="templates/breadcrumb::breadcrumbs"/>
+          
+  <!--/* Implements alert content fragment with full-blown HTML content */-->
+     <!--  <h3>
+           <ol class="breadcrumb" th:remove="${patients}? none : all">
                 <li><a th:href="@{/patients(page=1)}" th:class="${hospital}?:'active'"
                        th:text="#{header.menu.patient}" /></li>
                 <li th:remove="${userId}? none : all"><a
@@ -180,8 +202,8 @@
                 <li th:remove="${cardItem}? none : all"><a
                         th:href="@{/new/record(userId=${userId})}"
                         th:class="${doctor}?:'active'" th:text="${cardItem.id==null}?#{card.record.create}:#{card.record.edit}" /></li>
-            </ol>
-
+            </ol>  
+      
             <ol class="breadcrumb" th:remove="${hospitals }? none : all">
                 <li><a th:href="@{/hospitals}" th:class="${hospital}?:'active'"
                        th:text="'Hospitals'" /></li>
@@ -195,7 +217,37 @@
                         th:href="@{/start(id=${doctor.id},did=${id})}" th:class="'active'"
                         th:text="|${doctor.firstName} ${doctor.lastName}|" /></li>
             </ol>
-        </h3>
+            
+            
+              <ol class="breadcrumb" th:remove="${hospitals }? none : all">
+                <li><a th:href="@{/mapsearch}" th:class="${hospital}?:'active'"
+                       th:text="'Hospitals'" /></li>
+                       
+                <li th:remove="${hospital}? none : all"><a
+                        th:href="@{|/hospital/${hospital.id}|}" th:class="${department}?:'active'"
+                        th:text="${hospital.name}" /></li>
+                        
+                    
+                       department 
+                      <li th:remove="${department}? none : all"><a
+                        th:href="@{|/hospital/${hospital.id}/department/${department.id}|}"
+                        th:class="${doctor}?:'active'" th:text="${department.name}" /></li>
+                       or laboratory
+                <li th:remove="${diagnosisPanelInfos}? none : all"><a
+                        th:href="@{|/hospital/${hospital.id}/laboratory/${laboratory.id}|}"
+                        th:class="${diagnosisPanelInfos}?:'active'" th:text="'Laboratory'" /></li>
+                        
+                        doctor
+                       <li th:remove="${doctor}? none : all"><a
+                        th:href="@{/start(id=${doctor.id},did=${id})}" th:class="'active'"
+                        th:text="|${doctor.firstName} ${doctor.lastName}|" /></li>
+                        or diagnosisPanel
+                <li th:remove="${diagnosisPanel}? none : all"><a
+                        th:href="@{|/hospital/${hospital.id}/laboratory/${laboratory.id}/diagnosisPanel/${dpid}|}" 
+                        th:class="'active'"
+                        th:text="${panelName}" /></li>
+            </ol> 
+        </h3>  -->
     </div>
 
     <!--Search hospitals and doctors-->
