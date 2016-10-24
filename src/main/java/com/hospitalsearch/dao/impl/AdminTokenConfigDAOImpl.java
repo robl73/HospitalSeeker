@@ -33,11 +33,11 @@ public class AdminTokenConfigDAOImpl extends GenericDAOImpl<AdminTokenConfig, Lo
 	@Override
 	public void update(AdminTokenConfig instance) {
 		try{
-		org.hibernate.Query query = this.currentSession()
-				.createQuery("update AdminTokenConfig set value = :value where token = :token");
-		query.setParameter("value", instance.getValue());
-		query.setParameter("token", instance.getToken());
-		query.executeUpdate();
+			org.hibernate.Query query = this.currentSession()
+					.createQuery("update AdminTokenConfig set value = :value where token = :token");
+			query.setParameter("value", instance.getValue());
+			query.setParameter("token", instance.getToken());
+			query.executeUpdate();
 		}catch(Exception e){
 			System.out.println("Exception in update(AdminTokenConfig instance). Enter valid data, please.");
 		}

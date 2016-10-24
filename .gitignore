@@ -12,3 +12,4 @@ src/main/resources/app.properties
 src/main/resources/LiquiBaseReportTable/
 logs/
 filesystem/
+src/main/resources/springBoot.properties

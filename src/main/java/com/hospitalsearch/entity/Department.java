@@ -2,25 +2,12 @@ package com.hospitalsearch.entity;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.ContainedIn;
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.*;
 
 
 @Entity
@@ -28,39 +15,23 @@ import org.hibernate.search.annotations.Field;
 public class Department{
 
 	@Id
-	@DocumentId
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_gen")
 	@SequenceGenerator(name = "department_gen", sequenceName = "department_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
 
-
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
 	private String name;
 
-	@ManyToMany
-	@JoinTable(name="DEPARTMENT_DOCTORINFO", joinColumns = @JoinColumn(name="DEPARTMENTS_ID"), inverseJoinColumns = @JoinColumn(name="DOCTORS_ID"))
-	@Fetch(FetchMode.SELECT)
 
-    /*    
-	//@Field(boost=@Boost(1.2f))
-	//private String name;
-        
-       // @Embedded
-        private DepartmentsName departmentName;
-
-        public DepartmentsName getDepartmentName() {
-            return departmentName;
-        }
-
-        public void setDepartmentName(DepartmentsName departmentName) {
-            this.departmentName = departmentName;
-        }
-    */
-	
-	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "DEPARTMENT_DOCTORINFO", joinColumns = {
+			@JoinColumn(name = "DEPARTMENTS_ID", nullable = false, updatable = false) },
+			inverseJoinColumns = { @JoinColumn(name = "DOCTORS_ID",
+					nullable = false, updatable = false) })
 	private List<DoctorInfo> doctors;
-	
-	@ManyToOne
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.JOIN)
 	@ContainedIn
 	private Hospital hospital;
 
@@ -109,13 +80,13 @@ public class Department{
 		this.imagePath = imagePath;
 	}
 
-	@Override
-	public String toString() {
-		return "Department{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", doctors=" + doctors +
-				", hospital=" + hospital +
-				'}';
-	}
+//	@Override
+//	public String toString() {
+//		return "Department{" +
+//				"id=" + id +
+//				", name='" + name + '\'' +
+//				", doctors=" + doctors +
+//				", hospital=" + hospital +
+//				'}';
+//	}
 }

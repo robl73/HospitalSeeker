@@ -60,7 +60,6 @@ public class MailServiceImpl implements MailService {
     @Autowired
     private AppointmentDAO appointmentDAO;
 
-/*
     @Override
     public void sendMessage(User user, String subject, String text, String templateName) throws ConnectException {
         for(int i = 0; i < 3; i++){
@@ -89,32 +88,31 @@ public class MailServiceImpl implements MailService {
             }
         }
     }
-*/
 
-    @Override
-    public void sendMessage(User user, String subject, String text, String templateName) throws ConnectException {
-        if (!pingURL("https://www.google.com.ua/", 300)) {
-            throw new MailSendException("Connection failed");
-        }
-        String encoding = properties.getProperty("email.encoding");
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper messageHelper = new MimeMessageHelper(message, encoding);
-        Map<String, Object> hTemplateVariables = new HashMap<>();
-        hTemplateVariables.put("message", text);
-        try {
-            messageHelper.setFrom(mailSender.getUsername());
-            messageHelper.setTo(user.getEmail());
-            messageHelper.setSubject(subject);
-            String emailBody = VelocityEngineUtils.mergeTemplateIntoString(configurer.getVelocityEngine(), templateName, encoding, hTemplateVariables);
-            message.setContent(emailBody, "text/html; charset=UTF-8");
-            synchronized (message) {
-                mailSender.send(message);
-            }
-        } catch (MessagingException e) {
-            logger.error("Cant't send message");
-            logger.error(e);
-        }
-    }
+//    @Override
+//    public void sendMessage(User user, String subject, String text, String templateName) throws ConnectException {
+//        if (!pingURL("https://www.google.com.ua/", 300)) {
+//            throw new MailSendException("Connection failed");
+//        }
+//        String encoding = properties.getProperty("email.encoding");
+//        MimeMessage message = mailSender.createMimeMessage();
+//        MimeMessageHelper messageHelper = new MimeMessageHelper(message, encoding);
+//        Map<String, Object> hTemplateVariables = new HashMap<>();
+//        hTemplateVariables.put("message", text);
+//        try {
+//            messageHelper.setFrom(mailSender.getUsername());
+//            messageHelper.setTo(user.getEmail());
+//            messageHelper.setSubject(subject);
+//            String emailBody = VelocityEngineUtils.mergeTemplateIntoString(configurer.getVelocityEngine(), templateName, encoding, hTemplateVariables);
+//            message.setContent(emailBody, "text/html; charset=UTF-8");
+//            synchronized (message) {
+//                mailSender.send(message);
+//            }
+//        } catch (MessagingException e) {
+//            logger.error("Cant't send message");
+//            logger.error(e);
+//        }
+//    }
 
     @Override
     public String createBannedMessage(User user, Locale locale) {

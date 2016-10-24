@@ -17,7 +17,7 @@ import com.hospitalsearch.entity.User;
 
 @Repository
 public class FeedbackDAOImpl extends GenericDAOImpl<Feedback, Long> implements FeedbackDAO {
- 
+
 	@Autowired
 	public FeedbackDAOImpl(SessionFactory factory) {
 		this.setSessionFactory(factory);
@@ -25,7 +25,7 @@ public class FeedbackDAOImpl extends GenericDAOImpl<Feedback, Long> implements F
 
 	@Override
 	public List<Feedback> getByDoctorId(Long id) {
-        return (List<Feedback>) getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(Feedback.class).add(Restrictions.eq("consumer.id", id)).addOrder(Order.desc("date")));
+		return (List<Feedback>) getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(Feedback.class).add(Restrictions.eq("consumer.id", id)).addOrder(Order.desc("date")));
 	}
 
 	@Override
@@ -39,11 +39,20 @@ public class FeedbackDAOImpl extends GenericDAOImpl<Feedback, Long> implements F
 	}
 
 	@Override
-	public boolean isUserCreateFeedback(Long producerId, Long consumerId) {
+	public boolean isUserCreatedFeedback(Long producerId, Long consumerId) {
 		Query query = getSessionFactory().getCurrentSession().createQuery("select count(*) from Feedback f where f.producer.id = :producerId and f.consumer.id = :consumerId");
 		query.setParameter("producerId", producerId);
 		query.setParameter("consumerId", consumerId);
 		return ((Long) query.uniqueResult()) > 0;
+	}
+
+	@Override
+	public List<Feedback> getFeedbacks(Long doctorId, int pageNumber, int pageSize) {
+		Query query = getSessionFactory().getCurrentSession().createQuery("select f from Feedback f where f.consumer.id = :doctorId order by f.date");
+		query.setParameter("doctorId", doctorId);
+		query.setFirstResult((pageNumber - 1) * pageSize);
+		query.setMaxResults(pageSize);
+		return query.list();
 	}
 
 }

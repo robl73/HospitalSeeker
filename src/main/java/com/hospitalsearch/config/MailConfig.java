@@ -35,6 +35,7 @@ public class MailConfig {
         javaMailProperties.put("mail.debug", "true");
 
      //  javaMailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
         mailSender.setJavaMailProperties(javaMailProperties);
         return mailSender;
     }

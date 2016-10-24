@@ -8,15 +8,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-
 @Entity
 @Table(name = "diagnosisPanel")
 public class DiagnosisPanel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "availabletest_gen")
-	@SequenceGenerator(name = "availabletest_gen", sequenceName = "availabletest_gen", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "diagnosisPanel_gen")
+	@SequenceGenerator(name = "diagnosisPanel_gen", sequenceName = "diagnosisPanel_gen", initialValue = 1, allocationSize = 1)
 	private long id;
 	
 	@ManyToOne

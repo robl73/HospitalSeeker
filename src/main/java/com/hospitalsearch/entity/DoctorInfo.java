@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hospitalsearch.util.Category;
+import com.hospitalsearch.util.Specialization;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.core.StopFilterFactory;
 import org.apache.lucene.analysis.ngram.NGramFilterFactory;
@@ -41,9 +43,12 @@ public class DoctorInfo{
     @DocumentId
     private Long id;
 
-    private String specialization;
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
+    @Enumerated(EnumType.STRING)
+    private Specialization specialization;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @OneToOne
     @JoinColumn(name = "userdetails_id")
@@ -65,11 +70,11 @@ public class DoctorInfo{
         this.id = id;
     }
 
-    public String getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(String specialization) {
+    public void setSpecialization(Specialization specialization) {
         this.specialization = specialization;
     }
 
@@ -81,19 +86,19 @@ public class DoctorInfo{
         this.departments = departments;
     }
 
-	public UserDetail getUserDetails() {
-		return userDetails;
-	}
+    public UserDetail getUserDetails() {
+        return userDetails;
+    }
 
     public void setUserDetails(UserDetail userDetails) {
-		this.userDetails = userDetails;
-	}
+        this.userDetails = userDetails;
+    }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

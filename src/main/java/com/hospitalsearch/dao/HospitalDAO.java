@@ -2,6 +2,8 @@ package com.hospitalsearch.dao;
 
 import java.util.List;
 
+import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
+import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
 import org.apache.lucene.queryparser.classic.ParseException;
 
 import com.hospitalsearch.dto.Bounds;
@@ -21,5 +23,9 @@ public interface HospitalDAO extends GenericDAO<Hospital, Long> {
 
     List<Hospital> filterHospitalsByAddress(HospitalFilterDTO filterInfo);
 
+    List<Hospital> getHospitalsByManagerId(Long id);
+
     Page<Hospital> advancedHospitalSearch(String args) throws ParseException, InterruptedException;
+
+    List<Hospital> getAllHospitalsByManager(Long id);
 }

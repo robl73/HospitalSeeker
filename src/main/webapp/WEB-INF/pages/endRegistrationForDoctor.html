@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="layout">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <meta charset="UTF-8"/>
+    <title>Eng registration</title>
+    <link rel="stylesheet" th:href="@{/css/stylish-portfolio.css}"/>
+    <link rel="stylesheet" th:href="@{/css/animate.css}"/>
+    <script th:src="@{/js/admin.js}"></script>
+</head>
+<body>
+<section layout:fragment="content" class="container">
+    <div class="content">
+
+        <div th:if="${emailSuccess}!=null">
+            <div class="animated flipInX">
+                <h3 class="text-success text-center menu"
+                    th:text="(#{end.registration.success.preffix} +' '+ ${emailSuccess} +' '+ #{end.registration.success.suffix})"></h3>
+
+                <h3 class="text-success text-center menu" th:text="#{end.registration.success.additional.text}"></h3>
+                <img th:src="@{/img/registration_success.jpg}" style="max-width:40%"
+                     class="img-responsive center-block"/>
+            </div>
+        </div>
+
+        <div th:if="${emailError}!=null">
+            <div class="animated flipInX">
+                <h3 th:text="(#{end.registration.success.preffix} +' '+ ${emailError} +' '+ #{end.registration.success.suffix})"
+                    class="text-success text-center menu"></h3>
+
+                <h3 class="text-success text-center menu" >
+                    <span th:text="#{end.registration.success.text}"></span>
+                    <a th:href="@{/login}" id="redirectOnLogin" class="text-primary">
+                        <u th:text="#{email.login}"></u></a>
+                </h3>
+                <img th:src="@{/img/registration_success.jpg}" style="max-width:40%"
+                     class="img-responsive center-block"/>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

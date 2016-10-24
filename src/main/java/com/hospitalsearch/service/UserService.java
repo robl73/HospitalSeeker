@@ -2,6 +2,7 @@ package com.hospitalsearch.service;
 
 import java.util.List;
 
+import com.hospitalsearch.dto.NewDoctorRegistrationDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.exception.ResetPasswordException;
@@ -39,15 +40,21 @@ public interface UserService {
 
     User register(UserRegisterDTO dto);
 
+    User register(NewDoctorRegistrationDTO dto);
+
     void addNewUser(User newUser);
 
     void resetPassword(String email, String newPassword) throws ResetPasswordException;
 
-    //Illia
     List<User> getByRole(String role, int pageNumber, int pageSize, String sortBy, Boolean order);
+
     List<User> getByRole(String role);
+
     Long countOfUsersByRole(String role);
+
     Long countOfUsersByRole(String role, String search);
+
     List<User> searchByRole(String role, String search,int pageNumber, int pageSize, String sortBy, Boolean order);
+
     Integer pageCount(Long countOfItems, int itemsPerPage);
 }

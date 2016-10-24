@@ -18,7 +18,7 @@ public interface AdminTokenConfigService {
 
 	void delete(AdminTokenConfig adminTokenConfig);
 	
-	AdminTokenConfig getByToken(Token token);
+	Integer getByToken(Token token);
 
 	Integer VERIFICATION_TOKEN_EXPIRATION();
 

@@ -14,9 +14,9 @@
                         th:href="@{|/hospital/${hospital.id}/department/${department.id}|}"
                         th:class="${doctor}?:'active'" th:text="${department.name}" ></a></li>
                      <!--   or laboratory -->
-                <li th:remove="${diagnosisPanelInfos}? none : all"><a
-                        th:href="@{|/hospital/${hospital.id}/laboratory/${laboratory.id}|}"
-                        th:class="${diagnosisPanelInfos}?:'active'" th:text="'Laboratory'"></a></li>
+                <li th:remove="${diagnosisPanelLocalizations}? none : all"><a
+                        th:href="@{|/hospital/${hospital.id}/laboratory/${lid}|}"
+                        th:class="${diagnosisPanelLocalizations}?:'active'" th:text="'Laboratory'"></a></li>
                         
                        <!--  doctor -->
                        <li th:remove="${doctor}? none : all"><a
@@ -24,7 +24,7 @@
                         th:text="|${doctor.firstName} ${doctor.lastName}|"></a></li>
                        <!--  or diagnosisPanel -->
                 <li th:remove="${diagnosisPanel}? none : all"><a
-                        th:href="@{|/hospital/${hospital.id}/laboratory/${laboratory.id}/diagnosisPanel/${dpid}|}" 
+                        th:href="@{|/hospital/${hospital.id}/laboratory/${lid}/diagnosisPanel/${dpid}|}" 
                         th:class="'active'"
                         th:text="${panelName}"></a></li>
         </ol>

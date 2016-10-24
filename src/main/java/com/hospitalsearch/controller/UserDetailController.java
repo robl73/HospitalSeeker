@@ -1,13 +1,10 @@
 package com.hospitalsearch.controller;
 
 
-import com.hospitalsearch.entity.User;
-import com.hospitalsearch.entity.UserDetail;
+import com.hospitalsearch.entity.*;
 import com.hospitalsearch.service.*;
-import com.hospitalsearch.entity.PatientCard;
-import com.hospitalsearch.entity.PatientInfo;
-
 import com.hospitalsearch.util.Gender;
+import com.hospitalsearch.util.Disease;
 import com.hospitalsearch.util.Page;
 import com.hospitalsearch.util.PrincipalConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +15,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 public class UserDetailController {
@@ -87,23 +87,10 @@ public class UserDetailController {
         UserDetail userDetail = user.getUserDetails();
         model.addAttribute("edit", false);
         model.addAttribute("userDetail", userDetail);
+
         model.addAttribute("gender", Gender.values());
         model.addAttribute("email", user.getEmail());
         model.addAttribute("read", true);
         return "user/detail";
     }
-
-//    @RequestMapping("/doctors")
-//    public String renderSearchDoctors(Map<String, Object> model,
-//                                  @RequestParam(value = "d", required = false) String query) throws ParseException, InterruptedException, HospitalControllerAdvice.FilterHospitalListEmptyException {
-//        if (query != null && !query.isEmpty()) {
-//            this.pageableContent = doctorInfoService.advancedDoctorSearch(query);
-//        }
-//        this.initializeModel(model, 1);
-////        if(this.pageableContent.getResultListCount() == 0){
-////            throw new HospitalControllerAdvice.FilterHospitalListEmptyException("Empty list");
-////        }
-//        return "";
-//    }
-
 }

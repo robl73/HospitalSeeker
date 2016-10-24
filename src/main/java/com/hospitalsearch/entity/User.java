@@ -26,10 +26,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 })
 
 public class User implements Comparable<User> {
-    
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_gen")
-    @SequenceGenerator(name = "users_gen", sequenceName = "users_id_seq", initialValue = 1, allocationSize = 1)
+	@SequenceGenerator(name = "users_gen", sequenceName = "users_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
 
 	@Email
@@ -37,7 +37,7 @@ public class User implements Comparable<User> {
 	@Column(unique = true, nullable = false)
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
 	private String email;
-        
+
 	@JsonIgnore
 	@NotNull
 	@Column(nullable = false)
@@ -52,7 +52,7 @@ public class User implements Comparable<User> {
 	@Fetch(FetchMode.SELECT)
 	private Set<Role> userRoles = new HashSet<>();
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="userdetails_id")
 	@Fetch(FetchMode.SELECT)
 	@ContainedIn

@@ -36,181 +36,181 @@ import java.util.UUID;
 @Controller
 public class UserController {
 
-    @Autowired
-    private HttpServletRequest request;
+	@Autowired
+	private HttpServletRequest request;
 
-    @Autowired
-    UserService userService;
+	@Autowired
+	UserService userService;
 
-    @Autowired
-    RoleService roleService;
+	@Autowired
+	RoleService roleService;
 
-    @Autowired
-    MailService mailService;
+	@Autowired
+	MailService mailService;
 
-    @Autowired
-    VerificationTokenService verificationTokenService;
+	@Autowired
+	VerificationTokenService verificationTokenService;
 
-    @Autowired
-    PasswordResetTokenService passwordResetTokenService;
+	@Autowired
+	PasswordResetTokenService passwordResetTokenService;
 
-    @Autowired
-    PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
+	@Autowired
+	PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
 
-    @Autowired
-    private MessageSource messageSource;
+	@Autowired
+	private MessageSource messageSource;
 
-    private static String emailTemplate = "emailTemplate.vm";
+	private static String emailTemplate = "emailTemplate.vm";
 
-    @ModelAttribute("roles")
-    public List<Role> initializeRoles() {
-        return roleService.getAll();
+	@ModelAttribute("roles")
+	public List<Role> initializeRoles() {
+		return roleService.getAll();
+	}
+
+	@RequestMapping(value = "/login")
+	public String loginPage(ModelMap model) {
+		model.addAttribute("email", request.getParameter("email"));
+		model.addAttribute("error", request.getParameter("error"));
+		return "login";
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			persistentTokenBasedRememberMeServices.logout(request, response, auth);
+			SecurityContextHolder.getContext().setAuthentication(null);
+		}
+		try {
+			request.logout();
+		} catch (ServletException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/";
+	}
+
+	@RequestMapping(value = "/registration", method = RequestMethod.GET)
+	public String getRegistration(@ModelAttribute("userDto") UserRegisterDTO userDto, ModelMap model) {
+		model.addAttribute("userRegisterDto", userDto);
+		return "/registration";
+	}
+	/*
+        @RequestMapping(value = "/registration", method = RequestMethod.POST)
+        public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
+                                   BindingResult result, ModelMap model, Locale locale) {
+            if (result.hasErrors()) {
+                return "registration";
+            }
+            User user = userService.register(userDto);
+            String token = getRandomToken();
+            verificationTokenService.createToken(token, user);
+            try {
+                String confirmationMessage = mailService.createRegisterMessage(user, token, locale);
+                mailService.sendMessage(user, messageSource.getMessage("mail.message.registration.confirm", null, locale), confirmationMessage, emailTemplate);
+                model.addAttribute("emailSuccess", userDto.getEmail());
+                return "/user/endRegistration";
+            } catch (MailException | ConnectException e) {
+                model.addAttribute("emailError", userDto.getEmail());
+                verificationTokenService.deleteTokenByUser(user);
+                userService.changeStatus(user.getId());
+                userService.delete(user.getId());
+                return "/error/emailMessage";
+            }
     }
+    */
+	@RequestMapping(value = "/registration", method = RequestMethod.POST)
+	public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
+							   BindingResult result, ModelMap model, Locale locale) {
+		if (result.hasErrors()) {
+			return "registration";
+		}
+		User user = userService.register(userDto);
+		String token = getRandomToken();
+		verificationTokenService.createToken(token, user);
+		try {
+			String confirmationMessage = mailService.createRegisterMessage(user, token, locale);
+			mailService.sendMessage(user, messageSource.getMessage("mail.message.registration.confirm", null, locale), confirmationMessage, emailTemplate);
+		} catch (MailException | ConnectException e) {
+			model.addAttribute("emailError", userDto.getEmail());
+			verificationTokenService.deleteTokenByUser(user);
+			userService.changeStatus(user.getId());
+			return "/user/endRegistration";
+		}
+		model.addAttribute("emailSuccess", userDto.getEmail());
+		return "/user/endRegistration";
+	}
 
-    @RequestMapping(value = "/login")
-    public String loginPage(ModelMap model) {
-        model.addAttribute("email", request.getParameter("email"));
-        model.addAttribute("error", request.getParameter("error"));
-        return "login";
-    }
+	@RequestMapping(value = "/confirmRegistration", method = RequestMethod.GET)
+	public String confirmRegistration(@RequestParam("token") String token, ModelMap model) {
+		VerificationToken verificationToken = verificationTokenService.getByToken(token);
+		if (verificationToken == null) {
+			model.addAttribute("invalidToken", "invalidToken");
+			return "/user/confirmRegistration";
+		}
+		User user = verificationToken.getUser();
+		user.setEnabled(true);
+		userService.update(user);
+		verificationTokenService.delete(verificationToken);
+		model.addAttribute("confirmEmail", user.getEmail());
+		return "/user/confirmRegistration";
+	}
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            persistentTokenBasedRememberMeServices.logout(request, response, auth);
-            SecurityContextHolder.getContext().setAuthentication(null);
-        }
-        try {
-            request.logout();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
-        return "redirect:/";
-    }
+	@RequestMapping(value = "/confirmResetPassword", method = RequestMethod.GET)
+	public String confirmResetPassword(@RequestParam("token") String token, ModelMap model) {
+		PasswordResetToken passwordResetToken = passwordResetTokenService.getByToken(token);
+		if (passwordResetToken == null) {
+			model.addAttribute("invalidToken", "invalidToken");
+			return "/user/confirmResetPassword";
+		}
+		String email = passwordResetToken.getUser().getEmail();
+		model.addAttribute("userDto", new UserRegisterDTO(email));
+		return "/user/confirmResetPassword";
+	}
 
-    @RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public String getRegistration(@ModelAttribute("userDto") UserRegisterDTO userDto, ModelMap model) {
-        model.addAttribute("userRegisterDto", userDto);
-        return "/registration";
-    }
-/*
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
-                               BindingResult result, ModelMap model, Locale locale) {
-        if (result.hasErrors()) {
-            return "registration";
-        }
-        User user = userService.register(userDto);
-        String token = getRandomToken();
-        verificationTokenService.createToken(token, user);
-        try {
-            String confirmationMessage = mailService.createRegisterMessage(user, token, locale);
-            mailService.sendMessage(user, messageSource.getMessage("mail.message.registration.confirm", null, locale), confirmationMessage, emailTemplate);
-            model.addAttribute("emailSuccess", userDto.getEmail());
-            return "/user/endRegistration";
-        } catch (MailException | ConnectException e) {
-            model.addAttribute("emailError", userDto.getEmail());
-            verificationTokenService.deleteTokenByUser(user);
-            userService.changeStatus(user.getId());
-            userService.delete(user.getId());
-            return "/error/emailMessage";
-        }
-}
-*/
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registerUser(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
-                               BindingResult result, ModelMap model, Locale locale) {
-        if (result.hasErrors()) {
-            return "registration";
-        }
-        User user = userService.register(userDto);
-        String token = getRandomToken();
-        verificationTokenService.createToken(token, user);
-        try {
-            String confirmationMessage = mailService.createRegisterMessage(user, token, locale);
-            mailService.sendMessage(user, messageSource.getMessage("mail.message.registration.confirm", null, locale), confirmationMessage, emailTemplate);
-        } catch (MailException | ConnectException e) {
-            model.addAttribute("emailError", userDto.getEmail());
-            verificationTokenService.deleteTokenByUser(user);
-            userService.changeStatus(user.getId());
-            return "/user/endRegistration";
-        }
-        model.addAttribute("emailSuccess", userDto.getEmail());
-        return "/user/endRegistration";
-    }
+	@RequestMapping(value = "/confirmResetPassword", method = RequestMethod.POST)
+	public String confirmResetPass(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
+								   BindingResult result, ModelMap model) {
+		if (result.hasFieldErrors("password") || result.hasFieldErrors("confirmPassword")) {
+			return "user/confirmResetPassword";
+		}
+		try {
+			userService.resetPassword(userDto.getEmail(), userDto.getPassword());
+			passwordResetTokenService.deleteTokenByUser(userService.getByEmail(userDto.getEmail()));
+			model.addAttribute("successReset", "successReset");
+		} catch (ResetPasswordException e) {
+			model.addAttribute("errorReset", "errorReset");
+			e.printStackTrace();
+		}
+		model.addAttribute("userDto", null);
+		return "/user/confirmResetPassword";
+	}
 
-    @RequestMapping(value = "/confirmRegistration", method = RequestMethod.GET)
-    public String confirmRegistration(@RequestParam("token") String token, ModelMap model) {
-        VerificationToken verificationToken = verificationTokenService.getByToken(token);
-        if (verificationToken == null) {
-            model.addAttribute("invalidToken", "invalidToken");
-            return "/user/confirmRegistration";
-        }
-        User user = verificationToken.getUser();
-        user.setEnabled(true);
-        userService.update(user);
-        verificationTokenService.delete(verificationToken);
-        model.addAttribute("confirmEmail", user.getEmail());
-        return "/user/confirmRegistration";
-    }
+	@ResponseBody
+	@RequestMapping(value = "resetPassword", method = RequestMethod.GET)
+	public String resetPassword(@RequestParam("email") String email) throws ConnectException {
+		User user = userService.getByEmail(email);
+		Locale locale = LocaleContextHolder.getLocale();
+		if (user == null) {
+			return "invalidEmail";
+		}
+		if (verificationTokenService.getByUser(user) != null) {
+			return "inactivated";
+		}
+		if (!user.getEnabled()) {
+			return "banned";
+		}
+		if (passwordResetTokenService.getByUser(user) != null) {
+			return "tokenCreated";
+		}
+		String token = getRandomToken();
+		passwordResetTokenService.createToken(token, user);
+		String resetPasswordMessage = mailService.createResetPasswordMessage(user, token, locale);
+		mailService.sendMessage(user, messageSource.getMessage("mail.message.forgot.password", null, locale), resetPasswordMessage, emailTemplate);
+		return "success";
+	}
 
-    @RequestMapping(value = "/confirmResetPassword", method = RequestMethod.GET)
-    public String confirmResetPassword(@RequestParam("token") String token, ModelMap model) {
-        PasswordResetToken passwordResetToken = passwordResetTokenService.getByToken(token);
-        if (passwordResetToken == null) {
-            model.addAttribute("invalidToken", "invalidToken");
-            return "/user/confirmResetPassword";
-        }
-        String email = passwordResetToken.getUser().getEmail();
-        model.addAttribute("userDto", new UserRegisterDTO(email));
-        return "/user/confirmResetPassword";
-    }
-
-    @RequestMapping(value = "/confirmResetPassword", method = RequestMethod.POST)
-    public String confirmResetPass(@Valid @ModelAttribute("userDto") UserRegisterDTO userDto,
-                                   BindingResult result, ModelMap model) {
-        if (result.hasFieldErrors("password") || result.hasFieldErrors("confirmPassword")) {
-            return "user/confirmResetPassword";
-        }
-        try {
-            userService.resetPassword(userDto.getEmail(), userDto.getPassword());
-            passwordResetTokenService.deleteTokenByUser(userService.getByEmail(userDto.getEmail()));
-            model.addAttribute("successReset", "successReset");
-        } catch (ResetPasswordException e) {
-            model.addAttribute("errorReset", "errorReset");
-            e.printStackTrace();
-        }
-        model.addAttribute("userDto", null);
-        return "/user/confirmResetPassword";
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "resetPassword", method = RequestMethod.GET)
-    public String resetPassword(@RequestParam("email") String email) throws ConnectException {
-        User user = userService.getByEmail(email);
-        Locale locale = LocaleContextHolder.getLocale();
-        if (user == null) {
-            return "invalidEmail";
-        }
-        if (verificationTokenService.getByUser(user) != null) {
-            return "inactivated";
-        }
-        if (!user.getEnabled()) {
-            return "banned";
-        }
-        if (passwordResetTokenService.getByUser(user) != null) {
-            return "tokenCreated";
-        }
-        String token = getRandomToken();
-        passwordResetTokenService.createToken(token, user);
-        String resetPasswordMessage = mailService.createResetPasswordMessage(user, token, locale);
-        mailService.sendMessage(user, messageSource.getMessage("mail.message.forgot.password", null, locale), resetPasswordMessage, emailTemplate);
-        return "success";
-    }
-
-    //utility methods
-    private String getRandomToken() {
-        return UUID.randomUUID().toString().replaceAll("-", "");
-    }
+	//utility methods
+	private String getRandomToken() {
+		return UUID.randomUUID().toString().replaceAll("-", "");
+	}
 }

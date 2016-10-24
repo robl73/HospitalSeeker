@@ -15,7 +15,7 @@
     <div id="content" class="content">
         <div class="about text-center container">
             <input type="hidden" id="path" th:value="${#httpServletRequest.getContextPath()}"/>
-            <div th:remove="${itemsNumber} &gt; ${itemsPerPage}?'none':'all'" class="row">
+            <div class="row">
                 <div id="filter-panel" class="collapse filter-panel">
                     <div class="panel panelF-default">
                         <div class="panel-body">
@@ -27,8 +27,6 @@
                                                 th:text="${number}"
                                                 th:value="${number}"
                                                 th:classappend="${number == itemsPerPage}?'selected':''"/>
-
-
                                     </select>
                                     <input type="hidden" name="currentSearchQuery" th:value="${currentSearchQuery}"/>
                                     <input type="hidden" th:field="*{type}" th:value="${type}"/>

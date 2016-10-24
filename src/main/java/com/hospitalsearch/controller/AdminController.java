@@ -37,7 +37,6 @@ import com.hospitalsearch.service.MailService;
 import com.hospitalsearch.service.RoleService;
 import com.hospitalsearch.service.UserService;
 
-
 /**
  * @author Andrew Jasinskiy on 10.05.16
  */
@@ -240,55 +239,41 @@ public class AdminController {
         }
     }
     
+
     
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "admin/allDepartmentsName", method = RequestMethod.GET)
-    public String allDepartmentsName(ModelMap model) {
-       List departmentnames = departmentsNameService.getAll();
+    @RequestMapping(value = "admin/departmentsName", method = RequestMethod.GET)
+    public String allDepartmentsName(ModelMap model,DepartmentsName departmentsName) {
+       List<DepartmentsName> departmentnames = departmentsNameService.getAll();
        model.addAttribute("departmentnames", departmentnames);
+       model.addAttribute("departmentsName", departmentsName);
        return "admin/departmentsName";
     } 
-           
-  
-   /* 
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "admin/allDepartmentsName", method = RequestMethod.GET)
-    public String allDepartmentsName(@ModelAttribute ArrayList<DepartmentsName>  departmentnames) {
-       departmentnames = (ArrayList<DepartmentsName>) departmentsNameService.getAll(); 
-       return "admin/departmentsName";
-    } 
+
     
-    */
- /*
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "admin/allDepartmentsName", method = RequestMethod.POST)
-    public String addDepartmentsName(@RequestParam DepartmentsName departmentsname) {
-        departmentsNameService.save(departmentsname);
-    return "admin/departmentsName";
-    }  
-  */
+    
     
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "admin/addDepartmentsName", method = RequestMethod.POST)
-    public RedirectView addDepartmentsName(@Valid @ModelAttribute DepartmentsName departmentsname,
+    public String addDepartmentsName(@Valid @ModelAttribute DepartmentsName departmentsName,        
                                      BindingResult result,
                                      ModelMap model,
                                      RedirectAttributes rda) {
      
         if(result.hasErrors()){
-            return new RedirectView("/admin/allDepartmentsName",true);
+     // return "redirect:departmentsName";
+        return "admin/departmentsName";
         }
-     
-        departmentsNameService.save(departmentsname);
-    return new RedirectView("/admin/allDepartmentsName",true);
+        departmentsNameService.save(departmentsName);
+        return "redirect:departmentsName";
     }
  
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "admin/deleteDepartmentsName", method = RequestMethod.GET, params="id")
-    public RedirectView deleteDepartmentsName(@RequestParam Long id){
+    public String deleteDepartmentsName(@RequestParam Long id){    
         departmentsNameService.delete(departmentsNameService.getById(id));
-        return new RedirectView("/admin/allDepartmentsName",true);
+        return "redirect:departmentsName";
+        
     }
-    
-  
 }
+    

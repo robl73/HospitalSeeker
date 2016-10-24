@@ -30,7 +30,6 @@ public class FeedbackController {
     
     @Autowired
     private FeedbackService feedbackService;
-
     @RequestMapping(value="/doctor/feedback", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
     public void profile(@RequestParam("doctorId") Long doctorId, @RequestParam("message") String message) {
@@ -53,7 +52,7 @@ public class FeedbackController {
             if (producerId.equals(doctorInfo.getUserDetails().getUser().getId())) {
                 allowAddFeedback = false;
             } else {
-                if (feedbackService.isUserCreateFeedback(producerId, doctorId)) {
+                if (feedbackService.isUserCreatedFeedback(producerId, doctorId)) {
                     allowAddFeedback = false;
                 }
             }
