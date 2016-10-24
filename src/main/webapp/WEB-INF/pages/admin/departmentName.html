@@ -67,9 +67,12 @@
       <label for="name" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.name}">name</label>
       <div class="col-lg-10">
- <!--     <input class="form-control"  placeholder="name" type="text"    -->
-          <input class="form-control"  placeholder="name" type="text" maxlength="20" pattern="[a-zа-я]{3,20}" required=""
-                 th:field="*{name}" ></input>
+                <input class="form-control"  placeholder="name" type="text" 
+                       th:field="*{name}" th:errorclass="has-error"></input>   
+            <!--
+                <input class="form-control"  placeholder="name" type="text" maxlength="20" pattern="[a-zа-я]{3,20}" required="" 
+                       th:field="*{name}" th:errorclass="has-error"></input>
+            -->
           
           <p th:if="${#fields.hasErrors('name')}"
              th:errors="*{name}" 
@@ -92,9 +95,12 @@
       <label for="specialization" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.specialization}">specialization</label>
       <div class="col-lg-10">
-<!--    <input class="form-control" placeholder="specialization" type="text" -->
+        <input class="form-control" placeholder="specialization" type="text"  
+               th:field="*{specialization}" th:errorclass="has-error"></input>
+    <!--    
         <input class="form-control" placeholder="specialization" type="text" maxlength="20" pattern="[a-zа-я]{0,20}" 
-               th:field="*{specialization}" ></input>
+               th:field="*{specialization}" th:errorclass="has-error"></input>
+    -->
           
         <p th:if="${#fields.hasErrors('specialization')}"
            th:errors="*{specialization}" 
@@ -118,9 +124,12 @@
       <label for="number" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.number}">number</label>
       <div class="col-lg-10">
-<!--    <input class="form-control" placeholder="number" type="text"    -->
-        <input class="form-control" placeholder="number" type="number" min="1" max="99" step="1"
-               th:field="*{number}" th:errorclass="has-error"></input>
+            <input class="form-control" placeholder="number" type="number" 
+                   th:field="*{number}" th:errorclass="has-error"></input>   
+        <!-- 
+            <input class="form-control" placeholder="number" type="number" min="1" max="99" step="1"
+                   th:field="*{number}" th:errorclass="has-error"></input>
+        -->
  
         <p th:if="${#fields.hasErrors('number')}"
            th:errors="*{number}" 
