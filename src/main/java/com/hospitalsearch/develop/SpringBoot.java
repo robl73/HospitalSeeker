@@ -1,3 +1,4 @@
+/*
 package com.hospitalsearch.develop;
 
 import org.apache.coyote.http11.Http11NioProtocol;
@@ -13,9 +14,7 @@ import org.springframework.core.env.Environment;
 
 import javax.annotation.Resource;
 
-/**
- * Created by george on 10/13/2016.
- */
+
 
 @SpringBootApplication
 @PropertySource(value = "classpath:springBoot.properties")
@@ -44,3 +43,5 @@ public class SpringBoot {
     }
 
 }
+
+*/
