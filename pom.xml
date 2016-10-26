@@ -9,17 +9,17 @@
     <packaging>war</packaging>
 
     <properties>
+        <keystoreFile>/home/george/.keystore</keystoreFile>
+        <keystorePass>password</keystorePass>
         <java.target.version>1.8</java.target.version>
         <java.source.version>1.8</java.source.version>
         <spring.core>4.2.5.RELEASE</spring.core>
         <spring.data>1.10.1.RELEASE</spring.data>
         <spring.security>4.0.4.RELEASE</spring.security>
-        <hibernate.core>4.3.10.Final</hibernate.core>
+        <hibernate.core>4.3.11.Final</hibernate.core>
         <hibernate.validation>4.3.2.Final</hibernate.validation>
         <hibernate.annotation>1.0.0.Draft-16</hibernate.annotation>
-        <hibernate.search.orm>
-            5.3.0.Final
-        </hibernate.search.orm>
+        <hibernate.search.orm>5.3.0.Final</hibernate.search.orm>
         <hibernate-encache>4.3.11.Final</hibernate-encache>
         <servlet.api>3.1.0</servlet.api>
         <jsp.api>2.0</jsp.api>
@@ -43,45 +43,19 @@
 
     </properties>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.3.7.RELEASE</version>
-    </parent>
-
     <dependencies>
+
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.0.Final</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.7</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.8.9</version>
         </dependency>
 
         <!-- Spring core -->
@@ -211,8 +185,6 @@
             <version>${hibernate.search.orm}</version>
         </dependency>
 
-
-
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-commons-annotations</artifactId>
@@ -255,14 +227,7 @@
             <version>${spring.security}</version>
         </dependency>
 
-
-
-        <!-- Servlet API -->
-        <!--<dependency>-->
-        <!--<groupId>org.codehaus.jackson</groupId>-->
-        <!--<artifactId>jackson-mapper-asl</artifactId>-->
-        <!--<version>1.9.13</version>-->
-        <!--</dependency>-->
+        <!-- Jackson -->
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -275,6 +240,9 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.5.0</version>
         </dependency>
+
+
+        <!-- Servlet API -->
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -359,26 +327,26 @@
         </dependency>
         <!-- Liquibase -->
 
-              <!--<dependency>-->
-                  <!--<groupId>org.liquibase</groupId>-->
-                  <!--<artifactId>liquibase-core</artifactId>-->
-                  <!--<version>${liquibase.core}</version>-->
-              <!--</dependency>-->
+        <dependency>
+          <groupId>org.liquibase</groupId>
+          <artifactId>liquibase-core</artifactId>
+          <version>${liquibase.core}</version>
+        </dependency>
 
-              <!--<dependency>-->
-                  <!--<groupId>org.liquibase</groupId>-->
-                  <!--<artifactId>liquibase-maven-plugin</artifactId>-->
-                  <!--<version>${liquibase.plugin}</version>-->
-                  <!--<scope>test</scope>-->
-              <!--</dependency>-->
+        <dependency>
+          <groupId>org.liquibase</groupId>
+          <artifactId>liquibase-maven-plugin</artifactId>
+          <version>${liquibase.plugin}</version>
+          <scope>test</scope>
+        </dependency>
 
 
-              <!--<dependency>-->
-                  <!--<groupId>org.liquibase.ext</groupId>-->
-                  <!--<artifactId>liquibase-hibernate4</artifactId>-->
-                  <!--<version>${liquibase.hibernate4}</version>-->
-                  <!--<scope>test</scope>-->
-              <!--</dependency>-->
+        <dependency>
+          <groupId>org.liquibase.ext</groupId>
+          <artifactId>liquibase-hibernate4</artifactId>
+          <version>${liquibase.hibernate4}</version>
+          <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -435,41 +403,7 @@
         <finalName>HospitalSeeker</finalName>
 
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.hospitalsearch.develop.SpringBoot</mainClass>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>springloaded</artifactId>
-                        <version>1.2.6.RELEASE</version>
-                    </dependency>
 
-                    <!--<dependency>-->
-                        <!--<groupId>org.liquibase</groupId>-->
-                        <!--<artifactId>liquibase-core</artifactId>-->
-                        <!--<version>${liquibase.core}</version>-->
-                    <!--</dependency>-->
-
-                    <!--<dependency>-->
-                        <!--<groupId>org.liquibase</groupId>-->
-                        <!--<artifactId>liquibase-maven-plugin</artifactId>-->
-                        <!--<version>${liquibase.plugin}</version>-->
-                        <!--&lt;!&ndash;<scope>test</scope>&ndash;&gt;-->
-                    <!--</dependency>-->
-
-                    <!--<dependency>-->
-                        <!--<groupId>org.liquibase.ext</groupId>-->
-                        <!--<artifactId>liquibase-hibernate4</artifactId>-->
-                        <!--<version>${liquibase.hibernate4}</version>-->
-                        <!--&lt;!&ndash;<scope>test</scope>&ndash;&gt;-->
-                    <!--</dependency>-->
-
-                </dependencies>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -487,80 +421,117 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.liquibase</groupId>-->
-                <!--<artifactId>liquibase-maven-plugin</artifactId>-->
-                <!--<version>${liquibase.plugin}</version>-->
-                <!--<configuration>-->
-                    <!--<propertyFile>target/classes/liquibase.properties</propertyFile>-->
-                    <!--<propertyFile>src/main/resources/liquibase.properties</propertyFile>-->
 
-                    <!--<rollbackCount>1</rollbackCount>-->
-                    <!--<tag>tagForChange</tag>-->
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.plugin}</version>
+                <configuration>
+                    <propertyFile>target/classes/liquibase.properties</propertyFile>
+                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
 
-                    <!--<outputDirectory>src/main/resources/LiquiBaseReportTable/HospitalDbChangeJavaDoc</outputDirectory>-->
+                    <rollbackCount>1</rollbackCount>
+                    <tag>tagForChange</tag>
 
-                    <!--<referenceUrl>-->
-                        <!--hibernate:spring:com.hospitalsearch.entity?dialect=org.hibernate.dialect.PostgreSQLDialect-->
-                    <!--</referenceUrl>-->
-                    <!--<diffChangeLogFile>src/main/resources/liquibase-changeLogForDiff.xml</diffChangeLogFile>-->
+                    <outputDirectory>src/main/resources/LiquiBaseReportTable/HospitalDbChangeJavaDoc</outputDirectory>
 
-                    <!--<diffTypes> tables, views, columns, indexes, foreignkeys, primarykeys, uniqueconstraints, data </diffTypes>-->
+                    <referenceUrl>
+                        hibernate:spring:com.hospitalsearch.entity?dialect=org.hibernate.dialect.PostgreSQLDialect
+                    </referenceUrl>
+                    <diffChangeLogFile>src/main/resources/liquibase-changeLogForDiff.xml</diffChangeLogFile>
 
-                    <!--<outputChangeLogFile>src/main/resources/outputChangeLogFile.xml </outputChangeLogFile>-->
+                    <diffTypes> tables, views, columns, indexes, foreignkeys, primarykeys, uniqueconstraints, data </diffTypes>
 
-                <!--</configuration>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<phase>process-resources</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>status</goal>-->
-                            <!--<goal>tag</goal>-->
-                            <!--<goal>update</goal>-->
-                            <!--<goal>rollback</goal>-->
-                            <!--<goal>dbDoc</goal>-->
-                            <!--<goal>generateChangeLog</goal>-->
+                    <outputChangeLogFile>src/main/resources/outputChangeLogFile.xml </outputChangeLogFile>
 
-                            <!--<goal>diff</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
+                </configuration>
+                <!--<executions>
+                     <execution>
+                         <phase>process-resources</phase>
+                         <goals>
+                             <goal>status</goal>
+                             <goal>tag</goal>
+                             <goal>update</goal>
+                             <goal>rollback</goal>
+                             <goal>dbDoc</goal>
+                             <goal>generateChangeLog</goal>
 
-                <!--</executions>-->
+                             <goal>diff</goal>
+                         </goals>
+                     </execution>
+                 </executions>-->
 
-                <!--&lt;!&ndash;-->
-                        <!--<executions>-->
-                            <!--<execution>-->
-                                <!--<phase>compile</phase>-->
-                                <!--<goals>-->
-                                                 <!--<goal>status</goal>-->
-                                                 <!--<goal>update</goal>-->
-                                                 <!--<goal>dbDoc</goal>-->
-                                <!--</goals>-->
-                            <!--</execution>-->
-                        <!--</executions>-->
-                                <!--&ndash;&gt;-->
-                <!--<extensions>true</extensions>-->
-                <!--<dependencies>-->
-                    <!--<dependency>-->
-                        <!--<groupId>org.liquibase.ext</groupId>-->
-                        <!--&lt;!&ndash; <artifactId>liquibase-hibernate4.2</artifactId> &ndash;&gt;-->
-                        <!--<artifactId>liquibase-hibernate4</artifactId>-->
-                        <!--<version>${liquibase.hibernate4}</version>-->
-                    <!--</dependency>-->
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <!--<goal>status</goal>
+                            <goal>diff</goal>
+                            <goal>update</goal>
+                            <goal>dbDoc</goal>-->
+                        </goals>
+                    </execution>
+                </executions>
 
-                    <!--<dependency>-->
-                        <!--<groupId>org.springframework</groupId>-->
-                        <!--<artifactId>spring-beans</artifactId>-->
-                        <!--<version>${spring.beans}</version>-->
-                    <!--</dependency>-->
-                    <!--<dependency>-->
-                        <!--<groupId>org.springframework.data</groupId>-->
-                        <!--<artifactId>spring-data-jpa</artifactId>-->
-                        <!--<version>${spring.data.jpa}</version>-->
-                    <!--</dependency>-->
+                <extensions>true</extensions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <!-- <artifactId>liquibase-hibernate4.2</artifactId> -->
+                        <artifactId>liquibase-hibernate4</artifactId>
+                        <version>${liquibase.hibernate4}</version>
+                    </dependency>
 
-                <!--</dependencies>-->
-            <!--</plugin>-->
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                        <version>${spring.beans}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework.data</groupId>
+                        <artifactId>spring-data-jpa</artifactId>
+                        <version>${spring.data.jpa}</version>
+                    </dependency>
+
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.1</version>
+                <dependencies>
+                       <dependency>
+                          <groupId>org.eclipse.jetty</groupId>
+                          <artifactId>jetty-server</artifactId>
+                          <version>9.3.9.v20160517</version>
+                       </dependency>
+                </dependencies>
+                <executions>
+                    <execution><goals><goal>java</goal></goals></execution>
+                </executions>
+                <configuration>
+
+                    <mainClass>com.hospitalsearch.config.SpringRootConfig</mainClass>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <contextFile>src/main/webapp/META-INF/context.xml</contextFile>
+                    <update>true</update>
+                    <httpPort>8080</httpPort>
+                    <httpsPort>8443</httpsPort>
+                    <url>http://localhost:8080/manager/text</url>
+                    <keystoreFile>${keystoreFile}</keystoreFile>
+                    <keystorePass>${keystorePass}</keystorePass>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 

@@ -3,11 +3,10 @@ package com.hospitalsearch.entity;
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.hospitalsearch.util.LocalDateTimeTimestampConverter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -32,7 +31,7 @@ public class Feedback {
 	@Fetch(FetchMode.JOIN)
 	private DoctorInfo consumer;
 
-	@OrderColumn
+	@Convert(converter = LocalDateTimeTimestampConverter.class)
 	private LocalDateTime date;
 
 	public Feedback(String message, User producer, DoctorInfo consumer, LocalDateTime date) {
@@ -41,6 +40,8 @@ public class Feedback {
 		this.consumer = consumer;
 		this.date = date;
 	}
+
+    private Boolean validated;
 
 	public Feedback() {}
 
@@ -84,5 +85,13 @@ public class Feedback {
 	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
-	
+
+    public Boolean getValidated() {
+        return validated;
+    }
+
+    public void setValidated(Boolean validated) {
+        this.validated = validated;
+    }
 }
+

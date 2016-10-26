@@ -9,7 +9,7 @@
     margin-right:-4px;
 }
 
-.fixed-panel {
+.fixed-panel-body {
     min-height: 148px;
     max-height: 148px;
     text-overflow: ellipsis;
@@ -56,3 +56,4 @@ textarea {
 #modal-body-text {
     word-wrap: break-word;
 }
+

@@ -20,4 +20,6 @@ public interface FeedbackDAO extends GenericDAO<Feedback, Long>{
 
 	List<Feedback> getFeedbacks(Long doctorId, int pageNumber, int pageSize);
 
+	long countOfFeedbacksByConsumer(Long doctorId);
+
 }

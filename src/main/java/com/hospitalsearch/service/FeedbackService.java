@@ -1,7 +1,9 @@
 package com.hospitalsearch.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.hospitalsearch.entity.DoctorInfo;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,4 +35,9 @@ public interface FeedbackService {
 
 	List<Feedback> getFeedbacks(Long doctorId, int pageNumber, int pageSize);
 
+	Map<String, Object> nextFeedbacks(Long doctorId, int rowNumber, int count);
+
+	boolean canWrite(String emailProducer, DoctorInfo doctorInfo);
+
 }
+
