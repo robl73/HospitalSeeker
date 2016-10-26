@@ -1,22 +1,18 @@
 package com.hospitalsearch.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
-import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
-import com.hospitalsearch.entity.Department;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hospitalsearch.dao.HospitalDAO;
 import com.hospitalsearch.dto.Bounds;
 import com.hospitalsearch.dto.HospitalDTO;
+import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
+import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
+import com.hospitalsearch.entity.Department;
 import com.hospitalsearch.entity.Hospital;
 import com.hospitalsearch.service.HospitalService;
 import com.hospitalsearch.util.HospitalFilterDTO;

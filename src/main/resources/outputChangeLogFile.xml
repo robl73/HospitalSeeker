@@ -1864,7 +1864,6 @@
         </createTable>
     </changeSet>
     <changeSet author="ruslan (generated)" id="1476820218212-21">
->>>>>>> c5260cde1e2cd7e31b12d9a8d1dff36f67064c9b
         <insert tableName="admintokenconfig">
             <column name="id" valueNumeric="1"/>
             <column name="token" value="RESET_PASSWORD_TOKEN_EXPIRATION"/>
