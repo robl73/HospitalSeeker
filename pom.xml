@@ -379,7 +379,32 @@
                   <!--<version>${liquibase.hibernate4}</version>-->
                   <!--<scope>test</scope>-->
               <!--</dependency>-->
+              
+              
+         <!-- Liquibase -->
 
+              <dependency>
+                  <groupId>org.liquibase</groupId>
+                  <artifactId>liquibase-core</artifactId>
+                  <version>${liquibase.core}</version>
+              </dependency>
+
+              <dependency>
+                  <groupId>org.liquibase</groupId>
+                  <artifactId>liquibase-maven-plugin</artifactId>
+                  <version>${liquibase.plugin}</version>
+                  <scope>test</scope>
+              </dependency>
+
+
+              <dependency>
+                  <groupId>org.liquibase.ext</groupId>
+                  <artifactId>liquibase-hibernate4</artifactId>
+                  <version>${liquibase.hibernate4}</version>
+                  <scope>test</scope>
+              </dependency>
+              
+              
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
@@ -562,6 +587,68 @@
 
                 <!--</dependencies>-->
             <!--</plugin>-->
+            
+            
+                <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.plugin}</version>
+                <configuration>
+                    <propertyFile>target/classes/liquibase.properties</propertyFile>
+                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+
+                    <rollbackCount>1</rollbackCount>
+                    <tag>tagForChange</tag>
+
+                    <outputDirectory>src/main/resources/LiquiBaseReportTable/HospitalDbChangeJavaDoc</outputDirectory>
+
+                    <referenceUrl>
+                        hibernate:spring:com.hospitalsearch.entity?dialect=org.hibernate.dialect.PostgreSQLDialect
+                    </referenceUrl>
+                    <diffChangeLogFile>src/main/resources/liquibase-changeLogForDiff.xml</diffChangeLogFile>
+
+                    <diffTypes> tables, views, columns, indexes, foreignkeys, primarykeys, uniqueconstraints, data </diffTypes>
+
+                    <outputChangeLogFile>src/main/resources/outputChangeLogFile.xml </outputChangeLogFile>
+
+                </configuration>
+                
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                                 <goal>status</goal>
+                                                 <goal>update</goal>
+                                                 <goal>dbDoc</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                               
+                <extensions>true</extensions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                     <!--   <artifactId>liquibase-hibernate4.2</artifactId> -->
+                        <artifactId>liquibase-hibernate4</artifactId>
+                        <version>${liquibase.hibernate4}</version>
+                    </dependency>
+                        
+
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                        <version>${spring.beans}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework.data</groupId>
+                        <artifactId>spring-data-jpa</artifactId>
+                        <version>${spring.data.jpa}</version>
+                    </dependency>
+
+                </dependencies>
+            </plugin>
+            
+            
         </plugins>
     </build>
 
