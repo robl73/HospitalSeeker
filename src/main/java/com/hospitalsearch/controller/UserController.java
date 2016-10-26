@@ -1,5 +1,6 @@
 package com.hospitalsearch.controller;
 
+import com.hospitalsearch.dto.NewDoctorRegistrationDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.PasswordResetToken;
 import com.hospitalsearch.entity.Role;
@@ -14,6 +15,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.MailSendException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,6 +29,7 @@ import javax.validation.Valid;
 import java.net.ConnectException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -38,6 +41,9 @@ public class UserController {
 
 	@Autowired
 	private HttpServletRequest request;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	UserService userService;
@@ -56,6 +62,12 @@ public class UserController {
 
 	@Autowired
 	PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
+
+	@Autowired
+	private DoctorInfoService doctorInfoService;
+
+	@Autowired
+	private DepartmentService departmentService;
 
 	@Autowired
 	private MessageSource messageSource;
@@ -141,18 +153,46 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/confirmRegistration", method = RequestMethod.GET)
-	public String confirmRegistration(@RequestParam("token") String token, ModelMap model) {
+	public String confirmRegistration(@ModelAttribute("userConfirmRegistration")UserRegisterDTO userRegisterDTO,
+									  @RequestParam("token") String token, ModelMap model) {
 		VerificationToken verificationToken = verificationTokenService.getByToken(token);
 		if (verificationToken == null) {
 			model.addAttribute("invalidToken", "invalidToken");
 			return "/user/confirmRegistration";
 		}
 		User user = verificationToken.getUser();
+		if(getRole(user.getUserRoles())){
+			user.setEnabled(true);
+			userService.update(user);
+			verificationTokenService.delete(verificationToken);
+			model.addAttribute("confirmEmail", user.getEmail());
+			return "/user/confirmRegistration";
+		} else {
+			userRegisterDTO.setEmail(user.getEmail());
+			model.addAttribute("userConfirmRegistration", userRegisterDTO);
+			return "/endRegistrationForDoctor";
+		}
+
+	}
+
+	@RequestMapping(value = "/endRegistrationForDoctor", method = RequestMethod.POST)
+	public String confirmRegistrationForDoctor(@Valid @ModelAttribute("userConfirmRegistration") UserRegisterDTO userDto,
+											   BindingResult result, ModelMap model) {
+		if (result.hasFieldErrors("password") || result.hasFieldErrors("confirmPassword")) {
+			return "endRegistrationForDoctor";
+		}
+		User user = userService.getByEmail(userDto.getEmail());
+		user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
 		user.setEnabled(true);
-		userService.update(user);
-		verificationTokenService.delete(verificationToken);
-		model.addAttribute("confirmEmail", user.getEmail());
-		return "/user/confirmRegistration";
+		VerificationToken verificationToken = verificationTokenService.getByUser(user);
+		try {
+			userService.update(user);
+			verificationTokenService.delete(verificationToken);
+		} catch (Exception e) {
+			model.addAttribute("errorReset", "errorReset");
+			e.printStackTrace();
+		}
+		return "/login";
 	}
 
 	@RequestMapping(value = "/confirmResetPassword", method = RequestMethod.GET)
@@ -212,5 +252,16 @@ public class UserController {
 	//utility methods
 	private String getRandomToken() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
+	}
+
+	public boolean getRole(Set<Role> roles) {
+		Boolean result = false;
+		for(Role role : roles){
+			if(role.getType().equals("PATIENT")){
+				result = true;
+				break;
+			}
+		}
+		return result;
 	}
 }

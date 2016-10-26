@@ -5,6 +5,7 @@ import com.hospitalsearch.dto.ViewForManagerDTO;
 import com.hospitalsearch.entity.Hospital;
 import com.google.gson.Gson;
 import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
+import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
 import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.*;
@@ -150,16 +151,17 @@ public class ManagerController {
         return "done";
     }
 
-
-    @PreAuthorize("hasRole('MANAGER')")
     @RequestMapping(value = "/newDoctor", method = RequestMethod.GET)
     public String getRegistration(@ModelAttribute("newDoctorDto") NewDoctorRegistrationDTO newDoctorRegistrationDTO,
                                   ModelMap model) {
-        newDoctorRegistrationDTO.setNameHospitals(hospitalService.getAllNameHospitalsByManager(
-                userService.getByEmail(PrincipalConverter.getPrincipal()).getId()));
-//        newDoctorRegistrationDTO.setCategorys(Arrays.asList( Category.values()));
-//        newDoctorRegistrationDTO.setSpecializations(Arrays.asList(Specialization.values()));
-        model.addAttribute("newDoctorDto", newDoctorRegistrationDTO);;
+        newDoctorRegistrationDTO.setNameHospitals(hospitalService
+                .getAllNameHospitalsByManager(userService.getByEmail(PrincipalConverter.getPrincipal()).getId()));
+        if(hospitalService
+                .getAllNameHospitalsByManager(userService.getByEmail(PrincipalConverter.getPrincipal()).getId()).size() == 1){
+            newDoctorRegistrationDTO.setNameDepartment(hospitalService.getAllNameDepartmentsByHospitals(hospitalService
+                    .getAllNameHospitalsByManager(userService.getByEmail(PrincipalConverter.getPrincipal()).getId()).get(0).getId()));
+        }
+        model.addAttribute("newDoctorDto", newDoctorRegistrationDTO);
         model.addAttribute("edit", true);
         return "/newDoctor";
     }
@@ -168,8 +170,7 @@ public class ManagerController {
     public void getDepartmentsNameByHospital(HttpServletRequest request,
                                              HttpServletResponse response) throws IOException {
         Long hospitalId = Long.valueOf(request.getParameter("hospitalId"));
-        List<NameDepartmensByHospitalDTO> nameDepartmensByHospitalDTOs =
-                hospitalService.getAllNameDepartmentsByHospitals(hospitalId);
+        List<NameDepartmensByHospitalDTO> nameDepartmensByHospitalDTOs = hospitalService.getAllNameDepartmentsByHospitals(hospitalId);
         String json = null;;
         json = new Gson().toJson(nameDepartmensByHospitalDTOs);
         response.setContentType("application/json");
@@ -178,8 +179,9 @@ public class ManagerController {
 
     @RequestMapping(value = "/newDoctor", method = RequestMethod.POST)
     public String newDoctorRegistration(@Valid @ModelAttribute("newDoctorDto") NewDoctorRegistrationDTO newDoctorRegistrationDTO,
-                                        ModelMap model, BindingResult result, Locale locale) {
+                                        BindingResult result, ModelMap model, Locale locale) {
         if (result.hasErrors()) {
+            model.addAttribute("edit", true);
             return "/newDoctor";
         }
         User user = userService.register(newDoctorRegistrationDTO);
@@ -202,12 +204,6 @@ public class ManagerController {
     private String getRandomToken() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
-
-//    @RequestMapping(value = "/manageDoctors", method = RequestMethod.GET)
-//    public String getDoctorsByManager(Map<String, Object> model) {
-//        model.put("doctors", managerService.getDoctorsByManager());
-//        return "manageDoctors";
-//    }
 
     @RequestMapping(value = "/editHospitalsManagers", method = RequestMethod.GET)
     public String getManagersAndHospitals(Map<String, Object> model) {

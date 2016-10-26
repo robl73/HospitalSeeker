@@ -35,7 +35,7 @@ public class User implements Comparable<User> {
 	@Email
 	@NotEmpty
 	@Column(unique = true, nullable = false)
-	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
+	@Field(analyze = Analyze.YES, analyzer = @Analyzer(definition = "ngramD"))
 	private String email;
 
 	@JsonIgnore

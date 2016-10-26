@@ -21,6 +21,7 @@ import java.util.List;
 
 @Controller
 public class UserDetailController {
+
     @Autowired
     UserDetailService userDetailService;
 
