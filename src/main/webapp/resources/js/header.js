@@ -18,9 +18,16 @@ $(function() {
 		if (event.which == 27 && $('.navbar-bootsnipp .bootsnipp-search').hasClass('open')) {
 			$('a[href="#toggle-search"]').trigger('click');
 		}
+
+		if($('#search-hospital-form').valid()){
+			$('#select_hospital_search_button').removeAttr('disabled');
+		}else {$('#select_hospital_search_button').prop('disabled',true);}
+
+		if($('#search-doctor-form').valid()){
+			$('#select_doctor_search_button').removeAttr('disabled');
+		}else {$('#select_doctor_search_button').prop('disabled',true);}
+
 	});
-
-
 
 });
 
@@ -32,6 +39,14 @@ $(document).ready(function(e){
 		$('.search-panel span#search_concept').text(concept);
 		$('.input-group #search_param').val(param);
 
+	});
+	$("#select_hospital_search").click(function () {
+		$('#select_doctor_search_button').prop('disabled',true);
+		$('#select_hospital_search_button').removeAttr('disabled');
+	});
+	$("#select_doctor_search").click(function () {
+		$('#select_hospital_search_button').prop('disabled',true);
+		$('#select_doctor_search_button').removeAttr('disabled');
 	});
 	$('#search-hospital-form').validate({
 		rules : {

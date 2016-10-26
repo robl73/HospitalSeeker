@@ -118,18 +118,7 @@ public class AppointmentValidationService {
                 userDetails.getBirthDate() == null ||
                 userDetails.getPhone() == null ||
                 userDetails.getAddress() == null ||
-                userDetails.getGender() == null ||
-                userDetails.getHeight() == null ||
-                userDetails.getWeight() == null ||
-                userDetails.getBloodType() == null ||
-                userDetails.getEyeColor() == null ||
-                userDetails.getHairColor() == null ||
-                userDetails.getAllergies() == null ||
-                userDetails.getCurrentMedication() == null ||
-                userDetails.getHeartProblems() == null ||
-                userDetails.getDiabetes() == null ||
-                userDetails.getEpilepsy() == null ||
-                userDetails.getRestrictions() == null || !validateRelativesInfos(userDetails.getRelativesInfos())){
+                userDetails.getGender() == null){
             return false;
         }
         return true;

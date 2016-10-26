@@ -14,14 +14,6 @@ import java.time.LocalDate;
 
 public class UserDetailRegisterDto {
 
-
-
-    /**
-     *SHOULD BE REMOVED -> UserDto (validation)
-     */
-
-
-
     @NotEmpty
     @Size(min = 2, max = 25)
     @Pattern(regexp = "[A-Z][a-z]*", message = "Incorrect name")

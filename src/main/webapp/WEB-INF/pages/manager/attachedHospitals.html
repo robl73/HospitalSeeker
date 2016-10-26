@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layout">
+<head>
+	<title th:text="#{title.manage}"></title>
+</head>
+<body>
+<section layout:fragment="content">
+	<div class="content">
+		<div class="team container">
+			<div th:if="${messageError}" id="messageError" class="helper col-md-12 col-lg-12 col-sm-12" style="margin-top: 100px;">
+				<div class="col-md-6 col-sm-6 col-lg-6
+             			col-md-offset-3 col-sm-offset-3 col-lg-offset-3" role="status">
+					<h4 class="error text-center" th:text="#{manager.hospitalspage.messageError}"></h4>
+				</div>
+			</div>
+			<div th:if="${hospitals!=null}">
+				<div class="row team-heading text-center">
+					<h1 style="text-transform:uppercase; color: blue; font-weight: 900;" th:text="#{manager.hospitalspage.title}"/>
+				</div>
+				<div class="row">
+					<div th:each="hospital:${hospitals}" class="col-md-2 single-member col-sm-5" style="padding: 2px; border-color:#5bc0de; border-width:3px; height: 400px;">
+						<div class="single-about-detail">
+							<a href="#" th:href="@{/attachedHospitals/{id}/manageDoctors(id=${hospital.id},hospitalName=${hospital.name})}">
+								<div class="about-img">
+									<img class="img-responsive" src="/"
+										 th:src="@{|/img/hospitals/${hospital.imagePath}|}" />
+
+								</div>
+								<div class="about-details" style="position: absolute; bottom:-140px; left: 0; right: 0;">
+									<div class="pentagon-text">
+										<h1 th:text="${#strings.substring(hospital.name,0,1)} " />
+									</div>
+									<h3 th:text="${hospital.name}" />
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+</body>
+</html>

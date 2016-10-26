@@ -1612,8 +1612,9 @@
         <addForeignKeyConstraint baseColumnNames="hospital_id" baseTableName="hospital_users" constraintName="fk_tcu91xpek54a086jamuakvoh8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="hospital"/>
     </changeSet>
 	
-	
-    <changeSet author="ruslan (generated)" id="1476820218212-1">
+
+
+    <changeSet author="lesia (generated)" id="1476976718625-1">
         <createTable tableName="admintokenconfig">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -1863,6 +1864,7 @@
         </createTable>
     </changeSet>
     <changeSet author="ruslan (generated)" id="1476820218212-21">
+>>>>>>> c5260cde1e2cd7e31b12d9a8d1dff36f67064c9b
         <insert tableName="admintokenconfig">
             <column name="id" valueNumeric="1"/>
             <column name="token" value="RESET_PASSWORD_TOKEN_EXPIRATION"/>
@@ -1879,6 +1881,7 @@
             <column name="value" valueNumeric="24"/>
         </insert>
     </changeSet>
+
     <changeSet author="ruslan (generated)" id="1476820218212-22">
         <insert tableName="appointment">
             <column name="id" valueNumeric="34"/>

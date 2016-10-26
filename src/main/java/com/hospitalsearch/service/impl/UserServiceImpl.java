@@ -46,6 +46,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private DepartmentService departmentService;
 
+    @Autowired
+    private DoctorInfoDAO doctorInfoDAO;
+
     @Override
     public void save(User newUser) {
         try {
@@ -53,15 +56,6 @@ public class UserServiceImpl implements UserService {
             UserDetail userDetail = new UserDetail();
             userDetail.setUser(newUser);
             newUser.setUserDetails(userDetail);
-            dao.save(newUser);
-        } catch (Exception e) {
-            logger.error("Error saving user: " + newUser, e);
-        }
-    }
-
-    public void addNewUser(User newUser) {
-        try {
-            logger.info("save user: " + newUser);
             dao.save(newUser);
         } catch (Exception e) {
             logger.error("Error saving user: " + newUser, e);
@@ -80,11 +74,10 @@ public class UserServiceImpl implements UserService {
 
             if (!userRegisterDTO.getUserRoles().isEmpty()) {
                 user.setUserRoles(userRegisterDTO.getUserRoles());
-            }/* else {
+            } else {
                 user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("PATIENT"))));
-            }*/
-//            save(user);
-            addNewUser(user);
+            }
+            save(user);
         } catch (Exception e) {
             System.out.println("Error register user");
             logger.error("Error register user: " + userRegisterDTO, e);
@@ -96,11 +89,6 @@ public class UserServiceImpl implements UserService {
     public User register(NewDoctorRegistrationDTO newDoctorRegistrationDTO) {
         User user = new User();
         try {
-            logger.info("register user: " + newDoctorRegistrationDTO);
-            user.setEmail(newDoctorRegistrationDTO.getEmail().toLowerCase());
-            user.setPassword(passwordEncoder.encode("password"));
-            user.setEnabled(newDoctorRegistrationDTO.getEnabled());
-            user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("DOCTOR"))));
             UserDetail userDetail = new UserDetail();
             userDetail.setFirstName(newDoctorRegistrationDTO.getFirstName());
             userDetail.setLastName(newDoctorRegistrationDTO.getLastName());
@@ -108,17 +96,25 @@ public class UserServiceImpl implements UserService {
             userDetail.setBirthDate(newDoctorRegistrationDTO.getBirthDate());
             userDetail.setPhone(newDoctorRegistrationDTO.getPhone());
             userDetail.setImagePath(newDoctorRegistrationDTO.getImagePath());
+
+            user.setEmail(newDoctorRegistrationDTO.getEmail().toLowerCase());
+            user.setPassword(passwordEncoder.encode("password"));
+            user.setEnabled(newDoctorRegistrationDTO.getEnabled());
+            user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("DOCTOR"))));
+            userDetail.setUser(user);
+            user.setUserDetails(userDetail);
+
             DoctorInfo doctorInfo = new DoctorInfo();
             List<Department> departments = new ArrayList<>();
-            departments.add(departmentService.getById(newDoctorRegistrationDTO.getNameDepartmentsId()));
+            //departments.add(departmentService.getById(newDoctorRegistrationDTO.getNameDepartmentsId()));
             doctorInfo.setDepartments(departments);
             doctorInfo.setSpecialization(newDoctorRegistrationDTO.getSpecialization());
             doctorInfo.setCategory(newDoctorRegistrationDTO.getCategory());
-            //userDetail.setDoctorInfo(doctorInfo);
-            user.setUserDetails(userDetail);
-            addNewUser(user);
+            doctorInfo.setUserDetails(userDetail);
+
+            dao.save(user);
+            doctorInfoDAO.save(doctorInfo);
         } catch (Exception e) {
-            System.out.println("Error register user");
             logger.error("Error register user: " + newDoctorRegistrationDTO, e);
         }
         return user;
@@ -231,7 +227,6 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
-    //Illia
     @Override
     public List<User> getByRole(String role, int pageNumber, int pageSize, String sortBy, Boolean order) {
         List<User> users = new ArrayList<>();

@@ -93,7 +93,7 @@
              th:text="#{admin.dashboard.department.show.table.header.specialization}">specialization</label>
       <div class="col-lg-10">
 <!--    <input class="form-control" placeholder="specialization" type="text" -->
-        <input class="form-control" placeholder="specialization" type="text" maxlength="20" pattern="[a-zа-я]{0,20}" 
+        <input class="form-control" placeholder="specialization" type="text" maxlength="20" pattern="[a-zа-я]{0,20}"
                th:field="*{specialization}" ></input>
           
         <p th:if="${#fields.hasErrors('specialization')}"

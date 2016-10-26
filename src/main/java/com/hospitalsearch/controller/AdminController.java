@@ -37,7 +37,6 @@ import com.hospitalsearch.service.MailService;
 import com.hospitalsearch.service.RoleService;
 import com.hospitalsearch.service.UserService;
 
-
 /**
  * @author Andrew Jasinskiy on 10.05.16
  */

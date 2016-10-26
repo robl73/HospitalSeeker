@@ -1,6 +1,5 @@
 package com.hospitalsearch.dao;
 
-import com.hospitalsearch.dao.GenericDAO;
 import com.hospitalsearch.entity.CardItem;
 import com.hospitalsearch.entity.PatientCard;
 import com.hospitalsearch.entity.User;

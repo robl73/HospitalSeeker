@@ -359,26 +359,26 @@
         </dependency>
         <!-- Liquibase -->
 
-        <!--      <dependency>
-                  <groupId>org.liquibase</groupId>
-                  <artifactId>liquibase-core</artifactId>
-                  <version>${liquibase.core}</version>
-              </dependency>
+              <!--<dependency>-->
+                  <!--<groupId>org.liquibase</groupId>-->
+                  <!--<artifactId>liquibase-core</artifactId>-->
+                  <!--<version>${liquibase.core}</version>-->
+              <!--</dependency>-->
 
-              <dependency>
-                  <groupId>org.liquibase</groupId>
-                  <artifactId>liquibase-maven-plugin</artifactId>
-                  <version>${liquibase.plugin}</version>
-                  <scope>test</scope>
-              </dependency>
+              <!--<dependency>-->
+                  <!--<groupId>org.liquibase</groupId>-->
+                  <!--<artifactId>liquibase-maven-plugin</artifactId>-->
+                  <!--<version>${liquibase.plugin}</version>-->
+                  <!--<scope>test</scope>-->
+              <!--</dependency>-->
 
 
-              <dependency>
-                  <groupId>org.liquibase.ext</groupId>
-                  <artifactId>liquibase-hibernate4</artifactId>
-                  <version>${liquibase.hibernate4}</version>
-                  <scope>test</scope>
-              </dependency>-->
+              <!--<dependency>-->
+                  <!--<groupId>org.liquibase.ext</groupId>-->
+                  <!--<artifactId>liquibase-hibernate4</artifactId>-->
+                  <!--<version>${liquibase.hibernate4}</version>-->
+                  <!--<scope>test</scope>-->
+              <!--</dependency>-->
 
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -448,25 +448,25 @@
                         <version>1.2.6.RELEASE</version>
                     </dependency>
 
-                    <dependency>
-                        <groupId>org.liquibase</groupId>
-                        <artifactId>liquibase-core</artifactId>
-                        <version>${liquibase.core}</version>
-                    </dependency>
+                    <!--<dependency>-->
+                        <!--<groupId>org.liquibase</groupId>-->
+                        <!--<artifactId>liquibase-core</artifactId>-->
+                        <!--<version>${liquibase.core}</version>-->
+                    <!--</dependency>-->
 
-                    <dependency>
-                        <groupId>org.liquibase</groupId>
-                        <artifactId>liquibase-maven-plugin</artifactId>
-                        <version>${liquibase.plugin}</version>
-                        <!--<scope>test</scope>-->
-                    </dependency>
+                    <!--<dependency>-->
+                        <!--<groupId>org.liquibase</groupId>-->
+                        <!--<artifactId>liquibase-maven-plugin</artifactId>-->
+                        <!--<version>${liquibase.plugin}</version>-->
+                        <!--&lt;!&ndash;<scope>test</scope>&ndash;&gt;-->
+                    <!--</dependency>-->
 
-                    <dependency>
-                        <groupId>org.liquibase.ext</groupId>
-                        <artifactId>liquibase-hibernate4</artifactId>
-                        <version>${liquibase.hibernate4}</version>
-                        <!--<scope>test</scope>-->
-                    </dependency>
+                    <!--<dependency>-->
+                        <!--<groupId>org.liquibase.ext</groupId>-->
+                        <!--<artifactId>liquibase-hibernate4</artifactId>-->
+                        <!--<version>${liquibase.hibernate4}</version>-->
+                        <!--&lt;!&ndash;<scope>test</scope>&ndash;&gt;-->
+                    <!--</dependency>-->
 
                 </dependencies>
             </plugin>

@@ -116,6 +116,7 @@ public class Hospital {
 
 	@OneToMany(mappedBy = "hospital", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@Fetch(value = FetchMode.SUBSELECT)
+	@IndexedEmbedded
 	private List<Department> departments;
 
 	@JsonIgnore

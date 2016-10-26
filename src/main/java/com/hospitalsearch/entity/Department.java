@@ -2,15 +2,12 @@ package com.hospitalsearch.entity;
 
 import java.util.List;
 
+
 import javax.persistence.*;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.ContainedIn;
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.*;
 
 
 @Entity
@@ -18,13 +15,13 @@ import org.hibernate.search.annotations.Field;
 public class Department{
 
 	@Id
-	@DocumentId
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_gen")
 	@SequenceGenerator(name = "department_gen", sequenceName = "department_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
 
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
 	private String name;
+
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "DEPARTMENT_DOCTORINFO", joinColumns = {
@@ -35,6 +32,7 @@ public class Department{
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@Fetch(FetchMode.JOIN)
+	@ContainedIn
 	private Hospital hospital;
 
 	@Column(name="imagepath")
@@ -82,4 +80,13 @@ public class Department{
 		this.imagePath = imagePath;
 	}
 
+//	@Override
+//	public String toString() {
+//		return "Department{" +
+//				"id=" + id +
+//				", name='" + name + '\'' +
+//				", doctors=" + doctors +
+//				", hospital=" + hospital +
+//				'}';
+//	}
 }

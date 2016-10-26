@@ -28,7 +28,6 @@ public class RelativesInfo {
     @Column(name="name")
     @Size(max = 50, message = "Not valid, not more 50 symbols")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Solomon")
-    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
     private String name = "";
 
     @Column(name="phone")
@@ -39,7 +38,6 @@ public class RelativesInfo {
     @Column(name="relation")
     @Size(max = 50, message = "Not valid, not more 50 symbols")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Solomon")
-    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
     private String relation  = "";
 
     public RelativesInfo() {

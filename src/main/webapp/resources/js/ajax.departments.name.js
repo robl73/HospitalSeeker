@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     $('#hospital').change(function(event) {
         var hospital = $("select#hospital").val();
         $.get('/departments', {

@@ -5,14 +5,14 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hospitalsearch.util.Category;
+import com.hospitalsearch.util.Specialization;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.core.StopFilterFactory;
 import org.apache.lucene.analysis.ngram.NGramFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Parameter;
 
@@ -40,21 +40,22 @@ public class DoctorInfo{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doctorinfo_gen")
     @SequenceGenerator(name = "doctorinfo_gen", sequenceName = "doctorinfo_id_seq", initialValue = 1, allocationSize = 1)
-    @DocumentId
     private Long id;
 
-    private String specialization;
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
+    @Enumerated(EnumType.STRING)
+    private Specialization specialization;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="userdetails_id")
-    @Fetch(FetchMode.SELECT)
-    @ContainedIn
+    @OneToOne
+    @JoinColumn(name = "userdetails_id")
+    @IndexedEmbedded
     @JsonIgnore
     private UserDetail userDetails;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "doctors")
+    @ManyToMany(mappedBy = "doctors")
     private List<Department> departments;
 
     public DoctorInfo() {
@@ -68,11 +69,11 @@ public class DoctorInfo{
         this.id = id;
     }
 
-    public String getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(String specialization) {
+    public void setSpecialization(Specialization specialization) {
         this.specialization = specialization;
     }
 
@@ -84,19 +85,19 @@ public class DoctorInfo{
         this.departments = departments;
     }
 
-	public UserDetail getUserDetails() {
-		return userDetails;
-	}
+    public UserDetail getUserDetails() {
+        return userDetails;
+    }
 
     public void setUserDetails(UserDetail userDetails) {
-		this.userDetails = userDetails;
-	}
+        this.userDetails = userDetails;
+    }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

@@ -3,12 +3,14 @@ package com.hospitalsearch.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
-import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
+
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.*;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
+
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,13 @@ public class HospitalDAOImpl extends GenericDAOImpl<Hospital, Long> implements H
         Criterion cityCriterion = Restrictions.like("address.city", filterInfo.getCity(), MatchMode.ANYWHERE);
 
         return criteria.add(Restrictions.and(nameCriterion, countryCriterion, cityCriterion)).list();
+    }
+
+    public List<Hospital> getHospitalsByManagerId(Long id){
+        Criteria criteria = this.getSessionFactory().getCurrentSession().createCriteria(Hospital.class)
+                .createAlias("managers", "managerAlias")
+                .add(Restrictions.eq("managerAlias.id", id));
+        return (List<Hospital>) criteria.list();
     }
 
     public static final String[] HOSPITAL_PROJECTION = new String[]{"name", "address.city", "address.street", "address.building", "description", "departments.name"};

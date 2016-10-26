@@ -1,15 +1,11 @@
 package com.hospitalsearch.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hospitalsearch.entity.Department;
+
+import com.hospitalsearch.entity.Role;
 import com.hospitalsearch.service.annotation.Date;
 import com.hospitalsearch.service.annotation.UniqueEmail;
 import com.hospitalsearch.util.Category;
-import com.hospitalsearch.util.Gender;
 import com.hospitalsearch.util.Specialization;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.Field;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,7 +13,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -36,19 +31,21 @@ public class NewDoctorRegistrationDTO {
     @Pattern(regexp = EMAIL_PATTERN, message = "Please enter email in correct format.")
     private String email;
 
+    @NotEmpty(message = "Please enter your First Name")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Solomon")
-    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
     private String firstName;
 
+    @NotEmpty(message = "Please enter your Last Name")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Kane")
-    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
     private  String lastName;
 
     private String imagePath;
 
-    private String Education;
+    @NotEmpty(message = "Please enter your education")
+    private String education;
 
-    private String Address;
+    @NotEmpty(message = "Please enter your address")
+    private String address;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Date(message = "Not valid format")
@@ -61,17 +58,17 @@ public class NewDoctorRegistrationDTO {
 
     private List<NameHospitalsByManagerDTO> nameHospitals = new ArrayList<>();
 
+    private List<NameDepartmensByHospitalDTO> nameDepartment = new ArrayList<>();
+
     private Long nameHospitalId;
 
     private Long nameDepartmentsId;
 
-    private List<Category> categorys = new ArrayList<>();
+    private Category category;
 
-    private List<Specialization> specializations = new ArrayList<>();
+    private Specialization specialization;
 
-    private String category;
-
-    private String specialization;
+    private Set<Role> role;
 
     public String getEmail() {
         return email;
@@ -106,19 +103,19 @@ public class NewDoctorRegistrationDTO {
     }
 
     public String getEducation() {
-        return Education;
+        return education;
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     public void setEducation(String education) {
-        Education = education;
+        this.education = education;
     }
 
     public void setAddress(String address) {
-        Address = address;
+        this.address = address;
     }
 
     public String getPhone() {
@@ -153,35 +150,19 @@ public class NewDoctorRegistrationDTO {
         this.nameDepartmentsId = nameDepartmentsId;
     }
 
-    public List<Category> getCategorys() {
-        return categorys;
-    }
-
-    public List<Specialization> getSpecializations() {
-        return specializations;
-    }
-
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public String getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
-    public void setCategorys(List<Category> categorys) {
-        this.categorys = categorys;
-    }
-
-    public void setSpecializations(List<Specialization> specializations) {
-        this.specializations = specializations;
-    }
-
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
-    public void setSpecialization(String specialization) {
+    public void setSpecialization(Specialization specialization) {
         this.specialization = specialization;
     }
 
@@ -201,6 +182,22 @@ public class NewDoctorRegistrationDTO {
         this.enabled = enabled;
     }
 
+    public List<NameDepartmensByHospitalDTO> getNameDepartment() {
+        return nameDepartment;
+    }
+
+    public void setNameDepartment(List<NameDepartmensByHospitalDTO> nameDepartment) {
+        this.nameDepartment = nameDepartment;
+    }
+
+    public Set<Role> getRole() {
+        return role;
+    }
+
+    public void setRole(Set<Role> role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "NewDoctorRegistrationDTO{" +
@@ -208,16 +205,18 @@ public class NewDoctorRegistrationDTO {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", imagePath='" + imagePath + '\'' +
-                ", Education='" + Education + '\'' +
-                ", Address='" + Address + '\'' +
+                ", education='" + education + '\'' +
+                ", address='" + address + '\'' +
+                ", birthDate=" + birthDate +
                 ", phone='" + phone + '\'' +
+                ", enabled=" + enabled +
                 ", nameHospitals=" + nameHospitals +
+                ", nameDepartment=" + nameDepartment +
                 ", nameHospitalId=" + nameHospitalId +
                 ", nameDepartmentsId=" + nameDepartmentsId +
-                ", categorys=" + categorys +
-                ", specializations=" + specializations +
-                ", category='" + category + '\'' +
-                ", specialization='" + specialization + '\'' +
+                ", category=" + category +
+                ", specialization=" + specialization +
+                ", role=" + role +
                 '}';
     }
 }
