@@ -5,12 +5,12 @@
  */
 package com.hospitalsearch.service.impl;
 
-import com.hospitalsearch.dao.DepartmentsNameDAO;
-import com.hospitalsearch.entity.DepartmentsName;
-import com.hospitalsearch.service.DepartmentsNameService;
+import com.hospitalsearch.entity.DepartmentName;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.hospitalsearch.service.DepartmentNameService;
+import com.hospitalsearch.dao.DepartmentNameDAO;
 
 /**
  *
@@ -18,37 +18,37 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class DepartmentsNameServiceImpl implements DepartmentsNameService{
+public class DepartmentNameServiceImpl implements DepartmentNameService{
     
     @Autowired
-    private DepartmentsNameDAO dao;
+    private DepartmentNameDAO dao;
 
     @Override
-    public void save(DepartmentsName newDepartmentsName) {
-        dao.save(newDepartmentsName);
+    public void save(DepartmentName newDepartmentName) {
+        dao.save(newDepartmentName);
        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void delete(DepartmentsName departmentsName) {
-        dao.delete(departmentsName);
+    public void delete(DepartmentName departmentName) {
+        dao.delete(departmentName);
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void update(DepartmentsName updatedDepartmentsName) {
-        dao.update(updatedDepartmentsName);
+    public void update(DepartmentName updatedDepartmentName) {
+        dao.update(updatedDepartmentName);
        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public DepartmentsName getById(Long id) {
+    public DepartmentName getById(Long id) {
         return dao.getById(id);
        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<DepartmentsName> getAll() {
+    public List<DepartmentName> getAll() {
         return dao.getAll();
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
