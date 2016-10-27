@@ -1,11 +1,6 @@
 package com.hospitalsearch.controller;
 
 
-import java.net.ConnectException;
-import java.util.List;
-import java.util.Locale;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -28,24 +23,16 @@ import java.net.ConnectException;
 import java.util.List;
 import java.util.Locale;
 
-import static com.hospitalsearch.config.security.SecurityConfiguration.REMEMBER_ME_TOKEN_EXPIRATION;
 import com.hospitalsearch.entity.DepartmentName;
-import static com.hospitalsearch.entity.PasswordResetToken.RESET_PASSWORD_TOKEN_EXPIRATION;
-import static com.hospitalsearch.entity.VerificationToken.VERIFICATION_TOKEN_EXPIRATION;
-import java.util.ArrayList;
-import net.sf.cglib.core.Local;
-import org.springframework.web.servlet.view.RedirectView;
 import com.hospitalsearch.service.DepartmentNameService;
 
 import com.hospitalsearch.dto.AdminTokenConfigDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.AdminTokenConfig;
-import com.hospitalsearch.entity.DepartmentsName;
 import com.hospitalsearch.entity.Role;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.service.AdminTokenConfigService;
-import com.hospitalsearch.service.DepartmentsNameService;
 import com.hospitalsearch.service.MailService;
 import com.hospitalsearch.service.RoleService;
 import com.hospitalsearch.service.UserService;
