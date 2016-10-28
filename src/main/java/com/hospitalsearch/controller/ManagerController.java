@@ -180,7 +180,9 @@ public class ManagerController {
     @RequestMapping(value = "/newDoctor", method = RequestMethod.POST)
     public String newDoctorRegistration(@Valid @ModelAttribute("newDoctorDto") NewDoctorRegistrationDTO newDoctorRegistrationDTO,
                                         BindingResult result, ModelMap model, Locale locale) {
-        if (result.hasErrors()) {
+        if (result.hasFieldErrors("firstName") || result.hasFieldErrors("lastName")
+                || result.hasFieldErrors("email")|| result.hasFieldErrors("education")
+                || result.hasFieldErrors("address")|| result.hasFieldErrors("birthDate")){
             model.addAttribute("edit", true);
             return "/newDoctor";
         }

@@ -8,8 +8,8 @@
     <title>Confirm registration</title>
     <link rel="stylesheet" th:href="@{/css/animate.css}"/>
     <link rel="stylesheet" th:href="@{/css/charisma-app.css}"/>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
-    <script th:src="@{/js/registration.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/end.registration.for.doctor.css}"/>
+    <script th:src="@{/js/end.registration.for.doctor.js}"></script>
 </head>
 <body>
 <section layout:fragment="content" class="dashboard center">
@@ -33,7 +33,7 @@
 
                                 <div class="form-group">
                                     <input type="password" name="password" id="password" class="form-control input-lg"
-                                           th:placeholder="#{register.page.register.form.placeholder.password}" tabindex="2"
+                                           th:placeholder="#{manager.end.register.page.form.placeholder.password}" tabindex="2"
                                            th:value="${(userConfirmRegistration != null) and (userConfirmRegistration.password !=null)} ? ${userConfirmRegistration.password}:''"/>
 
                                     <span th:if="${(userConfirmRegistration ne null) and (#fields.hasErrors('password'))}"
@@ -42,7 +42,7 @@
 
                                 <div class="form-group">
                                     <input type="password" name="confirmPassword" id="confirmPassword"
-                                           class="form-control input-lg" th:placeholder="#{register.page.register.form.placeholder.password.confirm}" tabindex="3"
+                                           class="form-control input-lg" th:placeholder="#{manager.end.register.page.form.placeholder.password.confirm}" tabindex="3"
                                            th:value="${(userConfirmRegistration != null) and (userConfirmRegistration.confirmPassword !=null)} ? ${userConfirmRegistration.confirmPassword}:''"/>
 
                                     <span th:if="${(userConfirmRegistration ne null) and (#fields.hasErrors('confirmPassword'))}"

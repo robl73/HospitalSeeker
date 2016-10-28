@@ -22,16 +22,13 @@ public class Department{
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
 	private String name;
 
-
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "DEPARTMENT_DOCTORINFO", joinColumns = {
-			@JoinColumn(name = "DEPARTMENTS_ID", nullable = false, updatable = false) },
-			inverseJoinColumns = { @JoinColumn(name = "DOCTORS_ID",
-					nullable = false, updatable = false) })
+	@ManyToMany(cascade = {CascadeType.ALL})
+	@JoinTable(name="department_doctorinfo", joinColumns={@JoinColumn(name="departments_id")},
+		inverseJoinColumns={@JoinColumn(name="doctors_id")})
 	private List<DoctorInfo> doctors;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@Fetch(FetchMode.JOIN)
+	@JoinColumn(name = "hospital_id")
 	@ContainedIn
 	private Hospital hospital;
 
@@ -80,13 +77,10 @@ public class Department{
 		this.imagePath = imagePath;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Department{" +
-//				"id=" + id +
-//				", name='" + name + '\'' +
-//				", doctors=" + doctors +
-//				", hospital=" + hospital +
-//				'}';
-//	}
+	@Override
+	public String toString() {
+		return "Department{" +
+				"name='" + name + '\'' +
+				'}';
+	}
 }

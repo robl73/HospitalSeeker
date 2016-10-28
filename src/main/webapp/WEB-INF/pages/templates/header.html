@@ -63,7 +63,7 @@
                     </li>
                 </ul>
                 </li>
-                
+
                 <li sec:authorize="hasRole('PATIENT')"><a
                         th:class="menu"
                         th:classappend="${#httpServletRequest.requestURL.toString().matches('.*/appointments.*')}?'active':''"

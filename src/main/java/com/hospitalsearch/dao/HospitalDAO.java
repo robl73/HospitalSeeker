@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
 import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
+import com.hospitalsearch.entity.Department;
 import org.apache.lucene.queryparser.classic.ParseException;
 
 import com.hospitalsearch.dto.Bounds;

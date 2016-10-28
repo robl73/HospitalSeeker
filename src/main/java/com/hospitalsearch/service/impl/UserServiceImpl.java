@@ -1,8 +1,7 @@
 package com.hospitalsearch.service.impl;
 
-import com.hospitalsearch.dao.DoctorInfoDAO;
-import com.hospitalsearch.dao.UserDAO;
-import com.hospitalsearch.dao.UserDetailDAO;
+import com.hospitalsearch.dao.*;
+import com.hospitalsearch.dto.HospitalDTO;
 import com.hospitalsearch.dto.NewDoctorRegistrationDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
@@ -44,10 +43,10 @@ public class UserServiceImpl implements UserService {
     PatientInfoService patientInfoService;
 
     @Autowired
-    private DepartmentService departmentService;
+    private DoctorInfoDAO doctorInfoDAO;
 
     @Autowired
-    private DoctorInfoDAO doctorInfoDAO;
+    private DepartmentDAO departmentDAO;
 
     @Override
     public void save(User newUser) {
@@ -96,6 +95,7 @@ public class UserServiceImpl implements UserService {
             userDetail.setBirthDate(newDoctorRegistrationDTO.getBirthDate());
             userDetail.setPhone(newDoctorRegistrationDTO.getPhone());
             userDetail.setImagePath(newDoctorRegistrationDTO.getImagePath());
+            userDetail.setGender(newDoctorRegistrationDTO.getGender());
 
             user.setEmail(newDoctorRegistrationDTO.getEmail().toLowerCase());
             user.setPassword(passwordEncoder.encode("password"));
@@ -106,7 +106,9 @@ public class UserServiceImpl implements UserService {
 
             DoctorInfo doctorInfo = new DoctorInfo();
             List<Department> departments = new ArrayList<>();
-            //departments.add(departmentService.getById(newDoctorRegistrationDTO.getNameDepartmentsId()));
+            if(!newDoctorRegistrationDTO.getNameDepartmentsId().equals(null)) {
+                departments.add(departmentDAO.getById(newDoctorRegistrationDTO.getNameDepartmentsId()));
+            }
             doctorInfo.setDepartments(departments);
             doctorInfo.setSpecialization(newDoctorRegistrationDTO.getSpecialization());
             doctorInfo.setCategory(newDoctorRegistrationDTO.getCategory());
@@ -270,14 +272,21 @@ public class UserServiceImpl implements UserService {
     public Integer pageCount(Long countOfItems, int itemsPerPage) {
         return (int) Math.ceil((double) countOfItems / itemsPerPage);
     }
-    //Illia
 
-    //utilities methods
     private boolean isAdmin(Long id) {
         User user = dao.getById(id);
         for (Role role : user.getUserRoles()) {
             if (role.getType().equals("ADMIN")) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isPatient(User user) {
+        for(Role role : user.getUserRoles()){
+            if(role.getType().equals("PATIENT")){
+                return  true;
             }
         }
         return false;

@@ -64,12 +64,6 @@ public class UserController {
 	PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
 
 	@Autowired
-	private DoctorInfoService doctorInfoService;
-
-	@Autowired
-	private DepartmentService departmentService;
-
-	@Autowired
 	private MessageSource messageSource;
 
 	private static String emailTemplate = "emailTemplate.vm";
@@ -161,7 +155,7 @@ public class UserController {
 			return "/user/confirmRegistration";
 		}
 		User user = verificationToken.getUser();
-		if(getRole(user.getUserRoles())){
+		if(userService.isPatient(user)){
 			user.setEnabled(true);
 			userService.update(user);
 			verificationTokenService.delete(verificationToken);
@@ -192,7 +186,8 @@ public class UserController {
 			model.addAttribute("errorReset", "errorReset");
 			e.printStackTrace();
 		}
-		return "/login";
+		model.addAttribute("confirmEmail", user.getEmail());
+		return "/user/confirmRegistration";
 	}
 
 	@RequestMapping(value = "/confirmResetPassword", method = RequestMethod.GET)
@@ -254,14 +249,4 @@ public class UserController {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
 
-	public boolean getRole(Set<Role> roles) {
-		Boolean result = false;
-		for(Role role : roles){
-			if(role.getType().equals("PATIENT")){
-				result = true;
-				break;
-			}
-		}
-		return result;
-	}
 }

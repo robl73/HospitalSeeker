@@ -124,17 +124,6 @@ public class Hospital {
 	@Column(name = "imagepath")
 	private String imagePath;
 
-	//new no points on  the map
-/*	@OneToMany(mappedBy = "hospital", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value = FetchMode.SUBSELECT)
-	@IndexedEmbedded
-*/	
-	//old
-/*	@JsonIgnore
-	@OneToMany(mappedBy="hospital", cascade=CascadeType.ALL)
-	@Cache(region="entityCache",usage=CacheConcurrencyStrategy.READ_ONLY)
-	@IndexedEmbedded*/
-	
 	@JsonIgnore
 	@OneToMany(mappedBy="hospital", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@Fetch(value = FetchMode.SUBSELECT)
@@ -143,7 +132,8 @@ public class Hospital {
 	private List<Department> departments;
 
 	@JsonIgnore
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<User> managers;
 
 	public Long getId() {
@@ -222,7 +212,6 @@ public class Hospital {
 	public String toString() {
 		return "Hospital{" +
 				"managers=" + managers +
-				", departments=" + departments +
 				", imagePath='" + imagePath + '\'' +
 				", description='" + description + '\'' +
 				", address=" + address +

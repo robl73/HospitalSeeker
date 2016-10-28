@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:form="http://www.w3.org/1999/html"
       layout:decorator="layout">
 <head>
     <meta charset="ISO-8859-1"/>
@@ -25,7 +26,7 @@
                         <form role="form" th:action="@{/newDoctor}" method="post" th:object="${newDoctorDto}"
                               id="registerNewUser">
 
-                            <h1 class="all text-center" th:text="#{menager.add.new.doctor.title}"></h1>
+                            <h1 class="all text-center" th:text="#{manager.add.new.doctor.title}"></h1>
 
                             <hr class="colorgraph"/>
 
@@ -59,12 +60,12 @@
                                 <div align="center">
                                     <figure th:class="${edit}?' snip1494 img-thumbnail img-responsive img-block'">
                                         <img th:if="${newDoctorDto.imagePath!=''}" alt="User Pic"
-                                            style="height: 260px;" id="image-uploaded"
-                                            th:src="${newDoctorDto.imagePath==null}?@{/images/avatar/photo.png}:@{|/images/avatar/${newDoctorDto.imagePath}|}"
+                                            style="height: 260px; padding-bottom: 4px;" id="image-uploaded"
+                                            th:src="${newDoctorDto.imagePath==null}?@{/images/avatar/ava.png}:@{|/images/avatar/${newDoctorDto.imagePath}|}"
                                              class="img-responsive img-block"/>
                                         <img th:if="${newDoctorDto.imagePath==''}" alt="User Pic"
-                                                style="height: 260px;" id="image-uploaded"
-                                                th:src="@{/images/avatar/photo.png}"
+                                                style="height: 260px; padding-bottom: 4px;" id="image-uploaded"
+                                                th:src="@{/images/avatar/ava.png}"
                                                 class="img-responsive img-block"/>
                                         <figcaption th:if="${edit}">
                                             <div><i class="glyphicon glyphicon-circle-arrow-down"></i></div>
@@ -82,8 +83,8 @@
 
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <div class="text-div">Specialization:</div>
-                                    <div class="text-div">Category:</div>
+                                    <div class="text-div" th:text="#{manage.add.new.doctor.specialization}"></div>
+                                    <div class="text-div" th:text="#{manage.add.new.doctor.category}"></div>
                                 </div>
                             <div class="col-sm-8">
 
@@ -139,8 +140,8 @@
 
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <div class="text-div">Hospital:</div>
-                                    <div class="text-div">Department:</div>
+                                    <div class="text-div" th:text="#{manage.add.new.doctor.hospital}"></div>
+                                    <div class="text-div" th:text="#{manage.add.new.doctor.department}"></div>
                                 </div>
 
                             <div class="col-sm-8">
@@ -169,13 +170,13 @@
 
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <div class="text-div">Gender:</div>
+                                    <div class="text-div" th:text="#{manage.add.new.doctor.gender}"></div>
                                 </div>
 
                             <div class="col-sm-3">
-                                <div class="radio">
+                                <div class="radio" style="margin-top: 9px;">
                                     <label>
-                                        <input style="font-size: 18px; margin-top: 5px;" type="radio" name="gender" th:field="${newDoctorDto.role}" th:value="MALE"/>Male
+                                        <input style="font-size: 18px; margin-top: 10px;" type="radio" name="gender"  th:checked="checked" th:field="${newDoctorDto.gender}" th:value="${T(com.hospitalsearch.util.Gender).MALE}" th:text="#{manage.add.new.doctor.male}"/>
                                     </label>
                                 </div>
                             </div>
@@ -183,7 +184,7 @@
                             <div class="col-sm-3">
                                 <div class="radio">
                                     <label>
-                                        <input style="font-size: 18px; margin-top: 5px;" type="radio" name="gender" th:field="${newDoctorDto.role}" th:value="FEMALE"/>Female
+                                        <input style="font-size: 18px; margin-top: 10px;" type="radio" name="gender"  th:field="${newDoctorDto.gender}" th:value="${T(com.hospitalsearch.util.Gender).FEMALE}" th:text="#{manage.add.new.doctor.female}"/>
                                     </label>
                                 </div>
                             </div>
@@ -191,22 +192,21 @@
 
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <div class="text-div">Date of Birth:</div>
+                                    <div class="text-div" th:text="#{manage.add.new.doctor.dateofbirth}"></div>
                                 </div>
                                 <div class='col-sm-3'>
-                                    <input type='text' class="form-control" id='birthDate' style="margin-top: 5px;"
+                                    <input style="margin-top: 8px;" type='text' class="form-control" id='birthDate'
                                         th:field="*{birthDate}" name="birthDate"/>
                                      <p class="error" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></p>
-
                                     <script type="text/javascript">
                                         $(function () {
-                                        $('#birthDate').datepicker({format: 'yyyy-mm-dd'});
+                                            $('#birthDate').datepicker({format: 'yyyy-mm-dd'});
                                         });
                                     </script>
-                            </div>
+                                </div>
 
                             <div class="col-sm-2">
-                                <div class="text-div">Phone:</div>
+                                <div class="text-div" th:text="#{manage.add.new.doctor.phone}"></div>
                             </div>
 
                             <div class="col-sm-4">

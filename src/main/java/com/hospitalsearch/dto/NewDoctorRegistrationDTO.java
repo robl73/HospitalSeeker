@@ -5,11 +5,14 @@ import com.hospitalsearch.entity.Role;
 import com.hospitalsearch.service.annotation.Date;
 import com.hospitalsearch.service.annotation.UniqueEmail;
 import com.hospitalsearch.util.Category;
+import com.hospitalsearch.util.Gender;
 import com.hospitalsearch.util.Specialization;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -68,7 +71,9 @@ public class NewDoctorRegistrationDTO {
 
     private Specialization specialization;
 
-    private Set<Role> role;
+    @Enumerated(EnumType.STRING)
+    @com.hospitalsearch.service.annotation.Gender(message = "Not valid format")
+    private Gender gender;
 
     public String getEmail() {
         return email;
@@ -190,12 +195,12 @@ public class NewDoctorRegistrationDTO {
         this.nameDepartment = nameDepartment;
     }
 
-    public Set<Role> getRole() {
-        return role;
+    public Gender getGender() {
+        return gender;
     }
 
-    public void setRole(Set<Role> role) {
-        this.role = role;
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     @Override
@@ -216,7 +221,7 @@ public class NewDoctorRegistrationDTO {
                 ", nameDepartmentsId=" + nameDepartmentsId +
                 ", category=" + category +
                 ", specialization=" + specialization +
-                ", role=" + role +
+                ", gender=" + gender +
                 '}';
     }
 }
