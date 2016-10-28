@@ -18,6 +18,18 @@ public class Department{
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_gen")
 	@SequenceGenerator(name = "department_gen", sequenceName = "department_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
+        
+        @Embedded
+        private DepartmentInfo departmentinfo;
+
+        public DepartmentInfo getDepartmentinfo() {
+            return departmentinfo;
+        }
+
+        public void setDepartmentinfo(DepartmentInfo departmentinfo) {
+            this.departmentinfo = departmentinfo;
+        }
+
 
 	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
 	private String name;
