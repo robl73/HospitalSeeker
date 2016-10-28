@@ -20,6 +20,7 @@ public class Department{
 	private Long id;
         
         @Embedded
+        @IndexedEmbedded
         private DepartmentInfo departmentinfo;
 
         public DepartmentInfo getDepartmentinfo() {
@@ -30,8 +31,6 @@ public class Department{
             this.departmentinfo = departmentinfo;
         }
 
-
-	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
 	private String name;
 
 

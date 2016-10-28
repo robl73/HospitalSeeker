@@ -15,6 +15,9 @@ import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
 
 /**
  *
@@ -29,7 +32,8 @@ public class DepartmentInfo implements Serializable {
     @NotNull(message="this field can not be empty")
     @Size(min = 3, max = 20, message="you must enter from 3 to 20 chars")
     @Pattern(regexp="(\\p{Alpha}){3,20}", message="you must enter from 3 to 20 chars only")
-    private String name;
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
+    private String aname;
     
  //   @Column(name="departmentspecialization")
     @Size(min = 0, max = 20, message="you may enter up to 20 chars")
@@ -44,13 +48,15 @@ public class DepartmentInfo implements Serializable {
     public DepartmentInfo() {
     }
 
-    public String getName() {
-        return name;
+    public String getAname() {
+        return aname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAname(String aname) {
+        this.aname = aname;
     }
+
+
 
     public String getSpecialization() {
         return specialization;
