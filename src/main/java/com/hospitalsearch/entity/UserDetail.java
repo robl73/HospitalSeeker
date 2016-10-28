@@ -40,6 +40,7 @@ public class UserDetail{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userdetail_gen")
     @SequenceGenerator(name = "userdetail_gen", sequenceName = "userdetail_id_seq", initialValue = 1, allocationSize = 1)
+    @JsonIgnore
     private Long id;
 
     @Column(name="firstname")

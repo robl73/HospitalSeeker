@@ -42,6 +42,8 @@ public interface UserService {
 
     User register(NewDoctorRegistrationDTO dto);
 
+    void addNewUser(User newUser);
+
     void resetPassword(String email, String newPassword) throws ResetPasswordException;
 
     List<User> getByRole(String role, int pageNumber, int pageSize, String sortBy, Boolean order);

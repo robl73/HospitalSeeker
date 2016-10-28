@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <head>
-        <title></title>
-    </head>
-    <body>
 <nav th:fragment="page-header" class="[ navbar navbar-fixed-top ][ navbar-bootsnipp animate ]" role="navigation"
      xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
-
+       
     <div class="[ container ]">
         <!-- Brand and toggle get grouped for better mobile display -->
         
@@ -53,6 +46,7 @@
                 <li sec:authorize="hasRole('DOCTOR')"><a th:class="menu"
                                                          th:classappend="${#httpServletRequest.requestURL.toString().matches('.*/workscheduler.*')}?'active':''"
                                                          th:href="@{/workscheduler}" th:text="#{header.workscheduler}"></a></li>
+
                 <li sec:authorize="hasRole('MANAGER')">
                 <a href="#" class="nav navbar-nav dropdown dropdown-toggle" data-toggle="dropdown" th:text="#{manager.menu.actions}">
                     <span class="caret"></span></a>
@@ -112,8 +106,8 @@
                         </li>
                         
                         <li>
-                            <a th:href="@{/admin/departmentsName}" class="menu">   
-                                <span class="glyphicon glyphicon-plus" th:text="' '+#{admin.menu.department.name}"></span></a>
+                            <a th:href="@{/admin/departmentName}" class="menu">   
+                                <span class="glyphicon glyphicon-plus" th:text="' '+#{admin.menu.departments.name}"></span></a>
                         </li>
                     </ul>
                 </li>
@@ -307,5 +301,3 @@
 
     </div>
 </nav>
-</body>
-</html>

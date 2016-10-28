@@ -5,7 +5,7 @@
  */
 package com.hospitalsearch.service;
 
-import com.hospitalsearch.entity.DepartmentsName;
+import com.hospitalsearch.entity.DepartmentName;
 import java.util.List;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,15 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Admin
  */
 @Transactional
-public interface DepartmentsNameService {
+public interface DepartmentNameService {
     
-    void save(DepartmentsName newDepartmentsName);
-    void delete(DepartmentsName departmentsName);
-    void update(DepartmentsName updatedDepartmentsName);
+    void save(DepartmentName newDepartmentName);
+    void delete(DepartmentName departmentName);
+    void update(DepartmentName updatedDepartmentName);
     @Transactional(readOnly=true,propagation= Propagation.SUPPORTS)
-    DepartmentsName getById(Long id);
+    DepartmentName getById(Long id);
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-    List<DepartmentsName> getAll();
+    List<DepartmentName> getAll();
     
      
     

@@ -40,6 +40,7 @@ public class DoctorInfo{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doctorinfo_gen")
     @SequenceGenerator(name = "doctorinfo_gen", sequenceName = "doctorinfo_id_seq", initialValue = 1, allocationSize = 1)
+    @DocumentId
     private Long id;
 
     @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))

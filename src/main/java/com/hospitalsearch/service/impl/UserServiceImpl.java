@@ -61,6 +61,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    public void addNewUser(User newUser) {
+        try {
+            logger.info("save user: " + newUser);
+            dao.save(newUser);
+        } catch (Exception e) {
+            logger.error("Error saving user: " + newUser, e);
+        }
+    }
+
     @Override
     public User register(UserRegisterDTO userRegisterDTO) {
         User user = new User();
@@ -77,6 +86,7 @@ public class UserServiceImpl implements UserService {
                 user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("PATIENT"))));
             }
             save(user);
+//           addNewUser(user);
         } catch (Exception e) {
             System.out.println("Error register user");
             logger.error("Error register user: " + userRegisterDTO, e);
@@ -88,6 +98,11 @@ public class UserServiceImpl implements UserService {
     public User register(NewDoctorRegistrationDTO newDoctorRegistrationDTO) {
         User user = new User();
         try {
+            logger.info("register user: " + newDoctorRegistrationDTO);
+            user.setEmail(newDoctorRegistrationDTO.getEmail().toLowerCase());
+            user.setPassword(passwordEncoder.encode("password"));
+            user.setEnabled(newDoctorRegistrationDTO.getEnabled());
+            user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("DOCTOR"))));
             UserDetail userDetail = new UserDetail();
             userDetail.setFirstName(newDoctorRegistrationDTO.getFirstName());
             userDetail.setLastName(newDoctorRegistrationDTO.getLastName());
@@ -95,8 +110,8 @@ public class UserServiceImpl implements UserService {
             userDetail.setBirthDate(newDoctorRegistrationDTO.getBirthDate());
             userDetail.setPhone(newDoctorRegistrationDTO.getPhone());
             userDetail.setImagePath(newDoctorRegistrationDTO.getImagePath());
-            userDetail.setGender(newDoctorRegistrationDTO.getGender());
 
+            userDetail.setGender(newDoctorRegistrationDTO.getGender());
             user.setEmail(newDoctorRegistrationDTO.getEmail().toLowerCase());
             user.setPassword(passwordEncoder.encode("password"));
             user.setEnabled(newDoctorRegistrationDTO.getEnabled());
@@ -112,11 +127,10 @@ public class UserServiceImpl implements UserService {
             doctorInfo.setDepartments(departments);
             doctorInfo.setSpecialization(newDoctorRegistrationDTO.getSpecialization());
             doctorInfo.setCategory(newDoctorRegistrationDTO.getCategory());
-            doctorInfo.setUserDetails(userDetail);
-
-            dao.save(user);
-            doctorInfoDAO.save(doctorInfo);
+            user.setUserDetails(userDetail);
+            addNewUser(user);
         } catch (Exception e) {
+            System.out.println("Error register user");
             logger.error("Error register user: " + newDoctorRegistrationDTO, e);
         }
         return user;
@@ -229,6 +243,7 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    //Illia
     @Override
     public List<User> getByRole(String role, int pageNumber, int pageSize, String sortBy, Boolean order) {
         List<User> users = new ArrayList<>();

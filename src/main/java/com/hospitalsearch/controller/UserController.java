@@ -1,6 +1,5 @@
 package com.hospitalsearch.controller;
 
-import com.hospitalsearch.dto.NewDoctorRegistrationDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.PasswordResetToken;
 import com.hospitalsearch.entity.Role;
@@ -29,7 +28,6 @@ import javax.validation.Valid;
 import java.net.ConnectException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -248,5 +246,4 @@ public class UserController {
 	private String getRandomToken() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
-
 }
