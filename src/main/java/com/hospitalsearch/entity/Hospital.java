@@ -47,6 +47,7 @@ import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 
 /**
  *
@@ -74,7 +75,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 						})
 			})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "entityCache")
-public class Hospital {
+public class Hospital implements Serializable {
 
 	static final String GET_LIST_BY_BOUNDS_QUERY = "from Hospital h where "
 			+ "(latitude < :nelat) and (latitude > :swlat) and "

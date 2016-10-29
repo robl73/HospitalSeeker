@@ -1,5 +1,6 @@
 package com.hospitalsearch.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -12,7 +13,7 @@ import org.hibernate.search.annotations.*;
 
 @Entity
 @Table(name = "department")
-public class Department{
+public class Department implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_gen")
