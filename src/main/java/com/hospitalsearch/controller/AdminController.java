@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.hospitalsearch.dto.AdminTokenConfigDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
@@ -41,7 +40,6 @@ import com.hospitalsearch.service.UserService;
  * @author Andrew Jasinskiy on 10.05.16
  */
 @Controller
-//@SessionAttributes("departmentnames")
 public class AdminController {
 	
 	@Autowired
@@ -62,7 +60,6 @@ public class AdminController {
     @Autowired
     private MessageSource messageSource;
 
-    private Integer usersPerPage = 10;
 
     private static String emailTemplate = "emailTemplate.vm";
 
@@ -141,10 +138,10 @@ public class AdminController {
         dto.setCurrentPage(page);
         dto.setAsc(asc);
         dto.setSort(sort);
-        dto.setPageSize(usersPerPage);
+        dto.setPageSize(10);
         dto.setStatus(status);
         List <User> users = userService.getUsers(dto);
-        if (dto.getTotalPage() > 1) model.addAttribute("pagination", "pagination");
+        if (dto.getTotalPage() > 1) model.addAttribute("pagination", true);
         model.addAttribute("userFilterDTO", dto);
         model.addAttribute("pageSize", dto.getPageSize());
         model.addAttribute("users", users);
@@ -157,9 +154,8 @@ public class AdminController {
                              @RequestParam(value = "page", defaultValue = "1") Integer page,
                              @ModelAttribute("userFilterDTO") UserFilterDTO dto,
                              ModelMap model) throws Exception {
-        dto.setPageSize(usersPerPage);
         List  <User> users = userService.searchUser(dto);
-        if (dto.getTotalPage() > 1) model.addAttribute("pagination", "pagination");
+        if (dto.getTotalPage() > 1) model.addAttribute("pagination", true);
         model.addAttribute("search", "search");
         model.addAttribute("userFilterDTO", dto);
         model.addAttribute("status", status);
@@ -222,13 +218,6 @@ public class AdminController {
         return "redirect:/admin/users?status=true";
     }
 
-    @ResponseBody
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "admin/users/setItemsPerPage/{value}", method = RequestMethod.GET)
-    public String setItemsPerPage(@PathVariable int value) {
-        usersPerPage = value;
-        return "done";
-    }
 
     //utility methods
     private void sendBannedMessageToUserById(Long id, Locale locale) throws ConnectException {
@@ -261,7 +250,6 @@ public class AdminController {
                                      RedirectAttributes rda) {
      
         if(result.hasErrors()){
-     // return "redirect:departmentsName";
         return "admin/departmentsName";
         }
         departmentsNameService.save(departmentsName);

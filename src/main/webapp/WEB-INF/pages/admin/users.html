@@ -36,9 +36,6 @@
             </div>
         </div>
 
-        <!-- <span th:if="${messageError!=null}" th:text="${messageError}" id = "messageError" hidden="hidden"> </span>
-         <span th:if="${messageSuccess!=null}" th:text="${messageSuccess}" id = "messageSuccess" hidden="hidden"> </span>-->
-
         <br/>
 
         <h1 th:if="${userFilterDTO.status=='true'}" class="all text-center"
@@ -57,12 +54,10 @@
                     <label class="filter-col" style="margin-right:0;" for="userPerPage"
                            th:text="#{admin.dashboard.users.show.users}"></label>
                     <select id="userPerPage" class="form-control" th:field="*{pageSize}" th:value="*{pageSize}">
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="30">30</option>
-                        <option value="40">40</option>
-                        <option value="50">50</option>
+                        <option th:each="number:${#numbers.sequence(10,50,10)}"
+                                th:text="${number}"
+                                th:value="${number}"
+                                th:classappend="${number == userFilterDTO.pageSize}?'selected':''"/>
                     </select>
                 </div>
                 <!-- form group -->
@@ -188,7 +183,7 @@
 
             <div th:if="${pagination}" class="text-center">
                 <ul class="pagination pagination-lg">
-                    <li class="page-item" th:if="${userFilterDTO.getCurrentPage()!= 1}">
+                    <li class="page-item" th:if="${(userFilterDTO.getCurrentPage()!= 1) and (userFilterDTO.getCurrentPage() &gt;= 2)}">
                         <a class="page-link" th:if="${search==null}"
                            th:href="@{/admin/users(status=${userFilterDTO.status}, page=1,sort=${(userFilterDTO.getSort())},asc=${(userFilterDTO.getAsc())})}"
                            aria-label="First" th:text="#{admin.dashboard.users.show.firstpage}">
@@ -198,7 +193,7 @@
                         </button>
                     </li>
 
-                    <li class="page-item" th:if="${userFilterDTO.getCurrentPage()!= 1}">
+                    <li class="page-item" th:if="${(userFilterDTO.getCurrentPage()!= 1) and (userFilterDTO.getCurrentPage() &gt;= 2)}">
                         <a class="page-link" th:if="${search==null}"
                            th:href="@{/admin/users(status=${userFilterDTO.status},page=${(userFilterDTO.getCurrentPage()-1)},sort=${(userFilterDTO.getSort())},asc=${(userFilterDTO.getAsc())})}"
                            aria-label="Previous">
@@ -212,24 +207,37 @@
                         </button>
                     </li>
 
-                    <li
-                            th:each="number:${#numbers.sequence(1,userFilterDTO.getTotalPage())}"
-                            th:class="page-item"
-                            th:classappend="${(userFilterDTO.getCurrentPage()) == number }?'active': ''">
+                    <li th:class="page-item" th:if="${ ((userFilterDTO.getCurrentPage() - 1) &gt;= 1) and (userFilterDTO.getCurrentPage()-1 &lt;= userFilterDTO.getTotalPage())}">
 
                         <a th:class="page-link" th:if="${search==null}"
-                           th:classappend="${(userFilterDTO.getCurrentPage()) == number }?'active': ''"
-                           th:href="@{/admin/users(status=${userFilterDTO.status},page=${number},sort=${(userFilterDTO.getSort())},asc=${(userFilterDTO.getAsc())})}"
-                           th:text="${number}"/>
+                           th:href="@{/admin/users(status=${userFilterDTO.status},page=${userFilterDTO.getCurrentPage() - 1},sort=${(userFilterDTO.getSort())},asc=${(userFilterDTO.getAsc())})}"
+                           th:text="${userFilterDTO.getCurrentPage() - 1}"/>
 
-                        <button th:class="page-link" th:if="${search!=null}" id=""
-                                th:classappend="${(userFilterDTO.getCurrentPage()) == number }?'active': ''"
-                                th:form="searchForm" th:text="${number}" th:id="${number}" onclick="getPage(this.id)"/>
+                        <button th:class="page-link" th:if="${search!=null}"
+                                th:form="searchForm" th:text="${userFilterDTO.getCurrentPage() - 1}" th:id="${userFilterDTO.getCurrentPage() - 1}" onclick="getPage(this.id)"/>
                     </li>
 
-                    <li class="page-item"
-                        th:if="${userFilterDTO.getCurrentPage()&lt;userFilterDTO.getTotalPage()}">
-                        <button class="page-link" th:form="searchForm" type="submit" disabled="disabled">...</button>
+                    <li th:class="page-item" th:if="${ ((userFilterDTO.getCurrentPage() - 1) &gt;= 0) and (userFilterDTO.getCurrentPage() &lt;= userFilterDTO.getTotalPage())}"
+                        th:classappend="active">
+
+                        <a th:class="page-link" th:if="${search==null}"
+                           th:classappend="active"
+                           th:href="@{/admin/users(status=${userFilterDTO.status},page=${userFilterDTO.getCurrentPage()},sort=${(userFilterDTO.getSort())},asc=${(userFilterDTO.getAsc())})}"
+                           th:text="${userFilterDTO.getCurrentPage()}"/>
+
+                        <button th:class="page-link" th:if="${search!=null}"
+                                th:classappend="active"
+                                th:form="searchForm" th:text="${userFilterDTO.getCurrentPage()}" th:id="${userFilterDTO.getCurrentPage()}" onclick="getPage(this.id)"/>
+                    </li>
+
+                    <li th:class="page-item" th:if="${ ((userFilterDTO.getCurrentPage() - 1) &gt;= 0) and (userFilterDTO.getCurrentPage()+1 &lt;= userFilterDTO.getTotalPage())}">
+
+                        <a th:class="page-link" th:if="${search==null}"
+                           th:href="@{/admin/users(status=${userFilterDTO.status},page=${userFilterDTO.getCurrentPage()+1},sort=${(userFilterDTO.getSort())},asc=${(userFilterDTO.getAsc())})}"
+                           th:text="${userFilterDTO.getCurrentPage()+1}"/>
+
+                        <button th:class="page-link" th:if="${search!=null}"
+                                th:form="searchForm" th:text="${userFilterDTO.getCurrentPage()+1}" th:id="${userFilterDTO.getCurrentPage()+1}" onclick="getPage(this.id)"/>
                     </li>
 
                     <li class="page-item"

@@ -89,13 +89,10 @@ public class HospitalController {
 
 	@RequestMapping("/hospital/{id}")
 	public String renderDepartments(Map<String, Object> model, @PathVariable Long id) {
-		List<Department> lst = departmentService.findByHospitalId(id);
-
+		Hospital hospital = service.getById(id);
+		List<Department> lst = hospital.getDepartments();
+		model.put("hospital", hospital);
 		model.put("departments", lst);
-
-		Hospital hospital = new Hospital();
-		hospital.setId(id);
-		model.put("hospital", service.getById(id));
 		model.put("hid", id);
 		return "departments";
 	}

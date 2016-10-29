@@ -16,7 +16,7 @@
 							ever since the 1500s</h4>
 						<div class="col-md-3 col-sm-6" th:each="dep:${departments}"
 							th:object="${dep}">
-							<a th:href="@{|/hospital/${hid}/department/*{id}|}">
+							<a th:href="@{|/hospital/${hid}/department/${dep.id}|}">
 								<div class="single-service">
 									<div class="single-service-img">
 										<div class="service-img">
