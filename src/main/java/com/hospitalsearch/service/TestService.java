@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hospitalsearch.entity.Test;
 import com.hospitalsearch.entity.DiagnosisPanel;
+
 @Transactional
 public interface TestService {
 
@@ -19,6 +20,6 @@ public interface TestService {
 
 	void delete(Test test);
 
-	List<Test> getById(long id);
+	Test getById(long id);
 
 }

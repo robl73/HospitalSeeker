@@ -20,10 +20,6 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
-/**
- * @author Andrew Jasinskiy on 19.06.16
- */
-
 @Entity
 @Table(name = "verifications_tokens")
 
@@ -53,11 +49,11 @@ public class VerificationToken {
         super();
     }
 
-    public VerificationToken(String token, User user, Integer VERIFICATION_TOKEN_EXPIRATION) {
+    public VerificationToken(String token, User user, Integer verificationToken) {
         super();
         this.token = token;
         this.user = user;
-        this.expiryDate = calculateExpiryDate(VERIFICATION_TOKEN_EXPIRATION * 60);
+        this.expiryDate = calculateExpiryDate(verificationToken * 60);
     }
 
     private Date calculateExpiryDate(int expiryTimeInMinutes) {

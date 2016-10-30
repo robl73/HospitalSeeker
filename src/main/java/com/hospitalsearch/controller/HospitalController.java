@@ -133,8 +133,8 @@ public class HospitalController {
 
 	@RequestMapping("/hospital/{hid}/laboratory/{id}")
 	public String laboratory(Map<String, Object> model, @PathVariable Long hid, @PathVariable Long id, Locale locale) {
-
-		Long languageId = (long) 1;
+		Long languageId = (long) 2;
+		//id=2 for ukrainian language (written in init.sql)
 		for (Language language : languageService.getAll()) {
 			if (locale.getLanguage().equals(language.getName())) {
 				languageId = language.getId();
@@ -154,27 +154,23 @@ public class HospitalController {
 		model.put("lid", id);
 		return "laboratory";
 	}
-
-	@RequestMapping("/hospital/{hid}/laboratory/{lid}/diagnosisPanel/{id}")
+	
+	@RequestMapping("/hospital/{hid}/laboratory/{lid}/test/{id}")
 	public String diagnosisPanelGet(Map<String, Object> model, @PathVariable Long hid, @PathVariable Long lid,
-			@PathVariable Long id) {
-		DiagnosisPanel diagnosisPanel = diagnosisPanelService.getById(id);
-		List<Test> tests = testService.getByPanel(diagnosisPanel);
-		Language language = languageService.getById(1);
-		String panelName = diagnosisPanelLocalizationService.getByDiagnosticPanelAndLanguage(diagnosisPanel, language)
-				.getName();
-		model.put("tests", tests);
+			@PathVariable Long id, Locale locale) {
+		Test test = testService.getById(id);
+		String[]  schedule = test.getWorkSchedule().split("[,]");
+		model.put("schedule", schedule);
+		model.put("test", test);
 		model.put("hospital", service.getById(hid));
 		model.put("laboratory", laboratoryService.getById(lid));
-		model.put("diagnosisPanel", diagnosisPanelService.getById(id));
-		model.put("diagnosisPanelLocalizations", "yes");
-		model.put("panelName", panelName);
 		model.put("hid", hid);
 		model.put("lid", lid);
-		model.put("dpid", id);
-		return "diagnosisPanel";
+		model.put("tid", id);
+		model.put("diagnosisPanelLocalizations", "yes");
+		return "test";
 	}
-
+	
 	@RequestMapping("/hospital/{hid}/department/{id}")
 	public String renderDoctors(Map<String, Object> model, @PathVariable Long hid, @PathVariable Long id) {
 		Department d = departmentService.getById(id);

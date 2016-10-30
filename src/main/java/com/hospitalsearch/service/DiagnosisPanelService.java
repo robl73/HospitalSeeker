@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hospitalsearch.entity.DiagnosisPanel;
 import com.hospitalsearch.entity.Laboratory;
+import com.hospitalsearch.entity.Test;
 
 @Transactional
 public interface DiagnosisPanelService {
@@ -21,5 +22,7 @@ public interface DiagnosisPanelService {
 	void save(DiagnosisPanel diagnosisPanel);
 
 	void delete(DiagnosisPanel diagnosisPanel);
+	
+	List<Test> getTests(DiagnosisPanel diagnosisPanel);
 
 }

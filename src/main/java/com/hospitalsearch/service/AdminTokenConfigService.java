@@ -20,10 +20,10 @@ public interface AdminTokenConfigService {
 	
 	Integer getByToken(Token token);
 
-	Integer VERIFICATION_TOKEN_EXPIRATION();
+	Integer getVerificationToken();
 
-	Integer RESET_PASSWORD_TOKEN_EXPIRATION();
+	Integer getResetPasswordToken();
 
-	Integer REMEMBER_ME_TOKEN_EXPIRATION();
+	Integer getRememberMeToken();
 	
 }

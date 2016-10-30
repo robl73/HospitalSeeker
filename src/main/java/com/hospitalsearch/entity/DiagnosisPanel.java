@@ -1,10 +1,15 @@
 package com.hospitalsearch.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -19,6 +24,17 @@ public class DiagnosisPanel {
 	
 	@ManyToOne
 	private Laboratory laboratory;
+	
+	@OneToMany(mappedBy="diagnosisPanel", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	private List<Test> tests;
+	
+	public List<Test> getTests() {
+		return tests;
+	}
+
+	public void setTests(List<Test> tests) {
+		this.tests = tests;
+	}
 
 	public long getId() {
 		return id;

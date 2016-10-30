@@ -21,6 +21,26 @@ public class Test {
 	
 	@ManyToOne
 	private DiagnosisPanel diagnosisPanel;
+	
+	private String description;
+	
+	private String workSchedule;
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getWorkSchedule() {
+		return workSchedule;
+	}
+
+	public void setWorkSchedule(String workSchedule) {
+		this.workSchedule = workSchedule;
+	}
 
 	public Long getId() {
 		return id;

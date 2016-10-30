@@ -124,17 +124,6 @@ public class Hospital {
 	@Column(name = "imagepath")
 	private String imagePath;
 
-	//new no points on  the map
-/*	@OneToMany(mappedBy = "hospital", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Fetch(value = FetchMode.SUBSELECT)
-	@IndexedEmbedded
-*/	
-	//old
-/*	@JsonIgnore
-	@OneToMany(mappedBy="hospital", cascade=CascadeType.ALL)
-	@Cache(region="entityCache",usage=CacheConcurrencyStrategy.READ_ONLY)
-	@IndexedEmbedded*/
-	
 	@JsonIgnore
 	@OneToMany(mappedBy="hospital", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@Fetch(value = FetchMode.SUBSELECT)

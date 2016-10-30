@@ -20,13 +20,12 @@ public class TestDAOImpl extends GenericDAOImpl<Test, Long> implements TestDAO{
 		this.setSessionFactory(factory);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Test> getById(long id) {
+	public Test getById(long id) {
 		String sql = "SELECT * FROM Test where id = " + id;
 		SQLQuery query = this.currentSession().createSQLQuery(sql);
 		query.addEntity(Test.class);
-		return query.list();
+		return (Test) query.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")

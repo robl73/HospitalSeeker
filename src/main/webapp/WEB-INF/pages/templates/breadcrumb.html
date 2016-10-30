@@ -22,11 +22,11 @@
                        <li th:remove="${doctor}? none : all"><a
                         th:href="@{/start(id=${doctor.id},did=${id})}" th:class="'active'"
                         th:text="|${doctor.firstName} ${doctor.lastName}|"></a></li>
-                       <!--  or diagnosisPanel -->
-                <li th:remove="${diagnosisPanel}? none : all"><a
-                        th:href="@{|/hospital/${hospital.id}/laboratory/${lid}/diagnosisPanel/${dpid}|}" 
+                       <!--  or test -->
+                <li th:remove="${test}? none : all"><a
+                        th:href="@{|/hospital/${hospital.id}/laboratory/${lid}/test/${id}|}" 
                         th:class="'active'"
-                        th:text="${panelName}"></a></li>
+                        th:text="'test'"></a></li> 
         </ol>
 </div>
 
