@@ -31,6 +31,8 @@ import java.util.*;
 
 /**
  * Created by igortsapyak on 24.05.16.
+ *
+ * Continued Lesia Koval
  */
 @Controller
 public class ManagerController {
@@ -62,7 +64,7 @@ public class ManagerController {
     private static String emailTemplate = "emailTemplate.vm";
 
     @PreAuthorize("hasRole('MANAGER')")
-    @RequestMapping("/manager/hospitals")
+    @RequestMapping("manage/hospitals")
     public String getHospitalsByManager(ModelMap model){
         List<Hospital> hospitals = managerService.getHospitalsByManager();
         if((hospitals.isEmpty())||hospitals==null){
@@ -73,11 +75,11 @@ public class ManagerController {
             model.put("hospitals", hospitals);
             return "manager/hospitals";
         }
-        return "redirect:/manager/hospitals/"+hospitals.get(0).getId()+"/manageDoctors";
+        return "redirect: /manage/hospitals/"+hospitals.get(0).getId()+"/manageDoctors";
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @RequestMapping(value = "/manager/hospitals/{id}/manageDoctors", method = RequestMethod.GET)
+    @RequestMapping(value = "manage/hospitals/{id}/manageDoctors", method = RequestMethod.GET)
     public String getDoctorsByManager(ModelMap model,@PathVariable ("id") Long hospitalId,
                                       @ModelAttribute ViewForManagerDTO dto,
                                       @RequestParam(value = "hospitalName", defaultValue = "") String hospitalName,
@@ -108,7 +110,7 @@ public class ManagerController {
 
 
     @PreAuthorize("hasRole('MANAGER')")
-    @RequestMapping(value = "/manager/hospitals/{id}/manageDoctors/search", method = RequestMethod.GET)
+    @RequestMapping(value = "manage/hospitals/{id}/manageDoctors/search", method = RequestMethod.GET)
     public String searchDoctorForManager(@PathVariable ("id") Long hospitalId,
                                @ModelAttribute ("viewForManagerDTO") ViewForManagerDTO dto,
                                ModelMap model) throws Exception {
@@ -162,8 +164,11 @@ public class ManagerController {
 
     @RequestMapping(value = "/newDoctor", method = RequestMethod.POST)
     public String newDoctorRegistration(@Valid @ModelAttribute("newDoctorDto") NewDoctorRegistrationDTO newDoctorRegistrationDTO,
-                                        ModelMap model, BindingResult result, Locale locale) {
-        if (result.hasErrors()) {
+                                        BindingResult result, ModelMap model, Locale locale) {
+        if (result.hasFieldErrors("firstName") || result.hasFieldErrors("lastName")
+                || result.hasFieldErrors("email")|| result.hasFieldErrors("education")
+                || result.hasFieldErrors("address")|| result.hasFieldErrors("birthDate")){
+            model.addAttribute("edit", true);
             return "/newDoctor";
         }
         User user = userService.register(newDoctorRegistrationDTO);
@@ -188,7 +193,7 @@ public class ManagerController {
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @RequestMapping(value = "/manager/hospitals/{id}/manageDoctors/delete/{doctorId}", method = RequestMethod.GET)
+    @RequestMapping(value = "manage/hospitals/{id}/manageDoctors/delete/{doctorId}", method = RequestMethod.GET)
     public String deleteUser(@PathVariable ("id") Long hospitalId,
                              @PathVariable ("doctorId") Long doctorId,
                              @ModelAttribute ("viewForManagerDTO") ViewForManagerDTO dto,
@@ -197,7 +202,7 @@ public class ManagerController {
         UserDetail userDetail = userDetailService.getById(doctorInfo.getUserDetails().getId());
         userService.changeStatus(userDetail.getUser().getId());
         sendBannedMessageToUserById(userDetail.getUser().getId(), locale);
-        return "redirect:/manager/hospitals/"+hospitalId+"/manageDoctors";
+        return "redirect:/manage/hospitals/"+hospitalId+"/manageDoctors";
     }
 
     @RequestMapping(value = "/editHospitalsManagers", method = RequestMethod.GET)

@@ -72,7 +72,7 @@ $(document).ready(function () {
     //reset all search field
     $('#clearButton').click(function (event) {
         var hospitalId = $('#hospitalId').val();
-        var url = '/manager/hospitals/'+hospitalId+'/manageDoctors/search';
+        var url = '/manage/hospitals/'+hospitalId+'/manageDoctors/search';
         $.get(url, function (data) {});
         sessionStorage.clear();
          $('#doctorPerPage').val(10);

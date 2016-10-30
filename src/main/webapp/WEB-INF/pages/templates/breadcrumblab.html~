@@ -1,0 +1,29 @@
+<div th:fragment="breadcrumbslab(hospitals,hospital,laboratory,diagnosisPanel)">
+	<ol class="breadcrumb" th:remove="${hospitals}? none : all">
+		<li><a th:href="@{/hospitals}" th:class="${hospital}?:'active'"
+			th:text="'Hospitals'" /></li>
+		<li th:remove="${hospital}? none : all"><a
+			th:href="@{|/hospital/${hospital.id}|}" th:class="${department}?:'active'"
+			th:text="${hospital.name}" /></li>
+		<li th:remove="${laboratory}? none : all"><a
+			th:href="@{|/hospital/${hospital.id}/laboratory/${laboratory.id}|}"
+			th:class="${diagnosisPanel}?:'active'" th:text="laboratory" /></li>
+		<li th:remove="${diagnosisPanel}? none : all"><a
+			th:href="@{|/hospital/${hospital.id}/laboratory/${laboratory.id}|}"
+			th:class="${diagnosisPanelInfo}?:'active'" th:text="${diagnosisPanelInfo.name}" /></li>
+	</ol>
+</div>
+
+
+
+<li th:remove="${hospital}? none : all"><a
+			th:href="@{|/hospital/${hospital.id}|}" th:class="${laboratory}?:'active'"
+			th:text="laboratory" /></li>
+			<li th:remove="${laboratory}? none : all"><a
+			th:href="@{|/hospital/${hospital.id}/laboratory/${laboratory.id}|}"
+			th:class="${diagnosisPanelInfo}?:'active'" th:text="laboratory" /></li>
+		<li th:remove="${diagnosisPanelInfo}? none : all"><a
+			th:href="@{|/hospital/${hospital.id}/laboratory/${laboratory.id}/diagnosisPanel/${diagnosisPanelInfo.diagnosisPanel.id}|}"
+			th:class="${diagnosisPanelInfo}?:'active'" th:text="${diagnosisPanelInfo.name}" /></li>
+			
+			

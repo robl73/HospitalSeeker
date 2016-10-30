@@ -1,16 +1,15 @@
 package com.hospitalsearch.dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
-
+import com.hospitalsearch.entity.Department;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
-
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hospitalsearch.dao.HospitalDAO;
 import com.hospitalsearch.dto.Bounds;
+import com.hospitalsearch.entity.AdminTokenConfig;
 import com.hospitalsearch.entity.Hospital;
 import com.hospitalsearch.util.HospitalFilterDTO;
 import com.hospitalsearch.util.Page;
@@ -36,14 +36,16 @@ public class HospitalDAOImpl extends GenericDAOImpl<Hospital, Long> implements H
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public List<Hospital> getAllByBounds(Bounds bounds) {
-        org.hibernate.Query query = this.currentSession().getNamedQuery(Hospital.GET_LIST_BY_BOUNDS)
+       org.hibernate.Query query = this.currentSession().getNamedQuery(Hospital.GET_LIST_BY_BOUNDS)
                 .setDouble("nelat", bounds.getNorthEastLat())
                 .setDouble("swlat", bounds.getSouthWestLat())
                 .setDouble("nelng", bounds.getNorthEastLon())
                 .setDouble("swlng", bounds.getSouthWestLon());
         return query.list();
     }
+
 
     @SuppressWarnings("unchecked")
     @Override

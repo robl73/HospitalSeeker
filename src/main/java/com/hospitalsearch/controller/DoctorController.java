@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by lesia koval on 19.09.2016.
+ * Created by Lesia Koval on 19.09.2016.
+ *
  */
 @Controller
 public class DoctorController {
