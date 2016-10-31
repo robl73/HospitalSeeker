@@ -4,11 +4,14 @@ package com.hospitalsearch.dto;
 import com.hospitalsearch.service.annotation.Date;
 import com.hospitalsearch.service.annotation.UniqueEmail;
 import com.hospitalsearch.util.Category;
+import com.hospitalsearch.util.Gender;
 import com.hospitalsearch.util.Specialization;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -52,17 +55,19 @@ public class NewDoctorRegistrationDTO {
 
     private List<NameHospitalsByManagerDTO> nameHospitals = new ArrayList<>();
 
+    private List<NameDepartmensByHospitalDTO> nameDepartment = new ArrayList<>();
+
     private Long nameHospitalId;
 
     private Long nameDepartmentsId;
 
- //   private List<Category> categorys = new ArrayList<>();
-
-  //  private List<Specialization> specializations = new ArrayList<>();
-
     private Category category;
 
     private Specialization specialization;
+
+    @Enumerated(EnumType.STRING)
+    @com.hospitalsearch.service.annotation.Gender(message = "Not valid format")
+    private Gender gender;
 
     public String getEmail() {
         return email;
@@ -144,14 +149,6 @@ public class NewDoctorRegistrationDTO {
         this.nameDepartmentsId = nameDepartmentsId;
     }
 
-//    public List<Category> getCategorys() {
-//        return categorys;
-//    }
-//
-//    public List<Specialization> getSpecializations() {
-//        return specializations;
-//    }
-
     public Category getCategory() {
         return category;
     }
@@ -159,14 +156,6 @@ public class NewDoctorRegistrationDTO {
     public Specialization getSpecialization() {
         return specialization;
     }
-
-//    public void setCategorys(List<Category> categorys) {
-//        this.categorys = categorys;
-//    }
-//
-//    public void setSpecializations(List<Specialization> specializations) {
-//        this.specializations = specializations;
-//    }
 
     public void setCategory(Category category) {
         this.category = category;
@@ -192,6 +181,23 @@ public class NewDoctorRegistrationDTO {
         this.enabled = enabled;
     }
 
+    public List<NameDepartmensByHospitalDTO> getNameDepartment() {
+        return nameDepartment;
+    }
+
+    public void setNameDepartment(List<NameDepartmensByHospitalDTO> nameDepartment) {
+        this.nameDepartment = nameDepartment;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+
     @Override
     public String toString() {
         return "NewDoctorRegistrationDTO{" +
@@ -205,8 +211,9 @@ public class NewDoctorRegistrationDTO {
                 ", nameHospitals=" + nameHospitals +
                 ", nameHospitalId=" + nameHospitalId +
                 ", nameDepartmentsId=" + nameDepartmentsId +
-                ", category='" + category + '\'' +
-                ", specialization='" + specialization + '\'' +
+                ", category=" + category +
+                ", specialization=" + specialization +
+                ", gender=" + gender +
                 '}';
     }
 }

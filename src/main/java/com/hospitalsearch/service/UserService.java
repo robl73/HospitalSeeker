@@ -57,4 +57,6 @@ public interface UserService {
     List<User> searchByRole(String role, String search,int pageNumber, int pageSize, String sortBy, Boolean order);
 
     Integer pageCount(Long countOfItems, int itemsPerPage);
+
+    boolean isPatient(User user);
 }

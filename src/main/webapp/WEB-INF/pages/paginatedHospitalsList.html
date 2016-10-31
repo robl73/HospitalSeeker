@@ -4,7 +4,7 @@
                                  th:each="hospital:${pagedList}"
                                  th:object="${hospital}">
 
-                                <div class="col-lg-4 col-md-4 col-xs-5">
+                                <div class="col-lg-3 col-md-3 col-xs-4">
                                     <div class="single-about-detail">
                                         <div class="about-img">
                                             <a href="#" th:href="@{|/hospital/${hospital.id}|}">
@@ -20,6 +20,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-lg-8 col-sm-8 col-md-7">
                                     <div class="card panel panel-default text-xs-right">
                                         <h3 class="panel-heading" th:text="|#{paginatedlayout.resultsearchlist.about} ${hospital.name}|" />
@@ -28,11 +29,12 @@
                                 </div>
                             </div>
                             <ul th:if="${pagination}" class="pagination pagination-lg">
-                            <li class="page-item" th:if="${currentPage != 1}">
+                                <li class="page-item" th:if="${currentPage != 1 and (currentPage &gt;= 2)}">
                                     <a class="page-link"
                                        th:href="@{/hospitals/page/1/params(itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}" th:text="#{paginatedlayout.page.first}"/>
                                 </li>
-                                <li class="page-item" th:if="${currentPage != 1}">
+
+                                <li class="page-item" th:if="${currentPage != 1 and (currentPage &gt;= 2)}">
                                     <a
                                         class="page-link"
                                         th:href="@{/hospitals/page/{currentPage}/params(currentPage=${currentPage-1},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}"
@@ -40,19 +42,25 @@
                                         <span aria-hidden="true">&laquo;</span>
                                         <span class="sr-only">Previous</span>
                                     </a></li>
-                                <li
 
-                                    th:each="number:${#numbers.sequence(1,pageCount)}"
-                                    th:class="page-item"
-                                    th:classappend="${currentPage == number }?'active': ''">
+                                <li th:class="page-item" th:if="${ ((currentPage - 1) &gt;= 1) and (currentPage-1 &lt;= pageCount)}">
                                     <a th:class="page-link"
                                        th:classappend="${currentPage == number}?'active': ''"
-                                       th:href="@{/hospitals/page/{number}/params(number=${number},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}" th:text="${number}" />
+                                       th:href="@{/hospitals/page/{number}/params(number=${currentPage-1},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}" th:text="${currentPage-1}" />
                                 </li>
 
+                                <li th:class="page-item" th:classappend="active"  th:if="${ ((currentPage - 1) &gt;= 0) and (currentPage &lt;= pageCount)}">
+                                    <a th:class="page-link"
+                                       th:classappend="active"
+                                       th:href="@{/hospitals/page/{number}/params(number=${currentPage},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}" th:text="${currentPage}" />
+                                </li>
 
-                                <li class="page-item"
-                                    th:if="${(currentPage+1) &lt;= pageCount}">
+                                <li th:class="page-item"  th:if="${ ((currentPage - 1) &gt;= 0) and (currentPage +1 &lt;= pageCount)}">
+                                    <a th:class="page-link"
+                                       th:href="@{/hospitals/page/{number}/params(number=${currentPage+1},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}" th:text="${currentPage+1}" />
+                                </li>
+
+                                <li class="page-item" th:if="${(currentPage+1) &lt;= pageCount}">
                                     <a class="page-link"
                                        th:href="@{/hospitals/page/{currentPage}/params(currentPage=${currentPage+1},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}"
                                        aria-label="Next">
@@ -60,8 +68,8 @@
                                         <span class="sr-only">Next</span>
                                     </a>
                                 </li>
-                                <li class="page-item"
-                                    th:if="${(currentPage+1) &lt;= pageCount}">
+
+                                <li class="page-item" th:if="${(currentPage+1) &lt;= pageCount}">
                                     <a class="page-link"
                                        th:href="@{/hospitals/page/{pageCount}/params(pageCount=${pageCount},itemsPerPage=${itemsPerPage},currentSearchQuery=${currentSearchQuery})}" th:text="#{paginatedlayout.page.last}"/>
                                 </li>

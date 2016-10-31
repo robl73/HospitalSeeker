@@ -9,7 +9,7 @@ package com.hospitalsearch.dto;
  *
  * @author Admin
  */
-public class DepartmentsNameDTO {
+public class DepartmentNameDTO {
     
  
       
@@ -45,7 +45,7 @@ public class DepartmentsNameDTO {
         this.number = number;
     }
 
-    public DepartmentsNameDTO() {
+    public DepartmentNameDTO() {
        
     }   
     

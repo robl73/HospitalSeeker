@@ -14,6 +14,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.MailSendException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -38,6 +39,9 @@ public class UserController {
 
 	@Autowired
 	private HttpServletRequest request;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	UserService userService;
@@ -141,16 +145,45 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/confirmRegistration", method = RequestMethod.GET)
-	public String confirmRegistration(@RequestParam("token") String token, ModelMap model) {
+	public String confirmRegistration(@ModelAttribute("userConfirmRegistration")UserRegisterDTO userRegisterDTO,
+									  @RequestParam("token") String token, ModelMap model) {
 		VerificationToken verificationToken = verificationTokenService.getByToken(token);
 		if (verificationToken == null) {
 			model.addAttribute("invalidToken", "invalidToken");
 			return "/user/confirmRegistration";
 		}
 		User user = verificationToken.getUser();
+		if(userService.isPatient(user)){
+			user.setEnabled(true);
+			userService.update(user);
+			verificationTokenService.delete(verificationToken);
+			model.addAttribute("confirmEmail", user.getEmail());
+			return "/user/confirmRegistration";
+		} else {
+			userRegisterDTO.setEmail(user.getEmail());
+			model.addAttribute("userConfirmRegistration", userRegisterDTO);
+			return "/endRegistrationForDoctor";
+		}
+
+	}
+
+	@RequestMapping(value = "/endRegistrationForDoctor", method = RequestMethod.POST)
+	public String confirmRegistrationForDoctor(@Valid @ModelAttribute("userConfirmRegistration") UserRegisterDTO userDto,
+											   BindingResult result, ModelMap model) {
+		if (result.hasFieldErrors("password") || result.hasFieldErrors("confirmPassword")) {
+			return "endRegistrationForDoctor";
+		}
+		User user = userService.getByEmail(userDto.getEmail());
+		user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
 		user.setEnabled(true);
-		userService.update(user);
-		verificationTokenService.delete(verificationToken);
+		VerificationToken verificationToken = verificationTokenService.getByUser(user);
+		try {
+			userService.update(user);
+			verificationTokenService.delete(verificationToken);
+		} catch (Exception e) {
+			model.addAttribute("errorReset", "errorReset");
+			e.printStackTrace();
+		}
 		model.addAttribute("confirmEmail", user.getEmail());
 		return "/user/confirmRegistration";
 	}

@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by lesia koval on 19.09.2016.
+ * Created by Lesia Koval on 19.09.2016.
+ *
  */
 @Controller
 public class DoctorController {
@@ -32,7 +33,7 @@ public class DoctorController {
 
     @RequestMapping("/doctors")
     public String renderSearchDoctors(Map<String, Object> model,
-                                  @RequestParam(value = "d", required = false) String query) throws ParseException, InterruptedException {
+                                  @RequestParam(value = "d", required = false, defaultValue=" ") String query) throws ParseException, InterruptedException {
         Page pageableContent = null;
         if (query != null && !query.isEmpty()) {
             pageableContent = doctorInfoService.advancedDoctorSearch(query);

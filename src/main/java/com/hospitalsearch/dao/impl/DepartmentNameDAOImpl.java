@@ -5,20 +5,20 @@
  */
 package com.hospitalsearch.dao.impl;
 
-import com.hospitalsearch.dao.DepartmentsNameDAO;
-import com.hospitalsearch.entity.DepartmentsName;
+import com.hospitalsearch.entity.DepartmentName;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import com.hospitalsearch.dao.DepartmentNameDAO;
 
 /**
  *
  * @author Admin
  */
 @Repository
-public class DepartmentsNameDAOImpl extends GenericDAOImpl<DepartmentsName,Long> implements DepartmentsNameDAO{
+public class DepartmentNameDAOImpl extends GenericDAOImpl<DepartmentName,Long> implements DepartmentNameDAO{
     @Autowired(required = true)
-    public DepartmentsNameDAOImpl(SessionFactory factory){
+    public DepartmentNameDAOImpl(SessionFactory factory){
         this.setSessionFactory(factory);
     }
 }

@@ -12,8 +12,7 @@ import javax.persistence.Table;
 public class Language {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "language_gen")
-	@SequenceGenerator(name = "language_gen", sequenceName = "language_id_seq", initialValue = 1, allocationSize = 1)
+	@GeneratedValue
 	private long id;
 	
 	private String name;

@@ -30,10 +30,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hospitalsearch.service.annotation.Date;
 import com.hospitalsearch.util.Gender;
 
-
+/**
+ * Such annotations as:
+ * - @Indexed
+ * - @Field
+ * - @IndexedEmbedded
+ * are used only for hibernate search
+ * */
 @Entity
 @Table(name = "userdetail")
-@Indexed
+@Indexed  //annotation for hibernate search
 @Cache(region="entityCache",usage=CacheConcurrencyStrategy.READ_WRITE)
 public class UserDetail{
 
@@ -45,12 +51,12 @@ public class UserDetail{
 
     @Column(name="firstname")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Solomon")
-    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))  //annotation for hibernate search
     private String firstName;
 
     @Column(name="lastname")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Kane")
-    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))  //annotation for hibernate search
     private String lastName;
 
     @Pattern(regexp = "^\\+38 \\(\\d{3}\\) \\d{3}-\\d{4}", message = "Not valid. Ex: +38 (095) 435-7132")
@@ -74,7 +80,7 @@ public class UserDetail{
     @OneToOne
     @Fetch(FetchMode.SELECT)
     @JoinColumn(name = "user_id")
-    @IndexedEmbedded
+    @IndexedEmbedded  //annotation for hibernate search
     private User user;
 
     public UserDetail() {}
