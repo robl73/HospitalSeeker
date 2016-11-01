@@ -1,6 +1,6 @@
 $(function() {
 
-    $('a[href="#toggle-search"], .navbar-bootsnipp .bootsnipp-search .input-group-btn > .btn[type="reset"]').on('click', function(event) {
+	$('a[href="#toggle-search"], .navbar-bootsnipp .bootsnipp-search .input-group-btn > .btn[type="reset"]').on('click', function(event) {
 		event.preventDefault();
 		$('.navbar-bootsnipp .bootsnipp-search .input-group > input').val('');
 		$('.navbar-bootsnipp .bootsnipp-search').toggleClass('open');
@@ -65,4 +65,3 @@ $(document).ready(function(e){
 		}
 	});
 });
-

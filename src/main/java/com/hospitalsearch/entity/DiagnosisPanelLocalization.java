@@ -1,6 +1,7 @@
 package com.hospitalsearch.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 public class DiagnosisPanelLocalization {
 	
 	@Id
+	@GeneratedValue
 	private long id;
 	
 	@ManyToOne

@@ -2,6 +2,7 @@ package com.hospitalsearch.dao.impl;
 
 import java.util.List;
 
+import com.hospitalsearch.entity.Department;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;

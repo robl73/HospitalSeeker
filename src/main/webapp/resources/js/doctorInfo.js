@@ -24,6 +24,7 @@
                 location.href = '../doctor/' + doctorId + '/scheduler';
             });
         }
+        validation();
     });
 
     function sendFeedback() {
@@ -34,17 +35,17 @@
             'message': message,
             'doctorId': doctorId
         };
-        var promise = $.post('/doctor/feedback', sendData);
+        var promise = $.post('../doctor/feedback', sendData);
         promise.success(function () {
             $('form[name="input-form"]').hide();
         });
         promise.error(function () {
             sendButton.prop('disabled', false);
+            showInfoError();
         });
     }
 
     function showModalFeedback(event) {
-        console.log('click');
         var panel = $(event.target).parent().closest('div');
         $('#modal-body-text').text($(event.target).text());
         $('#modal-title-text').text(panel.find('.panel-heading').text());
@@ -67,7 +68,6 @@
             promise.success(function (data) {
                 var row = buildRow(data.feedbacks, formatter);
                 feedbacks.append(row);
-                console.log(data.feedbacks[0]);
                 if (data.isMore == false) {
                     $('#showMore').hide();
                 }
@@ -105,6 +105,41 @@
         panel.append(body);
         panel.append(footer);
         return panel;
+    }
+
+    function validation() {
+        $('#sendFeedback').prop('disabled', true);
+        $(document).on('keyup', function() {
+            if ($('#input-form').valid() && $('#input-feedback').val().length != 0) {
+                $('#sendFeedback').prop('disabled', false);
+            } else {
+                $('#sendFeedback').prop('disabled', true);
+            }
+        });
+        $('#input-form').validate({
+            rules : {
+                'input-feedback' : {
+                    minlength : 3,
+                    maxlength : 150
+                }
+            }
+        });
+    }
+
+    function showInfoError() {
+        showMessage('.showInfoError');
+    }
+
+    function showMessage(selec) {
+        if ($(selec).is(':visible')) {
+            $(selec).slideUp(0);
+            clearTimeout(timeout);
+        }
+        $(selec).slideDown(300, function() {
+            timeout = setTimeout(function() {
+                $(selec).slideUp(300)
+            }, 4000);
+        });
     }
 
 })();

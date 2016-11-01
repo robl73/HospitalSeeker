@@ -30,6 +30,10 @@
             </div>
         </div>
         <div class="container">
+            <div class="alert alert-danger showInfo showInfoError" role="alert" th:text="#{manager.scheduler.saveError}">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+            </div>
             <div class="row">
                 <div class="row-height">
                     <div class="col-lg-4 col-md-4 col-sm-5">
@@ -38,7 +42,7 @@
                     <div class="col-lg-8 col-md-8 col-sm-7">
                         <div class="panel panel-default">
                             <div class="panel-heading text-center">
-                                <a th:href="@{|/doctor/${doctor.id}/scheduler|}"><h3 th:text="|#{doctor.name}: ${doctor.userDetails.firstName} ${doctor.userDetails.lastName}|"></h3></a>
+                                <h3 th:text="|#{doctor.name}: ${doctor.userDetails.firstName} ${doctor.userDetails.lastName}|"></h3>
                             </div>
                             <div class="panel-body">
                                 <h5 th:text="|#{user.detail.email} ${doctor.userDetails.user.email}|"></h5>
@@ -71,11 +75,11 @@
         <button type="button" class="btn btn-default" id="showMore" th:text="#{doctor.showMoreButton}">Show more</button>
     </div>
 
-    <form th:if="${allowAddFeedback}" name="input-form">
+    <form th:if="${allowAddFeedback}" name="input-form" id="input-form">
         <div class="form-group form-layout">
             <label for="input-feedback">Feedback:</label>
-            <textarea class="form-control" rows="5" id="input-feedback" placeholder="Feedback"></textarea>
-            <button type="button" class="btn btn-success" id="sendFeedback">Send</button>
+            <textarea class="form-control" rows="5" id="input-feedback" name="input-feedback" placeholder="Feedback"></textarea>
+            <button type="button" class="btn btn-success pull-right" id="sendFeedback" th:text="#{doctor.send}"></button>
         </div>
     </form>
 </section>

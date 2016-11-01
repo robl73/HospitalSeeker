@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.hospitalsearch.dao.DiagnosisPanelDAO;
 import com.hospitalsearch.entity.DiagnosisPanel;
 import com.hospitalsearch.entity.Laboratory;
+import com.hospitalsearch.entity.Test;
 
 @Repository
 public class DiagnosisPanelDAOImpl extends GenericDAOImpl<DiagnosisPanel, Long> implements DiagnosisPanelDAO{
@@ -18,7 +19,7 @@ public class DiagnosisPanelDAOImpl extends GenericDAOImpl<DiagnosisPanel, Long> 
 	public DiagnosisPanelDAOImpl(SessionFactory factory) {
 		this.setSessionFactory(factory);
 	}
-
+	
 	@Override
 	public List<DiagnosisPanel> getAll(){
 		return super.getAll();
@@ -52,5 +53,5 @@ public class DiagnosisPanelDAOImpl extends GenericDAOImpl<DiagnosisPanel, Long> 
 	public void delete(DiagnosisPanel diagnosisPanel){
 		super.delete(diagnosisPanel);
 	}
-	
+
 }

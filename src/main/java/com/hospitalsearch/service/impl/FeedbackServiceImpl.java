@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.hospitalsearch.dao.FeedbackDAO;
 import com.hospitalsearch.entity.Feedback;
-import com.hospitalsearch.entity.User;
 import com.hospitalsearch.service.FeedbackService;
 
 @Service
@@ -112,10 +111,6 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 	@Override
 	public void changeStatus(Long feedbackId, FeedbackStatus status) {
-/*		Feedback feedback = dao.getById(feedbackId);
-		feedback.setStatus(status);
-		dao.update(feedback);*/
-
 		dao.changeStatus(feedbackId, status);
 	}
 

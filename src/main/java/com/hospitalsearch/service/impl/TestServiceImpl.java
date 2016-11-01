@@ -22,7 +22,7 @@ public class TestServiceImpl implements TestService{
 	}
 
 	@Override
-	public List<Test> getById(long id) {
+	public Test getById(long id) {
 		return dao.getById(id);
 	}
 

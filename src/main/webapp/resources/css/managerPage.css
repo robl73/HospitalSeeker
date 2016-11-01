@@ -42,6 +42,7 @@ html, body {
 .showInfoSuccess {
     display: none;
 }
+
 .showInfoError {
     display: none;
 }

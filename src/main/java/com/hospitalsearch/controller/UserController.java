@@ -1,6 +1,5 @@
 package com.hospitalsearch.controller;
 
-import com.hospitalsearch.dto.NewDoctorRegistrationDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.PasswordResetToken;
 import com.hospitalsearch.entity.Role;
@@ -29,7 +28,6 @@ import javax.validation.Valid;
 import java.net.ConnectException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -62,12 +60,6 @@ public class UserController {
 
 	@Autowired
 	PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
-
-	@Autowired
-	private DoctorInfoService doctorInfoService;
-
-	@Autowired
-	private DepartmentService departmentService;
 
 	@Autowired
 	private MessageSource messageSource;
@@ -161,7 +153,7 @@ public class UserController {
 			return "/user/confirmRegistration";
 		}
 		User user = verificationToken.getUser();
-		if(getRole(user.getUserRoles())){
+		if(userService.isPatient(user)){
 			user.setEnabled(true);
 			userService.update(user);
 			verificationTokenService.delete(verificationToken);
@@ -192,7 +184,8 @@ public class UserController {
 			model.addAttribute("errorReset", "errorReset");
 			e.printStackTrace();
 		}
-		return "/login";
+		model.addAttribute("confirmEmail", user.getEmail());
+		return "/user/confirmRegistration";
 	}
 
 	@RequestMapping(value = "/confirmResetPassword", method = RequestMethod.GET)
@@ -252,16 +245,5 @@ public class UserController {
 	//utility methods
 	private String getRandomToken() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
-	}
-
-	public boolean getRole(Set<Role> roles) {
-		Boolean result = false;
-		for(Role role : roles){
-			if(role.getType().equals("PATIENT")){
-				result = true;
-				break;
-			}
-		}
-		return result;
 	}
 }

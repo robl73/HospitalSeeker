@@ -23,7 +23,7 @@ public class Feedback {
 	private Long id;
 
 	@NotNull
-	@Size(min = 4, max = 150)
+	@Size(min = 3, max = 150)
 	private String message;
 	
 	@ManyToOne

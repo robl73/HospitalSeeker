@@ -1,20 +1,21 @@
 package com.hospitalsearch.dto;
 
 
-import com.hospitalsearch.entity.Role;
 import com.hospitalsearch.service.annotation.Date;
 import com.hospitalsearch.service.annotation.UniqueEmail;
 import com.hospitalsearch.util.Category;
+import com.hospitalsearch.util.Gender;
 import com.hospitalsearch.util.Specialization;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by ruslan on 27.09.16.
@@ -31,21 +32,17 @@ public class NewDoctorRegistrationDTO {
     @Pattern(regexp = EMAIL_PATTERN, message = "Please enter email in correct format.")
     private String email;
 
-    @NotEmpty(message = "Please enter your First Name")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Solomon")
     private String firstName;
 
-    @NotEmpty(message = "Please enter your Last Name")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Kane")
     private  String lastName;
 
     private String imagePath;
 
-    @NotEmpty(message = "Please enter your education")
-    private String education;
+    private String Education;
 
-    @NotEmpty(message = "Please enter your address")
-    private String address;
+    private String Address;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Date(message = "Not valid format")
@@ -68,7 +65,9 @@ public class NewDoctorRegistrationDTO {
 
     private Specialization specialization;
 
-    private Set<Role> role;
+    @Enumerated(EnumType.STRING)
+    @com.hospitalsearch.service.annotation.Gender(message = "Not valid format")
+    private Gender gender;
 
     public String getEmail() {
         return email;
@@ -103,19 +102,19 @@ public class NewDoctorRegistrationDTO {
     }
 
     public String getEducation() {
-        return education;
+        return Education;
     }
 
     public String getAddress() {
-        return address;
+        return Address;
     }
 
     public void setEducation(String education) {
-        this.education = education;
+        Education = education;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        Address = address;
     }
 
     public String getPhone() {
@@ -190,13 +189,14 @@ public class NewDoctorRegistrationDTO {
         this.nameDepartment = nameDepartment;
     }
 
-    public Set<Role> getRole() {
-        return role;
+    public Gender getGender() {
+        return gender;
     }
 
-    public void setRole(Set<Role> role) {
-        this.role = role;
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
+
 
     @Override
     public String toString() {
@@ -205,18 +205,15 @@ public class NewDoctorRegistrationDTO {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", imagePath='" + imagePath + '\'' +
-                ", education='" + education + '\'' +
-                ", address='" + address + '\'' +
-                ", birthDate=" + birthDate +
+                ", Education='" + Education + '\'' +
+                ", Address='" + Address + '\'' +
                 ", phone='" + phone + '\'' +
-                ", enabled=" + enabled +
                 ", nameHospitals=" + nameHospitals +
-                ", nameDepartment=" + nameDepartment +
                 ", nameHospitalId=" + nameHospitalId +
                 ", nameDepartmentsId=" + nameDepartmentsId +
                 ", category=" + category +
                 ", specialization=" + specialization +
-                ", role=" + role +
+                ", gender=" + gender +
                 '}';
     }
 }

@@ -60,3 +60,16 @@ textarea {
 #showMore {
     margin-bottom: 13px;
 }
+
+.showInfo {
+    position: fixed;
+    top: 7px;
+    left: 45vw;
+    z-index: 1000;
+    width: auto;
+    height: auto;
+}
+
+.showInfoError {
+    display: none;
+}

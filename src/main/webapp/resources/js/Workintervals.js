@@ -207,15 +207,16 @@ function closeErrorModal() {
 }
 
 function delete_event() {
-    var event_id = scheduler.getState().lightbox_id;
+    // var event_id = scheduler.getState().lightbox_id;
     scheduler.endLightbox(false, html("my_form"));
-    scheduler.deleteEvent(event_id);
+    scheduler.deleteEvent(ev.id);
 }
 
 function blockAppointmensAdd() {
     location.reload();
     scheduler.config.readonly = true;
 }
+
 scheduler.attachEvent("onLimitViolation", function (id, obj) {
     dhtmlx.message('The appointment is not allowed at this time');
 });

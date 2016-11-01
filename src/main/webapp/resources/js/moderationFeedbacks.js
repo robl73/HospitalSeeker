@@ -30,6 +30,7 @@
         $(document).ajaxStop(function () {
             $('#loading-image').hide();
         });
+        $('#loading-image').hide();
     });
 
     function changedStatuses() {
@@ -133,7 +134,7 @@
             'feedbackId': feedbackId,
             'status': status
         };
-        var promise = $.post('/changeFeedbackStatus', sendData);
+        var promise = $.post('../changeFeedbackStatus', sendData);
         promise.success(function () {
             panel.removeClass('panel-success');
             panel.removeClass('panel-danger');

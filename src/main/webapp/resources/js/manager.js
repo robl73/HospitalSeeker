@@ -23,6 +23,9 @@ $(document).ready(function() {
         init(data);
     });
     $('.content').css('padding-top', $('.navbar').height() + 13);
+    var dhxData = $('.dhx_cal_data');
+    dhxData.height(dhxData[0].scrollHeight);
+    $('.dhx_cal_container').height(dhxData[0].scrollHeight + $('.dhx_cal_header').height() + $('.dhx_cal_navline').height() + $('.dhx_multi_day').height() + 15);
 });
 
 function init(data) {
@@ -98,10 +101,6 @@ function init(data) {
         isSaved = false;
         return true;
     });
-
-    var dhxData = $('.dhx_cal_data');
-    dhxData.height(dhxData[0].scrollHeight);
-    $('.dhx_cal_container').height(dhxData[0].scrollHeight + $('.dhx_multi_day').height() + $('.dhx_cal_header').height() + $('.dhx_cal_navline').height() + 15);
 
 }
 

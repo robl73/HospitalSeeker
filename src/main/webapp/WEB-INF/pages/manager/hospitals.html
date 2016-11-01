@@ -11,9 +11,9 @@
 	<div class="content">
 		<div class="team container">
 			<div th:if="${messageError}" id="messageError" class="helper col-md-12 col-lg-12 col-sm-12" style="margin-top: 100px;">
-				<div class="col-md-6 col-sm-6 col-lg-6
-             			col-md-offset-3 col-sm-offset-3 col-lg-offset-3" role="status">
-					<h4 class="error text-center" th:text="#{manager.hospitalspage.messageError}"></h4>
+				<div class="alert alert-info alert-dismissible col-md-6 col-sm-6 col-lg-6
+             col-md-offset-3 col-sm-offset-3 col-lg-offset-3" role="status">
+					<h4 class="info text-center" th:text="#{manager.hospitalspage.messageError}"></h4>
 				</div>
 			</div>
 			<div th:if="${hospitals!=null}">
@@ -23,7 +23,7 @@
 				<div class="row">
 					<div th:each="hospital:${hospitals}" class="col-md-2 single-member col-sm-5" style="padding: 2px; border-color:#5bc0de; border-width:3px; height: 400px;">
 						<div class="single-about-detail">
-							<a href="#" th:href="@{/attachedHospitals/{id}/manageDoctors(id=${hospital.id},hospitalName=${hospital.name})}">
+							<a href="#" th:href="@{/manage/hospitals/{id}/manageDoctors(id=${hospital.id},hospitalName=${hospital.name})}">
 								<div class="about-img">
 									<img class="img-responsive" src="/"
 										 th:src="@{|/img/hospitals/${hospital.imagePath}|}" />

@@ -16,12 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.service.FeedbackService;
 import com.hospitalsearch.service.UserService;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;

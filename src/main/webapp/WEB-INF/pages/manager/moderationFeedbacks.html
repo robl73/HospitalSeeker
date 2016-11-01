@@ -46,7 +46,7 @@
             <div class="feedbacks">
                 <script th:inline="javascript">var firstPart = [[${feedbacks}]];</script>
             </div>
-            <div class="text-center" id="loading-image">
+            <div class="text-center" style="display: none;" id="loading-image">
                 <img src="http://i.stack.imgur.com/FhHRx.gif" />
                 <p th:text="#{manager.wait}"></p>
             </div>

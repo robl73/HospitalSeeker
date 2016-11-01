@@ -41,8 +41,8 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
                 .createAlias("doctor.departments", "department")
                 .createAlias("department.hospital", "hospital")
                 .createAlias("hospital.managers", "manager");
-                filterCriteriaForPagination(viewForManagerDTO,criteria);
-                setProjectionByHospitalAndManager(criteria,hospitalId, managerId);
+                filterCriteriaForPagination(viewForManagerDTO,criteria, hospitalId, managerId);
+                setProjectionByHospitalAndManager(criteria);
                 criteria.setResultTransformer(Transformers.aliasToBean(DoctorSearchDTO.class));
         return (List<DoctorSearchDTO>)criteria.list() ;
     }
@@ -56,18 +56,19 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
                 .createAlias("doctor.departments", "department")
                 .createAlias("department.hospital", "hospital")
                 .createAlias("hospital.managers", "manager");
-        setProjectionByHospitalAndManager(criteria,hospitalId, managerId);
-        criteria.add(Restrictions.like("doctor.specialization", viewForManagerDTO.getSpecialization().toString(), MatchMode.ANYWHERE).ignoreCase());
+        if (viewForManagerDTO.getSpecialization()!=null) {
+            criteria.add(Restrictions.eq("doctor.specialization", viewForManagerDTO.getSpecialization()));
+        }
         if (viewForManagerDTO.getAllField() != null) {
             criteria.add(searchInAllFields(viewForManagerDTO.getAllField()));
-            filterCriteriaForPagination(viewForManagerDTO, criteria);
-            setProjectionByHospitalAndManager(criteria,hospitalId, managerId);
+            filterCriteriaForPagination(viewForManagerDTO, criteria, hospitalId, managerId);
+            setProjectionByHospitalAndManager(criteria);
             criteria.setResultTransformer(Transformers.aliasToBean(DoctorSearchDTO.class));
             return (List<DoctorSearchDTO>) criteria.list();
         }
         criteria.add(searchInChosenField(viewForManagerDTO));
-        filterCriteriaForPagination(viewForManagerDTO, criteria);
-        setProjectionByHospitalAndManager(criteria,hospitalId, managerId);
+        filterCriteriaForPagination(viewForManagerDTO, criteria, hospitalId, managerId);
+        setProjectionByHospitalAndManager(criteria);
         criteria.setResultTransformer(Transformers.aliasToBean(DoctorSearchDTO.class));
         return (List<DoctorSearchDTO>) criteria.list();
     }
@@ -96,7 +97,7 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
         return (DoctorInfo) query.uniqueResult();
     }
 
-    private void setProjectionByHospitalAndManager(Criteria criteria, Long hospitalId, Long managerId){
+    private void setProjectionByHospitalAndManager(Criteria criteria){
         criteria .setProjection(Projections.projectionList()
                 .add(Projections.property("doctor.id"), "doctorId")
                 .add(Projections.property("userDetail.firstName"), "firstName")
@@ -104,9 +105,8 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
                 .add(Projections.property("user.email"), "email")
                 .add(Projections.property("doctor.specialization"), "specialization")
                 .add(Projections.property("doctor.category"), "category")
-        )
-                .add(Restrictions.eq("hospital.id",hospitalId))
-                .add(Restrictions.eq("manager.id", managerId));
+        );
+
     }
 
     //search in all fields
@@ -115,7 +115,6 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
         disjunction.add(Restrictions.ilike("user.email", value, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.ilike("userDetail.firstName", value, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.ilike("userDetail.lastName", value, MatchMode.ANYWHERE));
-        disjunction.add(Restrictions.ilike("doctor.specialization", value.toLowerCase().toUpperCase(), MatchMode.ANYWHERE));
         return disjunction;
     }
 
@@ -123,8 +122,7 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
     private Disjunction searchInChosenField(ViewForManagerDTO viewForManagerDTO) {
         return Restrictions.or(Restrictions.like("user.email", viewForManagerDTO.getEmail(), MatchMode.ANYWHERE).ignoreCase(),
                 Restrictions.like("userDetail.firstName", viewForManagerDTO.getFirstName(), MatchMode.ANYWHERE).ignoreCase(),
-                Restrictions.like("userDetail.lastName", viewForManagerDTO.getLastName(), MatchMode.ANYWHERE).ignoreCase(),
-                Restrictions.like("doctor.specialization", viewForManagerDTO.getSpecialization().toString(), MatchMode.ANYWHERE).ignoreCase());
+                Restrictions.like("userDetail.lastName", viewForManagerDTO.getLastName(), MatchMode.ANYWHERE).ignoreCase());
     }
 
     /**
@@ -133,13 +131,17 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
             *                      default sort - ASC by email
      */
     //get pagination
-    private void filterCriteriaForPagination(ViewForManagerDTO viewForManagerDTO, Criteria criteria) {
+    private void filterCriteriaForPagination(ViewForManagerDTO viewForManagerDTO, Criteria criteria, Long hospitalId, Long managerId) {
 
-       // get total pages
+        criteria.add(Restrictions.eq("hospital.id",hospitalId))
+                .add(Restrictions.eq("manager.id", managerId))
+                .add(Restrictions.eq("user.enabled",Boolean.TRUE));
+        // get total pages
         Long countPages = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 
         //get total rows
-        Integer totalPages = (int) Math.ceil( countPages / viewForManagerDTO.getPageSize()*1.0);
+        Integer totalPages = (int) Math.ceil( countPages*1.0/ viewForManagerDTO.getPageSize());
+
         if (totalPages < viewForManagerDTO.getCurrentPage()) {
             viewForManagerDTO.setCurrentPage(1);
         }

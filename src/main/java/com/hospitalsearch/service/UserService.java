@@ -42,6 +42,8 @@ public interface UserService {
 
     User register(NewDoctorRegistrationDTO dto);
 
+    void addNewUser(User newUser);
+
     void resetPassword(String email, String newPassword) throws ResetPasswordException;
 
     List<User> getByRole(String role, int pageNumber, int pageSize, String sortBy, Boolean order);
@@ -55,4 +57,6 @@ public interface UserService {
     List<User> searchByRole(String role, String search,int pageNumber, int pageSize, String sortBy, Boolean order);
 
     Integer pageCount(Long countOfItems, int itemsPerPage);
+
+    boolean isPatient(User user);
 }

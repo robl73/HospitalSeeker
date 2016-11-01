@@ -35,10 +35,7 @@ $(document).ready(function () {
     //select item per page
     var $select = $('#userPerPage');
     $select.change(function () {
-        var quantityUsers = this.options[this.selectedIndex].value;
-        var setUrl = '/admin/users/setItemsPerPage/' + quantityUsers;
-        $.get(setUrl, function (data) {
-        });
+        $( "#searchForm" ).submit();
     });
 
     //select searchBy
@@ -72,14 +69,15 @@ $(document).ready(function () {
 
     //reset all search field
     $('#clearButton').click(function (event) {
-        var pageSize = 10;
-        var url = '/admin/users/setItemsPerPage/' + pageSize;
+        var url = 'admin/users/search';
         $.get(url, function (data) {});
         sessionStorage.clear();
+        $('#userPerPage').val(10);
         $('#pref-roleby').val('');
         $searchInput.val('');
         window.location.reload();
     });
+
 
     //alert windows (success or error after editing user)
     $('.messageAfterEdit').delay(5000).fadeOut("slow");

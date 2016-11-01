@@ -5,12 +5,12 @@
  */
 package com.hospitalsearch.dao;
 
-import com.hospitalsearch.entity.DepartmentsName;
+import com.hospitalsearch.entity.DepartmentName;
 
 /**
  *
  * @author Admin
  */
-public interface DepartmentsNameDAO extends GenericDAO<DepartmentsName,Long>{
+public interface DepartmentNameDAO extends GenericDAO<DepartmentName,Long>{
     
 }

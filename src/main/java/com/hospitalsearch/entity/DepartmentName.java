@@ -21,20 +21,18 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.hibernate.search.annotations.DocumentId;
 
 /**
  *
  * @author Admin
  */
 
-//@Embeddable
 @Entity
-@Table(name = "departmenstname")
-public class DepartmentsName implements Serializable {
+@Table(name = "departmentname")
+public class DepartmentName implements Serializable {
    
     @Id
-	@DocumentId
+        
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "departmentname_gen")
         @SequenceGenerator(name = "departmentname_gen", sequenceName = "departmentname_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
@@ -89,7 +87,7 @@ public class DepartmentsName implements Serializable {
         this.id = id;
     }
     
-        public DepartmentsName() {
+        public DepartmentName() {
        
     }
     

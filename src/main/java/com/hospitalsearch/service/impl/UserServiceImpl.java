@@ -1,8 +1,7 @@
 package com.hospitalsearch.service.impl;
 
-import com.hospitalsearch.dao.DoctorInfoDAO;
-import com.hospitalsearch.dao.UserDAO;
-import com.hospitalsearch.dao.UserDetailDAO;
+import com.hospitalsearch.dao.*;
+import com.hospitalsearch.dto.HospitalDTO;
 import com.hospitalsearch.dto.NewDoctorRegistrationDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
@@ -44,10 +43,10 @@ public class UserServiceImpl implements UserService {
     PatientInfoService patientInfoService;
 
     @Autowired
-    private DepartmentService departmentService;
+    private DoctorInfoDAO doctorInfoDAO;
 
     @Autowired
-    private DoctorInfoDAO doctorInfoDAO;
+    private DepartmentDAO departmentDAO;
 
     @Override
     public void save(User newUser) {
@@ -56,6 +55,15 @@ public class UserServiceImpl implements UserService {
             UserDetail userDetail = new UserDetail();
             userDetail.setUser(newUser);
             newUser.setUserDetails(userDetail);
+            dao.save(newUser);
+        } catch (Exception e) {
+            logger.error("Error saving user: " + newUser, e);
+        }
+    }
+
+    public void addNewUser(User newUser) {
+        try {
+            logger.info("save user: " + newUser);
             dao.save(newUser);
         } catch (Exception e) {
             logger.error("Error saving user: " + newUser, e);
@@ -78,6 +86,7 @@ public class UserServiceImpl implements UserService {
                 user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("PATIENT"))));
             }
             save(user);
+//           addNewUser(user);
         } catch (Exception e) {
             System.out.println("Error register user");
             logger.error("Error register user: " + userRegisterDTO, e);
@@ -89,6 +98,11 @@ public class UserServiceImpl implements UserService {
     public User register(NewDoctorRegistrationDTO newDoctorRegistrationDTO) {
         User user = new User();
         try {
+            logger.info("register user: " + newDoctorRegistrationDTO);
+            user.setEmail(newDoctorRegistrationDTO.getEmail().toLowerCase());
+            user.setPassword(passwordEncoder.encode("password"));
+            user.setEnabled(newDoctorRegistrationDTO.getEnabled());
+            user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("DOCTOR"))));
             UserDetail userDetail = new UserDetail();
             userDetail.setFirstName(newDoctorRegistrationDTO.getFirstName());
             userDetail.setLastName(newDoctorRegistrationDTO.getLastName());
@@ -97,6 +111,7 @@ public class UserServiceImpl implements UserService {
             userDetail.setPhone(newDoctorRegistrationDTO.getPhone());
             userDetail.setImagePath(newDoctorRegistrationDTO.getImagePath());
 
+            userDetail.setGender(newDoctorRegistrationDTO.getGender());
             user.setEmail(newDoctorRegistrationDTO.getEmail().toLowerCase());
             user.setPassword(passwordEncoder.encode("password"));
             user.setEnabled(newDoctorRegistrationDTO.getEnabled());
@@ -106,15 +121,16 @@ public class UserServiceImpl implements UserService {
 
             DoctorInfo doctorInfo = new DoctorInfo();
             List<Department> departments = new ArrayList<>();
-            //departments.add(departmentService.getById(newDoctorRegistrationDTO.getNameDepartmentsId()));
+            if(!newDoctorRegistrationDTO.getNameDepartmentsId().equals(null)) {
+                departments.add(departmentDAO.getById(newDoctorRegistrationDTO.getNameDepartmentsId()));
+            }
             doctorInfo.setDepartments(departments);
             doctorInfo.setSpecialization(newDoctorRegistrationDTO.getSpecialization());
             doctorInfo.setCategory(newDoctorRegistrationDTO.getCategory());
-            doctorInfo.setUserDetails(userDetail);
-
-            dao.save(user);
-            doctorInfoDAO.save(doctorInfo);
+            user.setUserDetails(userDetail);
+            addNewUser(user);
         } catch (Exception e) {
+            System.out.println("Error register user");
             logger.error("Error register user: " + newDoctorRegistrationDTO, e);
         }
         return user;
@@ -227,6 +243,7 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    //Illia
     @Override
     public List<User> getByRole(String role, int pageNumber, int pageSize, String sortBy, Boolean order) {
         List<User> users = new ArrayList<>();
@@ -270,14 +287,21 @@ public class UserServiceImpl implements UserService {
     public Integer pageCount(Long countOfItems, int itemsPerPage) {
         return (int) Math.ceil((double) countOfItems / itemsPerPage);
     }
-    //Illia
 
-    //utilities methods
     private boolean isAdmin(Long id) {
         User user = dao.getById(id);
         for (Role role : user.getUserRoles()) {
             if (role.getType().equals("ADMIN")) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isPatient(User user) {
+        for(Role role : user.getUserRoles()){
+            if(role.getType().equals("PATIENT")){
+                return  true;
             }
         }
         return false;

@@ -7,37 +7,6 @@
                                         http://www.liquibase.org/xml/ns/dbchangelog 
                                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet author="lesia (generated)" id="1476977072005-1">
-        <createTable tableName="departmenstname">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="VARCHAR(255)"/>
-            <column name="number" type="VARCHAR(255)"/>
-            <column name="specialization" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="lesia (generated)" id="1476977072005-2">
-        <createTable tableName="relativesInfo">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="VARCHAR(255)"/>
-            <column name="phone" type="VARCHAR(255)"/>
-            <column name="relation" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="lesia (generated)" id="1476977072005-3">
-        <addPrimaryKey columnNames="id" constraintName="departmenstnamePK" tableName="departmenstname"/>
-    </changeSet>
-    <changeSet author="lesia (generated)" id="1476977072005-4">
-        <addPrimaryKey columnNames="id" constraintName="relativesInfoPK" tableName="relativesInfo"/>
-    </changeSet>
-    <changeSet author="lesia (generated)" id="1476977072005-5">
-        <dropColumn columnName="blood_group" tableName="patientinfo"/>
-    </changeSet>
-    <changeSet author="lesia (generated)" id="1476977072005-6">
-        <addDefaultValue columnDataType="bigint" columnName="id" defaultValueComputed="nextval('admintokenconfig_id_seq'::regclass)" tableName="admintokenconfig"/>
-    </changeSet>
+   
 
 </databaseChangeLog>

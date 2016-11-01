@@ -32,11 +32,11 @@ $(document).ready(function () {
     });
 
     $.validator.addMethod("patternEducation", function (value, element) {
-        return this.optional(element) || /^[a-zA-Z0-9\s,'-]*$/i.test(value);
+        return this.optional(element) || /^[a-zA-Z0-9\s,'-]|[А-ЯІЄЇа-яєії0-9\s,'-]$/i.test(value);
     });
 
     $.validator.addMethod("patternAddress", function (value, element) {
-        return this.optional(element) || /^[a-zA-Z0-9\s,'-]*$/i.test(value);
+        return this.optional(element) || /^[a-zA-Z0-9\s,'-]|[А-ЯІЄЇа-яєії0-9\s,'-]$/i.test(value);
     });
 
     $("#registerNewUser").validate({
@@ -152,3 +152,4 @@ $(document).ready(function () {
     });
 
 });
+

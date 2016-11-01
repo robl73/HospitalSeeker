@@ -40,7 +40,7 @@ public class FeedbackDAOImpl extends GenericDAOImpl<Feedback, Long> implements F
 
 	@Override
 	public List<Feedback> getFeedbacks(Long doctorId, int pageNumber, int pageSize) {
-		Query query = getSessionFactory().getCurrentSession().createQuery("select f from Feedback f where f.consumer.id = :doctorId order by f.date desc");
+		Query query = getSessionFactory().getCurrentSession().createQuery("select f from Feedback f where f.consumer.id = :doctorId and f.status = 'OK' order by f.date desc");
 		query.setParameter("doctorId", doctorId);
 		query.setFirstResult((pageNumber - 1) * pageSize);
 		query.setMaxResults(pageSize);

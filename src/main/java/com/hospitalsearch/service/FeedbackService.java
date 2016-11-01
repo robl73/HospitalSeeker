@@ -46,5 +46,5 @@ public interface FeedbackService {
 
 	void changeStatus(Long feedbackId, FeedbackStatus status);
 
-}
 
+}
