@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+<head>
+<script th:src="@{/js/maplistadmin.js}"></script>
+<script th:src="@{/js/gmaps.js}"></script>
+<script th:src="@{/js/test.js}"></script>
+<script th:src="@{/js/bootstrap-datepicker.js}"></script>
+
+<link rel="stylesheet" th:href="@{/css/map.css}" />
+<link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}" />
+
+<title th:text="#{admin.hospital.list.header}"></title>
+</head>
+<body>
+	<section layout:fragment="content">
+		<div class="content">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-5">
+				<h3 th:text="#{laboratory.test.information} + ${test.name}"
+					style="color: #42b3e5;"></h3>
+				<div th:text="${test.description}"></div>
+			</div>
+			<div class="col-sm-1"></div>
+			<div class="col-sm-5">
+				<h3 th:text="#{laboratory.test.workSchedule}"
+					style="color: #42b3e5;"></h3>
+
+				<div class="col-sm-12">
+					<span class="col-sm-2" style="color: #286090;"
+						th:text="#{laboratory.test.workSchedule.monday}"></span> <span
+						class="col-sm-3" th:text="*{schedule[__0__]}"></span>
+				</div>
+
+				<div class="col-sm-12">
+					<span class="col-sm-2" style="color: #286090;"
+						th:text="#{laboratory.test.workSchedule.tuesday}"></span> <span
+						class="col-sm-3" th:text="*{schedule[__1__]}"></span>
+				</div>
+
+				<div class="col-sm-12">
+					<span class="col-sm-2" style="color: #286090;"
+						th:text="#{laboratory.test.workSchedule.wednesday}"></span> <span
+						class="col-sm-3" th:text="*{schedule[__2__]}"></span>
+				</div>
+
+				<div class="col-sm-12">
+					<span class="col-sm-2" style="color: #286090;"
+						th:text="#{laboratory.test.workSchedule.thursday}"></span> <span
+						class="col-sm-3" th:text="*{schedule[__3__]}"></span>
+				</div>
+
+				<div class="col-sm-12">
+					<span class="col-sm-2" style="color: #286090;"
+						th:text="#{laboratory.test.workSchedule.friday}"></span> <span
+						class="col-sm-3" th:text="*{schedule[__4__]}"></span>
+				</div>
+
+				<div class="col-sm-12">
+					<span class="col-sm-2" style="color: #286090;"
+						th:text="#{laboratory.test.workSchedule.saturday}"></span> <span
+						class="col-sm-3" th:text="*{schedule[__5__]}"></span>
+				</div>
+
+				<div class="col-sm-12">
+					<span class="col-sm-2" style="color: #286090;"
+						th:text="#{laboratory.test.workSchedule.sunday}"></span> <span
+						class="col-sm-3" th:text="*{schedule[__6__]}"></span>
+				</div>
+			</div>
+
+			<div class="content" sec:authorize="hasRole('PATIENT')">
+				<div class="col-sm-7"></div>
+				<div class="col-sm-5">
+					<h3 th:text="#{laboratory.register}" style="color: #42b3e5;"></h3>
+				</div>
+				<div class="col-sm-7"></div>
+				<div class="col-sm-5">
+					<div class="form-group ">
+						<div class='input-group date' id="datetimepicker">
+							<span class="input-group-addon"> <span
+								class="glyphicon glyphicon-calendar"> </span>
+							</span> <input type='text' class="form-control" style="width: 35%;" />
+						</div>
+					</div>
+					<!-- <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#myModal">select</button> -->
+				</div>
+
+
+				<!-- 
+			<div id="myModal" class="modal fade">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header"><button class="close" type="button" data-dismiss="modal">x</button>
+<h4 class="modal-title">aaaaaaaaaaaaaaaa</h4>
+</div>
+<div class="modal-body">ssssssssssssssssss</div>
+<div class="modal-footer"><button class="btn btn-default" type="button" data-dismiss="modal">ddddd</button></div>
+</div>
+</div>
+</div>
+			 -->
+
+
+			</div>
+
+			<div class="content" sec:authorize="!hasRole('PATIENT')">
+				<div class="col-sm-7"></div>
+				<div class="col-sm-5">
+					<h3 th:text="#{laboratory.register}" style="color: #42b3e5;"></h3>
+				</div>
+				<div class="col-sm-7"></div>
+				<div class="col-sm-5">
+					<div class="form-group ">
+						<div class='input-group' th:text="#{laboratory.hasrole.info}">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

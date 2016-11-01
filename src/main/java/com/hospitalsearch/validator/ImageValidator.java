@@ -55,7 +55,7 @@ public class ImageValidator {
 		Long FILE_MAX_SIZE = (long) 0;
 		for (AdminTokenConfig config : configService.getAll()){
 			if (config.getToken().name().toLowerCase().contains("max_size".toLowerCase())){
-				FILE_MAX_SIZE = Long.parseLong(configService.getByToken(config.getToken()).getValue());
+				FILE_MAX_SIZE = Long.valueOf(configService.getByToken(config.getToken()));
 			}
 		}
 		//Long FILE_MAX_SIZE = Long.parseLong(properties.getProperty(type + ".file.max.size"));

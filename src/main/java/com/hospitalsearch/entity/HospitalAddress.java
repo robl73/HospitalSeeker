@@ -8,6 +8,10 @@ import org.hibernate.search.annotations.Analyzer;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.validator.constraints.NotEmpty;
+/**
+ * Annotations @Field
+ * is used only for hibernate search
+ * */
 
 @Embeddable
 public class HospitalAddress {

@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hospitalsearch.util.Category;
+import com.hospitalsearch.util.Specialization;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.core.StopFilterFactory;
 import org.apache.lucene.analysis.ngram.NGramFilterFactory;
@@ -13,11 +15,24 @@ import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Parameter;
+/**
+ * Continued Lesia Koval
+ * Implemented hibernate search for doctors
+ */
 
-
+/**
+ * Such annotations as:
+ * - @Indexed
+ * - @AnalyzerDef
+ * - @DocumentId
+ * - @Field
+ * - @IndexedEmbedded
+ * are used only for hibernate search and YOU SHOULD NOT USE THEM for
+ * other field or entity if it`s not necessary
+ * */
 @Entity
 @Table(name = "doctorinfo")
-@Indexed
+@Indexed  //annotation for hibernate search
 @AnalyzerDef(name = "ngramD",
         tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
         filters = {
@@ -38,16 +53,19 @@ public class DoctorInfo{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doctorinfo_gen")
     @SequenceGenerator(name = "doctorinfo_gen", sequenceName = "doctorinfo_id_seq", initialValue = 1, allocationSize = 1)
-    @DocumentId
+    @DocumentId  //annotation for hibernate search
     private Long id;
 
-    private String specialization;
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))  //annotation for hibernate search
+    @Enumerated(EnumType.STRING)
+    private Specialization specialization;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @OneToOne
     @JoinColumn(name = "userdetails_id")
-    @IndexedEmbedded
+    @IndexedEmbedded  //annotation for hibernate search
     @JsonIgnore
     private UserDetail userDetails;
 
@@ -65,11 +83,11 @@ public class DoctorInfo{
         this.id = id;
     }
 
-    public String getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(String specialization) {
+    public void setSpecialization(Specialization specialization) {
         this.specialization = specialization;
     }
 
@@ -81,19 +99,19 @@ public class DoctorInfo{
         this.departments = departments;
     }
 
-	public UserDetail getUserDetails() {
-		return userDetails;
-	}
+    public UserDetail getUserDetails() {
+        return userDetails;
+    }
 
     public void setUserDetails(UserDetail userDetails) {
-		this.userDetails = userDetails;
-	}
+        this.userDetails = userDetails;
+    }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

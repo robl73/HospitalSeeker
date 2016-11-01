@@ -4,11 +4,19 @@ $(document).ready(function () {
     blockDateTo(today);
     var promise = getData('getWorkSchedulerByPrincipal');
     promise.success(function (data) {
-        init(data);
+        if (data != null && data.events != null) {
+            init(data);
+        } else {
+            $('#mySchedulerErrorModal').modal('show');
+        }
+    });
+    promise.error(function () {
+        $('#mySchedulerErrorModal').modal('show');
     });
 });
 
 function init(data) {
+    var firstDate = new Date();
     var principal = $('#principal').text();
     var schedulerConfig = {};
     scheduler.config.drag_create = false;
@@ -19,6 +27,7 @@ function init(data) {
     var today = new Date();
     var zones;
     var lastDate = today;
+    firstDate = new Date(data.events[0].start_date);
     data.events.forEach(function (item) {
         var workDay = item.start_date.substring(0, 10);
         var hourLast = item.end_date.substring(11, 13);
@@ -26,6 +35,7 @@ function init(data) {
         var current = new Date(workDay);
         current.setHours(parseInt(hourLast));
         if (current > today) {
+            if (firstDate > current) firstDate = current;
             if (item['event_length'] != null) {
                 var d = new Date(item.end_date);
                 if (lastDate <  d) {
@@ -54,6 +64,7 @@ function init(data) {
             }
         }
     });
+    blockDateTo(firstDate);
     blockDateFrom(new Date(lastDate.getFullYear(), lastDate.getMonth(), lastDate.getDate() + 1));
     var step = schedulerConfig.appSize;
     scheduler.config.hour_size_px = (60 / step) * 44;

@@ -1,11 +1,15 @@
 package com.hospitalsearch.service.impl;
 
 import com.hospitalsearch.dao.DepartmentDAO;
+import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
+import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
 import com.hospitalsearch.entity.Department;
+import com.hospitalsearch.entity.Hospital;
 import com.hospitalsearch.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**

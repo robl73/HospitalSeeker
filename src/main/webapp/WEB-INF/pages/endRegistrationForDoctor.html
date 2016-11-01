@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="layout">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <meta charset="UTF-8"/>
+    <title>Confirm registration</title>
+    <link rel="stylesheet" th:href="@{/css/animate.css}"/>
+    <link rel="stylesheet" th:href="@{/css/charisma-app.css}"/>
+    <link rel="stylesheet" th:href="@{/css/end.registration.for.doctor.css}"/>
+    <script th:src="@{/js/end.registration.for.doctor.js}"></script>
+</head>
+<body>
+<section layout:fragment="content" class="dashboard center">
+    <div class="content">
+        <div id="mainWrapper">
+            <div class="container">
+                <div class="row" style="margin-top:20px">
+                    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+                        <form role="form" th:action="@{/endRegistrationForDoctor}" method="post" th:object="${userConfirmRegistration}"
+                              autocomplete="off" id="registerNewUser">
+                            <fieldset>
+                                <h2 th:text="#{manager.confirm.form.header}"></h2>
+
+                                <hr class="colorgraph"/>
+
+                                <div class="form-group">
+                                    <input type="hidden" name="email" id="email" class="form-control input-lg"
+                                           th:field="${userConfirmRegistration.email}"
+                                           th:value="${userConfirmRegistration.email}"/>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="password" name="password" id="password" class="form-control input-lg"
+                                           th:placeholder="#{manager.end.register.page.form.placeholder.password}" tabindex="2"
+                                           th:value="${(userConfirmRegistration != null) and (userConfirmRegistration.password !=null)} ? ${userConfirmRegistration.password}:''"/>
+
+                                    <span th:if="${(userConfirmRegistration ne null) and (#fields.hasErrors('password'))}"
+                                          th:errors="*{password}" class="has-error text-danger" id="errorPassword"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="password" name="confirmPassword" id="confirmPassword"
+                                           class="form-control input-lg" th:placeholder="#{manager.end.register.page.form.placeholder.password.confirm}" tabindex="3"
+                                           th:value="${(userConfirmRegistration != null) and (userConfirmRegistration.confirmPassword !=null)} ? ${userConfirmRegistration.confirmPassword}:''"/>
+
+                                    <span th:if="${(userConfirmRegistration ne null) and (#fields.hasErrors('confirmPassword'))}"
+                                          th:errors="*{confirmPassword}" class="has-error text-danger"></span>
+                                </div>
+
+                                <hr class="colorgraph"/>
+
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <input type="submit" class="btn btn-lg btn-info btn-block" th:value="#{manager.confirm.form.button.save.password}"
+                                               tabindex="4" id="registerSubmit"/>
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    </div>
+
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <a th:href="@{/}" class="btn btn-lg btn-primary btn-block"
+                                           id="loginRedirect" th:text="#{manager.confirm.form.button.cancel}"></a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
+

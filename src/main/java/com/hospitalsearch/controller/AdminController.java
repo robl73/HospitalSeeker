@@ -1,12 +1,5 @@
 package com.hospitalsearch.controller;
 
-
-import java.net.ConnectException;
-import java.util.List;
-import java.util.Locale;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -22,27 +15,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
-
+import javax.validation.Valid;
+import java.net.ConnectException;
+import java.util.List;
+import java.util.Locale;
+import com.hospitalsearch.entity.DepartmentName;
+import com.hospitalsearch.service.DepartmentNameService;
 import com.hospitalsearch.dto.AdminTokenConfigDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.AdminTokenConfig;
-import com.hospitalsearch.entity.DepartmentsName;
 import com.hospitalsearch.entity.Role;
 import com.hospitalsearch.entity.User;
 import com.hospitalsearch.service.AdminTokenConfigService;
-import com.hospitalsearch.service.DepartmentsNameService;
 import com.hospitalsearch.service.MailService;
 import com.hospitalsearch.service.RoleService;
 import com.hospitalsearch.service.UserService;
-
 
 /**
  * @author Andrew Jasinskiy on 10.05.16
  */
 @Controller
-//@SessionAttributes("departmentnames")
 public class AdminController {
 	
 	@Autowired
@@ -58,12 +51,11 @@ public class AdminController {
     MailService mailService;
     
     @Autowired
-    DepartmentsNameService departmentsNameService;
+    DepartmentNameService departmentNameService;
 
     @Autowired
     private MessageSource messageSource;
 
-    private Integer usersPerPage = 10;
 
     private static String emailTemplate = "emailTemplate.vm";
 
@@ -142,10 +134,10 @@ public class AdminController {
         dto.setCurrentPage(page);
         dto.setAsc(asc);
         dto.setSort(sort);
-        dto.setPageSize(usersPerPage);
+        dto.setPageSize(10);
         dto.setStatus(status);
         List <User> users = userService.getUsers(dto);
-        if (dto.getTotalPage() > 1) model.addAttribute("pagination", "pagination");
+        if (dto.getTotalPage() > 1) model.addAttribute("pagination", true);
         model.addAttribute("userFilterDTO", dto);
         model.addAttribute("pageSize", dto.getPageSize());
         model.addAttribute("users", users);
@@ -158,9 +150,8 @@ public class AdminController {
                              @RequestParam(value = "page", defaultValue = "1") Integer page,
                              @ModelAttribute("userFilterDTO") UserFilterDTO dto,
                              ModelMap model) throws Exception {
-        dto.setPageSize(usersPerPage);
         List  <User> users = userService.searchUser(dto);
-        if (dto.getTotalPage() > 1) model.addAttribute("pagination", "pagination");
+        if (dto.getTotalPage() > 1) model.addAttribute("pagination", true);
         model.addAttribute("search", "search");
         model.addAttribute("userFilterDTO", dto);
         model.addAttribute("status", status);
@@ -223,13 +214,6 @@ public class AdminController {
         return "redirect:/admin/users?status=true";
     }
 
-    @ResponseBody
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "admin/users/setItemsPerPage/{value}", method = RequestMethod.GET)
-    public String setItemsPerPage(@PathVariable int value) {
-        usersPerPage = value;
-        return "done";
-    }
 
     //utility methods
     private void sendBannedMessageToUserById(Long id, Locale locale) throws ConnectException {
@@ -240,55 +224,41 @@ public class AdminController {
         }
     }
     
+
     
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "admin/allDepartmentsName", method = RequestMethod.GET)
-    public String allDepartmentsName(ModelMap model) {
-       List departmentnames = departmentsNameService.getAll();
+    @RequestMapping(value = "admin/departmentName", method = RequestMethod.GET)
+    public String allDepartmentName(ModelMap model,DepartmentName departmentName) {
+       List<DepartmentName> departmentnames = departmentNameService.getAll();
        model.addAttribute("departmentnames", departmentnames);
-       return "admin/departmentsName";
+       model.addAttribute("departmentName", departmentName);
+       return "admin/departmentName";
     } 
-           
-  
-   /* 
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "admin/allDepartmentsName", method = RequestMethod.GET)
-    public String allDepartmentsName(@ModelAttribute ArrayList<DepartmentsName>  departmentnames) {
-       departmentnames = (ArrayList<DepartmentsName>) departmentsNameService.getAll(); 
-       return "admin/departmentsName";
-    } 
+
     
-    */
- /*
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "admin/allDepartmentsName", method = RequestMethod.POST)
-    public String addDepartmentsName(@RequestParam DepartmentsName departmentsname) {
-        departmentsNameService.save(departmentsname);
-    return "admin/departmentsName";
-    }  
-  */
+    
     
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "admin/addDepartmentsName", method = RequestMethod.POST)
-    public RedirectView addDepartmentsName(@Valid @ModelAttribute DepartmentsName departmentsname,
+    @RequestMapping(value = "admin/addDepartmentName", method = RequestMethod.POST)
+    public String addDepartmentName(@Valid @ModelAttribute DepartmentName departmentName,        
                                      BindingResult result,
                                      ModelMap model,
                                      RedirectAttributes rda) {
      
         if(result.hasErrors()){
-            return new RedirectView("/admin/allDepartmentsName",true);
+     // return "redirect:departmentName";
+        return "admin/departmentName";
         }
-     
-        departmentsNameService.save(departmentsname);
-    return new RedirectView("/admin/allDepartmentsName",true);
+        departmentNameService.save(departmentName);
+        return "redirect:departmentName";
     }
  
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "admin/deleteDepartmentsName", method = RequestMethod.GET, params="id")
-    public RedirectView deleteDepartmentsName(@RequestParam Long id){
-        departmentsNameService.delete(departmentsNameService.getById(id));
-        return new RedirectView("/admin/allDepartmentsName",true);
+    @RequestMapping(value = "admin/deleteDepartmentName", method = RequestMethod.GET, params="id")
+    public String deleteDepartmentName(@RequestParam Long id){    
+        departmentNameService.delete(departmentNameService.getById(id));
+        return "redirect:departmentName";
+        
     }
-    
-  
 }
+   

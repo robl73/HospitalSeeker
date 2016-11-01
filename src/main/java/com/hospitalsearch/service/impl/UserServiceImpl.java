@@ -1,17 +1,17 @@
 package com.hospitalsearch.service.impl;
 
-import com.hospitalsearch.dao.UserDAO;
+import com.hospitalsearch.dao.*;
+import com.hospitalsearch.dto.HospitalDTO;
+import com.hospitalsearch.dto.NewDoctorRegistrationDTO;
 import com.hospitalsearch.dto.UserFilterDTO;
 import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.*;
 import com.hospitalsearch.exception.ResetPasswordException;
-import com.hospitalsearch.service.PatientCardService;
-import com.hospitalsearch.service.PatientInfoService;
-import com.hospitalsearch.service.RoleService;
-import com.hospitalsearch.service.UserService;
+import com.hospitalsearch.service.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +28,9 @@ public class UserServiceImpl implements UserService {
     private UserDAO dao;
 
     @Autowired
+    private UserDetailDAO userDetailDAO;
+
+    @Autowired
     private RoleService roleService;
 
     @Autowired
@@ -38,6 +41,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PatientInfoService patientInfoService;
+
+    @Autowired
+    private DoctorInfoDAO doctorInfoDAO;
+
+    @Autowired
+    private DepartmentDAO departmentDAO;
 
     @Override
     public void save(User newUser) {
@@ -52,7 +61,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
     public void addNewUser(User newUser) {
         try {
             logger.info("save user: " + newUser);
@@ -78,9 +86,52 @@ public class UserServiceImpl implements UserService {
                 user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("PATIENT"))));
             }
             save(user);
-//            addNewUser(user);
+//           addNewUser(user);
         } catch (Exception e) {
+            System.out.println("Error register user");
             logger.error("Error register user: " + userRegisterDTO, e);
+        }
+        return user;
+    }
+
+    @Override
+    public User register(NewDoctorRegistrationDTO newDoctorRegistrationDTO) {
+        User user = new User();
+        try {
+            logger.info("register user: " + newDoctorRegistrationDTO);
+            user.setEmail(newDoctorRegistrationDTO.getEmail().toLowerCase());
+            user.setPassword(passwordEncoder.encode("password"));
+            user.setEnabled(newDoctorRegistrationDTO.getEnabled());
+            user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("DOCTOR"))));
+            UserDetail userDetail = new UserDetail();
+            userDetail.setFirstName(newDoctorRegistrationDTO.getFirstName());
+            userDetail.setLastName(newDoctorRegistrationDTO.getLastName());
+            userDetail.setAddress(newDoctorRegistrationDTO.getAddress());
+            userDetail.setBirthDate(newDoctorRegistrationDTO.getBirthDate());
+            userDetail.setPhone(newDoctorRegistrationDTO.getPhone());
+            userDetail.setImagePath(newDoctorRegistrationDTO.getImagePath());
+
+            userDetail.setGender(newDoctorRegistrationDTO.getGender());
+            user.setEmail(newDoctorRegistrationDTO.getEmail().toLowerCase());
+            user.setPassword(passwordEncoder.encode("password"));
+            user.setEnabled(newDoctorRegistrationDTO.getEnabled());
+            user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("DOCTOR"))));
+            userDetail.setUser(user);
+            user.setUserDetails(userDetail);
+
+            DoctorInfo doctorInfo = new DoctorInfo();
+            List<Department> departments = new ArrayList<>();
+            if(!newDoctorRegistrationDTO.getNameDepartmentsId().equals(null)) {
+                departments.add(departmentDAO.getById(newDoctorRegistrationDTO.getNameDepartmentsId()));
+            }
+            doctorInfo.setDepartments(departments);
+            doctorInfo.setSpecialization(newDoctorRegistrationDTO.getSpecialization());
+            doctorInfo.setCategory(newDoctorRegistrationDTO.getCategory());
+            user.setUserDetails(userDetail);
+            addNewUser(user);
+        } catch (Exception e) {
+            System.out.println("Error register user");
+            logger.error("Error register user: " + newDoctorRegistrationDTO, e);
         }
         return user;
     }
@@ -91,6 +142,7 @@ public class UserServiceImpl implements UserService {
         try {
             if (isAdmin(id)) return;
             logger.info("Delete user " + user);
+            userDetailDAO.delete(user.getUserDetails());
             dao.delete(user);
         } catch (Exception e) {
             logger.error("Error delete user: " + user, e);
@@ -235,14 +287,21 @@ public class UserServiceImpl implements UserService {
     public Integer pageCount(Long countOfItems, int itemsPerPage) {
         return (int) Math.ceil((double) countOfItems / itemsPerPage);
     }
-    //Illia
 
-    //utilities methods
     private boolean isAdmin(Long id) {
         User user = dao.getById(id);
         for (Role role : user.getUserRoles()) {
             if (role.getType().equals("ADMIN")) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isPatient(User user) {
+        for(Role role : user.getUserRoles()){
+            if(role.getType().equals("PATIENT")){
+                return  true;
             }
         }
         return false;

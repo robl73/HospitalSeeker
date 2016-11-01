@@ -54,6 +54,7 @@ function submitPatientForm(){
         var epilepsy = 'Not valid. Must be YES or NO';
         var restrictions ='Not valid. Example: Some restrictions';
         var relativePhone = 'Not valid. +38 (095) 435-7132';
+
     }
 
     $('#patientProfileForm').validate({

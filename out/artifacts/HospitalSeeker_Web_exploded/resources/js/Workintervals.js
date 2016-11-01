@@ -3,19 +3,14 @@ var isPresentUserDetails;
 var principal;
 
 $(document).ready(function () {
-    var today = new Date();
-    today.setHours(0);
-    blockDateTo(today);
     principal = $('#principal').text();
     var did = document.getElementById("1").textContent;
     var begin;
     var end;
     var dayOfAppointment;
     var schedulerConfig = {};
-    var blockYear;
-    var blockMonth;
-    var blockDay;
     var lastDate = new Date();
+    var firstDate = new Date();
     $.ajax({
         type: "GET",
         async: false,
@@ -31,6 +26,7 @@ $(document).ready(function () {
                 schedulerConfig.dayEnd = data.day_end;
             }
             var today = new Date();
+            firstDate = new Date(data.events[0].start_date);
             data.events.forEach(function (item) {
                 var workDay = item.start_date.substring(0, 10);
                 var hourOne = item.start_date.substring(11, 13);
@@ -39,8 +35,8 @@ $(document).ready(function () {
                 var current = new Date(workDay);
                 var temp = new Date(workDay);
                 temp.setHours(parseInt(hourLast));
-
                 if (temp > today) {
+                    if (firstDate > temp) firstDate = temp;
                     if (item['event_length'] != null) {
                         var d = new Date(item.end_date);
                         if (lastDate <  d) {
@@ -69,14 +65,12 @@ $(document).ready(function () {
                     }
                 }
             });
-            blockYear = new Date(data.events[data.events.length - 1].start_date.substring(0, 10)).getFullYear();
-            blockMonth = new Date(data.events[data.events.length - 1].start_date.substring(0, 10)).getMonth();
-            blockDay = new Date(data.events[data.events.length - 1].start_date.substring(0, 10)).getDate() + 1;
         },
         error: function () {
             $('#mySchedulerErrorModal').modal('show');
         }
     });
+    blockDateTo(firstDate);
     blockDateFrom(new Date(lastDate.getFullYear(), lastDate.getMonth(), lastDate.getDate() + 1));
     var day = new Date().getDate() - 1;
     var month = new Date().getMonth();
@@ -233,10 +227,6 @@ $(document).keyup(function (e) {
     }
 });
 
-function goBack() {
-    window.history.back();
-}
-
 function validateAppointment(ev) {
     ev.principal = principal;
     var result = false;
@@ -244,7 +234,7 @@ function validateAppointment(ev) {
         type: "GET",
         async: false,
         url: "validate?ev="+JSON.stringify(ev),
-        datatype: "json",
+        dataType: "json",
         contentType: "application/json",
         mimeType: "application/json",
         success: function (data) {

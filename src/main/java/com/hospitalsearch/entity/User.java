@@ -17,6 +17,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Such annotations as:
+ * - @Field
+ * - @ContainedIn
+ * are used only for hibernate search
+ * */
 @Entity
 @Table(name="users")
 @NamedQueries({
@@ -26,18 +32,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 })
 
 public class User implements Comparable<User> {
-    
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_gen")
-    @SequenceGenerator(name = "users_gen", sequenceName = "users_id_seq", initialValue = 1, allocationSize = 1)
+	@SequenceGenerator(name = "users_gen", sequenceName = "users_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
 
 	@Email
 	@NotEmpty
 	@Column(unique = true, nullable = false)
-	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
+	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))  //annotation for hibernate search
 	private String email;
-        
+
 	@JsonIgnore
 	@NotNull
 	@Column(nullable = false)
@@ -52,14 +58,12 @@ public class User implements Comparable<User> {
 	@Fetch(FetchMode.SELECT)
 	private Set<Role> userRoles = new HashSet<>();
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="userdetails_id")
 	@Fetch(FetchMode.SELECT)
-	@ContainedIn
+	@ContainedIn  //annotation for hibernate search
 	@JsonIgnore
 	private UserDetail userDetails;
-
-
 
 	public String getEmail() {
 		return email;
@@ -125,4 +129,5 @@ public class User implements Comparable<User> {
 	public int compareTo(User o) {
 		return this.getId().compareTo(o.getId());
 	}
+
 }

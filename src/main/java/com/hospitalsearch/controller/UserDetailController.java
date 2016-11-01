@@ -44,10 +44,6 @@ public class UserDetailController {
     public String userDetail(@RequestParam(value = "edit", defaultValue = "false") Boolean edit, ModelMap model) {
         User user = userService.getByEmail(PrincipalConverter.getPrincipal());
         UserDetail userDetail = user.getUserDetails();
-
-        Set<Role> roles = user.getUserRoles();
-        System.out.println(roles);
-
         model.addAttribute("edit", edit);
         model.addAttribute("userDetail", userDetail);
         model.addAttribute("gender", Gender.values());
@@ -101,16 +97,4 @@ public class UserDetailController {
         return "user/detail";
     }
 
-//    @RequestMapping("/doctors")
-//    public String renderSearchDoctors(Map<String, Object> model,
-//                                  @RequestParam(value = "d", required = false) String query) throws ParseException, InterruptedException, HospitalControllerAdvice.FilterHospitalListEmptyException {
-//        if (query != null && !query.isEmpty()) {
-//            this.pageableContent = doctorInfoService.advancedDoctorSearch(query);
-//        }
-//        this.initializeModel(model, 1);
-////        if(this.pageableContent.getResultListCount() == 0){
-////            throw new HospitalControllerAdvice.FilterHospitalListEmptyException("Empty list");
-////        }
-//        return "";
-//    }
 }

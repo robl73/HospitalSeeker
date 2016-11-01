@@ -2,7 +2,20 @@ package com.hospitalsearch.entity;
 
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -13,11 +26,12 @@ import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.core.StopFilterFactory;
 import org.apache.lucene.analysis.ngram.NGramFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
-import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.Analyze;
@@ -35,13 +49,25 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- *
  * @author Oleksandr Mukonin
  *
+ * Continued Lesia Koval
+ * Implemented hibernate search for hospitals
  */
+
+/**
+ * Such annotations as:
+ * - @Indexed
+ * - @AnalyzerDef
+ * - @DocumentId
+ * - @Field
+ * - @IndexedEmbedded
+ * are used only for hibernate search and YOU SHOULD NOT USE THEM for
+ * other field or entity if it`s not necessary
+* */
 @Entity
 @Table(name = "hospital")
-@Indexed
+@Indexed  //annotation for hibernate search
 @NamedQueries({
 	@NamedQuery(name = Hospital.GET_LIST_BY_BOUNDS, query = Hospital.GET_LIST_BY_BOUNDS_QUERY)
 })
@@ -70,13 +96,13 @@ public class Hospital {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hospital_gen")
 	@SequenceGenerator(name = "hospital_gen", sequenceName = "hospital_id_seq", initialValue = 1, allocationSize = 1)
-	@DocumentId
+	@DocumentId  //annotation for hibernate search
 	private Long id;
 
 	@NotEmpty(message = "This field is required.")
 	@Size(min = 5, max = 70, message = "Please enter at least 5 symbols and not more than 70 symbols.")
 	@Column(nullable = false)
-	@Field(analyze = Analyze.YES, analyzer = @Analyzer(definition = "ngram"))
+	@Field(analyze = Analyze.YES, analyzer = @Analyzer(definition = "ngram"))  //annotation for hibernate search
 	private String name;
 
 	@NotNull
@@ -93,7 +119,7 @@ public class Hospital {
 
 	@Embedded
 	@Valid
-	@IndexedEmbedded
+	@IndexedEmbedded  //annotation for hibernate search
 	@AttributeOverrides({
 		@AttributeOverride(name = "city", column = @Column(name = "city")),
 		@AttributeOverride(name = "country", column = @Column(name = "country")),
@@ -104,20 +130,22 @@ public class Hospital {
 	
 	@Size(max = 150, message = "Please enter not more than 150 symbols.")
 	@Column(nullable = false)
-	@Field(analyze = Analyze.YES, analyzer = @Analyzer(definition = "ngram"))
+	@Field(analyze = Analyze.YES, analyzer = @Analyzer(definition = "ngram"))  //annotation for hibernate search
 	private String description;
 
 	@Column(name = "imagepath")
 	private String imagePath;
 
 	@JsonIgnore
-	@OneToMany(mappedBy="hospital",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="hospital", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@Cache(region="entityCache",usage=CacheConcurrencyStrategy.READ_ONLY)
-	@IndexedEmbedded
+	@IndexedEmbedded  //annotation for hibernate search
 	private List<Department> departments;
 
 	@JsonIgnore
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<User> managers;
 
 	public Long getId() {
@@ -190,5 +218,19 @@ public class Hospital {
 
 	public void setManagers(List<User> managers) {
 		this.managers = managers;
+	}
+
+	@Override
+	public String toString() {
+		return "Hospital{" +
+				"managers=" + managers +
+				", imagePath='" + imagePath + '\'' +
+				", description='" + description + '\'' +
+				", address=" + address +
+				", longitude=" + longitude +
+				", latitude=" + latitude +
+				", name='" + name + '\'' +
+				", id=" + id +
+				'}';
 	}
 }

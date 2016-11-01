@@ -15,7 +15,7 @@ function submitPatientForm(){
     $.validator.addMethod("regex", function(value, element, regexpr) {
         return regexpr.test(value);});
     if (getLocale() == 'ua'){
-        var relativePhone = 'Не валідний формат. Приклад: +38 (095) 435-7132';
+        var phone = 'Не валідний формат. Приклад: +38 (095) 435-7132';
         var birthDate= 'Не валідний формат. Приклад: 1993-07-21';
         var gender= 'Не валідний формат. Має бути MALE або FEMALE';
         var firstName = 'Не валідний формат. Приклад: Solomon';
@@ -32,11 +32,11 @@ function submitPatientForm(){
         var diabetes = 'Не валідний формат. Має бути YES або NO';
         var epilepsy = 'Не валідний формат. Має бути YES або NO';
         var restrictions = 'Не валідний формат. Приклад: Деякі обмеження';
-
+        var relativePhone = 'Не валідний формат. Приклад: +38 (095) 435-7132';
 
 
     }else{
-        var relativePhone = 'Not valid. +38 (095) 435-7132';
+        var phone = 'Not valid. +38 (095) 435-7132';
         var birthDate= 'Not valid. Example: 1993-07-21';
         var gender= 'Not valid. Must be MALE or FEMALE';
         var firstName = 'Not valid. Example: Solomon';
@@ -53,6 +53,7 @@ function submitPatientForm(){
         var diabetes = 'Not valid. Must be YES or NO';
         var epilepsy = 'Not valid. Must be YES or NO';
         var restrictions ='Not valid. Example: Some restrictions';
+        var relativePhone = 'Not valid. +38 (095) 435-7132';
     }
 
     $('#patientProfileForm').validate({
@@ -78,7 +79,7 @@ function submitPatientForm(){
             address: {
                 required: true
             },
-            relativePhone: {
+            phone: {
                 required: true,
                 regex: /^\+38 \(\d{3}\) \d{3}-\d{4}$/
             },
@@ -132,8 +133,11 @@ function submitPatientForm(){
                 required: true,
                 regex: /^[A-Z][a-z]+$/,
                 maxlength: 100
+            },
+            relativePhone: {
+                required: true,
+                regex: /^\+38 \(\d{3}\) \d{3}-\d{4}$/
             }
-
 
 
         },
@@ -153,8 +157,8 @@ function submitPatientForm(){
             gender: {
                 regex: gender
             },
-            relativePhone: {
-                regex: relativePhone
+           phone: {
+                regex: phone
             },
             weight: {
                 regex: weight
@@ -188,6 +192,9 @@ function submitPatientForm(){
             },*/
             restrictions: {
                 regex: restrictions
+            },
+            relativePhone: {
+                regex: relativePhone
             }
 
         }
@@ -208,6 +215,9 @@ function submitPatientForm(){
                     endDate: "0d"
                 });
 
+                $('#phone').bfhphone({
+                    format: '+38 (ddd) ddd-dddd'
+                });
                 $('#relativePhone').bfhphone({
                     format: '+38 (ddd) ddd-dddd'
                 });
@@ -229,6 +239,10 @@ function editPatientProfile(){
         $('#birthDate').datepicker({
             format: 'yyyy-mm-dd',
             endDate: "0d"
+        });
+
+        $('#phone').bfhphone({
+            format: '+38 (ddd) ddd-dddd'
         });
 
         $('#relativePhone').bfhphone({

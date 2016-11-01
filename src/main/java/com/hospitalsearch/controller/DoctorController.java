@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by lesia on 19.09.2016.
+ * Created by Lesia Koval on 19.09.2016.
+ *
  */
 @Controller
 public class DoctorController {
@@ -32,20 +33,20 @@ public class DoctorController {
 
     @RequestMapping("/doctors")
     public String renderSearchDoctors(Map<String, Object> model,
-                                  @RequestParam(value = "d", required = false) String query) throws ParseException, InterruptedException {
+                                  @RequestParam(value = "d", required = false, defaultValue=" ") String query) throws ParseException, InterruptedException {
         Page pageableContent = null;
         if (query != null && !query.isEmpty()) {
             pageableContent = doctorInfoService.advancedDoctorSearch(query);
             pageableContent.setPageSize(3);
         }
-            this.initializeModel(model, pageableContent, 1, query);
-            if (pageableContent.getResultListCount() == 0){
-                User user = userService.getByEmail(PrincipalConverter.getPrincipal());
-                ModelAndView view = new ModelAndView("error/emptyList");
-                view.addObject("userName", user);
-                return "error/emptyList";
-            }
-        return "paginatedLayout";
+        this.initializeModel(model, pageableContent, 1, query);
+         if (pageableContent.getResultListCount() == 0){
+            User user = userService.getByEmail(PrincipalConverter.getPrincipal());
+            ModelAndView view = new ModelAndView("error/emptyList");
+            view.addObject("userName", user);
+            return "error/emptyList";
+         }
+         return "paginatedLayout";
     }
 
     @RequestMapping("/doctors/page/{page}/params")
@@ -70,5 +71,4 @@ public class DoctorController {
         model.put("itemsNumber", pageableContent.getResultListCount());
         model.put("type", "doctors");
     }
-
 }

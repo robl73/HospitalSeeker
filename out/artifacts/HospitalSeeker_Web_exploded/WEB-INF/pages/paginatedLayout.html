@@ -5,8 +5,8 @@
       layout:decorator="layout">
 <head>
     <title>Search results</title>
-    <script th:src="@{/js/hospitals.js}"/>
-    <script th:src="@{/js/arrow-top.js}"/>
+    <script th:src="@{/js/hospitals.js}"></script>
+    <script th:src="@{/js/arrow-top.js}"></script>
 
 </head>
 <body>
@@ -15,38 +15,24 @@
     <div id="content" class="content">
         <div class="about text-center container">
             <input type="hidden" id="path" th:value="${#httpServletRequest.getContextPath()}"/>
-            <div th:remove="${itemsNumber} &gt; ${itemsPerPage}?'none':'all'" class="row">
-                <div id="filter-panel" class="collapse filter-panel">
+            <div class="row">
                     <div class="panel panelF-default">
                         <div class="panel-body">
-                            <form class="form-inline" th:action="@{/{type}/page/1/params(type=${type},currentSearchQuery=${currentSearchQuery},itemsPerPage=${itemsPerPage})}" method="GET" role="form">
+                            <form id="pref-perpage-form" class="form-inline" th:action="@{/{type}/page/1/params(type=${type},currentSearchQuery=${currentSearchQuery})}" method="GET" role="form">
                                 <div class="form-group">
-                                    <label class="filter-col" style="margin-right:0;" for="pref-perpage" th:text="#{paginatedlayout.pageparams.label}"/>
-                                    <select name = "itemsPerPage" id="pref-perpage" class="form-control">
+                                    <label class="filter-col" style="margin-right:0;" for="perpage" th:text="#{paginatedlayout.pageparams.label}"/>
+                                    <select id="perpage" class="form-control" name="itemsPerPage">
                                         <option th:each="number:${#numbers.sequence(1,20)}"
                                                 th:text="${number}"
                                                 th:value="${number}"
                                                 th:classappend="${number == itemsPerPage}?'selected':''"/>
-
-
                                     </select>
                                     <input type="hidden" name="currentSearchQuery" th:value="${currentSearchQuery}"/>
                                     <input type="hidden" th:field="*{type}" th:value="${type}"/>
                                 </div>
-
-                                <div class="form-group">
-                                    <button type="submit"  class="btn btn-default filter-col">
-                                        <span class="glyphicon glyphicon-record" th:text="#{paginatedlayout.pageparams.savebutton}"/>
-                                    </button>
-                                </div>
                             </form>
                         </div>
                     </div>
-                </div>
-
-                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#filter-panel" >
-                    <span class="glyphicon glyphicon-cog"></span> <th:block th:text="#{paginatedlayout.pageparams.button}"/>
-                </button>
             </div>
             <br/>
             <div th:if="${type == 'hospitals'}">
@@ -58,9 +44,15 @@
 
         </div>
 
-        <p th:text='${itemsPerPage}'/>
         <a href="#content" class="cd-top"/>
 
+        <script type="text/javascript">
+            //select item per page
+            var $select = $('#perpage');
+            $select.change(function () {
+                $( "#pref-perpage-form" ).submit();
+            });
+        </script>
     </div>
 </div>
 </body>

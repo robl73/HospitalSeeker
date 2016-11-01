@@ -30,6 +30,7 @@
                         <div hidden="hidden">
                             <input type="number" th:field="*{id}"/>
                         </div>
+
                         <div class="panel panel-info">
                             <div class="panel-heading" style="height: 40px">
                                 <h3 class="panel-title">
@@ -57,6 +58,7 @@
                                         </span>
                                 </h3>
                             </div>
+
                             <div class="panel-body">
                                 <div class="row">
                                     <div align="center" id="image-div">
@@ -73,6 +75,7 @@
                                                  class="img-responsive img-circle"/>
                                             <figcaption th:if="${edit}">
                                                 <div><i class="glyphicon glyphicon-circle-arrow-down"></i></div>
+
                                             </figcaption>
                                             <a th:onclick="${edit}?'javascript:$(\'#file\').click();'"></a>
                                         </figure>

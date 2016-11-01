@@ -1,5 +1,6 @@
 package com.hospitalsearch.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Service;
 import com.hospitalsearch.dao.HospitalDAO;
 import com.hospitalsearch.dto.Bounds;
 import com.hospitalsearch.dto.HospitalDTO;
+import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
+import com.hospitalsearch.dto.NameHospitalsByManagerDTO;
+import com.hospitalsearch.entity.Department;
 import com.hospitalsearch.entity.Hospital;
 import com.hospitalsearch.service.HospitalService;
 import com.hospitalsearch.util.HospitalFilterDTO;
@@ -64,7 +68,27 @@ public class HospitalServiceImpl implements HospitalService {
         return dao.advancedHospitalSearch(args);
     }
 
-	@Override
+    @Override
+    public List<NameHospitalsByManagerDTO> getAllNameHospitalsByManager(Long id) {
+        List<Hospital> hospitals =  dao.getAllHospitalsByManager(id);
+        List<NameHospitalsByManagerDTO> nameHospitalsByManagerDTOs = new ArrayList<>();
+        for (Hospital hospital : hospitals) {
+            nameHospitalsByManagerDTOs.add(new NameHospitalsByManagerDTO(hospital));
+        }
+        return nameHospitalsByManagerDTOs;
+    }
+
+    @Override
+    public List<NameDepartmensByHospitalDTO> getAllNameDepartmentsByHospitals(Long id) {
+        List<Department> departments = dao.getById(id).getDepartments();
+        List<NameDepartmensByHospitalDTO> nameDepartmensByHospitalDTOs = new ArrayList<>();
+        for (Department department : departments) {
+            nameDepartmensByHospitalDTOs.add(new NameDepartmensByHospitalDTO(department));
+        }
+        return nameDepartmensByHospitalDTOs;
+    }
+
+    @Override
 	public void save(HospitalDTO hospitalDTO) {
 		Hospital newHospital = new Hospital();
     	newHospital.setAddress(hospitalDTO.getAddress());

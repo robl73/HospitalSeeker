@@ -1,5 +1,6 @@
 package com.hospitalsearch.dao;
 
+import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
 import com.hospitalsearch.entity.Department;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,8 @@ import java.util.List;
  */
 @Component
 public interface DepartmentDAO extends GenericDAO<Department,Long>{
+
     List<Department> findByHospitalId(Long id);
+
     List<Department> findDepartmentByDoctorId(Long id);
 }

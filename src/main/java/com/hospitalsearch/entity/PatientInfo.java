@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "patientinfo")
 public class PatientInfo {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patientinfo_gen")
 	@SequenceGenerator(name = "patientinfo_gen", sequenceName = "patientinfo_id_seq", initialValue = 1, allocationSize = 1)
@@ -71,14 +71,6 @@ public class PatientInfo {
 	}
 
 	public PatientInfo() {}
-
-	public String getBloodGroup() {
-		return bloodGroup;
-	}
-
-	public void setBloodGroup(String bloodGroup) {
-		this.bloodGroup = bloodGroup;
-	}
 
 	public Long getId() {
 		return id;
@@ -178,6 +170,14 @@ public class PatientInfo {
 
 	public String getRestrictions() {
 		return restrictions;
+	}
+
+	public String getBloodGroup() {
+		return bloodGroup;
+	}
+
+	public void setBloodGroup(String bloodGroup) {
+		this.bloodGroup = bloodGroup;
 	}
 
 	public void setRestrictions(String restrictions) {

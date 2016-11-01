@@ -1,5 +1,6 @@
 package com.hospitalsearch.service;
 
+import com.hospitalsearch.dto.NameDepartmensByHospitalDTO;
 import com.hospitalsearch.entity.Department;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

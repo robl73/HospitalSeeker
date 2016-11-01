@@ -28,7 +28,8 @@ public class RelativesInfo {
     @Column(name="name")
     @Size(max = 50, message = "Not valid, not more 50 symbols")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Solomon")
-     private String name = "";
+    private String name = "";
+
 
     @Column(name="phone")
     @Pattern(regexp = "^\\+38 \\(\\d{3}\\) \\d{3}-\\d{4}", message = "Not valid. Ex: +38 (095) 435-7132")

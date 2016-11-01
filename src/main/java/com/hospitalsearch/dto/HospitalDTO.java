@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.hospitalsearch.entity.HospitalAddress;
 
-public class HospitalDTO {
+public class  HospitalDTO {
 
 	private Long id;
 

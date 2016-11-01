@@ -19,9 +19,10 @@ function sort(event) {
 
     var loc = location.pathname;
     var pat = loc.match(/(\/).*(\/)/g);
-    var sortDto = $('#sortDto');
     var status = $('#status').val();
     var id = document.getElementById(event.target.id);
+    var hospitalId = $('#hospitalId').val();
+    var sortDto = $('#sortDto');
     var ascStorage = sessionStorage.getItem('ascStorage');
 
     sortDto.val(event.target.id);
@@ -32,13 +33,8 @@ function sort(event) {
         id.setAttribute('form', 'searchForm');
     } else {
         $("#ascDto").val(ascStorage);
-        var url;
-        if (pat === "/admin/") {
-            url = "users?status="
-        } else {
-            url = pat + "users?status=";
-        }
-        window.location.replace(url + status + '&sort=' + sortDto.val() + '&asc=' + ascStorage);
+
+        window.location.replace(loc + '?sort=' + sortDto.val() + '&asc=' + ascStorage);
     }
 }
 

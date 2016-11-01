@@ -1,5 +1,7 @@
 package com.hospitalsearch.dto;
 
+import com.hospitalsearch.util.Specialization;
+
 /**
  * Created by george on 9/21/16.
  */
@@ -9,9 +11,9 @@ public class DoctorDTO {
     private String firstName;
     private String lastName;
     private String imagePath;
-    private String specialization;
+    private Specialization specialization;
 
-    public DoctorDTO(Long id, String firstName, String lastName, String imagePath, String specialization) {
+    public DoctorDTO(Long id, String firstName, String lastName, String imagePath, Specialization specialization) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -54,11 +56,11 @@ public class DoctorDTO {
         this.imagePath = imagePath;
     }
 
-    public String getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(String specialization) {
+    public void setSpecialization(Specialization specialization) {
         this.specialization = specialization;
     }
 }

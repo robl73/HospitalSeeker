@@ -41,7 +41,7 @@ function upload(type) {
 
 	if (file.size > fileSizeLimit) {
 		showModal(getMessage('global.modal.info'), getMessage('upload.image.filesize'), 'alert-warning');
-		return;		
+		return;
 	}
 
 	var img = new Image();
@@ -58,10 +58,10 @@ function upload(type) {
 
 	if (dimensionError) {
 		showModal(getMessage('global.modal.info'), getMessage('upload.image.dimension'), 'alert-warning');
-		return;			
+		return;
 	}
 
-	var file_data = $('#file').prop('files')[0]; 
+	var file_data = $('#file').prop('files')[0];
 	var form_data = new FormData();
 	form_data.append('file', file_data)
 	form_data.append('type', type);

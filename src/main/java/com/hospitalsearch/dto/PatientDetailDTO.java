@@ -20,43 +20,43 @@ public class PatientDetailDTO{
 
    private Long id;
 
-    private String imagePath;
+    private String imagePath = "";
 
     @Size(max = 50, message = "Not valid, not more 50 symbols")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Kane")
-    private String firstName;
+    private String firstName = "";
 
     @Size(max = 50, message = "Not valid, not more 50 symbols")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Kane")
-    private String lastName;
+    private String lastName = "";
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Date(message = "Not valid format")
     private LocalDate birthDate;
 
    //@Pattern(regexp = "^\\+38 \\(\\d{3}\\) \\d{3}-\\d{4}", message = "Not valid. Ex: +38 (095) 435-7132")
-    private String phone;
+    private String phone = "";
 
-    private String address;
+    private String address = "";
 
     @Enumerated(EnumType.STRING)
     @com.hospitalsearch.service.annotation.Gender(message = "Not valid format")
     private Gender gender;
 
 
-    private String height;
-    private String weight;
-    private String bloodType;
-    private String eyeColor;
-    private String hairColor;
-    private String email;
-    private String allergies;
-    private String currentMedication;
-    private Boolean heartProblems;
-    private Boolean diabetes;
-    private Boolean epilepsy;
-    private String restrictions;
-   private List<RelativesInfo> relativesInfos;
+    private String height = "";
+    private String weight = "";
+    private String bloodType = "";
+    private String eyeColor = "";
+    private String hairColor = "";
+    private String email = "";
+    private String allergies = "";
+    private String currentMedication = "";
+    private Boolean heartProblems = false;
+    private Boolean diabetes = false;
+    private Boolean epilepsy = false;
+    private String restrictions = "";
+   private List<RelativesInfo> relativesInfos = null;
 
 
     public PatientDetailDTO() {

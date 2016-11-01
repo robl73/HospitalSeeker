@@ -135,6 +135,7 @@ public class AppointmentValidationService {
                 patientInfo.getDiabetes() == null ||
                 patientInfo.getEpilepsy() == null ||
                 patientInfo.getRestrictions() == null || !validateRelativesInfos(patientInfo.getRelativesInfos())){
+
             return false;
         }
         return true;

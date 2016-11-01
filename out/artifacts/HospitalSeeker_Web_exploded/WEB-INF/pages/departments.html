@@ -5,34 +5,57 @@
 	layout:decorator="layout">
 <head></head>
 <body>
-	<div layout:fragment="content">
-		<div class="content">
-			
-			<section class="service text-center" id="service">
-				<div class="container">
-					<div class="row">
-						<h2>our services</h2>
-						<h4>Lorem Ipsum has been the industry's standard dummy text
-							ever since the 1500s</h4>
-						<div class="col-md-3 col-sm-6" th:each="dep:${departments}"
-							th:object="${dep}">
-							<a th:href="@{|/hospital/${hid}/department/*{id}|}">
-								<div class="single-service">
-									<div class="single-service-img">
-										<div class="service-img">
-											<img class="heart img-responsive"
-												th:src="@{|/img/departments/${dep.imagePath}|}" />
-										</div>
-									</div>
-									<h3 th:text="*{name}" />
-								</div>
-							</a>
-						</div>
- 
-					</div>
-				</div>
+	<div layout:include="breadcrumb :: breadcrumbs">
+		<div layout:fragment="content">
+			<div class="content">
+				<section class="service text-center" id="service">
+					<div class="container">
+						<div class="row">
+							<h2>our services</h2>
+							<h4>Lorem Ipsum has been the industry's standard dummy text
+								ever since the 1500s</h4>
 
-			</section>
+							<div th:switch="${isLabory}">
+								<p th:case="'true'">
+								<div class="col-md-3 col-sm-6" th:object="${laboratory}">
+									<a th:href="@{|/hospital/${hid}/laboratory/*{id}|}">
+
+										<div class="single-service">
+											<div class="single-service-img">
+												<div class="service-img">
+
+													<img class="heart img-responsive"
+														th:src="@{/img/laboratory/labor.png}"
+														style="width: 70%; height: 70%;" />
+												</div>
+											</div>
+											<h3 th:text="Laboratory"/>
+										</div>
+
+									</a>
+								</div>
+								</p>
+								<p th:case="'false'"></p>
+							</div>
+
+							<div class="col-md-3 col-sm-6" th:each="dep:${departments}"
+								th:object="${dep}">
+								<a th:href="@{|/hospital/${hid}/department/*{id}|}">
+									<div class="single-service">
+										<div class="single-service-img">
+											<div class="service-img">
+												<img class="heart img-responsive"
+													th:src="@{|/img/departments/${dep.imagePath}|}" />
+											</div>
+										</div>
+										<h3 th:text="*{name}" />
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
 		</div>
 	</div>
 </body>

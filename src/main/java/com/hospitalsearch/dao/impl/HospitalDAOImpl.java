@@ -5,9 +5,9 @@ import java.util.List;
 import com.hospitalsearch.entity.Department;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.search.FullTextSession;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hospitalsearch.dao.HospitalDAO;
 import com.hospitalsearch.dto.Bounds;
+import com.hospitalsearch.entity.AdminTokenConfig;
 import com.hospitalsearch.entity.Hospital;
 import com.hospitalsearch.util.HospitalFilterDTO;
 import com.hospitalsearch.util.Page;
@@ -35,14 +36,16 @@ public class HospitalDAOImpl extends GenericDAOImpl<Hospital, Long> implements H
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public List<Hospital> getAllByBounds(Bounds bounds) {
-        org.hibernate.Query query = this.currentSession().getNamedQuery(Hospital.GET_LIST_BY_BOUNDS)
+       org.hibernate.Query query = this.currentSession().getNamedQuery(Hospital.GET_LIST_BY_BOUNDS)
                 .setDouble("nelat", bounds.getNorthEastLat())
                 .setDouble("swlat", bounds.getSouthWestLat())
                 .setDouble("nelng", bounds.getNorthEastLon())
                 .setDouble("swlng", bounds.getSouthWestLon());
         return query.list();
     }
+
 
     @SuppressWarnings("unchecked")
     @Override
@@ -57,6 +60,13 @@ public class HospitalDAOImpl extends GenericDAOImpl<Hospital, Long> implements H
         return criteria.add(Restrictions.and(nameCriterion, countryCriterion, cityCriterion)).list();
     }
 
+    public List<Hospital> getHospitalsByManagerId(Long id){
+        Criteria criteria = this.getSessionFactory().getCurrentSession().createCriteria(Hospital.class)
+                .createAlias("managers", "managerAlias")
+                .add(Restrictions.eq("managerAlias.id", id));
+        return (List<Hospital>) criteria.list();
+    }
+
     public static final String[] HOSPITAL_PROJECTION = new String[]{"name", "address.city", "address.street", "address.building", "description", "departments.name"};
 
     @Override
@@ -68,4 +78,11 @@ public class HospitalDAOImpl extends GenericDAOImpl<Hospital, Long> implements H
         return new Page<Hospital>(getSessionFactory(),args,HOSPITAL_PROJECTION, Hospital.class);
     }
 
+    @Override
+    public List<Hospital> getAllHospitalsByManager(Long manager_id) {
+        Criteria crit = this.getSessionFactory().getCurrentSession().createCriteria(Hospital.class);
+        crit.createAlias("managers", "managers");
+        crit.add(Restrictions.eq("managers.id", manager_id));
+        return crit.list();
+    }
 }

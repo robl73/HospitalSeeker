@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+<head>
+
+<script th:src="@{/js/maplistadmin.js}"></script>
+<script th:src="@{/js/gmaps.js}"></script>
+<link rel="stylesheet" th:href="@{/css/map.css}" />
+
+<title th:text="#{admin.hospital.list.header}"></title>
+</head>
+<body>
+
+	<section layout:fragment="content">
+		<div class="content">
+		<div class="col-sm-4">
+		</div>
+<div class="col-sm-4">		
+<center><h3 th:text="#{laboratory.title.tests}" style="color: #31708f;"></h3></center>
+
+			<div class="panel-group " id="accordion1">
+				<div
+					th:each="diagnosisPanelLocalization : ${diagnosisPanelLocalizations}"
+					th:object="${diagnosisPanelLocalization}">
+					<div class="panel panel-info">
+						<div class="panel-info panel-heading  accordion-toggle collapsed">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion1"
+									th:attr="data-target='#accordion_'+${diagnosisPanelLocalization.id}"
+									th:text="${diagnosisPanelLocalization.name}"> </a>
+							</h4>
+						</div>
+						<div th:id="'accordion_'+${diagnosisPanelLocalization.id}"
+							class="panel-collapse collapse">
+
+							<div 
+								th:each="test, rowStat : ${diagnosisPanelLocalization.diagnosisPanel.tests}"
+								th:object="${test}" th:class="${rowStat.odd}? 'panel-body' : 'panel-default panel-collapse panel-footer'" class="panel-body">
+								<a th:href="@{|/hospital/${hid}/laboratory/${lid}/test/*{id}|}"
+									th:text="${test.name}"> </a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

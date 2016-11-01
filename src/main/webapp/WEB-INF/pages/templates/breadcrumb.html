@@ -1,15 +1,33 @@
-<div th:fragment="breadcrumbs(hospitals,hospital,department,doctor)">
-	<ol class="breadcrumb" th:remove="${hospitals}? none : all">
-		<li><a th:href="@{/hospitals}" th:class="${hospital}?:'active'"
-			th:text="'Hospitals'" /></li>
-		<li th:remove="${hospital}? none : all"><a
-			th:href="@{|/hospital/${hospital.id}|}" th:class="${department}?:'active'"
-			th:text="${hospital.name}" /></li>
-		<li th:remove="${department}? none : all"><a
-			th:href="@{|/hospital/${hospital.id}/department/${department.id}|}"
-			th:class="${doctor}?:'active'" th:text="${department.name}" /></li>
-		<li th:remove="${doctor}? none : all"><a
-			th:href="@{/start(id=${doctor.id},did=${id})}" th:class="'active'"
-			th:text="|${doctor.firstName} ${doctor.lastName}|" /></li>
-	</ol>
+   <div class="row" th:fragment="breadcrumbs" xmlns:th="http://www.w3.org/1999/xhtml">
+
+	<ol class="breadcrumb" th:remove="${hospitals }? none : all">
+                <li><a th:href="@{/mapsearch}" th:class="${hospital}?:'active'"
+                       th:text="'Hospitals'"></a></li>
+                       
+                <li th:remove="${hospital}? none : all"><a
+                        th:href="@{|/hospital/${hospital.id}|}" th:class="${department}?:'active'"
+                        th:text="${hospital.name}"></a></li>
+                        
+                    
+                      <!--  department  -->
+                      <li th:remove="${department}? none : all"><a
+                        th:href="@{|/hospital/${hospital.id}/department/${department.id}|}"
+                        th:class="${doctor}?:'active'" th:text="${department.name}" ></a></li>
+                     <!--   or laboratory -->
+                <li th:remove="${diagnosisPanelLocalizations}? none : all"><a
+                        th:href="@{|/hospital/${hospital.id}/laboratory/${lid}|}"
+                        th:class="${diagnosisPanelLocalizations}?:'active'" th:text="'Laboratory'"></a></li>
+                        
+                       <!--  doctor -->
+                       <li th:remove="${doctor}? none : all"><a
+                        th:href="@{/start(id=${doctor.id},did=${id})}" th:class="'active'"
+                        th:text="|${doctor.firstName} ${doctor.lastName}|"></a></li>
+                       <!--  or test -->
+                <li th:remove="${test}? none : all"><a
+                        th:href="@{|/hospital/${hospital.id}/laboratory/${lid}/test/${id}|}" 
+                        th:class="'active'"
+                        th:text="'test'"></a></li> 
+        </ol>
 </div>
+
+
