@@ -70,6 +70,7 @@ public class DoctorInfo{
     private UserDetail userDetails;
 
     @ManyToMany(mappedBy = "doctors")
+    @JsonIgnore
     private List<Department> departments;
 
     public DoctorInfo() {

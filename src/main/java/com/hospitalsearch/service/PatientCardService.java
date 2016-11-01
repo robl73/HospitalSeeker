@@ -7,8 +7,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface PatientCardService {
+
     void remove(PatientCard patientCard);
+
     PatientCard getById(Long id);
+
     PatientCard add(PatientCard patientCard);
+    PatientCard getByUser(User user);
 
 }

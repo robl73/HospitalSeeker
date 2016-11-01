@@ -3,16 +3,18 @@ package com.hospitalsearch.entity;
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hospitalsearch.util.CustomLocalDateTimeSerializer;
+import com.hospitalsearch.util.FeedbackStatus;
+import com.hospitalsearch.util.LocalDateTimeTimestampConverter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
-@Table(name = "feedback")
+@Table(name = "feedbacks")
 public class Feedback {
 
 	@Id
@@ -21,26 +23,32 @@ public class Feedback {
 	private Long id;
 
 	@NotNull
-	@Size(min = 4, max = 150)
+	@Size(min = 3, max = 150)
 	private String message;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@Fetch(FetchMode.JOIN)
 	private User producer;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@Fetch(FetchMode.JOIN)
 	private DoctorInfo consumer;
 
-	@OrderColumn
+	@Convert(converter = LocalDateTimeTimestampConverter.class)
+	@JsonSerialize(using = CustomLocalDateTimeSerializer.class)
 	private LocalDateTime date;
 
-	public Feedback(String message, User producer, DoctorInfo consumer, LocalDateTime date) {
+	public Feedback(String message, User producer, DoctorInfo consumer, LocalDateTime date, FeedbackStatus status) {
 		this.message = message;
 		this.producer = producer;
 		this.consumer = consumer;
 		this.date = date;
+        this.status = status;
 	}
+
+	@Column(columnDefinition = "varchar(3) default 'NEW'")
+    @Enumerated(value = EnumType.STRING)
+    private FeedbackStatus status;
 
 	public Feedback() {}
 
@@ -84,5 +92,14 @@ public class Feedback {
 	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
-	
+
+    public FeedbackStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(FeedbackStatus status) {
+        this.status = status;
+    }
+
 }
+

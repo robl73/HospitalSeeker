@@ -21,4 +21,6 @@ public interface SchedulerService {
 
     Scheduler getByDoctorId(Long doctorId);
 
+    boolean isScheduler(Long doctorId);
+
 }

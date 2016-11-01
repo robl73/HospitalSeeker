@@ -33,9 +33,13 @@ function sort(event) {
         id.setAttribute('form', 'searchForm');
     } else {
         $("#ascDto").val(ascStorage);
+        if (pat == "/admin/") {
+            loc = "?status="+status;
+            window.location.replace(loc + '&sort=' + sortDto.val() + '&asc=' + ascStorage);
+        }else {
+            window.location.replace(loc + '?sort=' + sortDto.val() + '&asc=' + ascStorage);
+        }
 
-        window.location.replace(loc + '?sort=' + sortDto.val() + '&asc=' + ascStorage);
     }
 }
-
 

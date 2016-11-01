@@ -64,7 +64,7 @@ public class ManagerController {
     private static String emailTemplate = "emailTemplate.vm";
 
     @PreAuthorize("hasRole('MANAGER')")
-    @RequestMapping("manage/hospitals")
+    @RequestMapping("/manage/hospitals")
     public String getHospitalsByManager(ModelMap model){
         List<Hospital> hospitals = managerService.getHospitalsByManager();
         if((hospitals.isEmpty())||hospitals==null){
@@ -75,11 +75,11 @@ public class ManagerController {
             model.put("hospitals", hospitals);
             return "manager/hospitals";
         }
-        return "redirect: /manage/hospitals/"+hospitals.get(0).getId()+"/manageDoctors";
+        return "redirect:/manage/hospitals/"+hospitals.get(0).getId()+"/manageDoctors";
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @RequestMapping(value = "manage/hospitals/{id}/manageDoctors", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/hospitals/{id}/manageDoctors", method = RequestMethod.GET)
     public String getDoctorsByManager(ModelMap model,@PathVariable ("id") Long hospitalId,
                                       @ModelAttribute ViewForManagerDTO dto,
                                       @RequestParam(value = "hospitalName", defaultValue = "") String hospitalName,
@@ -110,7 +110,7 @@ public class ManagerController {
 
 
     @PreAuthorize("hasRole('MANAGER')")
-    @RequestMapping(value = "manage/hospitals/{id}/manageDoctors/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/hospitals/{id}/manageDoctors/search", method = RequestMethod.GET)
     public String searchDoctorForManager(@PathVariable ("id") Long hospitalId,
                                @ModelAttribute ("viewForManagerDTO") ViewForManagerDTO dto,
                                ModelMap model) throws Exception {
@@ -193,7 +193,7 @@ public class ManagerController {
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @RequestMapping(value = "manage/hospitals/{id}/manageDoctors/delete/{doctorId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/hospitals/{id}/manageDoctors/delete/{doctorId}", method = RequestMethod.GET)
     public String deleteUser(@PathVariable ("id") Long hospitalId,
                              @PathVariable ("doctorId") Long doctorId,
                              @ModelAttribute ("viewForManagerDTO") ViewForManagerDTO dto,

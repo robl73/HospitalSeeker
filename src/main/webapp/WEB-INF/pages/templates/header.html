@@ -52,16 +52,22 @@
                 <li sec:authorize="hasRole('MANAGER')">
                 <a href="#" class="nav navbar-nav dropdown dropdown-toggle" data-toggle="dropdown" th:text="#{manager.menu.actions}">
                     <span class="caret"></span></a>
-                    <ul class="dropdown-menu" id="dropdawn">
-                        <li>
-                            <a th:href="@{/manage/hospitals}" class="menu">
-                                <span class="glyphicon glyphicon-calendar" th:text="' '+#{manager.menu.view.hospitals}"></span></a>
-                        </li>
-                        <li>
-                            <a th:href="@{/newDoctor}" class="menu">
-                                <span class="glyphicon glyphicon-plus-sign" th:text="' '+#{manager.menu.add.new.doctor}"></span></a>
-                        </li>
-                    </ul>
+
+                <ul class="dropdown-menu" id="dropdawn">
+                    <li>
+                        <a th:href="@{/manage/hospitals}" class="menu">
+                            <span class="glyphicon glyphicon-calendar" th:text="' '+#{manager.menu.view.hospitals}"></span></a>
+                    </li>
+                    <li>
+                        <a th:href="@{/newDoctor}" class="menu">
+                            <span class="glyphicon glyphicon-plus-sign" th:text="' '+#{manager.menu.add.new.doctor}"></span></a>
+                    </li>
+                    <li>
+                        <a th:href="@{/moderationFeedbacks}" class="menu">
+                            <span class="glyphicon glyphicon-check" th:text="| #{manager.menu.moderation}|"></span>
+                        </a>
+                    </li>
+                </ul>
                 </li>
 
                 <li sec:authorize="hasRole('PATIENT')"><a
@@ -135,10 +141,10 @@
                                th:onclick="${userName.userDetails.lastName==null}?'editPatientProfile()':'showPatientPage()'" th:text="' '+#{header.principal.menu.profile}">
                                 <span class="glyphicon glyphicon-user"></span></a>
                         </li>
-                        <li sec:authorize="hasAnyRole('MANAGER','DOCTOR', 'ADMIN')">
-                            <a class="menu glyphicon glyphicon-user" data-toggle="modal" data-target="#myModal" data-backdrop="false"
-                               th:onclick="${userName.userDetails.lastName==null}?'editProfile()':'showPage()'" th:text="' '+#{header.principal.menu.profile}">
-                            <span class="glyphicon glyphicon-user"></span></a>
+                        <li>
+                            <a  sec:authorize="hasAnyRole('ADMIN','MANAGER')" class="menu glyphicon glyphicon-user" data-toggle="modal" data-target="#myModal" data-backdrop="false"
+                                th:onclick="${userName.userDetails.lastName==null}?'editProfile()':'showPage()'" th:text="' '+#{header.principal.menu.profile}">
+                                <span class="glyphicon glyphicon-user"></span></a>
                         </li>
                         <li><a class="menu" th:href="@{/logout}"> <span
                                 class="glyphicon glyphicon-log-out" th:text="' '+#{header.principal.log.out}"></span>
@@ -189,11 +195,11 @@
         <div class="[ container ]">
             <div class="[search-hospital-container]" style="display: inline-block; float:left; width: 45%;">
                 <form th:action="@{/hospitals}" id="search-hospital-form" class="[ form-inline ]" method="GET" role="search">
-                  <div class="[ input-group ]" style="z-index:1000000;width: 100%;">
+                    <div class="[ input-group ]" style="z-index:1000000;width: 100%;">
 
 
-                     <div class="form-group" style="width: 92%;">
-                        	<input id="select_hospital_search"  style="border-color:#5bc0de; border-width:3px; width: 100%;" type="text" class="[ form-control ] dropdown-field" name="q"
+                        <div class="form-group" style="width: 92%;">
+                            <input id="select_hospital_search"  style="border-color:#5bc0de; border-width:3px; width: 100%;" type="text" class="[ form-control ] dropdown-field" name="q"
                                    th:placeholder="#{header.menu.searchbar.placeholder.hospitals}"/>
 
                         </div>

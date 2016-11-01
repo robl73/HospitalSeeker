@@ -25,7 +25,9 @@ public interface AppointmentService {
     void actionControl(Map<String, String[]> Appointment, Long doctorId, String principal);
     @Transactional(readOnly = true, propagation=Propagation.SUPPORTS)
     List<Appointment> getAllByPatientEmail(String patient);
+
     @Transactional(readOnly = true, propagation=Propagation.SUPPORTS)
     List<Appointment> getAllByDoctorEmail(String doctor);
-    
+
+    List<Appointment> getByProducer(Long userdetailID);
 }

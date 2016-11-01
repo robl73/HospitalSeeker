@@ -136,7 +136,7 @@ public class DoctorInfoDAOImpl extends GenericDAOImpl<DoctorInfo, Long> implemen
         criteria.add(Restrictions.eq("hospital.id",hospitalId))
                 .add(Restrictions.eq("manager.id", managerId))
                 .add(Restrictions.eq("user.enabled",Boolean.TRUE));
-       // get total pages
+        // get total pages
         Long countPages = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 
         //get total rows

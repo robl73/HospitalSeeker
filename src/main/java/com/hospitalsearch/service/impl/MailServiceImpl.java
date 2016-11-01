@@ -149,7 +149,7 @@ public class MailServiceImpl implements MailService {
         if (doctorEmail.equals(principalEmail)){
             user = userDAO.getByEmail(patientEmail);
             sendMessage(user, messageSource.getMessage("mail.massage.cancel.appointment", null, locale), massageData.get("principalMassage"), "emailTemplate.vm");
-        }else {
+        } else {
             user = userDAO.getByEmail(doctorEmail);
             sendMessage(user, messageSource.getMessage("mail.massage.cancel.appointment", null, locale), massageData.get("principalMassage"), "emailTemplate.vm");
         }

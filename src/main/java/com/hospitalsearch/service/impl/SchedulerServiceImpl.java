@@ -55,4 +55,9 @@ public class SchedulerServiceImpl implements SchedulerService {
         String json = mapper.writeValueAsString(schedulerDAO.getByDoctorId(doctorInfoDAO.getByEmail(doctorEmail).getId()));
         return json;
     }
+
+    public boolean isScheduler(Long doctorId) {
+        return schedulerDAO.isScheduler(doctorId);
+    }
+
 }

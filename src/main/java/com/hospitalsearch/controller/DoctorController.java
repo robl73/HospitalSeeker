@@ -33,20 +33,20 @@ public class DoctorController {
 
     @RequestMapping("/doctors")
     public String renderSearchDoctors(Map<String, Object> model,
-                                  @RequestParam(value = "d", required = false, defaultValue=" ") String query) throws ParseException, InterruptedException {
+                                      @RequestParam(value = "d", required = false, defaultValue=" ") String query) throws ParseException, InterruptedException {
         Page pageableContent = null;
         if (query != null && !query.isEmpty()) {
             pageableContent = doctorInfoService.advancedDoctorSearch(query);
             pageableContent.setPageSize(3);
         }
         this.initializeModel(model, pageableContent, 1, query);
-         if (pageableContent.getResultListCount() == 0){
+        if (pageableContent.getResultListCount() == 0){
             User user = userService.getByEmail(PrincipalConverter.getPrincipal());
             ModelAndView view = new ModelAndView("error/emptyList");
             view.addObject("userName", user);
             return "error/emptyList";
-         }
-         return "paginatedLayout";
+        }
+        return "paginatedLayout";
     }
 
     @RequestMapping("/doctors/page/{page}/params")

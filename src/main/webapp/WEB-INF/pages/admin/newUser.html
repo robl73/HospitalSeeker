@@ -56,18 +56,19 @@
 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" for="userRoles" th:text="#{admin.add.new.user.roles}"></label>
-                                    <select id="userRoles" class="form-control" tabindex="4" multiple="multiple"
-                                            size="4" th:field="${userDto.userRoles}"
+                                    <select id="userRoles" class="form-control" tabindex="2" multiple="multiple"
+                                            size="2" th:field="${userDto.userRoles}"
                                             th:value="${(userDto != null) and (userDto.userRoles !=null)} ? ${userDto.userRoles}:''">
-                                        <option
-                                                th:each="role : ${roles}"
-                                                th:value="${role.type}"
-                                                th:text="${role.type}">Role
+                                        <option th:value="ADMIN"
+                                                th:text="ADMIN">Role
+                                        </option>
+                                        <option th:value="MANAGER"
+                                                th:text="MANAGER">Role
                                         </option>
                                     </select>
                                 </div>
 
-                                 <span class="button-checkbox" id="enabledUserCheckbox">
+                                <span class="button-checkbox" id="enabledUserCheckbox">
                                     <button type="button" class="btn" data-color="info" th:text="#{user.detail.enabled.button}"></button>
                                     <input type="checkbox" name="enabled" id="enabled" class="hidden"
                                            th:field="${userDto.enabled}"
@@ -99,4 +100,3 @@
 </section>
 </body>
 </html>
-

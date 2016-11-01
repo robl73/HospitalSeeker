@@ -82,7 +82,6 @@ function selectedWeekSize(selected) {
 }
 
 function ignoreDays(days) {
-    var ignore;
     if (days.length > 0) {
         return function (date) {
             for (var i = 0; i < days.length; ++i) {

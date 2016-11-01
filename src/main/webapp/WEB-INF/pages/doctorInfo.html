@@ -7,8 +7,10 @@
     <script th:src="@{/js/doctorInfo.js}"></script>
 </head>
 <body>
-<section layout:fragment="content">
+<section layout:fragment="content" name="top">
     <input type="hidden" th:id="doctorId" th:value="${doctor.id}" />
+    <input type="hidden" th:id="isScheduler" th:value="${isScheduler}" />
+    <input type="hidden" th:id="firstPartOfFeedbacks" th:value="${feedbacks}" />
     <div class="content">
         <div id="feedbackModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -28,6 +30,10 @@
             </div>
         </div>
         <div class="container">
+            <div class="alert alert-danger showInfo showInfoError" role="alert" th:text="#{manager.scheduler.saveError}">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+            </div>
             <div class="row">
                 <div class="row-height">
                     <div class="col-lg-4 col-md-4 col-sm-5">
@@ -36,7 +42,7 @@
                     <div class="col-lg-8 col-md-8 col-sm-7">
                         <div class="panel panel-default">
                             <div class="panel-heading text-center">
-                                <a th:href="@{|/doctor/${doctor.id}/scheduler|}"><h3 th:text="|#{user.detail.doctor}: ${doctor.userDetails.firstName} ${doctor.userDetails.lastName}|"></h3></a>
+                                <h3 th:text="|#{doctor.name}: ${doctor.userDetails.firstName} ${doctor.userDetails.lastName}|"></h3>
                             </div>
                             <div class="panel-body">
                                 <h5 th:text="|#{user.detail.email} ${doctor.userDetails.user.email}|"></h5>
@@ -44,45 +50,36 @@
                                 <h5 th:text="|#{doctor.category}: ${doctor.category}|"></h5>
                             </div>
                             <div class="panel-footer">
-                                Hospitals:
-                                <span th:text="${departments}"></span>
-                                <span th:each="item: ${departments}" th:text="${item.hospital}"></span>
+                                <span th:text="|#{doctor.hospitals}:|"></span>
+                                <span th:each="item: ${doctor.departments}" th:text="| ${item.hospital.name}|"></span>
                             </div>
-
                         </div>
                         <div class="text-center">
-                            <a th:href="@{|/doctor/${doctor.id}/scheduler|}"><button type="button" id="addAppointment" class="btn btn-primary btn-lg">
+                            <button type="button" id="addAppointment" class="btn btn-primary btn-lg" data-toggle="tooltip" th:title="${isScheduler == false} ? #{doctor.notScheduler}">
                                 <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                                Add appointment
-                            </button></a>
+                                <span th:text="|#{doctor.addAppointment}|"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="feedbacks">
-                <div class="row">
-                    <div class="col-sm-2 col-md-2 col-lg-2 col-centered" th:each="item: ${feedbacks}">
-                        <div class="panel panel-default">
-                            <div class="panel-heading" th:text="|${item.producer.userDetails.firstName} ${item.producer.userDetails.lastName}|">
-                            </div>
-                            <div class="panel-body fixed-panel" th:text="${item.message}"></div>
-                            <div class="panel-footer">
-                                <small class="fa fa-clock-o" th:text="${item.date.format(formatter)}"></small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <script th:inline="javascript">var firstPart = [[${feedbacks}]];</script>
             </div>
 
         </div>
     </div>
 
-    <form th:if="${allowAddFeedback}">
-        <div class="form-group form-layout" >
+    <div th:if="${isMore}" class="text-center">
+        <button type="button" class="btn btn-default" id="showMore" th:text="#{doctor.showMoreButton}">Show more</button>
+    </div>
+
+    <form th:if="${allowAddFeedback}" name="input-form" id="input-form">
+        <div class="form-group form-layout">
             <label for="input-feedback">Feedback:</label>
-            <textarea class="form-control" rows="5" id="input-feedback" placeholder="Feedback"></textarea>
-            <button type="button" class="btn btn-success" id="sendFeedback">Send</button>
+            <textarea class="form-control" rows="5" id="input-feedback" name="input-feedback" placeholder="Feedback"></textarea>
+            <button type="button" class="btn btn-success pull-right" id="sendFeedback" th:text="#{doctor.send}"></button>
         </div>
     </form>
 </section>

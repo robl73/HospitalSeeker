@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 $(document).ready(function(){
 	$("#perpage").children().each(function(){
@@ -8,6 +8,6 @@ $(document).ready(function(){
 			$(this).attr('selected','selected');
 		}
 	});
-	
+
 	$("#search-hospital-form").validator();
 });

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.hospitalsearch.entity.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,15 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hospitalsearch.controller.advice.HospitalControllerAdvice;
 import com.hospitalsearch.controller.advice.HospitalControllerAdvice.FilterHospitalListEmptyException;
-import com.hospitalsearch.entity.Department;
-import com.hospitalsearch.entity.DiagnosisPanel;
-import com.hospitalsearch.entity.DiagnosisPanelLocalization;
-import com.hospitalsearch.entity.Hospital;
-import com.hospitalsearch.entity.Laboratory;
-import com.hospitalsearch.entity.Language;
-import com.hospitalsearch.entity.PatientCard;
-import com.hospitalsearch.entity.Test;
-import com.hospitalsearch.entity.TestResult;
 import com.hospitalsearch.service.DepartmentService;
 import com.hospitalsearch.service.DiagnosisPanelLocalizationService;
 import com.hospitalsearch.service.DiagnosisPanelService;
@@ -83,6 +75,8 @@ public class HospitalController {
 	@Autowired
 	UserService userService;
 
+
+
 	@RequestMapping("/")
 	public String renderIndex(Map<String, Object> model) {
 		return "layout";
@@ -101,6 +95,39 @@ public class HospitalController {
 			throw new HospitalControllerAdvice.FilterHospitalListEmptyException("Empty list");
 		}
 		return "paginatedLayout";
+	}
+
+	@RequestMapping("/hospital/{hid}/laboratory/{lid}/test/{tid}/datetest/{datetest}/user/{uid}")
+	public String diagnosisPanelGet(Map<String, Object> model,
+									@PathVariable Long hid,
+									@PathVariable Long lid,
+									@PathVariable Long tid,
+									@PathVariable Long uid,
+									@PathVariable String datetest,
+									Locale locale) {
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		formatter = formatter.withLocale(locale);
+		LocalDate dateTest = LocalDate.parse(datetest, formatter);
+
+		TestResult testResult = new TestResult();
+		testResult.setTest(testService.getById(tid));
+		testResult.setDateTest(dateTest);
+		User user = userService.getById(uid);
+		PatientCard patientCard = patientCardService.getByUser(user);
+		testResult.setPatientCard(patientCard);
+		testResultService.save(testResult);
+		Test test = testService.getById(tid);
+		String[]  schedule = test.getWorkSchedule().split("[,]");
+		model.put("schedule", schedule);
+		model.put("test", test);
+		model.put("hospital", service.getById(hid));
+		model.put("laboratory", laboratoryService.getById(lid));
+		model.put("hid", hid);
+		model.put("lid", lid);
+		model.put("tid", tid);
+		model.put("diagnosisPanelLocalizations", "yes");
+		return "test";
 	}
 
 	@RequestMapping(value = "/hospitals/filter", method = RequestMethod.POST)

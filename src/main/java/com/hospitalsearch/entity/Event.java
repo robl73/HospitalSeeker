@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hospitalsearch.util.CustomLocalDateTimeDeserializer;
 import com.hospitalsearch.util.CustomLocalDateTimeSerializer;
+import com.hospitalsearch.util.LocalDateTimeTimestampConverter;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -26,7 +27,7 @@ public class Event {
     private Long id;
 
     /**
-     * idDhtmlX scheduler
+     * id for DhtmlX scheduler
      */
     @JsonProperty("id")
     @Column(name = "id_dhtmlx")
@@ -36,12 +37,14 @@ public class Event {
     @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
     @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
     @Column(name = "start_date")
+    @Convert(converter = LocalDateTimeTimestampConverter.class)
     private LocalDateTime startDate;
 
     @JsonProperty("end_date")
     @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
     @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
     @Column(name = "end_date")
+    @Convert(converter = LocalDateTimeTimestampConverter.class)
     private LocalDateTime endDate;
 
     private String text;

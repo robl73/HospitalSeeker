@@ -2,12 +2,12 @@ package com.hospitalsearch.service.impl;
 
 import com.hospitalsearch.dao.PatientCardDAO;
 import com.hospitalsearch.entity.PatientCard;
+import com.hospitalsearch.entity.User;
 import com.hospitalsearch.service.PatientCardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 @Service
 @Transactional
@@ -29,7 +29,6 @@ public class PatientCardServiceImpl implements PatientCardService {
         return patientCard;
     }
 
-
     @Override
     public void remove(PatientCard patientCard) {
         dao.delete(patientCard);
@@ -39,4 +38,11 @@ public class PatientCardServiceImpl implements PatientCardService {
     public PatientCard getById(Long id) {
         return dao.getById(id);
     }
+
+    @Override
+    public PatientCard getByUser(User user) {
+
+        return dao.getByUser(user);
+    }
+
 }

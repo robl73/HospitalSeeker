@@ -75,7 +75,7 @@ $(document).ready(function () {
         var url = '/manage/hospitals/'+hospitalId+'/manageDoctors/search';
         $.get(url, function (data) {});
         sessionStorage.clear();
-         $('#doctorPerPage').val(10);
+        $('#doctorPerPage').val(10);
         $('#pref-specializationBy').val('');
         $searchInput.val('');
         window.location.reload();
@@ -147,4 +147,3 @@ $(document).ready(function () {
     });
 
 });
-
