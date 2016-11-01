@@ -96,4 +96,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentDAO.update(appointment);
     }
 
+    @Override
+    public List<Appointment> getByProducer(Long userdetailId) {
+        return appointmentDAO.getByProducer(userdetailId);
+    }
+
 }

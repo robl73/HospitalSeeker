@@ -9,14 +9,21 @@
     var feedbacks;
 
     $('document').ready(function () {
-        console.log(location.pathname);
         feedbacks = $('.feedbacks');
-        var row = buildRow(firstPart);
+        var row = buildRow(JSON.parse(firstPart));
         feedbacks.append(row);
         doctorId = $('#doctorId').val();
         $('#sendFeedback').click(sendFeedback);
-        $('.fixed-panel-body').click(showModalFeedback);
+        // $('.fixed-panel-body').click(showModalFeedback);
+        $(document).on('click', '.fixed-panel-body', showModalFeedback);
         showMoreFeedbacks();
+        if ($('#isScheduler').val() === 'false') {
+            $('#addAppointment').addClass('disabled');
+        } else {
+            $('#addAppointment').click(function () {
+                location.href = '../doctor/' + doctorId + '/scheduler';
+            });
+        }
     });
 
     function sendFeedback() {
@@ -37,6 +44,7 @@
     }
 
     function showModalFeedback(event) {
+        console.log('click');
         var panel = $(event.target).parent().closest('div');
         $('#modal-body-text').text($(event.target).text());
         $('#modal-title-text').text(panel.find('.panel-heading').text());
@@ -52,14 +60,17 @@
             'rowCount': feedbacksCount
         };
 
-        $('#show-more').click(function () {
-            console.log($('meta[name="csrf-token"]').attr('content'));
+        $('#showMore').click(function () {
             ++rowNumber;
             sendData.rowNumber = rowNumber;
             var promise = $.get('../doctor/showMoreFeedbacks', sendData);
             promise.success(function (data) {
                 var row = buildRow(data.feedbacks, formatter);
                 feedbacks.append(row);
+                console.log(data.feedbacks[0]);
+                if (data.isMore == false) {
+                    $('#showMore').hide();
+                }
             });
         });
     }
@@ -79,15 +90,13 @@
         var heading = $('<div>', {'class': 'panel-heading'});
         var body = $('<div>', {'class': 'panel-body fixed-panel-body'});
         var footer = $('<div>', {'class': 'panel-footer'});
-        var clock = $('<div>', {'class': 'fa fa-clock-o'});
+        var clock = $('<span>', {'class': 'fa fa-clock-o'});
         var date = $('<span>');
 
-        console.log(feedback.date);
-
-        // date.append($.format.date(feedback.date, dateFormat));
         date.append(feedback.date);
-        clock.append(date);
         footer.append(clock);
+        footer.append(' ');
+        footer.append(date);
         body.append(feedback.message);
         heading.append(feedback.producerFirstName);
         heading.append(' ');

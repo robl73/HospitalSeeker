@@ -6,12 +6,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hospitalsearch.util.CustomLocalDateTimeSerializer;
+import com.hospitalsearch.util.FeedbackStatus;
 import com.hospitalsearch.util.LocalDateTimeTimestampConverter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
-@Table(name = "feedback")
+@Table(name = "feedbacks")
 public class Feedback {
 
 	@Id
@@ -23,25 +26,29 @@ public class Feedback {
 	@Size(min = 4, max = 150)
 	private String message;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@Fetch(FetchMode.JOIN)
 	private User producer;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@Fetch(FetchMode.JOIN)
 	private DoctorInfo consumer;
 
 	@Convert(converter = LocalDateTimeTimestampConverter.class)
+	@JsonSerialize(using = CustomLocalDateTimeSerializer.class)
 	private LocalDateTime date;
 
-	public Feedback(String message, User producer, DoctorInfo consumer, LocalDateTime date) {
+	public Feedback(String message, User producer, DoctorInfo consumer, LocalDateTime date, FeedbackStatus status) {
 		this.message = message;
 		this.producer = producer;
 		this.consumer = consumer;
 		this.date = date;
+        this.status = status;
 	}
 
-    private Boolean validated;
+	@Column(columnDefinition = "varchar(3) default 'NEW'")
+    @Enumerated(value = EnumType.STRING)
+    private FeedbackStatus status;
 
 	public Feedback() {}
 
@@ -86,12 +93,13 @@ public class Feedback {
 		this.date = date;
 	}
 
-    public Boolean getValidated() {
-        return validated;
+    public FeedbackStatus getStatus() {
+        return status;
     }
 
-    public void setValidated(Boolean validated) {
-        this.validated = validated;
+    public void setStatus(FeedbackStatus status) {
+        this.status = status;
     }
+
 }
 

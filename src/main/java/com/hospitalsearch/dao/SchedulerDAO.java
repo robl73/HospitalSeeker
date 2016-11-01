@@ -14,4 +14,6 @@ public interface SchedulerDAO extends GenericDAO<Scheduler, Long> {
 
     void merge(Scheduler scheduler);
 
+    boolean isScheduler(Long doctorId);
+
 }

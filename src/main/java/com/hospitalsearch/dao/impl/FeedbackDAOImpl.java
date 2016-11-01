@@ -3,6 +3,8 @@ package com.hospitalsearch.dao.impl;
 import java.util.List;
 
 import com.hospitalsearch.entity.DoctorInfo;
+import com.hospitalsearch.entity.Hospital;
+import com.hospitalsearch.util.FeedbackStatus;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
@@ -29,16 +31,6 @@ public class FeedbackDAOImpl extends GenericDAOImpl<Feedback, Long> implements F
 	}
 
 	@Override
-	public User getByUserEmail(String email) {
-		return (User) getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(User.class).add(Restrictions.eq("email", email))).get(0);
-	}
-
-	@Override
-	public Feedback getByProducer(User user) {
-		return (Feedback) getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(Feedback.class).add(Restrictions.eq("producer.id", user.getId()))).get(0);
-	}
-
-	@Override
 	public boolean isUserCreatedFeedback(Long producerId, Long consumerId) {
 		Query query = getSessionFactory().getCurrentSession().createQuery("select count(*) from Feedback f where f.producer.id = :producerId and f.consumer.id = :consumerId");
 		query.setParameter("producerId", producerId);
@@ -48,7 +40,7 @@ public class FeedbackDAOImpl extends GenericDAOImpl<Feedback, Long> implements F
 
 	@Override
 	public List<Feedback> getFeedbacks(Long doctorId, int pageNumber, int pageSize) {
-		Query query = getSessionFactory().getCurrentSession().createQuery("select f from Feedback f where f.consumer.id = :doctorId order by f.date");
+		Query query = getSessionFactory().getCurrentSession().createQuery("select f from Feedback f where f.consumer.id = :doctorId order by f.date desc");
 		query.setParameter("doctorId", doctorId);
 		query.setFirstResult((pageNumber - 1) * pageSize);
 		query.setMaxResults(pageSize);
@@ -62,5 +54,35 @@ public class FeedbackDAOImpl extends GenericDAOImpl<Feedback, Long> implements F
 		return (long) query.uniqueResult();
 	}
 
-}
+	public List<Feedback> getFeedbacksByManager(Long managerId, int firstFeedback, int pageSize, FeedbackStatus[] statuses) {
+		Query query = getSessionFactory().getCurrentSession().createQuery(
+		        "select f from Feedback f " +
+				"join f.consumer doc " +
+				"join doc.departments dep " +
+				"join dep.hospital h " +
+                "join h.managers manager " +
+				"where manager.id = :managerId " +
+                "and f.status in :statuses " +
+                "order by f.date ");
+        query.setFirstResult(firstFeedback - 1);
+        query.setMaxResults(pageSize);
+        query.setParameter("managerId", managerId);
+        query.setParameterList("statuses", statuses);
+        return query.list();
+	}
 
+	@Override
+	public List<Hospital> getHospitalsByManagerId(Long managerId) {
+		Query query = getSessionFactory().getCurrentSession().createQuery("select h from Hospital h where managers.id = :managerId");
+		return query.list();
+	}
+
+	@Override
+	public void changeStatus(Long feedbackId, FeedbackStatus status) {
+		Query query = getSessionFactory().getCurrentSession().createQuery("update Feedback f set f.status = :status where f.id = :feedbackId");
+		query.setParameter("feedbackId", feedbackId);
+		query.setParameter("status", status);
+		query.executeUpdate();
+	}
+
+}

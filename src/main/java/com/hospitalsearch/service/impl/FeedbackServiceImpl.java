@@ -1,13 +1,14 @@
 package com.hospitalsearch.service.impl;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.hospitalsearch.entity.DoctorInfo;
+import com.hospitalsearch.entity.Hospital;
 import com.hospitalsearch.service.UserService;
-import com.hospitalsearch.util.FeedbackDTO;
+import com.hospitalsearch.util.FeedbackDTOForAll;
+import com.hospitalsearch.util.FeedbackDTOForManager;
+import com.hospitalsearch.util.FeedbackStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,22 +48,11 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 	@Override
 	public List<Feedback> getAll() {
-		
 		return dao.getAll(); 
 	}
 	@Override
 	public List<Feedback> getByDoctorId(Long id) {
 		return dao.getByDoctorId(id);
-	}
-
-	@Override
-	public User getByUserEmail(String email) {
-		return dao.getByUserEmail(email);
-	}
-
-	@Override
-	public Feedback getByProducer(User user) {
-		return dao.getByProducer(user);
 	}
 
 	@Override
@@ -75,21 +65,18 @@ public class FeedbackServiceImpl implements FeedbackService {
 		return dao.getFeedbacks(doctorId, pageNumber, pageSize);
 	}
 
-	private boolean isMoreFeedbacksByConsumer(Long doctorId, int pageNumber, int pageSize) {
+	@Override
+	public boolean isMoreFeedbacksByConsumer(Long doctorId, int pageNumber, int pageSize) {
 		long count = dao.countOfFeedbacksByConsumer(doctorId);
 		return count > pageNumber * pageSize;
 	}
 
 	@Override
-	public Map<String, Object> nextFeedbacks(Long doctorId, int rowNumber, int count) {
+	public List<FeedbackDTOForAll> nextFeedbacks(Long doctorId, int rowNumber, int count) {
 		List<Feedback> feedbacks = getFeedbacks(doctorId, rowNumber, count);
-		List<FeedbackDTO> feedbackDTOs = new ArrayList<>(feedbacks.size());
-		feedbacks.forEach(feedback -> feedbackDTOs.add(new FeedbackDTO(feedback)));
-		boolean isMore = isMoreFeedbacksByConsumer(doctorId, rowNumber, count);
-		Map<String, Object> data = new LinkedHashMap<>();
-		data.put("feedbacks", feedbackDTOs);
-		data.put("isMore", isMore);
-		return data;
+		List<FeedbackDTOForAll> feedbackDTOs = new ArrayList<>(feedbacks.size());
+		feedbacks.forEach(feedback -> feedbackDTOs.add(new FeedbackDTOForAll(feedback)));
+		return feedbackDTOs;
 	}
 
 	@Override
@@ -109,5 +96,27 @@ public class FeedbackServiceImpl implements FeedbackService {
 		}
 		return allowAddFeedback;
 	}
-}
 
+	@Override
+	public List<FeedbackDTOForManager> getFeedbacksByManager(Long managerId, int firstFeedback, int countPage, FeedbackStatus[] statuses) {
+		List<Feedback> feedbacks = dao.getFeedbacksByManager(managerId, firstFeedback, countPage, statuses);
+        List<FeedbackDTOForManager> feedbackDTOForManagers = new ArrayList<>(feedbacks.size());
+        feedbacks.forEach(feedback -> feedbackDTOForManagers.add(new FeedbackDTOForManager(feedback)));
+        return feedbackDTOForManagers;
+    }
+
+	@Override
+	public List<Hospital> getHospitalsByManagerId(Long managerId) {
+		return dao.getHospitalsByManagerId(managerId);
+	}
+
+	@Override
+	public void changeStatus(Long feedbackId, FeedbackStatus status) {
+/*		Feedback feedback = dao.getById(feedbackId);
+		feedback.setStatus(status);
+		dao.update(feedback);*/
+
+		dao.changeStatus(feedbackId, status);
+	}
+
+}

@@ -19,32 +19,44 @@ function init(data) {
     var firstDate = new Date();
     var principal = $('#principal').text();
     var schedulerConfig = {};
+    var events = data.events;
     scheduler.config.drag_create = false;
     schedulerConfig.appSize = data.app_size;
     schedulerConfig.weekSize = data.week_size;
     schedulerConfig.dayStart = data.day_start;
     schedulerConfig.dayEnd = data.day_end;
+    var deleteMarkedTimespan = [];
+    var addMarkedTimespan = [];
     var today = new Date();
     var zones;
     var lastDate = today;
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
     firstDate = new Date(data.events[0].start_date);
-    data.events.forEach(function (item) {
+    events.forEach(function (item) {
         var workDay = item.start_date.substring(0, 10);
         var hourLast = item.end_date.substring(11, 13);
         var hourOne = item.start_date.substring(11, 13);
         var current = new Date(workDay);
         current.setHours(parseInt(hourLast));
+        if (hourLast != '00') {
+            current.setHours(parseInt(hourLast));
+        } else {
+            current.setHours(23);
+            current.setMinutes(59);
+        }
         if (current > today) {
             if (firstDate > current) firstDate = current;
-            if (item['event_length'] != null) {
+            if (item['event_length'] != null && item.rec_type != 'none') {
                 var d = new Date(item.end_date);
                 if (lastDate <  d) {
                     lastDate = d;
                 }
                 var count = item['event_length'];
-                zones = [0, hourOne * 60, hourOne * 60 + count / 60, 24 * 60];
+                zones = [hourOne * 60, hourOne * 60 + count / 60];
                 for (var i = 0; i <= daydiff(new Date(item.start_date), d); ++i) {
-                    scheduler.addMarkedTimespan({
+                    deleteMarkedTimespan.push({
                         days: current,
                         zones: zones,
                         css: "green_section"
@@ -52,8 +64,9 @@ function init(data) {
                     current = new Date(current.getFullYear(), current.getMonth(), current.getDate() + 1);
                 }
             } else {
-                zones = [0, hourOne * 60, hourLast * 60, 24 * 60];
-                scheduler.addMarkedTimespan({
+                var tem = (item.event_pid != null) ? addMarkedTimespan : deleteMarkedTimespan;
+                zones = [hourOne * 60, hourLast * 60];
+                tem.push({
                     days: new Date(workDay),
                     zones: zones,
                     css: "green_section"
@@ -64,10 +77,29 @@ function init(data) {
             }
         }
     });
-    blockDateTo(firstDate);
-    blockDateFrom(new Date(lastDate.getFullYear(), lastDate.getMonth(), lastDate.getDate() + 1));
+    // blockDateTo(firstDate);
+    // blockDateFrom(new Date(lastDate.getFullYear(), lastDate.getMonth(), lastDate.getDate() + 1));
+    if (events.length > 0) {
+        blockDateTo(firstDate);
+        blockDateFrom(lastDate);
+        firstDate.setHours(0);
+        scheduler.addMarkedTimespan({
+            start_date: firstDate,
+            end_date: lastDate,
+            zones: 'fullday',
+            css: "green_section"
+        });
+        deleteMarkedTimespan.forEach(function (e) {
+            scheduler.deleteMarkedTimespan(e);
+        });
+        addMarkedTimespan.forEach(function (e) {
+            scheduler.addMarkedTimespan(e);
+        });
+    } else {
+        blockDateTo(firstDate);
+        blockDateFrom(firstDate);
+    }
     var step = schedulerConfig.appSize;
-    scheduler.config.hour_size_px = (60 / step) * 44;
     scheduler.config.time_step = step;
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.config.details_on_dblclick = true;
@@ -86,6 +118,9 @@ function init(data) {
     var dp = new dataProcessor("supplyAppointment?id=" + 0 + "&principal="+principal);
     dp.init(scheduler);
     scheduler.updateView(new Date());
+    var dhxData = $('.dhx_cal_data');
+    dhxData.height(dhxData[0].scrollHeight);
+    $('.dhx_cal_container').height(dhxData[0].scrollHeight + $('.dhx_multi_day').height() + $('.dhx_cal_header').height() + $('.dhx_cal_navline').height());
 }
 
 var html = function (id) {
@@ -97,8 +132,9 @@ var ev;
 scheduler.showLightbox = function (id) {
     var tex_local_from = getMessage('workscheduler.modal.appointment.time.from');
     var tex_local_to = getMessage('workscheduler.modal.appointment.time.to');
-    $('#myModal').modal('show');
     ev = scheduler.getEvent(id);
+    $('#myModal').modal('show');
+    $('#myModal').css(top,  0);
     scheduler.startLightbox(id, html("myModal"));
     $('#date').text(new Date(ev.start_date).toLocaleDateString() + ' ' + tex_local_from + ' '+
         new Date(ev.start_date).toLocaleTimeString().replace(':00', '') + ' ' + tex_local_to + ' ' +
@@ -108,7 +144,7 @@ scheduler.showLightbox = function (id) {
     $('#patientName').text(nameAndDescription[0]);
     $('#theReasonForVisit').text(nameAndDescription[1]);
     $('#cancelAppointmentHeader').text('Cancel appointment of ' + ' ' + nameAndDescription[0]);
-    $('#cardButton').val(ev.id)
+    $('#cardButton').val(ev.id);
 };
 
 function onCancelAppointment() {

@@ -1,9 +1,12 @@
 package com.hospitalsearch.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.hospitalsearch.entity.DoctorInfo;
+import com.hospitalsearch.entity.Hospital;
+import com.hospitalsearch.util.FeedbackDTOForAll;
+import com.hospitalsearch.util.FeedbackDTOForManager;
+import com.hospitalsearch.util.FeedbackStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,17 +30,21 @@ public interface FeedbackService {
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	List<Feedback> getByDoctorId(Long id);
 
-	User getByUserEmail(String email);
-
-	Feedback getByProducer(User user);
-
     boolean isUserCreatedFeedback(Long producerId, Long consumerId);
 
 	List<Feedback> getFeedbacks(Long doctorId, int pageNumber, int pageSize);
 
-	Map<String, Object> nextFeedbacks(Long doctorId, int rowNumber, int count);
+	List<FeedbackDTOForAll> nextFeedbacks(Long doctorId, int rowNumber, int count);
 
 	boolean canWrite(String emailProducer, DoctorInfo doctorInfo);
+
+	List<FeedbackDTOForManager> getFeedbacksByManager(Long managerId, int firstFeedback, int countPage, FeedbackStatus[] statuses);
+
+	List<Hospital> getHospitalsByManagerId(Long managerId);
+
+	boolean isMoreFeedbacksByConsumer(Long doctorId, int pageNumber, int pageSize);
+
+	void changeStatus(Long feedbackId, FeedbackStatus status);
 
 }
 

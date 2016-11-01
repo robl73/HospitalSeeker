@@ -1,6 +1,8 @@
 package com.hospitalsearch.util;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hospitalsearch.entity.Feedback;
 
 import java.time.LocalDateTime;
@@ -8,9 +10,9 @@ import java.time.LocalDateTime;
 /**
  * Created by vanytate on 10/24/16.
  */
-public class FeedbackDTO {
+public class FeedbackDTOForAll {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d MMM yyyy hh:mm")
+    @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
     private LocalDateTime date;
 
     private String message;
@@ -19,14 +21,14 @@ public class FeedbackDTO {
 
     private String producerLastName;
 
-    public FeedbackDTO(Feedback feedback) {
+    public FeedbackDTOForAll(Feedback feedback) {
         this.date = feedback.getDate();
         this.message = feedback.getMessage();
         this.producerFirstName = feedback.getProducer().getUserDetails().getFirstName();
         this.producerLastName = feedback.getProducer().getUserDetails().getLastName();
     }
 
-    public FeedbackDTO() {
+    public FeedbackDTOForAll() {
     }
 
     public LocalDateTime getDate() {

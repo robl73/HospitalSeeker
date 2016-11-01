@@ -7,6 +7,7 @@ import java.util.function.Function;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -122,16 +123,6 @@ public class SpringRootConfig {
         return new CommonsMultipartResolver();
     }
 
-//    @Bean
-//    public SpringLiquibase liquibase() {
-//        SpringLiquibase liquibase = new SpringLiquibase();
-//     // liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
-//        liquibase.setChangeLog("classpath:liquibase-changeLogForDiff.xml");
-//        liquibase.setDataSource(dataSource());
-//        liquibase.setIgnoreClasspathPrefix(true);
-//        return liquibase;
-//    }
-
     @Bean
     public Function<String, String> currentUrlWithoutParam() {
         return param -> currentUrlWithoutParamWrapped(param);
@@ -150,4 +141,6 @@ public class SpringRootConfig {
     public ImageValidator imageValidator() {
         return new ImageValidator();
     }
+
+
 }
