@@ -85,7 +85,7 @@ public class User implements Comparable<User> {
 		this.enabled = enabled;
 	}
 
-	public Set<Role> getUserRoles() {
+		public Set<Role> getUserRoles() {
 		return userRoles;
 	}
 

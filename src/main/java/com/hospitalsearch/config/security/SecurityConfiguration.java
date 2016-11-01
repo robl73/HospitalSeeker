@@ -75,6 +75,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/**/manage").access("hasRole('MANAGER')")
 				.antMatchers("/editHospitalsManagers").access("hasRole('ADMIN')")
 				.antMatchers("/appointments").access("hasRole('PATIENT')")
+				.antMatchers("/user/patientProfile").access("hasRole('PATIENT')")
 				.antMatchers("/workscheduler").access("hasRole('DOCTOR')")
 				.antMatchers("/login", "/registration").anonymous()
 				.and()

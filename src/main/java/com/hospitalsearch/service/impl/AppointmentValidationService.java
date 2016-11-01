@@ -3,9 +3,10 @@ package com.hospitalsearch.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hospitalsearch.entity.Appointment;
+import com.hospitalsearch.entity.PatientInfo;
 import com.hospitalsearch.entity.RelativesInfo;
-import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.AppointmentService;
+import com.hospitalsearch.service.PatientInfoService;
 import com.hospitalsearch.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Created by Volodymyr Paladiuk on 17.09.16.
+ * Created by Volodymyr on 17.09.16.
  */
 @Service
 public class AppointmentValidationService {
@@ -55,10 +56,14 @@ public class AppointmentValidationService {
        
         Map<String, Object> validationInfo = new HashMap<>();
         validationInfo.put(RESULT, validate(appointment, appointments));
-        //check if patient has appointment
+
         validationInfo.put(NEXT_AVAILABLE_TIME, getFirstAvailableTime(appointments, appointment));
+
+        Long userId = userService.getByEmail(data.get(PRINCIPAL)).getUserDetails().getId();
+        PatientInfoService patientInfoService = new PatientInfoServiceImpl();
+        PatientInfo patientInfo = patientInfoService.getByUserDetailId(userId);
         validationInfo.put(FULL_USER_DETAIL_PRESENT,
-                checkFullUserDetailPresent(userService.getByEmail(data.get(PRINCIPAL)).getUserDetails()));
+                checkFullUserDetailPresent(patientInfo));
         return validationInfo;
     }
 
@@ -113,23 +118,23 @@ public class AppointmentValidationService {
 
     }
 
-    private boolean checkFullUserDetailPresent(UserDetail userDetails) {
-        if (userDetails.getFirstName() == null ||
-                userDetails.getBirthDate() == null ||
-                userDetails.getPhone() == null ||
-                userDetails.getAddress() == null ||
-                userDetails.getGender() == null ||
-                userDetails.getHeight() == null ||
-                userDetails.getWeight() == null ||
-                userDetails.getBloodType() == null ||
-                userDetails.getEyeColor() == null ||
-                userDetails.getHairColor() == null ||
-                userDetails.getAllergies() == null ||
-                userDetails.getCurrentMedication() == null ||
-                userDetails.getHeartProblems() == null ||
-                userDetails.getDiabetes() == null ||
-                userDetails.getEpilepsy() == null ||
-                userDetails.getRestrictions() == null || !validateRelativesInfos(userDetails.getRelativesInfos())){
+    private boolean checkFullUserDetailPresent(PatientInfo patientInfo) {
+        if (patientInfo.getUserDetail().getFirstName() == null ||
+                patientInfo.getUserDetail().getBirthDate() == null ||
+                patientInfo.getUserDetail().getPhone() == null ||
+                patientInfo.getUserDetail().getAddress() == null ||
+                patientInfo.getUserDetail().getGender() == null ||
+                patientInfo.getHeight() == null ||
+                patientInfo.getWeight() == null ||
+                patientInfo.getBloodGroup() == null ||
+                patientInfo.getEyeColor() == null ||
+                patientInfo.getHairColor() == null ||
+                patientInfo.getAllergies() == null ||
+                patientInfo.getCurrentMedication() == null ||
+                patientInfo.getHeartProblems() == null ||
+                patientInfo.getDiabetes() == null ||
+                patientInfo.getEpilepsy() == null ||
+                patientInfo.getRestrictions() == null || !validateRelativesInfos(patientInfo.getRelativesInfos())){
             return false;
         }
         return true;

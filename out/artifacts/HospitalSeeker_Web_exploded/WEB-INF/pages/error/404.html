@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="layout">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <meta charset="UTF-8"/>
+    <title>Page not found</title>
+    <script th:src="@{/js/admin.js}"></script>
+
+</head>
+<body>
+
+<section layout:fragment="content" class="dashboard center">
+    <div class="content">
+        <div class="col-md-12">
+            <center>
+                <div class="page-403 animated flipInX">
+                    <img th:src="@{/img/404.png}" class="img-responsive center-block"/>
+                </div>
+                <br/>
+                <br/>
+                <input type="button" id="btnRedirect" th:value="#{redirect.button}" class="btn btn-default"/>
+                <br/>
+                <div id="dvCountDown" style="display: none">
+                    <span th:text="#{redirect.message}"></span>
+                    <h4><span id="lblCount"></span>&nbsp;<span th:text="#{redirect.seconds}"></span></h4>
+                </div>
+            </center>
+
+            <script type="text/javascript">
+                $(function () {
+                    $("#btnRedirect").click(function () {
+                        var seconds = 5;
+                        $("#dvCountDown").show();
+                        $("#btnRedirect").hide();
+                        $("#lblCount").html(seconds);
+                        setInterval(function () {
+                            seconds--;
+                            $("#lblCount").html(seconds);
+                            if (seconds == 0) {
+                                $("#dvCountDown").hide();
+                                window.location = "/";
+                            }
+                        }, 1000);
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</section>
+</body>
+</html>

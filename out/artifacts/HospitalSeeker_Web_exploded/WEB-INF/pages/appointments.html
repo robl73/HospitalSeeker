@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorator="layout">
+
+<head>
+    <title th:text="#{title.myappointments}"></title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <meta th:name="csrf-token" th:content="${_csrf.token}"/>
+    <script th:src="@{/js/appointments.js}"></script>
+    <script th:src="@{/codebase/locale/locale_ua.js}" th:remove="(__${#locale}__ == 'en')?'all':'none'"
+            type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/js/schedulerDatePicker.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/js/appointmentsMassageSender.js}" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" th:href="@{/css/appointmentModal.css}"/>
+    <script th:src="@{/js/localization.js}" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" th:href="@{/css/workscheduler.css}"/>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <input id="path" th:value="${#httpServletRequest.getContextPath()}"/>
+    <input sec:authorize="hasRole('PATIENT')" value="true"
+           id="patient" type="text" hidden="hidden"/>
+    <p th:id="currentUser" hidden="hidden" sec:authentication="name"/>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+                    <div id="my_form">
+                        <label for="description">Appointment</label><input type="text" name="description"
+                                                                           hidden="hidden" id="description"/><br/>
+                        <button class="btn btn-default" value="Close" id="close" onclick="close_form()">Close</button>
+                        <button class="btn btn-default" value="Delete" id="delete" onclick="delete_event()">Delete
+                        </button>
+                    </div>
+                    <div class="dhx_cal_container panel" id="scheduler_here">
+                        <div class="dhx_cal_navline">
+                            <div class="dhx_cal_prev_button">&nbsp;</div>
+                            <div class="dhx_cal_next_button">&nbsp;</div>
+                            <div class="dhx_cal_today_button"></div>
+                            <div class="dhx_cal_date"></div>
+                            <div class="dhx_minical_icon" id="dhx_minical_icon"
+                                 onclick="show_minical()">&nbsp;</div>
+                            <div class="dhx_cal_tab" name="day_tab"></div>
+                            <div class="dhx_cal_tab" name="week_tab"></div>
+                            <div class="dhx_cal_tab" name="month_tab"></div>
+                        </div>
+                        <div class="dhx_cal_header"></div>
+                        <div class="dhx_cal_data"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="myModal" class="modal fade" role="dialog" onclose="cancelAppointment()"
+             onclick="dismissMyModal(event)">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header" id="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" onclick="close_form()">&times;</button>
+                        <h3 class="modal-title" id="modalHeaderWithDate" th:text="#{workscheduler.modal.header}"></h3>
+                        <h4 class="modal-title" id="modalHeaderForCancel" hidden="hidden" th:text="#{workscheduler.modal.second.header}"></h4>
+                    </div>
+                    <div class="modal-body" id="modalBodySuccess" style="padding-bottom: 0" hidden="hidden">
+                        <div id="cancelMassage" class="helper">
+                            <div class="alert alert-info " role="alert">
+                                <h4 id="cancelMassageText" class="success text-center"></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body" id="modalBodySecond" hidden="hidden">
+                        <input type="text" class="form-control" id="cancelReason" th:placeholder="#{workscheduler.modal.appointment.cancel.reason.input}"/>
+                    </div>
+                    <div class="modal-body" id="modalBodyFirst">
+                        <label style="font-size: large" for="date" th:text="#{workscheduler.modal.appointment.time}"></label>
+                        <p style="font-size: large" id="date"/>
+                        <label style="font-size: large" for="patientName" th:text="#{workscheduler.modal.appointment.doctor}"></label>
+                        <p style="font-size: large" id="patientName"/>
+                        <div style="text-align: center;">
+                            <button class="btn btn-danger" onclick="cancelAppointment()" th:text="#{workscheduler.modal.cancel.appointment.button}"></button>
+                        </div>
+                    </div>
+                    <div class="modal-footer" id="modal-footer">
+                        <button id="batOne" type="button" class="btn btn-default" style="width: 80px; display: none;"
+                                onclick="onCancelAppointment()">OK
+                        </button>
+                        <button id="canBtn" type="button" class="btn btn-default" style="width: 80px; display: none;"
+                                onclick="cancelAppointment()" th:text="#{modal.button.cancel}">
+                        </button>
+                        <button id="okBtn" type="button" class="btn btn-default" style="width: 80px"
+                                data-dismiss="modal">OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p id="principal" sec:authorize="isAuthenticated()" sec:authentication="principal.username" hidden="hidden"></p>
+    </div>
+</section>
+</body>
+</html>

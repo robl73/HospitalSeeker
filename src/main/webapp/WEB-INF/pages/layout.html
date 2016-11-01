@@ -72,6 +72,8 @@
 <div th:replace="templates/header::page-header"/>
 
 <div layout:fragment="content">
+    <p id="principal" sec:authorize="isAuthenticated()" sec:authentication="principal.authorities" hidden="hidden"></p>
+
     <div class="content">
         <div class="container">
             <div class="row">
@@ -150,6 +152,7 @@
 <script th:src="@{/js/custom.js}"></script>
 <script th:src="@{/js/smoothscroll.js}"></script>
 <script type="text/javascript" th:src="@{/js/detail.js}"></script>
+<script type="text/javascript" th:src="@{/js/patientProfile.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.form.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.validate.js}"></script>
 </body>

@@ -1,0 +1,47 @@
+html, body {
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+.well {
+    text-align: right;
+}
+
+.container-fluid #scheduler_here {
+    height: 715px;
+    width: 100%;
+    border: 1px solid #cecece;
+}
+
+#scheduler_here {
+    height: 100%;
+    border-radius: 4px;
+}
+
+/* Important !!! */
+.dhx_scale_hour {
+    line-height: normal;
+}
+
+.gray_section {
+    background-color: lightgrey;
+    opacity: 0.27;
+    filter:alpha(opacity=27);
+}
+
+.showInfo {
+    position: fixed;
+    top: 7px;
+    left: 45vw;
+    z-index: 1000;
+    width: auto;
+    height: auto;
+}
+
+.showInfoSuccess {
+    display: none;
+}
+.showInfoError {
+    display: none;
+}

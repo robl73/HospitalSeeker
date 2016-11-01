@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="layout">
+<meta charset="UTF-8"/>
+
+<head lang="en">
+    <title>Details</title>
+    <link rel="stylesheet" th:href="@{/css/datepicker.css}"/>
+    <link rel="stylesheet" th:href="@{/css/patientProfile.css}"/>
+    <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-formhelpers-phone.js}"></script>
+    <script type="text/javascript" th:src="@{/js/uploader.js}"></script>
+    <script type="text/javascript" th:src="@{/js/modalKeys.js}"></script>
+    <script type="text/javascript" th:src="@{/js/patientProfile.js}"></script>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+
+    <div class="content">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-2">
+
+                    <form th:action="@{/user/patientProfile}" th:object="${patientDetailDTO}" role="form" name="patientProfileForm"
+                          id="patientProfileForm" method="post">
+                        <input type="hidden" th:value="*{id}"  th:field="*{id}"/>
+
+                          <div class="panel panel-info">
+                            <div class="panel-heading" style="height: 40px">
+                                <h3 class="panel-title">
+                                    <span class="pull-right">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                            onclick="location.reload();">&times;</button>
+                                        </span>
+                                </h3>
+                                <div align="center" style="font-weight:bold">  <td th:text="#{user.detail.informationCard}" ></td></div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+
+                                    <div class="col-lg-5 col-md-5">
+                                        <table class="table table-user-information">
+                                            <tbody>
+
+                                            <div align="center" id="image-div">
+
+                                                <figure th:class="${edit}?'snip1494 img-responsive img-circle'">
+
+                                                    <img th:if="${patientDetailDTO.imagePath!=''}" alt="User Pic"
+                                                         style="height: 200px;" id="image-uploaded"
+                                                         th:src="${patientDetailDTO.imagePath==null}?@{/images/avatar/ava.png}:@{|/images/avatar/${patientDetailDTO.imagePath}|}"
+                                                         class="img-responsive img-circle"/>
+                                                    <img th:if="${patientDetailDTO.imagePath==''}" alt="User Pic"
+                                                         style="height: 200px;" id="image-uploaded"
+                                                         th:src="@{/images/avatar/ava.png}"
+                                                         class="img-responsive img-circle"/>
+                                                    <figcaption th:if="${edit}">
+                                                        <div><i class="glyphicon glyphicon-circle-arrow-down"></i></div>
+                                                    </figcaption>
+                                                    <a th:onclick="${edit}?'javascript:$(\'#file\').click();'"></a>
+                                                </figure>
+
+                                                <input type="file" id="file" style="display: none;"
+                                                       th:onchange="'javascript:upload(\'avatar\');'"/>
+                                                <input
+                                                        type="hidden" th:field="*{imagePath}" class="form-control"
+                                                        id="imagePath"/>
+                                            </div>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-lg-7 col-md-7">
+                                        <table class="table table-user-information">
+                                            <tbody>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.firstName}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.firstName}"></td>
+                                                <td th:if="${edit}">
+                                                    <input type="text" th:field="*{firstName}" id="firstName"
+                                                           name="firstName"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('firstName')}"
+                                                       th:errors="*{firstName}"></p>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td th:text="#{user.detail.lastName}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.lastName}"></td>
+                                                <td th:if="${edit}">
+                                                    <input type="text" th:field="*{lastName}" id="lastName"
+                                                           name="firstName"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('lastName')}"
+                                                       th:errors="*{lastName}"></p>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.email}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.email}"></td>
+                                                <td th:if="${edit}"><input type="text" th:field="*{email}"
+                                                                           id="email" name="email"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('email')}"
+                                                       th:errors="*{email}"></p>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.birthDate}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.birthDate}"></td>
+                                                <td th:if="${edit}">
+                                                    <input type="text" th:field="*{birthDate}" id="birthDate"
+                                                           name="birthDate"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('birthDate')}"
+                                                       th:errors="*{birthDate}"></p>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.phone}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.phone}"></td>
+                                                <td th:if="${edit}">
+                                                    <input type="text" id="phone" class="input-medium bfh-phone"
+                                                           data-format="+38 (ddd) ddd-dddd"
+                                                           th:field="*{phone}" name="phone"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('phone')}"
+                                                       th:errors="*{phone}"></p>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.gender}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.gender}"></td>
+                                                <td th:if="${edit}">
+
+
+                                                    <select name="gender" id="gender" th:field="*{gender}" th:value="*{gender}" >
+                                                        <option th:each="gen :${T(com.hospitalsearch.util.Gender).values()}"
+                                                                th:value="${gen}"
+                                                                th:text="${gen}"/>
+                                                    </select>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('gender')}"
+                                                       th:errors="*{gender}"></p>
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12">
+                                        <table class="table table-user-information">
+                                            <tbody>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.address}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.address}"></td>
+                                                <td th:if="${edit}"><input type="text" th:field="*{address}"
+                                                                           id="address" name="address"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('address')}"
+                                                       th:errors="*{address}"></p>
+                                                </td>
+                                            </tr>
+
+
+
+                                            <tr>
+                                                <td th:text="#{user.detail.height}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.height}"></td>
+                                                <td th:if="${edit}"><input type="text" th:field="*{height}"
+                                                                           id="height" name="height"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('height')}"
+                                                       th:errors="*{height}"></p>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.weight}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.weight}"></td>
+                                                <td th:if="${edit}"><input type="text" th:field="*{weight}"
+                                                                           id="weight" name="weight"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('weight')}"
+                                                       th:errors="*{weight}"></p>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td th:text="#{user.detail.bloodType}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.bloodType}"></td>
+                                                <td th:if="${edit}"><input type="text" th:field="*{bloodType}"
+                                                                           id="bloodType" name="bloodType"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('bloodType')}"
+                                                       th:errors="*{bloodType}"></p>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.eyeColor}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.eyeColor}"></td>
+                                                <td th:if="${edit}"><input type="text" th:field="*{eyeColor}"
+                                                                           id="eyeColor" name="eyeColor"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('eyeColor')}"
+                                                       th:errors="*{eyeColor}"></p>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.hairColor}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.hairColor}"></td>
+                                                <td th:if="${edit}"><input type="text" th:field="*{hairColor}"
+                                                                           id="hairColor" name="hairColor"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('hairColor')}"
+                                                       th:errors="*{hairColor}"></p>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12" align="center" style="font-weight:bold">
+
+                                            <tr>
+                                                <td></td>
+                                                <td th:text="#{user.detail.medicalInformation}"></td>
+                                            </tr>
+                                    </div>
+
+                                            <div class="col-lg-12 col-md-12">
+                                            <table class="table table-user-information">
+                                                <tbody>
+
+
+                                            <tr>
+                                                <td th:text="#{user.detail.allergies}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.allergies}"></td>
+                                                <td th:if="${edit}"><input type="text" th:field="*{allergies}"
+                                                                           id="allergies" name="allergies"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('allergies')}"
+                                                       th:errors="*{allergies}"></p>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.currentMedication}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.currentMedication}"></td>
+                                                <td th:if="${edit}"><input type="text" th:field="*{currentMedication}"
+                                                                           id="currentMedication" name="currentMedication"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('currentMedication')}"
+                                                       th:errors="*{currentMedication}"></p>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.heartProblems}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.heartProblems} ? #{user.detail.yes} : #{user.detail.no}"></td>
+                                                <td th:if="${edit}">
+                                                    <select name="heartProblems" id="heartProblems" th:field="*{heartProblems}">
+                                                        <option th:value="false" th:text="#{user.detail.no}"></option>
+                                                        <option th:value="true" th:text="#{user.detail.yes}"></option>
+                                                    </select>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('heartProblems')}"
+                                                       th:errors="*{heartProblems}"></p>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.diabetes}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.diabetes} ? #{user.detail.yes} : #{user.detail.no}"></td>
+
+                                                <td th:if="${edit}">
+                                                    <select name="diabetes" id="diabetes" th:field="*{diabetes}">
+                                                        <option th:value="false" th:text="#{user.detail.no}"></option>
+                                                        <option th:value="true" th:text="#{user.detail.yes}"></option>
+                                                    </select>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('diabetes')}"
+                                                       th:errors="*{diabetes}"></p>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.epilepsy}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.epilepsy} ? #{user.detail.yes} : #{user.detail.no}"></td>
+
+                                                <td th:if="${edit}">
+                                                    <select name="epilepsy" id="epilepsy" th:field="*{epilepsy}">
+                                                        <option th:value="false" th:text="#{user.detail.no}"></option>
+                                                        <option th:value="true" th:text="#{user.detail.yes}"></option>
+                                                    </select>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('epilepsy')}"
+                                                       th:errors="*{epilepsy}"></p>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td th:text="#{user.detail.restrictions}"></td>
+                                                <td th:if="${!edit}" th:text="${patientDetailDTO.restrictions}"></td>
+                                                <td th:if="${edit}"><input type="text" th:field="*{restrictions}"
+                                                                           id="restrictions" name="restrictions"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('restrictions')}"
+                                                       th:errors="*{restrictions}"></p>
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12" align="center" style="font-weight:bold">
+                                        <tr>
+                                            <td  th:text="#{user.detail.callPeople}"></td>
+                                        </tr>
+                                    </div>
+
+
+                                    <div class="col-lg-12 col-md-12">
+                                        <table class="table table-user-information">
+
+                                            <tbody >
+
+
+
+                                            <tr>
+                                                <div th:if="${patientDetailDTO.relativesInfos.size()} > 0">
+
+                                                <input type="hidden" th:value="*{relativesInfos[0].id}"  th:field="*{relativesInfos[0].id}"/>
+
+                                                <td th:if="${!edit}">
+                                                 <p th:text="#{user.detail.name}"/>
+                                                 <p th:text="${patientDetailDTO.relativesInfos[0].name}"/>
+                                            </td>
+
+
+                                             <td th:if="${edit}">
+                                              <p th:text="#{user.detail.name}"/>
+                                              <input th:field="${patientDetailDTO.relativesInfos[0].name}"
+                                                    type="text" id="relativeName" name="relativeName"/>
+                                             </td>
+
+                                             <td th:if="${!edit}" >
+                                                    <p th:text="#{user.detail.phone}"/>
+                                                    <p th:text="${patientDetailDTO.relativesInfos[0].phone}"/>
+                                             </td>
+
+                                             <td th:if="${edit}">
+                                                 <p th:text="#{user.detail.phone}"/>
+                                                 <input th:field="*{relativesInfos[0].phone}"
+                                                        type="text" id="relativePhone" name="relativePhone"
+                                                        data-format="+38 (ddd) ddd-dddd" class="input-medium bfh-phone"/>
+
+                                                 <p class="error" th:if="${#fields.hasErrors('phone')}"
+                                                    th:errors="${patientDetailDTO.relativesInfos[0].phone}"></p>
+                                             </td>
+
+
+                                            <td th:if="${edit}">
+                                                <p th:text="#{user.detail.person}"/>
+                                                <input th:field="${patientDetailDTO.relativesInfos[0].relation}"
+                                                       type="text" id="relativeRelation" name="relativeRelation"/>
+                                            </td>
+
+                                            <td th:if="${!edit}">
+                                                <p th:text="#{user.detail.person}"/>
+                                                <p th:text="${patientDetailDTO.relativesInfos[0].relation}"/>
+                                            </td>
+                                                    </div>
+                                            </tr>
+
+                                            <tr>
+                                                <div th:if="${patientDetailDTO.relativesInfos.size()} > 1">
+                                                <input type="hidden" th:value="*{relativesInfos[1].id}"  th:field="*{relativesInfos[1].id}"/>
+
+                                                <td th:if="${!edit}">
+                                                       <p th:text="#{user.detail.name}"/>
+                                                       <p th:text="${patientDetailDTO.relativesInfos[1].name}"/>
+                                                </td>
+
+                                                <td th:if="${!edit}">
+                                                       <p th:text="#{user.detail.phone}"/>
+                                                       <p th:text="${patientDetailDTO.relativesInfos[1].phone}"/>
+                                                </td>
+
+                                                <td th:if="${!edit}">
+                                                     <p th:text="#{user.detail.person}"/>
+                                                     <p th:text="${patientDetailDTO.relativesInfos[1].relation}"/>
+                                                </td>
+
+                                                </div>
+
+
+                                                <td th:if="${edit}">
+                                                    <p th:text="#{user.detail.name}"/>
+                                                    <input th:field="${patientDetailDTO.relativesInfos[1].name}"
+                                                           type="text" id="relativeName" name="relativeName"/>
+                                                </td>
+
+
+                                                <td th:if="${edit}">
+                                                    <p th:text="#{user.detail.phone}"/>
+                                                    <input th:field="${patientDetailDTO.relativesInfos[1].phone}"
+                                                           type="text" id="relativePhone"
+                                                           name="relativePhone"
+                                                           data-format="+38 (ddd) ddd-dddd" class="input-medium bfh-phone"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('phone')}"
+                                                       th:errors="${patientDetailDTO.relativesInfos[1].phone}"></p>
+                                                </td>
+
+
+                                                <td th:if="${edit}">
+                                                    <p th:text="#{user.detail.person}"/>
+                                                    <input th:field="${patientDetailDTO.relativesInfos[1].relation}"
+                                                           type="text" id="relativeRelation" name="relativeRelation"/>
+                                                </td>
+
+                                                   </tr>
+
+                                            <tr>
+
+
+                                                <div th:if="${patientDetailDTO.relativesInfos.size()} > 2">
+                                                    <input type="hidden" th:value="*{relativesInfos[2].id}"  th:field="*{relativesInfos[2].id}"/>
+
+                                                <td th:if="${!edit}">
+                                                    <p th:text="#{user.detail.name}"/>
+                                                    <p th:text="${patientDetailDTO.relativesInfos[2].name}"/>
+                                                </td>
+
+                                                <td th:if="${!edit}">
+                                                    <p th:text="#{user.detail.phone}"/>
+                                                    <p th:text="${patientDetailDTO.relativesInfos[2].phone}"/>
+                                                </td>
+
+                                                <td th:if="${!edit}">
+                                                    <p th:text="#{user.detail.person}"/>
+                                                    <p th:text="${patientDetailDTO.relativesInfos[2].relation}"/>
+                                                </td>
+
+                                                </div>
+
+
+                                                <td th:if="${edit}">
+                                                    <p th:text="#{user.detail.name}"/>
+                                                    <input th:field="${patientDetailDTO.relativesInfos[2].name}"
+                                                           type="text" id="relativeName"
+                                                           name="relativeName"/>
+                                                </td>
+
+                                                <td th:if="${edit}">
+                                                    <p th:text="#{user.detail.phone}"/>
+                                                    <input th:field="${patientDetailDTO.relativesInfos[2].phone}"
+                                                           type="text" id="relativePhone"
+                                                           name="relativePhone"
+                                                           data-format="+38 (ddd) ddd-dddd" class="input-medium bfh-phone"/>
+
+                                                    <p class="error" th:if="${#fields.hasErrors('phone')}"
+                                                       th:errors="${patientDetailDTO.relativesInfos[2].phone}"></p>
+                                                </td>
+
+
+                                                <td th:if="${edit}">
+                                                    <p th:text="#{user.detail.person}"/>
+                                                    <input th:field="${patientDetailDTO.relativesInfos[2].relation}"
+                                                           type="text" id="relativeRelation" name="relativeRelation"/>
+                                                </td>
+
+                                            </tr>
+
+                                         </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                 </div>
+                                   <div class="panel-footer">
+
+                                <span th:if="${read==null}">
+                                    <a th:if="${!edit}" onclick="editPatientProfile()" data-original-title="Edit this user"
+                                        data-toggle="tooltip" type="button"
+                                        class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <a th:if="${edit}" onclick="submitPatientForm()" data-original-title="Submit changes"
+                                       data-toggle="tooltip" type="button" id="submitChanges"
+                                       class="btn btn-sm btn-info"><i class="glyphicon glyphicon-ok"></i></a>
+                                </span>
+
+                                </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+</body>
+
+</html>

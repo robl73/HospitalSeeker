@@ -12,7 +12,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
- * Created by Vladimir Paladiuk on 13.10.2016.
+ * Created by Vladimir on 13.10.2016.
  */
 @Entity
 @Table(name = "relativesInfo")
@@ -28,8 +28,7 @@ public class RelativesInfo {
     @Column(name="name")
     @Size(max = 50, message = "Not valid, not more 50 symbols")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Solomon")
-    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
-    private String name = "";
+     private String name = "";
 
     @Column(name="phone")
     @Pattern(regexp = "^\\+38 \\(\\d{3}\\) \\d{3}-\\d{4}", message = "Not valid. Ex: +38 (095) 435-7132")
@@ -39,8 +38,11 @@ public class RelativesInfo {
     @Column(name="relation")
     @Size(max = 50, message = "Not valid, not more 50 symbols")
     @Pattern(regexp = "^[A-Z][a-z]+$",message = "Not valid. Ex: Solomon")
-    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
     private String relation  = "";
+
+    @ManyToOne
+    @JoinColumn(name = "patientinfo_id")
+    PatientInfo patientInfo;
 
     public RelativesInfo() {
     }
@@ -75,5 +77,9 @@ public class RelativesInfo {
 
     public void setRelation(String relation) {
         this.relation = relation;
+    }
+
+   public void setPatientInfo(PatientInfo patientInfo) {
+        this.patientInfo = patientInfo;
     }
 }
