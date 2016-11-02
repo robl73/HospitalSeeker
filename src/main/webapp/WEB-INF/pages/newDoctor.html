@@ -7,14 +7,13 @@
     <meta charset="ISO-8859-1"/>
     <meta charset="UTF-8"/>
     <title>New Doctor</title>
-    <link rel="stylesheet" th:href="@{/css/datepicker.css}"/>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/doctor.css}"/>
     <script type="text/javascript" th:src="@{/js/bootstrap-formhelpers-phone.js}"></script>
-    <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.js}"></script>
     <script type="text/javascript" th:src="@{/js/uploader.js}"></script>
     <script type="text/javascript" th:src="@{/js/new.doctor.js}"></script>
     <script type="text/javascript" th:src="@{/js/ajax.departments.name.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.js}"></script>
 </head>
 <body>
 <section layout:fragment="content" class="dashboard center">
@@ -181,17 +180,20 @@
                                 </div>
                             </div>
 
+                            <div class="row" id="error"></div>
+
                             <div class="row">
                                 <div class="col-sm-3">
                                     <div class="text-div" th:text="#{manage.add.new.doctor.dateofbirth}"></div>
                                 </div>
                                 <div class='col-sm-3'>
-                                    <input style="margin-top: 8px;" type='text' class="form-control" id='birthDate'
+                                    <input style="margin-top: 7px;" type='text' class="form-control" id='birthDate'
                                            th:field="*{birthDate}" name="birthDate"/>
                                     <p class="error" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></p>
                                     <script type="text/javascript">
-                                        $(function () {
-                                            $('#birthDate').datepicker({format: 'yyyy-mm-dd'});
+                                        $(function() {
+                                            $('#birthDate').datepicker({format: 'yyyy-mm-dd',  todayHighlight: true,
+                                                autoclose: true});
                                         });
                                     </script>
                                 </div>
@@ -221,7 +223,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <a class="btn btn-lg btn-default btn-block"
-                                       id="cancel" th:text="#{manager.add.new.doctor.button.cancel}"></a>
+                                       id="cancel" th:text="#{manager.add.new.doctor.button.cancel}" th:href="@{/}"></a>
                                 </div>
                             </div>
                         </form>

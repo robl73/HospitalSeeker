@@ -10,9 +10,11 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import com.hospitalsearch.entity.*;
+import com.hospitalsearch.util.PrincipalConverter;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -196,10 +198,14 @@ public class HospitalController {
 		model.put("lid", id);
 		return "laboratory";
 	}
-	
-	@RequestMapping("/hospital/{hid}/laboratory/{lid}/test/{id}")
-	public String diagnosisPanelGet(Map<String, Object> model, @PathVariable Long hid, @PathVariable Long lid,
-			@PathVariable Long id, Locale locale) {
+
+	@RequestMapping(value = "/hospital/{hid}/laboratory/{lid}/test/{id}", method = RequestMethod.POST)
+	public String diagnosisPanelPost(ModelMap model, @ModelAttribute("testResult") TestResult testResult, @PathVariable Long hid, @PathVariable Long lid,
+									 @PathVariable Long id, Locale locale) {
+		String principal = PrincipalConverter.getPrincipal();
+		testResult.setTest(testService.getById(id));
+		testResult.setPatientCard(patientCardService.getByUser(userService.getById(userService.getByEmail(principal).getId())));
+		testResultService.save(testResult);
 		Test test = testService.getById(id);
 		String[]  schedule = test.getWorkSchedule().split("[,]");
 		model.put("schedule", schedule);
@@ -212,7 +218,28 @@ public class HospitalController {
 		model.put("diagnosisPanelLocalizations", "yes");
 		return "test";
 	}
-	
+
+	@RequestMapping("/hospital/{hid}/laboratory/{lid}/test/{id}")
+	public String diagnosisPanelGet(Map<String, Object> model, @PathVariable Long hid, @PathVariable Long lid,
+									@PathVariable Long id, Locale locale,
+									@RequestParam(value = "dateTest", defaultValue = "") String dateTest,
+									@RequestParam(value = "uid", defaultValue = "") Long uid) {
+		model.put("testResult", new TestResult());
+		Test test = testService.getById(id);
+		String[]  schedule = test.getWorkSchedule().split("[,]");
+		model.put("schedule", schedule);
+		model.put("test", test);
+		model.put("hospital", service.getById(hid));
+		model.put("laboratory", laboratoryService.getById(lid));
+		model.put("hid", hid);
+		model.put("lid", lid);
+		model.put("tid", id);
+		model.put("diagnosisPanelLocalizations", "yes");
+		return "test";
+	}
+
+
+
 	@RequestMapping("/hospital/{hid}/laboratory/{lid}/test/{tid}/date/{date}/patientCard/{pcid}")
 	public String diagnosisPanelGet(Map<String, Object> model, @PathVariable Long hid, @PathVariable Long lid,
 			@PathVariable Long tid, @PathVariable String date, @PathVariable Long pcid, Locale locale) {

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="layout">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <meta charset="UTF-8"/>
+    <title>Edit User</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/edit.doctor.css}"/>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+                    <form th:action="@{/manage/doctor/edit}" th:object="${newDoctorDto}" role="form"
+                          name="detailForm" id="detailForm" method="post">
+                        <h1 class="all text-center" th:text="#{manager.view.doctor.title}"></h1>
+
+                        <hr class="colorgraph"/>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+
+                                <div class="form-group">
+                                    <input type="text" name="firstName" id="firstName" class="form-control input-lg"
+                                           th:placeholder="#{manager.add.new.doctor.placeholder.firstname}" tabindex="1"
+                                           th:value="${newDoctorDto.firstName}" readonly="readonly"/>
+                                        <span th:if="${(newDoctorDto ne null) and (#fields.hasErrors('firstName'))}"
+                                              th:errors="*{firstName}" class="has-error text-danger" id="errorFirstName"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" name="lastName" id="lastName" class="form-control input-lg"
+                                           th:placeholder="#{manager.add.new.doctor.placeholder.lastname}" tabindex="1"
+                                           th:value="${newDoctorDto.lastName}" readonly="readonly"/>
+                                    <span th:if="${(newDoctorDto ne null) and (#fields.hasErrors('lastName'))}"
+                                          th:errors="*{lastName}" class="has-error text-danger" id="errorLastName"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="email" id="email" class="form-control input-lg"
+                                           th:placeholder="#{manager.add.new.doctor.placeholder.email}" tabindex="1"
+                                           th:value="${newDoctorDto.email}" readonly="readonly"/>
+                                    <span th:if="${(newDoctorDto ne null) and (#fields.hasErrors('email'))}"
+                                          th:errors="*{email}" class="has-error text-danger" id="errorEmail"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div align="center">
+                                    <figure th:class="${edit}?' snip1494 img-thumbnail img-responsive img-block'">
+                                        <img th:if="${newDoctorDto.imagePath!=''}" alt="User Pic"
+                                             style="height: 260px; padding-bottom: 4px;" id="image-uploaded"
+                                             th:src="${newDoctorDto.imagePath==null}?@{/images/avatar/ava.png}:@{|/images/avatar/${newDoctorDto.imagePath}|}"
+                                             class="img-responsive img-block"/>
+                                        <img th:if="${newDoctorDto.imagePath==''}" alt="User Pic"
+                                             style="height: 260px; padding-bottom: 4px;" id="image-uploaded"
+                                             th:src="@{/images/avatar/ava.png}"
+                                             class="img-responsive img-block"/>
+                                        <figcaption th:if="${edit}">
+                                            <div><i class="glyphicon glyphicon-circle-arrow-down"></i></div>
+                                        </figcaption>
+                                        <a th:onclick="${edit}?'javascript:$(\'#file\').click();'"></a>
+                                    </figure>
+                                    <input type="file" id="file" style="display: none;"
+                                           th:onchange="'javascript:upload(\'avatar\');'"/>
+                                    <input
+                                            type="hidden" th:field="*{imagePath}" class="form-control"
+                                            id="imagePath"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="text-div" th:text="#{manage.add.new.doctor.specialization}"></div>
+                                <div class="text-div" th:text="#{manage.add.new.doctor.category}"></div>
+                            </div>
+                            <div class="col-sm-8">
+
+                                <select id="specialization" class="form-control" style="margin-top: 10px; margin-bottom: 10px;"
+                                        th:field="${newDoctorDto.specialization}" th:value="${newDoctorDto.specialization}"
+                                        th:selected="${newDoctorDto.specialization}">
+                                    <option th:each="spec :${T(com.hospitalsearch.util.Specialization).values()}"
+                                            th:value="${spec}"
+                                            th:text="#{${spec}}">
+                                    </option>
+                                </select>
+
+                                <select id="category" class="form-control" style="margin-top: 10px; margin-bottom: 10px;"
+                                        th:field="${newDoctorDto.category}"
+                                        th:value="${newDoctorDto.category}"
+                                        th:selected="${newDoctorDto.category}">
+                                    <option th:each="category :${T(com.hospitalsearch.util.Category).values()}"
+                                            th:value="${category}"
+                                            th:text="#{${category}}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="text" name="education" id="education" class="form-control input-lg"
+                                           th:placeholder="#{manager.add.new.doctor.placeholder.education}" tabindex="1"
+                                           th:value="${newDoctorDto.education}" readonly="readonly"/>
+
+                                        <span th:if="${(newDoctorDto ne null) and (#fields.hasErrors('education'))}"
+                                              th:errors="*{education}" class="has-error text-danger" id="errorEducation"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" name="address" id="address" class="form-control input-lg"
+                                           th:placeholder="#{manager.add.new.doctor.placeholder.address}" tabindex="1"
+                                           th:value="${newDoctorDto.address}" readonly="readonly"/>
+
+                                         <span th:if="${(newDoctorDto ne null) and (#fields.hasErrors('address'))}"
+                                               th:errors="*{address}" class="has-error text-danger" id="errorAddress"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="text-div" th:text="#{manage.add.new.doctor.gender}"></div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="radio" style="margin-top: 9px;">
+                                    <label>
+                                        <input style="font-size: 18px; margin-top: 10px;" type="radio" name="gender"  th:checked="checked" th:field="${newDoctorDto.gender}" th:value="${T(com.hospitalsearch.util.Gender).MALE}" th:text="#{manage.add.new.doctor.male}" readonly="readonly"/>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="radio">
+                                    <label>
+                                        <input style="font-size: 18px; margin-top: 10px;" type="radio" name="gender"  th:field="${newDoctorDto.gender}" th:value="${T(com.hospitalsearch.util.Gender).FEMALE}" th:text="#{manage.add.new.doctor.female}" readonly="readonly"/>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" id="error"></div>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="text-div" th:text="#{manage.add.new.doctor.dateofbirth}"></div>
+                            </div>
+                            <div class='col-sm-3'>
+                                <input style="margin-top: 7px;" type='text' class="form-control" id='birthDate'
+                                       th:field="*{birthDate}" name="birthDate" th:value="${newDoctorDto.birthDate}" readonly="readonly"/>
+                                <p class="error" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></p>
+                                <script type="text/javascript">
+                                    $(function() {
+                                        $('#birthDate').datepicker({format: 'yyyy-mm-dd',  todayHighlight: true,
+                                            autoclose: true});
+                                    });
+                                </script>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="text-div" th:text="#{manage.add.new.doctor.phone}"></div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <input type="text" id="phone" class="input-medium bfh-phone form-control"
+                                           th:field="*{phone}" name="phone" th:value="${newDoctorDto.phone}" data-format="+dd (ddd) ddd-dddd" readonly="readonly"/>
+                                    <p class="error" th:if="${#fields.hasErrors('phone')}"
+                                       th:errors="*{phone}"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="colorgraph"/>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-lg btn-info btn-block"
+                                   id="cancel" th:text="#{manager.edit.doctor.button.cancel}" onclick="location.reload();"></a>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

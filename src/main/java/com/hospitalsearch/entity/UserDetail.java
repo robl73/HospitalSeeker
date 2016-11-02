@@ -77,6 +77,8 @@ public class UserDetail{
 
     private String address;
 
+    private String education;
+
     @OneToOne
     @Fetch(FetchMode.SELECT)
     @JoinColumn(name = "user_id")
@@ -155,6 +157,14 @@ public class UserDetail{
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
     }
 
     @Override

@@ -57,9 +57,9 @@
 
                         <!--Delete option 123-->
 
-<!--                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>-->
+                        <!--                        <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>-->
                         <option th:each="number:${#numbers.sequence(10,50,10)}"
                                 th:text="${number}"
                                 th:value="${number}"
@@ -150,19 +150,21 @@
                     <td class="center">
 
                         <span data-placement="top" data-toggle="tooltip"
-                              th:title="#{admin.dashboard.users.show.title.tooltip.view}">
-                            <a class="btn button_user" href="#" th:attr="data-id=${doctorSearchDTO.doctorId}" type="submit"
-                               data-toggle="modal" data-target="#viewModal" id="viewUser" style="padding: 4px 9px;">
+                              th:title="#{admin.dashboard.users.show.title.tooltip.edit}">
+
+                            <a class="btn button_user" href="#"
+                               th:attr="data-id='manage/doctor/view?id='+${doctorSearchDTO.doctorId}"
+                               type="submit" data-toggle="modal"  data-target="#editUserModal" id="viewUser">
                                 <i class="glyphicon glyphicon-zoom-in icon-white"></i>
                             </a>
                         </span>
 
-                        <span data-placement="top" data-toggle="tooltip"
-                              th:title="#{admin.dashboard.users.show.title.tooltip.edit}">
-                            <a class="btn button_user" href="#"
-                               type="submit" data-toggle="modal" data-target="#editUserModal" id="ediUser" style="padding: 4px 9px;">
-                               <!--th:attr="data-id='admin/users/edit?id='+${doctorSearchDTO.doctorId}"-->
+                         <span data-placement="top" data-toggle="tooltip"
+                               th:title="#{admin.dashboard.users.show.title.tooltip.edit}">
 
+                            <a class="btn button_user" href="#"
+                               th:attr="data-id='manage/doctor/edit?id='+${doctorSearchDTO.doctorId} +',hospitalId='+${hospitalId}"
+                               type="submit" data-toggle="modal" data-target="#editUserModal" id="ediUser">
                                 <i class="glyphicon glyphicon-edit icon-white"></i>
                             </a>
                         </span>
@@ -216,7 +218,7 @@
                         </button>
                     </li>
 
-                        <li th:if="${ ((viewForManagerDTO.getCurrentPage() - 1) &gt;= 1) and (viewForManagerDTO.getCurrentPage()-1 &lt;= viewForManagerDTO.getTotalPage())}" th:class="page-item">
+                    <li th:if="${ ((viewForManagerDTO.getCurrentPage() - 1) &gt;= 1) and (viewForManagerDTO.getCurrentPage()-1 &lt;= viewForManagerDTO.getTotalPage())}" th:class="page-item">
 
                         <a th:class="page-link" th:if="${search==null}"
                            th:href="@{/manage/hospitals/{id}/manageDoctors(hospitalId=${hospitalId},page=${viewForManagerDTO.getCurrentPage()-1},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"
@@ -227,27 +229,27 @@
                                 th:form="searchForm" th:text="${viewForManagerDTO.getCurrentPage()-1}" th:id="${viewForManagerDTO.getCurrentPage()-1}" onclick="getPage(this.id)"/>
                     </li>
 
-                        <li th:if="${ ((viewForManagerDTO.getCurrentPage() - 1) &gt;= 0) and (viewForManagerDTO.getCurrentPage() &lt;= viewForManagerDTO.getTotalPage())}" th:class="page-item"
-                            th:classappend="active" >
-                            <a th:class="page-link" th:if="${search==null}"
-                               th:classappend="active"
-                               th:href="@{/manage/hospitals/{id}/manageDoctors(hospitalId=${hospitalId},page=${(viewForManagerDTO.getCurrentPage()},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"
-                               th:text="${viewForManagerDTO.getCurrentPage()}"/>
+                    <li th:if="${ ((viewForManagerDTO.getCurrentPage() - 1) &gt;= 0) and (viewForManagerDTO.getCurrentPage() &lt;= viewForManagerDTO.getTotalPage())}" th:class="page-item"
+                        th:classappend="active" >
+                        <a th:class="page-link" th:if="${search==null}"
+                           th:classappend="active"
+                           th:href="@{/manage/hospitals/{id}/manageDoctors(hospitalId=${hospitalId},page=${(viewForManagerDTO.getCurrentPage()},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"
+                           th:text="${viewForManagerDTO.getCurrentPage()}"/>
 
-                            <button th:class="page-link" th:if="${search!=null}"
-                                    th:classappend="active"
-                                    th:form="searchForm" th:text="${viewForManagerDTO.getCurrentPage()}" th:id="${viewForManagerDTO.getCurrentPage()}" onclick="getPage(this.id)"/>
-                        </li>
+                        <button th:class="page-link" th:if="${search!=null}"
+                                th:classappend="active"
+                                th:form="searchForm" th:text="${viewForManagerDTO.getCurrentPage()}" th:id="${viewForManagerDTO.getCurrentPage()}" onclick="getPage(this.id)"/>
+                    </li>
 
-                        <li th:if="${ ((viewForManagerDTO.getCurrentPage() - 1) &gt;= 0) and (viewForManagerDTO.getCurrentPage()+1 &lt;= viewForManagerDTO.getTotalPage())}" th:class="page-item">
+                    <li th:if="${ ((viewForManagerDTO.getCurrentPage() - 1) &gt;= 0) and (viewForManagerDTO.getCurrentPage()+1 &lt;= viewForManagerDTO.getTotalPage())}" th:class="page-item">
 
-                            <a th:class="page-link" th:if="${search==null}"
-                               th:href="@{/manage/hospitals/{id}/manageDoctors(hospitalId=${hospitalId},page=${viewForManagerDTO.getCurrentPage()+1},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"
-                               th:text="${viewForManagerDTO.getCurrentPage()+1}"/>
+                        <a th:class="page-link" th:if="${search==null}"
+                           th:href="@{/manage/hospitals/{id}/manageDoctors(hospitalId=${hospitalId},page=${viewForManagerDTO.getCurrentPage()+1},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"
+                           th:text="${viewForManagerDTO.getCurrentPage()+1}"/>
 
-                            <button th:class="page-link" th:if="${search!=null}"
-                                    th:form="searchForm" th:text="${viewForManagerDTO.getCurrentPage()+1}" th:id="${viewForManagerDTO.getCurrentPage()+1}" onclick="getPage(this.id)"/>
-                        </li>
+                        <button th:class="page-link" th:if="${search!=null}"
+                                th:form="searchForm" th:text="${viewForManagerDTO.getCurrentPage()+1}" th:id="${viewForManagerDTO.getCurrentPage()+1}" onclick="getPage(this.id)"/>
+                    </li>
 
                     <li class="page-item"
                         th:if="${(viewForManagerDTO.getCurrentPage()+1) &lt;= viewForManagerDTO.getTotalPage()}">

@@ -1,6 +1,8 @@
 package com.hospitalsearch.dto;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hospitalsearch.service.annotation.Date;
 import com.hospitalsearch.service.annotation.UniqueEmail;
 import com.hospitalsearch.util.Category;
@@ -48,7 +50,6 @@ public class NewDoctorRegistrationDTO {
     @Date(message = "Not valid format")
     private LocalDate birthDate;
 
-    @Pattern(regexp = "^\\+38 \\(\\d{3}\\) \\d{3}-\\d{4}", message = "Not valid. Ex: +38 (095) 435-7132")
     private String phone;
 
     private Boolean enabled = false;
@@ -65,9 +66,9 @@ public class NewDoctorRegistrationDTO {
 
     private Specialization specialization;
 
-    @Enumerated(EnumType.STRING)
-    @com.hospitalsearch.service.annotation.Gender(message = "Not valid format")
     private Gender gender;
+
+    private Long userId;
 
     public String getEmail() {
         return email;
@@ -197,6 +198,13 @@ public class NewDoctorRegistrationDTO {
         this.gender = gender;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     @Override
     public String toString() {
@@ -207,8 +215,11 @@ public class NewDoctorRegistrationDTO {
                 ", imagePath='" + imagePath + '\'' +
                 ", Education='" + Education + '\'' +
                 ", Address='" + Address + '\'' +
+                ", birthDate=" + birthDate +
                 ", phone='" + phone + '\'' +
+                ", enabled=" + enabled +
                 ", nameHospitals=" + nameHospitals +
+                ", nameDepartment=" + nameDepartment +
                 ", nameHospitalId=" + nameHospitalId +
                 ", nameDepartmentsId=" + nameDepartmentsId +
                 ", category=" + category +

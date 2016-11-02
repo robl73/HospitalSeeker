@@ -49,7 +49,7 @@ public class FeedbackDAOImpl extends GenericDAOImpl<Feedback, Long> implements F
 
 	@Override
 	public long countOfFeedbacksByConsumer(Long doctorId) {
-		Query query = getSessionFactory().getCurrentSession().createQuery("select count(*) from Feedback f where f.consumer.id = :doctorId");
+		Query query = getSessionFactory().getCurrentSession().createQuery("select count(*) from Feedback f where f.status = 'OK' and f.consumer.id = :doctorId");
 		query.setParameter("doctorId", doctorId);
 		return (long) query.uniqueResult();
 	}

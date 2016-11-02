@@ -39,13 +39,15 @@ public class AppointmentController {
     @ResponseBody
     @RequestMapping(value = "/**/getAppointments", method = RequestMethod.GET)
     public List<Appointment> listAllAppointments(@RequestParam("id") Long id) {
-        String principal = PrincipalConverter.getPrincipal();
-        List<Appointment> appointments = appointmentService.getAllbyDoctorId(id);
-        if (principal != "anonymousUser") {
-            User user = userService.getByEmail(principal);
-            appointments.addAll(appointmentService.getByProducer(user.getUserDetails().getId()));
-        }
-        return appointments;
+        return appointmentService.getAllbyDoctorId(id);
+//        String principal = PrincipalConverter.getPrincipal();
+//        String principal = PrincipalConverter.getPrincipal();
+//        List<Appointment> appointments = appointmentService.getAllbyDoctorId(id);
+//        if (principal != "anonymousUser") {
+//            User user = userService.getByEmail(principal);
+//            appointments.addAll(appointmentService.getByProducer(user.getUserDetails().getId()));
+//        }
+//        return appointments;
     }
 
     @RequestMapping(value = "/doctor/{d_id}/scheduler", method = RequestMethod.GET)
