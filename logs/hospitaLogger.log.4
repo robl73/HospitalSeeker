@@ -1,44 +1,80 @@
-2016-09-19 11:56:11 INFO  ContextLoader:305 - Root WebApplicationContext: initialization started
-2016-09-19 11:56:11 INFO  AnnotationConfigWebApplicationContext:578 - Refreshing Root WebApplicationContext: startup date [Mon Sep 19 11:56:11 EEST 2016]; root of context hierarchy
-2016-09-19 11:56:12 INFO  AnnotationConfigWebApplicationContext:207 - Registering annotated classes: [class com.hospitalsearch.config.SpringRootConfig]
-2016-09-19 11:56:22 INFO  DriverManagerDataSource:133 - Loaded JDBC driver: org.postgresql.Driver
-2016-09-19 11:56:23 INFO  Version:54 - HHH000412: Hibernate Core {4.3.10.Final}
-2016-09-19 11:56:23 INFO  Environment:239 - HHH000206: hibernate.properties not found
-2016-09-19 11:56:23 INFO  Environment:346 - HHH000021: Bytecode provider name : javassist
-2016-09-19 11:56:25 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2016-09-19 11:56:26 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
-2016-09-19 11:56:26 INFO  TransactionFactoryInitiator:62 - HHH000399: Using default transaction strategy (direct JDBC transactions)
-2016-09-19 11:56:26 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
-2016-09-19 11:56:28 INFO  UpdateTimestampsCache:72 - HHH000250: Starting update timestamps cache at region: org.hibernate.cache.spi.UpdateTimestampsCache
-2016-09-19 11:56:28 WARN  AbstractEhcacheRegionFactory:178 - HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.spi.UpdateTimestampsCache]; using defaults.
-2016-09-19 11:56:28 INFO  StandardQueryCache:90 - HHH000248: Starting query cache at region: org.hibernate.cache.internal.StandardQueryCache
-2016-09-19 11:56:28 INFO  Version:27 - HV000001: Hibernate Validator 4.3.2.Final
-2016-09-19 11:56:29 INFO  Version:26 - HSEARCH000034: Hibernate Search 5.3.0.Final
-2016-09-19 11:56:29 WARN  ConfigContext:346 - HSEARCH000075: Configuration setting hibernate.search.lucene_version was not specified: using LUCENE_CURRENT.
-2016-09-19 11:56:33 INFO  VelocityConfigurer:140 - ClasspathResourceLoader with name 'springMacro' added to configured VelocityEngine
-2016-09-19 11:56:38 INFO  DefaultSecurityFilterChain:28 - Creating filter chain: Ant [pattern='/hospitals/config'], []
-2016-09-19 11:56:40 INFO  ChannelProcessingFilter:123 - Validated configuration attributes
-2016-09-19 11:56:40 INFO  DefaultSecurityFilterChain:28 - Creating filter chain: org.springframework.security.web.util.matcher.AnyRequestMatcher@1, [org.springframework.security.web.access.channel.ChannelProcessingFilter@46a7907e, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@51f184e6, org.springframework.security.web.context.SecurityContextPersistenceFilter@78426c7d, org.springframework.security.web.header.HeaderWriterFilter@7b6a5583, org.springframework.web.filter.CharacterEncodingFilter@5e3bdf8, org.springframework.security.web.csrf.CsrfFilter@4f64df3f, org.springframework.security.web.authentication.logout.LogoutFilter@13c18a67, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6916898f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@77db3a76, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3761e255, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@1e3da0d7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7fbde95a, org.springframework.security.web.session.SessionManagementFilter@57d821d2, org.springframework.security.web.access.ExceptionTranslationFilter@6a64eacd, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4b5d420f]
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/admin/users/setItemsPerPage/{value}],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.AdminController.setItemsPerPage(int)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/**/changeStatus/{userId}],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.AdminController.changeUserStatus(long) throws java.net.ConnectException
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/admin/newUser],methods=[POST]}" onto public java.lang.String com.hospitalsearch.controller.AdminController.saveUser(com.hospitalsearch.dto.UserRegisterDTO,org.springframework.validation.BindingResult,org.springframework.ui.ModelMap,org.springframework.web.servlet.mvc.support.RedirectAttributes,java.util.Locale)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/**/admin/users/edit],methods=[POST]}" onto public java.lang.String com.hospitalsearch.controller.AdminController.editUser(com.hospitalsearch.entity.User,org.springframework.validation.BindingResult,org.springframework.ui.ModelMap,java.lang.String,java.util.Locale,org.springframework.web.servlet.mvc.support.RedirectAttributes)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/**/admin/users/edit],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView com.hospitalsearch.controller.AdminController.editUser(java.lang.Long,java.lang.String)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/admin/users/search],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.AdminController.searchUser(java.lang.String,java.lang.Integer,com.hospitalsearch.dto.UserFilterDTO,org.springframework.ui.ModelMap) throws java.lang.Exception
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/admin/configureToken],methods=[POST]}" onto public java.lang.String com.hospitalsearch.controller.AdminController.configureTokens(org.springframework.ui.ModelMap,com.hospitalsearch.dto.AdminTokenConfigDTO,org.springframework.validation.BindingResult) throws java.lang.Exception
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/admin/newUser],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.AdminController.newRegistration(com.hospitalsearch.dto.UserRegisterDTO,org.springframework.ui.ModelMap)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/admin/users/delete/{userId}],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.AdminController.deleteUser(long,java.util.Locale,java.lang.String) throws java.net.ConnectException
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/admin/configureToken],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.AdminController.configureToken(org.springframework.ui.ModelMap) throws java.lang.Exception
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/**/viewUser/{id}],methods=[POST]}" onto public com.hospitalsearch.entity.User com.hospitalsearch.controller.AdminController.viewUser(java.lang.String)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/admin/users],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.AdminController.allUsers(org.springframework.ui.ModelMap,java.lang.String,com.hospitalsearch.dto.UserFilterDTO,java.lang.Integer,java.lang.String,java.lang.Boolean)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/**/sendMassage],methods=[POST]}" onto public java.lang.String com.hospitalsearch.controller.AppointmentController.sendMassageToEmail(java.util.Map<java.lang.String, java.lang.String>,java.util.Locale) throws java.net.ConnectException
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/**/getAppointmentsByPatient],methods=[GET]}" onto public java.util.List<com.hospitalsearch.entity.Appointment> com.hospitalsearch.controller.AppointmentController.patientsAppointments(java.lang.String)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/getAppointmentsByDoctor],methods=[GET]}" onto public java.util.List<com.hospitalsearch.entity.Appointment> com.hospitalsearch.controller.AppointmentController.doctorsAppointments(java.lang.String)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/**/getAppointments],methods=[GET]}" onto public java.util.List<com.hospitalsearch.entity.Appointment> com.hospitalsearch.controller.AppointmentController.listAllAppointments(java.lang.String)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/appointmentId],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.AppointmentController.getCardByapointmentId(java.lang.Long)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/appointments],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.AppointmentController.getAppointments()
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/hospital/{*}/department/{dep_id}/doctor/{d_id}/dashboard],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.AppointmentController.getDashboard(java.lang.Long,java.lang.Long,org.springframework.ui.ModelMap)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/**/supplyAppointment],methods=[POST]}" onto public java.lang.String com.hospitalsearch.controller.AppointmentController.eventProcessor(javax.servlet.http.HttpServletRequest,java.lang.Long,java.lang.String)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/search/user],methods=[POST || GET]}" onto public java.lang.String com.hospitalsearch.controller.CardController.searchUser(java.lang.String,java.lang.Integer,java.lang.String,java.lang.Boolean,org.springframework.ui.ModelMap)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/persist],methods=[POST]}" onto public java.lang.String com.hospitalsearch.controller.CardController.addCardItem(java.lang.Long,com.hospitalsearch.entity.CardItem,org.springframework.validation.BindingResult,org.springframework.ui.ModelMap)
-2016-09-19 11:56:42 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/new/record],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.CardController.newCardItem(java.lang.Long,org.springframework.ui.ModelMap)
+2016-11-02 12:06:00 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/registration],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.UserController.getRegistration(com.hospitalsearch.dto.UserRegisterDTO,org.springframework.ui.ModelMap)
+2016-11-02 12:06:00 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/registration],methods=[POST]}" onto public java.lang.String com.hospitalsearch.controller.UserController.registerUser(com.hospitalsearch.dto.UserRegisterDTO,org.springframework.validation.BindingResult,org.springframework.ui.ModelMap,java.util.Locale)
+2016-11-02 12:06:00 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/confirmResetPassword],methods=[POST]}" onto public java.lang.String com.hospitalsearch.controller.UserController.confirmResetPass(com.hospitalsearch.dto.UserRegisterDTO,org.springframework.validation.BindingResult,org.springframework.ui.ModelMap)
+2016-11-02 12:06:00 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/resetPassword],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.UserController.resetPassword(java.lang.String) throws java.net.ConnectException
+2016-11-02 12:06:00 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/logout],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.UserController.logoutPage(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2016-11-02 12:06:00 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/user/detail],methods=[GET],consumes=[application/json]}" onto public java.lang.String com.hospitalsearch.controller.UserDetailController.userDetail(java.lang.Boolean,org.springframework.ui.ModelMap)
+2016-11-02 12:06:00 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/save/detail],methods=[POST]}" onto public java.lang.String com.hospitalsearch.controller.UserDetailController.saveUserDetail(com.hospitalsearch.entity.UserDetail,org.springframework.validation.BindingResult,org.springframework.ui.ModelMap)
+2016-11-02 12:06:00 INFO  RequestMappingHandlerMapping:534 - Mapped "{[/user/profile],methods=[GET]}" onto public java.lang.String com.hospitalsearch.controller.UserDetailController.userProfile(java.lang.Long,org.springframework.ui.ModelMap)
+2016-11-02 12:06:00 INFO  SimpleUrlHandlerMapping:341 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-11-02 12:06:00 INFO  SimpleUrlHandlerMapping:341 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-11-02 12:06:00 INFO  SimpleUrlHandlerMapping:341 - Mapped URL path [/images/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-11-02 12:06:00 INFO  RequestMappingHandlerAdapter:532 - Looking for @ControllerAdvice: Root WebApplicationContext: startup date [Wed Nov 02 12:05:28 EET 2016]; root of context hierarchy
+2016-11-02 12:06:00 INFO  RequestMappingHandlerAdapter:545 - Detected @ModelAttribute methods in hospitalControllerAdvice
+2016-11-02 12:06:00 INFO  RequestMappingHandlerAdapter:545 - Detected @ModelAttribute methods in userControllerAdvice
+2016-11-02 12:06:01 INFO  ExceptionHandlerExceptionResolver:267 - Detected @ExceptionHandler methods in hospitalControllerAdvice
+2016-11-02 12:06:01 INFO  ExceptionHandlerExceptionResolver:267 - Detected @ExceptionHandler methods in globalExceptionHandler
+2016-11-02 12:06:03 INFO  ContextLoader:345 - Root WebApplicationContext: initialization completed in 35440 ms
+2016-11-02 12:06:03 INFO  DispatcherServlet:488 - FrameworkServlet 'dispatcher': initialization started
+2016-11-02 12:06:03 INFO  AnnotationConfigWebApplicationContext:578 - Refreshing WebApplicationContext for namespace 'dispatcher-servlet': startup date [Wed Nov 02 12:06:03 EET 2016]; parent: Root WebApplicationContext
+2016-11-02 12:06:03 INFO  AnnotationConfigWebApplicationContext:207 - Registering annotated classes: [class com.hospitalsearch.config.web.WebConfig]
+2016-11-02 12:06:06 INFO  AutowiredAnnotationBeanPostProcessor:153 - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2016-11-02 12:06:06 INFO  DriverManagerDataSource:133 - Loaded JDBC driver: org.postgresql.Driver
+2016-11-02 12:06:07 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2016-11-02 12:06:07 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2016-11-02 12:06:08 INFO  TransactionFactoryInitiator:62 - HHH000399: Using default transaction strategy (direct JDBC transactions)
+2016-11-02 12:06:08 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2016-11-02 12:06:08 INFO  UpdateTimestampsCache:72 - HHH000250: Starting update timestamps cache at region: org.hibernate.cache.spi.UpdateTimestampsCache
+2016-11-02 12:06:08 INFO  StandardQueryCache:90 - HHH000248: Starting query cache at region: org.hibernate.cache.internal.StandardQueryCache
+2016-11-02 12:06:08 WARN  EhcacheAccessStrategyFactoryImpl:89 - HHH020007: read-only cache configured for mutable entity [entityCache]
+2016-11-02 12:06:08 INFO  SchemaUpdate:207 - HHH000228: Running hbm2ddl schema update
+2016-11-02 12:06:08 INFO  SchemaUpdate:218 - HHH000102: Fetching database metadata
+2016-11-02 12:06:09 INFO  SchemaUpdate:230 - HHH000396: Updating schema
+2016-11-02 12:06:09 INFO  TableMetadata:65 - HHH000261: Table found: public.role_users
+2016-11-02 12:06:09 INFO  TableMetadata:66 - HHH000037: Columns: [role_id, users_id]
+2016-11-02 12:06:09 INFO  TableMetadata:68 - HHH000108: Foreign keys: [fk_cunrd1kjdr3pwcekkhw8r5k2l, fk_67w5hj99v5nvjexfv0cf1mxus]
+2016-11-02 12:06:09 INFO  TableMetadata:69 - HHH000126: Indexes: [role_users_pkey]
+2016-11-02 12:06:09 INFO  TableMetadata:65 - HHH000261: Table found: public.admintokenconfig
+2016-11-02 12:06:09 INFO  TableMetadata:66 - HHH000037: Columns: [id, value, token]
+2016-11-02 12:06:09 INFO  TableMetadata:68 - HHH000108: Foreign keys: []
+2016-11-02 12:06:09 INFO  TableMetadata:69 - HHH000126: Indexes: [admintokenconfig_pkey]
+2016-11-02 12:06:09 INFO  TableMetadata:65 - HHH000261: Table found: public.appointment
+2016-11-02 12:06:09 INFO  TableMetadata:66 - HHH000037: Columns: [end_date, doctorinfo_id, id, text, userdetail_id, start_date]
+2016-11-02 12:06:09 INFO  TableMetadata:68 - HHH000108: Foreign keys: [fk_hx479pw4gje0ktsjfwvl9pwn8, fk_b51bk1hxlblc0fq7l65dkcnc5]
+2016-11-02 12:06:09 INFO  TableMetadata:69 - HHH000126: Indexes: [appointment_pkey]
+2016-11-02 12:06:09 INFO  TableMetadata:65 - HHH000261: Table found: public.carditem
+2016-11-02 12:06:09 INFO  TableMetadata:66 - HHH000037: Columns: [date, result, patientcard_id, complaint, prescription, doctorinfo_id, id]
+2016-11-02 12:06:09 INFO  TableMetadata:68 - HHH000108: Foreign keys: [fk_23f7e1f3aoynlynkmrk6elwaq, fk_32y3umi6mfuwbxmi9ub93ju9w]
+2016-11-02 12:06:09 INFO  TableMetadata:69 - HHH000126: Indexes: [carditem_pkey]
+2016-11-02 12:06:09 INFO  TableMetadata:65 - HHH000261: Table found: public.department
+2016-11-02 12:06:09 INFO  TableMetadata:66 - HHH000037: Columns: [imagepath, name, id, hospital_id]
+2016-11-02 12:06:09 INFO  TableMetadata:68 - HHH000108: Foreign keys: [fk_spotjwwrelb9dhulkiivbl62b]
+2016-11-02 12:06:09 INFO  TableMetadata:69 - HHH000126: Indexes: [department_pkey]
+2016-11-02 12:06:09 INFO  TableMetadata:65 - HHH000261: Table found: public.department_doctorinfo
+2016-11-02 12:06:09 INFO  TableMetadata:66 - HHH000037: Columns: [departments_id, doctors_id]
+2016-11-02 12:06:09 INFO  TableMetadata:68 - HHH000108: Foreign keys: [fk_ibochgjqx1dyr7ysbeg0royt9, fk_ej88rho1obqsgettqaymg2ax8]
+2016-11-02 12:06:09 INFO  TableMetadata:69 - HHH000126: Indexes: []
+2016-11-02 12:06:09 INFO  TableMetadata:65 - HHH000261: Table found: public.departmentname
+2016-11-02 12:06:09 INFO  TableMetadata:66 - HHH000037: Columns: [number, name, specialization, id]
+2016-11-02 12:06:09 INFO  TableMetadata:68 - HHH000108: Foreign keys: []
+2016-11-02 12:06:09 INFO  TableMetadata:69 - HHH000126: Indexes: [departmentname_pkey]
+2016-11-02 12:06:10 INFO  TableMetadata:65 - HHH000261: Table found: public.diagnosispanel
+2016-11-02 12:06:10 INFO  TableMetadata:66 - HHH000037: Columns: [laboratory_id, id]
+2016-11-02 12:06:10 INFO  TableMetadata:68 - HHH000108: Foreign keys: [fk_so96n0h0lp4sifueg3g9clwmj]
+2016-11-02 12:06:10 INFO  TableMetadata:69 - HHH000126: Indexes: [diagnosispanel_pkey]
+2016-11-02 12:06:10 INFO  TableMetadata:65 - HHH000261: Table found: public.diagnosispanellocalization
+2016-11-02 12:06:10 INFO  TableMetadata:66 - HHH000037: Columns: [diagnosispanel_id, name, id, language_id]
+2016-11-02 12:06:10 INFO  TableMetadata:68 - HHH000108: Foreign keys: [fk_keqodsg1j9d80f5t3ygphg92g, fk_fxrd8a5g5ep9jq006cjajdb91]
+2016-11-02 12:06:10 INFO  TableMetadata:69 - HHH000126: Indexes: [diagnosispanellocalization_pkey]
+2016-11-02 12:06:10 INFO  TableMetadata:65 - HHH000261: Table found: public.doctorinfo
+2016-11-02 12:06:10 INFO  TableMetadata:66 - HHH000037: Columns: [userdetails_id, specialization, id, category]
+2016-11-02 12:06:10 INFO  TableMetadata:68 - HHH000108: Foreign keys: [fk_1r6dadb3ajbaxwkpdx1v4u9n9]
+2016-11-02 12:06:10 INFO  TableMetadata:69 - HHH000126: Indexes: [doctorinfo_pkey]
+2016-11-02 12:06:10 INFO  TableMetadata:65 - HHH000261: Table found: public.events
+2016-11-02 12:06:10 INFO  TableMetadata:66 - HHH000037: Columns: [end_date, id_dhtmlx, length, pattern, pid, id, text, type, scheduler_id, start_date]
+2016-11-02 12:06:10 INFO  TableMetadata:68 - HHH000108: Foreign keys: [fk_h25bu5arkbwfh9fwpabk0x9e2]
+2016-11-02 12:06:10 INFO  TableMetadata:69 - HHH000126: Indexes: [events_pkey]
+2016-11-02 12:06:10 INFO  TableMetadata:65 - HHH000261: Table found: public.feedbacks
+2016-11-02 12:06:10 INFO  TableMetadata:66 - HHH000037: Columns: [date, consumer_id, producer_id, id, message, status]
+2016-11-02 12:06:10 INFO  TableMetadata:68 - HHH000108: Foreign keys: [fk_ml4ufepd4ltow2ka3qxo8x3bt, fk_82tx01awl7wr1qr0x64fbqa8s]
+2016-11-02 12:06:10 INFO  TableMetadata:69 - HHH000126: Indexes: [feedbacks_pkey]

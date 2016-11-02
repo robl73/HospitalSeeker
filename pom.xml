@@ -9,7 +9,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <keystoreFile>/home/george/.keystore</keystoreFile>
+        <keystoreFile>C:\Users\8\.keystore</keystoreFile>
         <keystorePass>password</keystorePass>
         <java.target.version>1.8</java.target.version>
         <java.source.version>1.8</java.source.version>
