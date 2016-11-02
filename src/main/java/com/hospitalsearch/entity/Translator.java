@@ -114,10 +114,24 @@ private Language languageID;
     public Translator() {
     }
 
+    public Translator(Hospital hospital, Department department, Language language, DepartmentInfo departmentInfo){
+        this.hospitalID= hospital;
+        this.departmentID=department;
+        this.languageID=language;
+        this.departmentinfo=departmentInfo;
+    }
 
+    public Translator(Hospital hospital, Department department, Language language){
+        this(hospital, department, language,new DepartmentInfo());
+    }
 
-
-
+    public Translator(Hospital hospital, Department department, DepartmentInfo departmentInfo){
+        this(hospital, department,new Language() ,departmentInfo);
+    }
+    
+    public Translator(Hospital hospital, Department department){
+        this(hospital, department, new Language(),new DepartmentInfo());
+    }
 
 
 }

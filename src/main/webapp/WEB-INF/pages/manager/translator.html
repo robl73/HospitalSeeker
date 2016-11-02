@@ -47,35 +47,43 @@
 <!-- ============================================================= -->   
 <div style="width: 50%">
   <div>  
-  <form class="form-horizontal" th:action="@{/admin/addDepartmentName}" method="POST" 
-        th:object="${departmentName}" >
+  <form class="form-horizontal" th:action="@{/manager/translator}" method="POST" 
+        th:object="${translatorDTO}" >
   <fieldset>
-    <legend th:text="#{admin.dashboard.department.show.form.header}">Legend</legend>
-	
+    <legend th:text="#{admin.dashboard.department.show.form.headerdepartment}">Legend</legend>
+    
+<!--<input type="hidden"  th:field="*{hospitalID.id}"/> 
+<input type="hidden"  th:field="*{departmentID.id}"/>-->
+
+
+<input type="hidden"  th:field="*{hospitalid}" th:value="*{hospitalid}"/> 
+<input type="hidden"  th:field="*{departmentid}" th:value="*{departmentid}"/>
+    
+
   <!--
     <div class="form-group">
-      <label for="inputName" class="col-lg-2 control-label"
-             th:text="#{admin.dashboard.department.show.table.header.name}">name</label>
+      <label for="inputAName" class="col-lg-2 control-label"
+             th:text="#{admin.dashboard.department.show.table.header.aname}">aname</label>
       <div class="col-lg-10">
-          <input class="form-control" id="inputName" placeholder="name" type="text" 
-                 name="name" ></input>     
+          <input class="form-control" id="inputAName" placeholder="aname" type="text" 
+                 name="aname" ></input>     
       </div>
     </div>
   --> 
    
     <div class="form-group">
-      <label for="name" class="col-lg-2 control-label"
-             th:text="#{admin.dashboard.department.show.table.header.name}">name</label>
+      <label for="departmentinfo.aname" class="col-lg-2 control-label"
+             th:text="#{admin.dashboard.department.show.table.header.aname}">aname</label>
       <div class="col-lg-10">
-                <input class="form-control"  placeholder="name" type="text" 
-                       th:field="*{name}" th:errorclass="has-error"></input>   
+                <input class="form-control"  placeholder="aname" type="text" 
+                       th:field="*{departmentinfo.aname}" th:errorclass="has-error"></input>   
             <!--
-                <input class="form-control"  placeholder="name" type="text" maxlength="20" pattern="[a-zа-я]{3,20}" required="" 
-                       th:field="*{name}" th:errorclass="has-error"></input>
+                <input class="form-control"  placeholder="aname" type="text" maxlength="20" pattern="[a-zа-я]{3,20}" required="" 
+                       th:field="*{aname}" th:errorclass="has-error"></input>
             -->
           
-          <p th:if="${#fields.hasErrors('name')}"
-             th:errors="*{name}" 
+          <p th:if="${#fields.hasErrors('departmentinfo.aname')}"
+             th:errors="*{departmentinfo.aname}" 
              class="has-error text-danger">Incorrect input</p>  
       </div>      
     </div>
@@ -92,50 +100,74 @@
     -->
    
     <div class="form-group">
-      <label for="specialization" class="col-lg-2 control-label"
+      <label for="departmentinfo.specialization" class="col-lg-2 control-label"
              th:text="#{admin.dashboard.department.show.table.header.specialization}">specialization</label>
       <div class="col-lg-10">
         <input class="form-control" placeholder="specialization" type="text"  
-               th:field="*{specialization}" th:errorclass="has-error"></input>
+               th:field="*{departmentinfo.specialization}" th:errorclass="has-error"></input>
     <!--    
         <input class="form-control" placeholder="specialization" type="text" maxlength="20" pattern="[a-zа-я]{0,20}" 
                th:field="*{specialization}" th:errorclass="has-error"></input>
     -->
           
-        <p th:if="${#fields.hasErrors('specialization')}"
-           th:errors="*{specialization}" 
+        <p th:if="${#fields.hasErrors('departmentinfo.specialization')}"
+           th:errors="*{departmentinfo.specialization}" 
            class="has-error text-danger">Incorrect input</p>
       </div>  
     </div>
  
    <!--
     <div class="form-group">
-      <label for="inputNumber" class="col-lg-2 control-label"
-             th:text="#{admin.dashboard.department.show.table.header.number}">number</label>
+      <label for="inputDescription" class="col-lg-2 control-label"
+             th:text="#{admin.dashboard.department.show.table.header.description}">description</label>
       <div class="col-lg-10">
-        <input class="form-control" id="inputNumber" placeholder="number" type="text"
-               name="number" ></input>
+        <input class="form-control" id="inputDescription" placeholder="description" type="text"
+               name="description" ></input>
       </div>
     </div>
    -->
    
   
     <div class="form-group">
-      <label for="number" class="col-lg-2 control-label"
-             th:text="#{admin.dashboard.department.show.table.header.number}">number</label>
+      <label for="departmentinfo.description" class="col-lg-2 control-label"
+             th:text="#{admin.dashboard.department.show.table.header.description}">description</label>
       <div class="col-lg-10">
-            <input class="form-control" placeholder="number" type="number" 
-                   th:field="*{number}" th:errorclass="has-error"></input>   
+            <input class="form-control" placeholder="description" type="text" 
+                   th:field="*{departmentinfo.description}" th:errorclass="has-error" ></input>   
         <!-- 
-            <input class="form-control" placeholder="number" type="number" min="1" max="99" step="1"
-                   th:field="*{number}" th:errorclass="has-error"></input>
+            <input class="form-control" placeholder="description" type="text" min="1" max="99" step="1"
+                   th:field="*{description}" th:errorclass="has-error"></input>
         -->
  
-        <p th:if="${#fields.hasErrors('number')}"
-           th:errors="*{number}" 
+        <p th:if="${#fields.hasErrors('departmentinfo.description')}"
+           th:errors="*{departmentinfo.description}" 
            class="has-error text-danger">Incorrect input</p> 
       </div>    
     </div>
+ 
+   
+   
+      <div class="form-group">
+      <label for="languageid" class="col-lg-2 control-label" 
+             th:text="#{admin.dashboard.department.show.table.header.language}">Selects</label>
+      <div class="col-lg-10">
+        <select class="form-control"  th:field="*{languageid}">
+            
+          <option th:each="language : ${languages}"
+                  th:value="${language.id}"
+                  th:text="${language.name}">1</option>
+            
+<!--          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>-->
+
+        </select>
+        <br></br>
+        
+      </div>
+    </div>
+   
    
    
     <div class="form-group">
@@ -152,60 +184,15 @@
         
         
 <!-- ============================================================= -->   
-<a href="#" class="btn btn-primary" 
-                           
-                           th:href="@{/manager/manageDepartments}">Departments</a>    
+<a href="#" class="btn btn-primary"                            
+                           th:href="@{'/manager/manageDepartments/'+${hospitalid}}"
+                           th:text="#{admin.dashboard.department.show.form.footerdepartment}">Departments</a>    
 <!-- ============================================================= -->
-            <table class="responstable" id="allDepartment">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th><i th:text="#{admin.dashboard.department.show.table.header.name}"></i>
-                        <button class="btn sorter sorter-false pull-right" id="name"
-                                th:onclick="'javascript:sort(event);'"></button>
-                    </th>
-                    <th><i th:text="#{admin.dashboard.department.show.table.header.specialization}"></i>
-                        <button class="btn sorter sorter-false pull-right" id="specialization"
-                                th:onclick="'javascript:sort(event);'"></button>
-                    </th>
-                    <th><i th:text="#{admin.dashboard.department.show.table.header.number}"></i>
-                        <button class="btn sorter sorter-false pull-right" id="number"
-                                th:onclick="'javascript:sort(event);'"></button>
-                    </th>
-                    
-                    <th><i th:text="#{admin.dashboard.department.show.table.header.action}"></i></th>
-                </tr>
-                </thead>
-
-                <tbody th:with="iterStart=1">
-                <tr th:each="departmentname: ${departmentnames}">
-                    <!--
-                    <td th:text="(${userFilterDTO.getCurrentPage()!=null}) ? ${(userFilterDTO.getCurrentPage()-1)*userFilterDTO.getPageSize()+iterStart.count} : ${iterStart.count}"></td>
-                    -->
-            <!--    <td th:value="${departmentnameStat.count}" th:text="${departmentnameStat.count}"></td> -->
-                    <td th:value="${departmentname.id}" th:text="${departmentname.id}"></td>
-                    <td th:value="${departmentname.name}" th:text="${departmentname.name}"></td>
-                    <td th:value="${departmentname.specialization}" th:text="${departmentname.specialization}"></td>
-                    <td th:value="${departmentname.number}" th:text="${departmentname.number}"></td>
-                    
-                    <td><a href="#" class="btn btn-primary" 
-                           th:attr="data-id=${departmentname.id}" 
-                           th:href="@{/admin/deleteDepartmentName(id=${departmentname.id})}">Delete</a></td>
-
-                </tr>
-                </tbody>
-            </table>
 
 
     </div>
 
-
-<!-- =====================================================================  -->
-
-<!-- =====================================================================  -->
-
-
-    <script type="text/javascript">
+<script type="text/javascript">
         var valueCurrentPage = parseInt($("#currentPage").val());
         var currentPage = $("#currentPage");
         var totalPage = parseInt($("#totalPageDto").val());
@@ -230,6 +217,7 @@
             currentPage.val(totalPage);
         });
     </script>
+
 </section>
 </body>
 </html>

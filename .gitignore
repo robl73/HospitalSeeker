@@ -13,3 +13,4 @@ src/main/resources/LiquiBaseReportTable/
 logs/
 filesystem/
 src/main/resources/springBoot.properties
+/nb-configuration.xml

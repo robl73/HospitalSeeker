@@ -112,9 +112,14 @@
             <!--</form>-->
             <!--Needs to insert href to AddNewDoctor Form-->
             <div class="pull-right btn-group">
+                <a type="button" th:href="@{'/manager/manageDepartments/'+${hospitalId}}"
+                   class="btn btn-default"><span class="text-info"
+                                                 th:text="#{manager.doctorstable.departments.button}"></span></a>
+                
                 <a type="button" th:href="@{/}"
                    class="btn btn-default"><span class="text-info"
                                                  th:text="#{manager.doctorstable.addNewDoctor.button}"></span></a>
+                
             </div>
             <input th:value="${viewForManagerDTO.currentPage}" th:field="${viewForManagerDTO.currentPage}" id="currentPage" hidden="hidden"/>
             <input th:value="${viewForManagerDTO.sort}" th:field="${viewForManagerDTO.sort}" id="sortDto" hidden="hidden"/>

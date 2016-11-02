@@ -35,14 +35,14 @@ public class Department implements Serializable{
 	private String name;
 
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "DEPARTMENT_DOCTORINFO", joinColumns = {
 			@JoinColumn(name = "DEPARTMENTS_ID", nullable = false, updatable = false) },
 			inverseJoinColumns = { @JoinColumn(name = "DOCTORS_ID",
 					nullable = false, updatable = false) })
 	private List<DoctorInfo> doctors;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@Fetch(FetchMode.JOIN)
 	@ContainedIn
 	private Hospital hospital;
