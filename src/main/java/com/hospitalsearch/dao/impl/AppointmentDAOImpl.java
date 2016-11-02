@@ -48,4 +48,10 @@ public class AppointmentDAOImpl extends GenericDAOImpl<Appointment, Long> implem
         return appointments;
     }
 
+    @Override
+    public List<Appointment> getByProducer(Long userdetailId) {
+        return getSessionFactory().getCurrentSession().createCriteria(Appointment.class)
+                .add(Restrictions.eq("userDetail.id", userdetailId)).list();
+    }
+
 }

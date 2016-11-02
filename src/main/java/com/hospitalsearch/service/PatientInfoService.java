@@ -1,5 +1,6 @@
 package com.hospitalsearch.service;
 
+import com.hospitalsearch.dto.PatientDetailDTO;
 import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.entity.PatientCard;
 import com.hospitalsearch.entity.PatientInfo;
@@ -31,4 +32,9 @@ public interface PatientInfoService {
     List<PatientInfo> getAll();
 
     PatientInfo add(PatientInfo patientInfo);
+
+    PatientDetailDTO getPatientProfileByEmail(String email, PatientDetailDTO patientDetailDTO);
+
+    @Transactional
+    void updatePatientProfile(PatientDetailDTO patientDetailDTO);
 }

@@ -52,17 +52,47 @@ public class AppointmentValidationService {
     public Map<String, Object> validateAppointment(String appointmentString) {
         Appointment appointment = toAppointment(appointmentString);
         List<Appointment> appointments = appointmentService.getAllByPatientEmail(data.get(PRINCIPAL));
-       
+
         Map<String, Object> validationInfo = new HashMap<>();
         validationInfo.put(RESULT, validate(appointment, appointments));
         //check if patient has appointment
-        validationInfo.put(NEXT_AVAILABLE_TIME, getFirstAvailableTime(appointments, appointment));
+        validationInfo.put(NEXT_AVAILABLE_TIME, getFirstAvailibleTime(appointments, appointment));
         validationInfo.put(FULL_USER_DETAIL_PRESENT,
                 checkFullUserDetailPresent(userService.getByEmail(data.get(PRINCIPAL)).getUserDetails()));
         return validationInfo;
     }
 
-     private Appointment toAppointment(String appointmentString) {
+    private boolean checkFullUserDetailPresent(UserDetail userDetails) {
+        if (userDetails.getFirstName() == null ||
+                userDetails.getBirthDate() == null ||
+                userDetails.getPhone() == null ||
+                userDetails.getAddress() == null ||
+                userDetails.getGender() == null ){
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateRelativesInfos(List<RelativesInfo> relativesInfos) {
+        for (RelativesInfo relativesInfo: relativesInfos) {
+            if (!validateRelativesInfo(relativesInfo)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validateRelativesInfo(RelativesInfo relativesInfo) {
+        if (relativesInfo.getName() == null ||
+                relativesInfo.getPhone() == null ||
+                relativesInfo.getRelation() == null){
+            return false;
+        }
+        return true;
+    }
+
+
+    private Appointment toAppointment(String appointmentString) {
         try {
             data = mapper.readValue(appointmentString, new TypeReference<Map<String, String>>() {
             });
@@ -100,7 +130,7 @@ public class AppointmentValidationService {
         return true;
     }
 
-    private String getFirstAvailableTime(final List<Appointment> appointments, final Appointment appointment) {
+    private String getFirstAvailibleTime(final List<Appointment> appointments, final Appointment appointment) {
         if (appointments.isEmpty()){
             return BLANK_LINE;
         }
@@ -108,37 +138,8 @@ public class AppointmentValidationService {
                 .compareTo(o1.getStart_date())).collect(Collectors.toList());
 
         Collections.reverse(sortedAppointments);
-        Appointment appointment2 = sortedAppointments.get(sortedAppointments.size() - 1);
+        Appointment appointment2 = sortedAppointments.get(sortedAppointments.size() - 1);//return 0
         return appointment2.getEnd_date().toString();
 
-    }
-
-    private boolean checkFullUserDetailPresent(UserDetail userDetails) {
-        if (userDetails.getFirstName() == null ||
-                userDetails.getBirthDate() == null ||
-                userDetails.getPhone() == null ||
-                userDetails.getAddress() == null ||
-                userDetails.getGender() == null){
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validateRelativesInfos(List<RelativesInfo> relativesInfos) {
-        for (RelativesInfo relativesInfo: relativesInfos) {
-            if (!validateRelativesInfo(relativesInfo)){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean validateRelativesInfo(RelativesInfo relativesInfo) {
-        if (relativesInfo.getName() == null ||
-                relativesInfo.getPhone() == null ||
-                relativesInfo.getRelation() == null){
-            return false;
-        }
-        return true;
     }
 }

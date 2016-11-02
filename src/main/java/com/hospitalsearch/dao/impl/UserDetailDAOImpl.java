@@ -21,4 +21,6 @@ public class UserDetailDAOImpl extends GenericDAOImpl<UserDetail,Long> implement
         UserDetail userDetail1 = (UserDetail)this.getSessionFactory().getCurrentSession().merge(userDetail);
         return userDetail1;
     }
+
+
 }

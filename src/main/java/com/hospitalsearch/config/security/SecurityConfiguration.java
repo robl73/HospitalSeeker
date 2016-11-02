@@ -71,11 +71,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/", "/home").permitAll()
 				.antMatchers("/admin/**").access("hasRole('ADMIN')")
-				.antMatchers("/attachedHospitals").access("hasRole('MANAGER')")
-				.antMatchers("/**/manageDoctors").access("hasRole('MANAGER')")
+				.antMatchers("/manage/**").access("hasRole('MANAGER')")
+				.antMatchers("/manage/hospitals/**").access("hasRole('MANAGER')")
 				.antMatchers("/**/manage").access("hasRole('MANAGER')")
 				.antMatchers("/editHospitalsManagers").access("hasRole('ADMIN')")
 				.antMatchers("/appointments").access("hasRole('PATIENT')")
+				.antMatchers("/user/patientProfile").access("hasRole('PATIENT')")
 				.antMatchers("/workscheduler").access("hasRole('DOCTOR')")
 				.antMatchers("/login", "/registration").anonymous()
 				.and()
@@ -97,7 +98,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.rememberMe()
 				.rememberMeParameter("remember-me")
 				.tokenRepository(tokenRepository)
-				.tokenValiditySeconds(configService.REMEMBER_ME_TOKEN_EXPIRATION() * 60 * 60)
+				.tokenValiditySeconds(configService.getRememberMeToken() * 60 * 60)
 				.and().requiresChannel().anyRequest().requiresSecure();
 	}
 

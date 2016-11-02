@@ -36,4 +36,5 @@ public class PatientInfoDAOImpl extends GenericDAOImpl<PatientInfo, Long> implem
 
         return patientInfo;
     }
+
 }

@@ -15,11 +15,24 @@ import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Parameter;
+/**
+ * Continued Lesia Koval
+ * Implemented hibernate search for doctors
+ */
 
-
+/**
+ * Such annotations as:
+ * - @Indexed
+ * - @AnalyzerDef
+ * - @DocumentId
+ * - @Field
+ * - @IndexedEmbedded
+ * are used only for hibernate search and YOU SHOULD NOT USE THEM for
+ * other field or entity if it`s not necessary
+ * */
 @Entity
 @Table(name = "doctorinfo")
-@Indexed
+@Indexed  //annotation for hibernate search
 @AnalyzerDef(name = "ngramD",
         tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
         filters = {
@@ -40,10 +53,10 @@ public class DoctorInfo{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doctorinfo_gen")
     @SequenceGenerator(name = "doctorinfo_gen", sequenceName = "doctorinfo_id_seq", initialValue = 1, allocationSize = 1)
-    @DocumentId
+    @DocumentId  //annotation for hibernate search
     private Long id;
 
-    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
+    @Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))  //annotation for hibernate search
     @Enumerated(EnumType.STRING)
     private Specialization specialization;
 
@@ -52,11 +65,12 @@ public class DoctorInfo{
 
     @OneToOne
     @JoinColumn(name = "userdetails_id")
-    @IndexedEmbedded
+    @IndexedEmbedded  //annotation for hibernate search
     @JsonIgnore
     private UserDetail userDetails;
 
     @ManyToMany(mappedBy = "doctors")
+    @JsonIgnore
     private List<Department> departments;
 
     public DoctorInfo() {

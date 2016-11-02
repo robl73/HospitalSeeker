@@ -22,6 +22,9 @@ $(document).ready(function () {
     scheduler.load('getAppointmentsByPatient?patient=' + principal, 'json');
     var dp = new dataProcessor("supplyAppointment?id=" + 300 + "&principal=" + principal);
     dp.init(scheduler);
+    var dhxData = $('.dhx_cal_data');
+    dhxData.height(dhxData[0].scrollHeight);
+    $('.dhx_cal_container').height(dhxData[0].scrollHeight + $('.dhx_multi_day').height() + $('.dhx_cal_header').height() + $('.dhx_cal_navline').height());
 });
 
 var html = function (id) {
@@ -33,8 +36,9 @@ var ev;
 scheduler.showLightbox = function (id) {
     var tex_local_from = getMessage('workscheduler.modal.appointment.time.from');
     var tex_local_to = getMessage('workscheduler.modal.appointment.time.to');
-    $('#myModal').modal('show');
     ev = scheduler.getEvent(id);
+    $('#myModal').modal('show');
+    $('#myModal').css(top,  0);
     scheduler.startLightbox(id, html("myModal"));
     $('#date').text(new Date(ev.start_date).toLocaleDateString() + ' ' + tex_local_from + ' '+
         new Date(ev.start_date).toLocaleTimeString().replace(':00', '') + ' ' + tex_local_to + ' ' +
@@ -111,9 +115,8 @@ function close_form() {
 }
 
 function delete_event() {
-    var event_id = scheduler.getState().lightbox_id;
     scheduler.endLightbox(false, html("cancelAppointmentModal"));
-    scheduler.deleteEvent(event_id);
+    scheduler.deleteEvent(ev.id);
 }
 
 function blockAppointmensAdd() {

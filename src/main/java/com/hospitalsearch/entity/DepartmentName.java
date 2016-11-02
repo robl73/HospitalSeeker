@@ -27,7 +27,6 @@ import javax.validation.constraints.Size;
  * @author Admin
  */
 
-//@Embeddable
 @Entity
 @Table(name = "departmentname")
 public class DepartmentName implements Serializable {

@@ -20,6 +20,6 @@ public interface TestDAO extends GenericDAO<Test, Long>{
 	
 	void delete (Test availableTest);
 
-	List<Test> getById(long id);
+	Test getById(long id);
 
 }

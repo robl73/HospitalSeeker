@@ -1,13 +1,11 @@
 package com.hospitalsearch.controller;
 
 import com.hospitalsearch.dao.AppointmentDAO;
-import com.hospitalsearch.entity.Appointment;
-import com.hospitalsearch.entity.Department;
-import com.hospitalsearch.entity.DoctorInfo;
-import com.hospitalsearch.entity.UserDetail;
+import com.hospitalsearch.entity.*;
 import com.hospitalsearch.service.*;
 
 //import org.codehaus.jackson.map.util.JSONPObject;
+import com.hospitalsearch.util.PrincipalConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -30,24 +28,26 @@ public class AppointmentController {
     private AppointmentDAO appointmentDAO;
 
     @Autowired
-    private UserDetailService userDetailService;
-
-    @Autowired
-    private FeedbackService feedbackService;
-
-    @Autowired
-    private DepartmentService departmentService;
-
-    @Autowired
     private MailService emailService;
 
     @Autowired
     private DoctorInfoService doctorInfoService;
 
+    @Autowired
+    private UserService userService;
+
     @ResponseBody
     @RequestMapping(value = "/**/getAppointments", method = RequestMethod.GET)
     public List<Appointment> listAllAppointments(@RequestParam("id") Long id) {
         return appointmentService.getAllbyDoctorId(id);
+//        String principal = PrincipalConverter.getPrincipal();
+//        String principal = PrincipalConverter.getPrincipal();
+//        List<Appointment> appointments = appointmentService.getAllbyDoctorId(id);
+//        if (principal != "anonymousUser") {
+//            User user = userService.getByEmail(principal);
+//            appointments.addAll(appointmentService.getByProducer(user.getUserDetails().getId()));
+//        }
+//        return appointments;
     }
 
     @RequestMapping(value = "/doctor/{d_id}/scheduler", method = RequestMethod.GET)
@@ -95,13 +95,11 @@ public class AppointmentController {
         return "redirect:/";
 
     }
-    
+
     @ResponseBody
     @RequestMapping(value = "/**/validateAppointment", method = RequestMethod.GET)
     public String validateAppointment(){
     	 return "appointments";
     }
-    
-
 
 }

@@ -98,6 +98,7 @@ public class UserServiceImpl implements UserService {
             userDetail.setFirstName(newDoctorRegistrationDTO.getFirstName());
             userDetail.setLastName(newDoctorRegistrationDTO.getLastName());
             userDetail.setAddress(newDoctorRegistrationDTO.getAddress());
+            userDetail.setEducation(newDoctorRegistrationDTO.getEducation());
             userDetail.setBirthDate(newDoctorRegistrationDTO.getBirthDate());
             if(!newDoctorRegistrationDTO.getPhone().isEmpty() && (!newDoctorRegistrationDTO.getPhone().equals("+38 "))) {
                 userDetail.setPhone(newDoctorRegistrationDTO.getPhone());
@@ -143,6 +144,7 @@ public class UserServiceImpl implements UserService {
                 userDetail.setPhone(newDoctorRegistrationDTO.getPhone());
             }
             userDetail.setImagePath(newDoctorRegistrationDTO.getImagePath());
+            userDetail.setEducation(newDoctorRegistrationDTO.getEducation());
             userDetail.setGender(newDoctorRegistrationDTO.getGender());
             userDetail.setUser(user);
             user.setUserDetails(userDetail);

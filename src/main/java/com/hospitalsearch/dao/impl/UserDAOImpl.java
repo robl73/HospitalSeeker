@@ -62,6 +62,9 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
         }
     }
 
+
+
+
     @Override
     public void changeStatus(long id) {
         User user = super.getById(id);

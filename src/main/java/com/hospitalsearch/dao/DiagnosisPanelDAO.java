@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.hospitalsearch.entity.DiagnosisPanel;
 import com.hospitalsearch.entity.Laboratory;
+import com.hospitalsearch.entity.Test;
 
 @Component
 //@Qualifier("DiagnosisPanelDAO")
@@ -22,5 +23,5 @@ public interface DiagnosisPanelDAO extends GenericDAO<DiagnosisPanel, Long> {
 	void save(DiagnosisPanel diagnosisPanel);
 
 	void delete(DiagnosisPanel diagnosisPanel);
-
+	
 }

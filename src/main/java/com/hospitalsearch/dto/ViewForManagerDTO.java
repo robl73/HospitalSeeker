@@ -9,19 +9,21 @@ public class ViewForManagerDTO {
 
     private String hospitalName;
 
+    //filter by specialization
+    private Specialization specialization;
+
     //searchFields
     private String firstName;
     private String lastName;
     private String email;
-    private Specialization specialization;
     private String allField;
 
     //pagination fields
-    private int totalPage;
+    private Integer totalPage;
     private Integer currentPage;
     private Integer pageSize;
-    //default sort
 
+    //default sort
     private String sort = "specialization";
     private Boolean asc = false;
 

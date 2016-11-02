@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+<head>
+
+<script th:src="@{/js/mapvalidation.js}"></script>
+<script th:src="@{/js/gmaps.js}"></script>
+<link rel="stylesheet" th:href="@{/css/map.css}" />
+
+<title th:text="#{admin.hospital.poi.header}"></title>
+</head>
+<body>
+	<section layout:fragment="content">
+		<div class="content">
+			<div th:if="${message != null}" class="alert alert-warning fade in">
+				<span th:text="${message}"></span>
+			</div>
+			<div class="container-fluid">
+				<div class="row-fluid">
+					<div class="col-sm-8">
+						<button type="button" class="btn btn-default "
+							th:onclick="'javascript:process();'"
+							th:text="#{admin.hospital.poi.button.get}"></button>
+						<br /> <br />
+						<div class="pre-scrollable panel panel-default"
+							style="max-height: 62vh">
+							<table class="table table-striped table-bordered">
+								<thead>
+									<tr>
+										<th class="col-sm-5" th:text="#{admin.hospital.poi.table.poi}"></th>
+										<th class="col-sm-2"
+											th:text="#{admin.hospital.poi.table.actions}"></th>
+										<th class="col-sm-5"
+											th:text="#{admin.hospital.poi.table.match}"></th>
+									</tr>
+								</thead>
+								<tbody id="table-out">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col-sm-4" style="height: 70vh">
+						<div id="googleMap" class="col-md-12" style="height: 70vh;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

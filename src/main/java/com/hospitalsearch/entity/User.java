@@ -17,6 +17,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Such annotations as:
+ * - @Field
+ * - @ContainedIn
+ * are used only for hibernate search
+ * */
 @Entity
 @Table(name="users")
 @NamedQueries({
@@ -35,7 +41,7 @@ public class User implements Comparable<User> {
 	@Email
 	@NotEmpty
 	@Column(unique = true, nullable = false)
-	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))
+	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngramD"))  //annotation for hibernate search
 	private String email;
 
 	@JsonIgnore
@@ -55,7 +61,7 @@ public class User implements Comparable<User> {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="userdetails_id")
 	@Fetch(FetchMode.SELECT)
-	@ContainedIn
+	@ContainedIn  //annotation for hibernate search
 	@JsonIgnore
 	private UserDetail userDetails;
 
@@ -83,7 +89,7 @@ public class User implements Comparable<User> {
 		this.enabled = enabled;
 	}
 
-	public Set<Role> getUserRoles() {
+		public Set<Role> getUserRoles() {
 		return userRoles;
 	}
 

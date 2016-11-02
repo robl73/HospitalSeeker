@@ -6,11 +6,12 @@
     <meta charset="ISO-8859-1"/>
     <meta charset="UTF-8"/>
     <meta th:name="csrf-token" th:content="${_csrf.token}"/>
-    <title>Manager Dashboard</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" th:href="@{/css/stylish-portfolio.css}"/>
     <link rel="stylesheet" th:href="@{/css/animate.css}"/>
     <link rel="stylesheet" th:href="@{/css/theme.default.css}"/>
     <link rel="stylesheet" th:href="@{/css/view-admin-table.css}"/>
+
     <script th:src="@{/js/doctorTableForManager.js}"></script>
     <script th:src="@{/js/sortButtons.js}"></script>
     <script th:src="@{/js/modalView.js}"></script>
@@ -34,23 +35,81 @@
                     th:text="${messageSuccess}"></h4>
             </div>
         </div>
-
-        <br/>
-        <h1 th:text="${hospitalName}" class="all text-center" style="margin-bottom: 40px;"/>
-        <input type="hidden" th:value="${hospitalId}" th:field="${hospitalId}"/>
-
-
-        <div class="box-content">
-            <div class="pull-right btn-group">
-                <a type="button" th:href="@{/newDoctor}"
-                   class="btn btn-default"><span class="text-info"
-                                                 th:text="#{manager.doctorstable.addNewDoctor.button}"></span></a>
+        <div th:if="${emptyList}" id="emptyListMessage" class="helper col-md-12 col-lg-12 col-sm-12" style="margin-top: 100px;">
+            <div class="alert alert-info alert-dismissible col-md-6 col-sm-6 col-lg-6
+             col-md-offset-3 col-sm-offset-3 col-lg-offset-3" role="status">
+                <h4 class="info text-center" th:text="#{manager.doctorstable.empty.list.message}"></h4>
             </div>
-            <input th:value="${viewForManagerDTO.currentPage}" th:field="${viewForManagerDTO.currentPage}" id="currentPage" hidden="hidden"/>
-            <input th:value="${viewForManagerDTO.sort}" th:field="${viewForManagerDTO.sort}" id="sortDto" hidden="hidden"/>
-            <input th:value="${viewForManagerDTO.asc}" th:field="${viewForManagerDTO.asc}" id="ascDto" hidden="hidden"/>
-            <input th:if="${viewForManagerDTOsearch!=null}" th:value="${viewForManagerDTOsearch}" th:field="${viewForManagerDTOsearch}" id="searchDto" hidden="hidden"/>
-            <table class="responstable" id="allUsers">
+        </div>
+        <br/>
+        <h1 th:text="${viewForManagerDTO.hospitalName}" class="all text-center" style="margin-bottom: 40px;" th:if="not ${emptyList}"/>
+        <input type="hidden" th:value="${hospitalId}" id="hospitalId"/>
+
+        <div class="box-content" th:if="not ${emptyList}">
+            <form class="form-inline" role="form" method="GET" th:object="${viewForManagerDTO}"
+                  th:action="@{/manage/hospitals/{hospitalId}/manageDoctors/search(hospitalId=${hospitalId})}" id="searchForm">
+
+                <input type="hidden" th:value="*{hospitalName}" th:field="*{hospitalName}"/>
+                <div class="form-group">
+                    <label class="filter-col" style="margin-right:0;" for="doctorPerPage"
+                           th:text="#{manager.doctorstable.submenu.dropdown.itemPerPage.label}"></label>
+                    <select id="doctorPerPage" class="form-control" th:field="*{pageSize}" th:value="*{pageSize}" >
+
+                        <!--Delete option 123-->
+
+                        <!--                        <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>-->
+                        <option th:each="number:${#numbers.sequence(10,50,10)}"
+                                th:text="${number}"
+                                th:value="${number}"
+                                th:classappend="${number == viewForManagerDTO.pageSize}?'selected':''"/>
+                    </select>
+                </div>
+                <!-- form group -->
+                <div class="form-group">
+                    <label class="filter-col" style="margin-right:0;" for="pref-specializationBy"
+                           th:text="#{manager.doctorstable.submenu.dropdown.specialization.label}"></label>
+                    <select id="pref-specializationBy" class="form-control" th:field="*{specialization}" th:value="*{specialization}">
+                        <option value="" th:text="#{manager.doctorstable.submenu.dropdown.all}"/>
+                        <option th:each="spec :${T(com.hospitalsearch.util.Specialization).values()}"
+                                th:value="${spec}"
+                                th:text="#{${spec}}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="filter-col" style="margin-right:0;" for="searchBy"
+                           th:text="#{manager.doctorstable.submenu.dropdown.searchBy.label}"></label>
+                    <select id="searchBy" name="searchBy" class="form-control">
+                        <option th:value="allField" th:text="#{manager.doctorstable.submenu.dropdown.all}"></option>
+                        <option th:value="email" th:text="#{manager.doctorstable.submenu.dropdown.searchBy.email}"></option>
+                        <option th:value="firstName" th:text="#{manager.doctorstable.first.name}"></option>
+                        <option th:value="lastName" th:text="#{manager.doctorstable.last.name}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input id="search" type="text" class="form-control" name="allField"
+                           th:placeholder="#{manager.doctorstable.submenu.searchBy.placeholder}" autocomplete='off'/>
+                </div>
+                <button type="submit" class="btn btn-default" id="searchButton"><span
+                        class="glyphicon glyphicon-search"></span></button>
+                <button type="submit" class="btn btn-default" id="clearButton"><span
+                        class="glyphicon glyphicon-remove"></span></button>
+
+                <div class="pull-right btn-group">
+                    <a type="button" th:href="@{/newDoctor}"
+                       class="btn btn-default"><span class="text-info"
+                                                     th:text="#{manager.doctorstable.addNewDoctor.button}"></span></a>
+                </div>
+                <input th:value="*{currentPage}" th:field="*{currentPage}" id="currentPage" hidden="hidden"/>
+                <input th:value="*{sort}" th:field="*{sort}" id="sortDto" hidden="hidden"/>
+                <input th:value="*{asc}" th:field="*{asc}" id="ascDto" hidden="hidden"/>
+                <input th:if="${search!=null}" th:value="${search}" th:field="${search}" id="searchDto" hidden="hidden"/>
+            </form>
+            <table class="responstable" id="allDoctors" th:if="not ${emptyList}">
+                <!--th:if="${not #lists.isEmpty(doctors)}">-->
                 <thead>
                 <tr>
                     <th>#</th>
@@ -84,32 +143,14 @@
                     <td th:value="${doctorSearchDTO.email}" th:text="${doctorSearchDTO.email}"></td>
                     <td th:value="${doctorSearchDTO.firstName}" th:text="${doctorSearchDTO.firstName}"></td>
                     <td th:value="${doctorSearchDTO.lastName}" th:text="${doctorSearchDTO.lastName}"></td>
-                    <td th:value="${doctorSearchDTO.specialization}">
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).DIAGNOSIS}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.diagnosis}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).PEDIATRICS}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.pediatrics}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).DENTISTRY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.dentistry}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).ONCOLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.oncology}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).GYNECOLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.gynecology}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).NEUROLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.neurology}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).OTORHINOLARYNGOLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.otorhinolaryngology}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).ENDOCRINOLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.endocrinology}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).CARDIOLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.cardiology}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).PSYCHIATRY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.psychiatry}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).ORTHOPEDICS}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.orthopedics}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).UROLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.urology}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).OPHTHALMOLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.ophthalmology}"/>
-                        <span th:if="${doctorSearchDTO.specialization==T(com.hospitalsearch.util.Specialization).SURGERY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.surgery}"/>
+                    <td th:value="${doctorSearchDTO.specialization}" th:text="#{${doctorSearchDTO.specialization}}">
                     </td>
-                    <td th:value="${doctorSearchDTO.category}">
-                        <span th:if="${doctorSearchDTO.category==T(com.hospitalsearch.util.Category).INTERN}" th:text="#{manager.doctorstable.categoryValue.intern}"/>
-                        <span th:if="${doctorSearchDTO.category==T(com.hospitalsearch.util.Category).JUNIOR}" th:text="#{manager.doctorstable.categoryValue.junior}"/>
-                        <span th:if="${doctorSearchDTO.category==T(com.hospitalsearch.util.Category).SPECIALIST}" th:text="#{manager.doctorstable.categoryValue.specialist}"/>
+                    <td th:value="${doctorSearchDTO.category}"  th:text="#{${doctorSearchDTO.category}}">
                     </td>
-
                     <td class="center">
 
-                         <span data-placement="top" data-toggle="tooltip"
-                               th:title="#{admin.dashboard.users.show.title.tooltip.edit}">
+                        <span data-placement="top" data-toggle="tooltip"
+                              th:title="#{admin.dashboard.users.show.title.tooltip.edit}">
 
                             <a class="btn button_user" href="#"
                                th:attr="data-id='manage/doctor/view?id='+${doctorSearchDTO.doctorId}"
@@ -139,9 +180,9 @@
 
                         <span data-placement="top" data-toggle="tooltip"
                               th:title="#{admin.dashboard.users.show.title.tooltip.delete}">
-                            <a class="btn button_user" href="#"
-                               id="deleteUser" style="padding: 4px 9px;">
-                               <!--th:attr="data-values=|/admin/users/delete/,${doctorSearchDTO.doctorId},${user.email},?status=${viewForManagerDTO.status}|"-->
+                            <a class="btn button_user" href="#" data-toggle="modal" data-target="#deleteDoctorModal"
+                               id="deleteDoctor" style="padding: 4px 9px;"
+                               th:attr="data-values=|/manage/hospitals/${hospitalId}/manageDoctors/delete/,${doctorSearchDTO.doctorId},${doctorSearchDTO.email}|">
 
                                 <i class="glyphicon glyphicon-trash icon-white"></i>
                             </a>
@@ -151,79 +192,95 @@
                 </tbody>
             </table>
 
-            <!--<div th:if="${pagination}" class="text-center">-->
-                <!--<ul class="pagination pagination-lg">-->
-                    <!--<li class="page-item" th:if="${viewForManagerDTO.getCurrentPage()!= 1}">-->
-                        <!--<a class="page-link" th:if="${search==null}"-->
-                           <!--th:href="@{/admin/users(status=${viewForManagerDTO.status}, page=1,sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"-->
-                           <!--aria-label="First" th:text="#{admin.dashboard.users.show.firstpage}">-->
-                        <!--</a>-->
-                        <!--<button class="page-link" th:if="${search!=null}" th:form="searchForm" type="submit"-->
-                                <!--id="firstPage" aria-label="First" th:text="#{admin.dashboard.users.show.firstpage}">-->
-                        <!--</button>-->
-                    <!--</li>-->
+            <div th:if="${pagination}" class="text-center">
+                <ul class="pagination pagination-lg">
+                    <li class="page-item" th:if="${(viewForManagerDTO.getCurrentPage()!= 1) and (viewForManagerDTO.getCurrentPage() &gt;= 2)}">
+                        <a class="page-link" th:if="${search==null}"
+                           th:href="@{/manage/hospitals/{id}/manageDoctors(hospitalId=${hospitalId}, page=1,sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"
+                           aria-label="First" th:text="#{admin.dashboard.users.show.firstpage}">
+                        </a>
+                        <button class="page-link" th:if="${search!=null}" th:form="searchForm" type="submit"
+                                id="firstPage" aria-label="First" th:text="#{admin.dashboard.users.show.firstpage}">
+                        </button>
+                    </li>
 
-                    <!--<li class="page-item" th:if="${viewForManagerDTO.getCurrentPage()!= 1}">-->
-                        <!--<a class="page-link" th:if="${search==null}"-->
-                           <!--th:href="@{/admin/users(status=${viewForManagerDTO.status},page=${(viewForManagerDTO.getCurrentPage()-1)},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"-->
-                           <!--aria-label="Previous">-->
-                            <!--<span aria-hidden="true">&laquo;</span>-->
-                            <!--<span class="sr-only">Previous</span>-->
-                        <!--</a>-->
-                        <!--<button class="page-link" th:if="${search!=null}" th:form="searchForm" type="submit"-->
-                                <!--id="previousPage" aria-label="Previous">-->
-                            <!--<span aria-hidden="true">&laquo;</span>-->
-                            <!--<span class="sr-only">Previous</span>-->
-                        <!--</button>-->
-                    <!--</li>-->
+                    <li class="page-item" th:if="${(viewForManagerDTO.getCurrentPage()!= 1) and (viewForManagerDTO.getCurrentPage() &gt;= 2)}">
+                        <a class="page-link" th:if="${search==null}"
+                           th:href="@{/manage/hospitals/{id}/manageDoctors(hospitalId=${hospitalId},page=${(viewForManagerDTO.getCurrentPage()-1)},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <button class="page-link" th:if="${search!=null}" th:form="searchForm" type="submit"
+                                id="previousPage" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </button>
+                    </li>
 
-                    <!--<li th:each="number:${#numbers.sequence(1,viewForManagerDTO.getTotalPage())}"-->
-                            <!--th:class="page-item"-->
-                            <!--th:classappend="${(viewForManagerDTO.getCurrentPage()) == number }?'active': ''">-->
+                    <li th:if="${ ((viewForManagerDTO.getCurrentPage() - 1) &gt;= 1) and (viewForManagerDTO.getCurrentPage()-1 &lt;= viewForManagerDTO.getTotalPage())}" th:class="page-item">
 
-                        <!--<a th:class="page-link" th:if="${search==null}"-->
-                           <!--th:classappend="${(viewForManagerDTO.getCurrentPage()) == number }?'active': ''"-->
-                           <!--th:href="@{/admin/users(status=${viewForManagerDTO.status},page=${number},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"-->
-                           <!--th:text="${number}"/>-->
+                        <a th:class="page-link" th:if="${search==null}"
+                           th:href="@{/manage/hospitals/{id}/manageDoctors(hospitalId=${hospitalId},page=${viewForManagerDTO.getCurrentPage()-1},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"
+                           th:text="${viewForManagerDTO.getCurrentPage() - 1}"/>
 
-                        <!--<button th:class="page-link" th:if="${search!=null}" id=""-->
-                                <!--th:classappend="${(viewForManagerDTO.getCurrentPage()) == number }?'active': ''"-->
-                                <!--th:form="searchForm" th:text="${number}" th:id="${number}" onclick="getPage(this.id)"/>-->
-                    <!--</li>-->
+                        <button th:class="page-link" th:if="${search!=null}"
+                                th:classappend="active"
+                                th:form="searchForm" th:text="${viewForManagerDTO.getCurrentPage()-1}" th:id="${viewForManagerDTO.getCurrentPage()-1}" onclick="getPage(this.id)"/>
+                    </li>
 
-                    <!--<li class="page-item"-->
-                        <!--th:if="${viewForManagerDTO.getCurrentPage()&lt;viewForManagerDTO.getTotalPage()}">-->
-                        <!--<button class="page-link" th:form="searchForm" type="submit" disabled="disabled">...</button>-->
-                    <!--</li>-->
+                    <li th:if="${ ((viewForManagerDTO.getCurrentPage() - 1) &gt;= 0) and (viewForManagerDTO.getCurrentPage() &lt;= viewForManagerDTO.getTotalPage())}" th:class="page-item"
+                        th:classappend="active" >
+                        <a th:class="page-link" th:if="${search==null}"
+                           th:classappend="active"
+                           th:href="@{/manage/hospitals/{id}/manageDoctors(hospitalId=${hospitalId},page=${(viewForManagerDTO.getCurrentPage()},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"
+                           th:text="${viewForManagerDTO.getCurrentPage()}"/>
 
-                    <!--<li class="page-item"-->
-                        <!--th:if="${(viewForManagerDTO.getCurrentPage()+1) &lt;= viewForManagerDTO.getTotalPage()}">-->
-                        <!--<a th:if="${search==null}" class="page-link"-->
-                           <!--th:href="@{/admin/users(status=${viewForManagerDTO.status},page=${viewForManagerDTO.getCurrentPage()+1},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"-->
-                           <!--aria-label="Next">-->
-                            <!--<span aria-hidden="true">&raquo;</span>-->
-                            <!--<span class="sr-only">Next</span>-->
-                        <!--</a>-->
-                        <!--<button th:if="${search!=null}" class="page-link" th:form="searchForm" type="submit"-->
-                                <!--id="nextPage"-->
-                                <!--aria-label="Next">-->
-                            <!--<span aria-hidden="true">&raquo;</span>-->
-                            <!--<span class="sr-only">Next</span>-->
-                        <!--</button>-->
-                    <!--</li>-->
+                        <button th:class="page-link" th:if="${search!=null}"
+                                th:classappend="active"
+                                th:form="searchForm" th:text="${viewForManagerDTO.getCurrentPage()}" th:id="${viewForManagerDTO.getCurrentPage()}" onclick="getPage(this.id)"/>
+                    </li>
 
-                    <!--<li class="page-item"-->
-                        <!--th:if="${(viewForManagerDTO.getCurrentPage()+1) &lt;= viewForManagerDTO.getTotalPage()}">-->
-                        <!--<a class="page-link" th:if="${search==null}"-->
-                           <!--th:href="@{/admin/users(status=${viewForManagerDTO.status},page=${viewForManagerDTO.totalPage},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"-->
-                           <!--aria-label="Last" th:text="#{admin.dashboard.users.show.lastpage}">-->
-                        <!--</a>-->
-                        <!--<button class="page-link" th:if="${search!=null}" th:form="searchForm" type="submit"-->
-                                <!--id="lastPage" aria-label="Last" th:text="#{admin.dashboard.users.show.lastpage}">-->
-                        <!--</button>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</div>-->
+                    <li th:if="${ ((viewForManagerDTO.getCurrentPage() - 1) &gt;= 0) and (viewForManagerDTO.getCurrentPage()+1 &lt;= viewForManagerDTO.getTotalPage())}" th:class="page-item">
+
+                        <a th:class="page-link" th:if="${search==null}"
+                           th:href="@{/manage/hospitals/{id}/manageDoctors(hospitalId=${hospitalId},page=${viewForManagerDTO.getCurrentPage()+1},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"
+                           th:text="${viewForManagerDTO.getCurrentPage()+1}"/>
+
+                        <button th:class="page-link" th:if="${search!=null}"
+                                th:form="searchForm" th:text="${viewForManagerDTO.getCurrentPage()+1}" th:id="${viewForManagerDTO.getCurrentPage()+1}" onclick="getPage(this.id)"/>
+                    </li>
+
+                    <li class="page-item"
+                        th:if="${(viewForManagerDTO.getCurrentPage()+1) &lt;= viewForManagerDTO.getTotalPage()}">
+                        <a th:if="${search==null}" class="page-link"
+                           th:href="@{/manage/hospitals/{id}/manageDoctors(hospitalId=${hospitalId},page=${viewForManagerDTO.getCurrentPage()+1},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                        <button th:if="${search!=null}" class="page-link" th:form="searchForm" type="submit"
+                                id="nextPage"
+                                aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </button>
+                    </li>
+
+                    <li class="page-item"
+                        th:if="${(viewForManagerDTO.getCurrentPage()+1) &lt;= viewForManagerDTO.getTotalPage()}">
+                        <a class="page-link" th:if="${search==null}"
+                           th:href="@{/manage/hospitals/{id}/manageDoctors(hospitalId=${hospitalId},page=${viewForManagerDTO.totalPage},sort=${(viewForManagerDTO.getSort())},asc=${(viewForManagerDTO.getAsc())})}"
+                           aria-label="Last" th:text="#{admin.dashboard.users.show.lastpage}">
+                        </a>
+                        <button class="page-link" th:if="${search!=null}" th:form="searchForm" type="submit"
+                                id="lastPage" aria-label="Last" th:text="#{admin.dashboard.users.show.lastpage}">
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+
         </div>
     </div>
 
@@ -248,13 +305,13 @@
 
     <div id="editUserModal" class="modal fade" role="dialog"></div>
 
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div class="modal fade" id="deleteDoctorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" style="z-index: 9000">
             <div class="modal-content">
                 <div class="modal-header table-title">
                     <button type="button" class="close" data-dismiss="modal">X</button>
-                    <h3 th:text="#{admin.dashboard.users.modal.delete.title}"></h3>
+                    <h3 th:text="#{manager.doctorstable.modal.delete.title}"></h3>
                 </div>
                 <div class="modal-body">
                     <p class="alert alert-danger debug-url"></p>
@@ -268,8 +325,28 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="emptyListModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="z-index: 9000">
+            <div class="modal-content">
+                <div class="modal-header table-title">
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                </div>
+                <div class="modal-body">
+                    <strong> <p class="alert alert-info debug-url" th:text="#{manager.doctorstable.empty.list.filter.message}"></p></strong>
+                </div>
+                <div class="modal-footer">
+                    <a id="closeButton" href="#" class="btn btn-default" data-dismiss="modal"
+                       th:text="#{admin.dashboard.users.modal.view.close}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <input th:value="${viewForManagerDTO.totalPage}" th:field="${viewForManagerDTO.totalPage}" id="totalPageDto"
            hidden="hidden"/>
+
     <script type="text/javascript">
         var valueCurrentPage = parseInt($("#currentPage").val());
         var currentPage = $("#currentPage");

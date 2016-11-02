@@ -97,8 +97,14 @@ function showModal(headerText, bodyText, type) {
 	document.getElementById('divAlert').className = 'alert ' + type;
 	document.getElementById('js-modal-header').innerText = headerText;
 	document.getElementById('js-modal-body').innerText = bodyText;
-	$('#modalAlert').modal('show');
-	window.setTimeout(function() {
-		document.getElementById('modalOK').click();
-	}, 5000);
+	if (document.getElementById('messageForUserDetail')){
+		document.getElementById("messageForUserDetail").style.visibility = "visible";
+		document.getElementById('messageForUserDetail').innerText = bodyText;
+		document.getElementById('messageForUserDetail').className=type;
+	}else {
+		$('#modalAlert').modal('show');
+		window.setTimeout(function () {
+			document.getElementById('modalOK').click();
+		}, 5000);
+	}
 }

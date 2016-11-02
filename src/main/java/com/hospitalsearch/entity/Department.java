@@ -4,12 +4,12 @@ import java.util.List;
 
 
 import javax.persistence.*;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.search.annotations.*;
 
-
+/**
+ * Annotations @Field
+ * is used only for hibernate search
+ * */
 @Entity
 @Table(name = "department")
 public class Department{
@@ -19,7 +19,7 @@ public class Department{
 	@SequenceGenerator(name = "department_gen", sequenceName = "department_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
 
-	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram"))
+	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram")) //annotation for hibernate search
 	private String name;
 
 	@ManyToMany(cascade = {CascadeType.ALL})

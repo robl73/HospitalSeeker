@@ -7,10 +7,13 @@ $(document).ready(function () {
     var did = document.getElementById("1").textContent;
     var begin;
     var end;
+    var events;
     var dayOfAppointment;
     var schedulerConfig = {};
     var lastDate = new Date();
     var firstDate = new Date();
+    var deleteMarkedTimespan = [];
+    var addMarkedTimespan = [];
     $.ajax({
         type: "GET",
         async: false,
@@ -24,28 +27,37 @@ $(document).ready(function () {
                 schedulerConfig.weekSize = data.week_size;
                 schedulerConfig.dayStart = data.day_start;
                 schedulerConfig.dayEnd = data.day_end;
+                events = data.events;
             }
             var today = new Date();
+            today.setHours(0);
+            today.setMinutes(0);
+            today.setSeconds(0);
             firstDate = new Date(data.events[0].start_date);
-            data.events.forEach(function (item) {
+            events.forEach(function (item) {
                 var workDay = item.start_date.substring(0, 10);
                 var hourOne = item.start_date.substring(11, 13);
                 var hourLast = item.end_date.substring(11, 13);
                 var zones;
                 var current = new Date(workDay);
                 var temp = new Date(workDay);
-                temp.setHours(parseInt(hourLast));
+                if (hourLast != '00') {
+                    temp.setHours(parseInt(hourLast));
+                } else {
+                    temp.setHours(23);
+                    temp.setMinutes(59);
+                }
                 if (temp > today) {
                     if (firstDate > temp) firstDate = temp;
-                    if (item['event_length'] != null) {
+                    if (item['event_length'] != null && item.rec_type != 'none') {
                         var d = new Date(item.end_date);
                         if (lastDate <  d) {
                             lastDate = d;
                         }
                         var count = item['event_length'];
-                        zones = [0, hourOne * 60, hourOne * 60 + count / 60, 24 * 60];
+                        zones = [hourOne * 60, hourOne * 60 + count / 60];
                         for (var i = 0; i <= daydiff(new Date(item.start_date), d); ++i) {
-                            scheduler.addMarkedTimespan({
+                            deleteMarkedTimespan.push({
                                 days: current,
                                 zones: zones,
                                 css: "green_section"
@@ -53,8 +65,10 @@ $(document).ready(function () {
                             current = new Date(current.getFullYear(), current.getMonth(), current.getDate() + 1);
                         }
                     } else {
-                        zones = [0, hourOne * 60, hourLast * 60, 24 * 60];
-                        scheduler.addMarkedTimespan({
+                        zones = [hourOne * 60, hourLast * 60];
+                        var tem = (item.event_pid != null) ? addMarkedTimespan : deleteMarkedTimespan;
+                        console.log(item);
+                        tem.push({
                             days: new Date(workDay),
                             zones: zones,
                             css: "green_section"
@@ -70,13 +84,30 @@ $(document).ready(function () {
             $('#mySchedulerErrorModal').modal('show');
         }
     });
-    blockDateTo(firstDate);
-    blockDateFrom(new Date(lastDate.getFullYear(), lastDate.getMonth(), lastDate.getDate() + 1));
+    if (events.length > 0) {
+        blockDateTo(firstDate);
+        blockDateFrom(lastDate);
+        firstDate.setHours(0);
+        scheduler.addMarkedTimespan({
+            start_date: firstDate,
+            end_date: lastDate,
+            zones: 'fullday',
+            css: "green_section"
+        });
+        deleteMarkedTimespan.forEach(function (e) {
+            scheduler.deleteMarkedTimespan(e);
+        });
+        addMarkedTimespan.forEach(function (e) {
+            scheduler.addMarkedTimespan(e);
+        });
+    } else {
+        blockDateTo(firstDate);
+        blockDateFrom(firstDate);
+    }
     var day = new Date().getDate() - 1;
     var month = new Date().getMonth();
     var year = new Date().getFullYear();
     var step = schedulerConfig.appSize;
-    scheduler.config.hour_size_px = (60 / step) * 44;
     scheduler.config.time_step = step;
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.config.details_on_dblclick = true;
@@ -105,7 +136,6 @@ $(document).ready(function () {
             });
         }
     });
-
     scheduler.config.readonly = (!$('#patient').val());
     scheduler.config.first_hour = schedulerConfig.dayStart;
     scheduler.config.last_hour = schedulerConfig.dayEnd;
@@ -113,22 +143,24 @@ $(document).ready(function () {
     scheduler.init('scheduler_here', null, "week");
     var dp = new dataProcessor("supplyAppointment?id=" + did + "&principal=" + principal);
     dp.init(scheduler);
-
+    $('.content').css('padding-top', $('.navbar').height() + 10);
+    var dhxData = $('.dhx_cal_data');
+    dhxData.height(dhxData[0].scrollHeight);
+    $('.dhx_cal_container').height(dhxData[0].scrollHeight + $('.dhx_multi_day').height() + $('.dhx_cal_header').height() + $('.dhx_cal_navline').height() + 15);
 });
 
 var html = function (id) {
     return document.getElementById(id);
 };
 
-
 scheduler.showLightbox = function (id) {
     var tex_local_from = getMessage('workscheduler.modal.appointment.time.from');
     var tex_local_to = getMessage('workscheduler.modal.appointment.time.to');
-
+    $('#myModal').modal('show');
 
     var ev = scheduler.getEvent(id);
     ev.end_date = new Date(ev.start_date.getTime() + scheduler.config.time_step * 60000);
-
+    scheduler.startLightbox(id, html("myModal"));
     var validationErrorMessage = getMessage('modal.workscheduler.validation.error');
     var validationTimeMassage = getMessage('modal.workscheduler.validation.freetime');
     var validationProfileMassage = getMessage('modal.workscheduler.validation.profile');
@@ -146,6 +178,7 @@ scheduler.showLightbox = function (id) {
             return;
         }
         $('#appointmentModal').modal('show');
+        $('#appointmentModal').css(top,  0);
     }
 
     scheduler.startLightbox(id, html("appointmentModal"));
@@ -164,6 +197,7 @@ function save_form() {
 }
 
 function close_form() {
+    location.reload();
     scheduler.endLightbox(false, html("my_form"));
 }
 
@@ -173,15 +207,16 @@ function closeErrorModal() {
 }
 
 function delete_event() {
-    var event_id = scheduler.getState().lightbox_id;
+    // var event_id = scheduler.getState().lightbox_id;
     scheduler.endLightbox(false, html("my_form"));
-    scheduler.deleteEvent(event_id);
+    scheduler.deleteEvent(ev.id);
 }
 
 function blockAppointmensAdd() {
     location.reload();
     scheduler.config.readonly = true;
 }
+
 scheduler.attachEvent("onLimitViolation", function (id, obj) {
     dhtmlx.message('The appointment is not allowed at this time');
 });
@@ -218,6 +253,7 @@ function changeModalContentSecondStep() {
 function closeModal() {
     changeModalContentSecondStep();
     $('#appointmentModal').modal('hide');
+    $('#appointmentModal').modal('hide');
     $.modal.close();
 }
 
@@ -243,7 +279,7 @@ function validateAppointment(ev) {
             result = data.result;
         },
         error: function (data) {
-            alert("error" + data)
+            // alert("error" + data)
         }
     });
     return result;

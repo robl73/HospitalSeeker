@@ -9,7 +9,7 @@
     margin-right:-4px;
 }
 
-.fixed-panel {
+.fixed-panel-body {
     min-height: 148px;
     max-height: 148px;
     text-overflow: ellipsis;
@@ -55,4 +55,21 @@ textarea {
 
 #modal-body-text {
     word-wrap: break-word;
+}
+
+#showMore {
+    margin-bottom: 13px;
+}
+
+.showInfo {
+    position: fixed;
+    top: 7px;
+    left: 45vw;
+    z-index: 1000;
+    width: auto;
+    height: auto;
+}
+
+.showInfoError {
+    display: none;
 }

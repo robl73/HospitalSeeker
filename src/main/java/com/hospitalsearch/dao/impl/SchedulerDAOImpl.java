@@ -3,6 +3,7 @@ package com.hospitalsearch.dao.impl;
 import com.hospitalsearch.dao.SchedulerDAO;
 import com.hospitalsearch.entity.Scheduler;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,11 @@ public class SchedulerDAOImpl extends GenericDAOImpl<Scheduler, Long> implements
     public void merge(Scheduler scheduler) {
         getSessionFactory().getCurrentSession().merge(scheduler);
     }
+
+    public boolean isScheduler(Long doctorId) {
+        Query query = getSessionFactory().getCurrentSession().createQuery("select 1 from Scheduler where doctorinfo_id = :doctorId");
+        query.setParameter("doctorId", doctorId);
+        return query.uniqueResult() != null;
+    }
+
 }

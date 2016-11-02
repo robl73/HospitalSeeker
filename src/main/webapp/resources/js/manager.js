@@ -12,6 +12,7 @@ $(document).ready(function() {
     $('#workDayBeginAt').change(workDayBeginChanged);
     $('#workDayEndAt').change(workDayEndChanged);
     $('#saveData').click(save);
+    $('#appointmentTime').change(appointmentChanged);
     scheduler.config.time_step = 60;
     scheduler.config.collision_limit = 1;
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
@@ -21,7 +22,10 @@ $(document).ready(function() {
     promise.success(function (data) {
         init(data);
     });
-
+    $('.content').css('padding-top', $('.navbar').height() + 13);
+    var dhxData = $('.dhx_cal_data');
+    dhxData.height(dhxData[0].scrollHeight);
+    $('.dhx_cal_container').height(dhxData[0].scrollHeight + $('.dhx_cal_header').height() + $('.dhx_cal_navline').height() + $('.dhx_multi_day').height() + 15);
 });
 
 function init(data) {
@@ -92,6 +96,12 @@ function init(data) {
         isSaved = false;
         return true;
     });
+
+    scheduler.attachEvent("onBeforeLightbox", function(old_mode,old_date,mode,date){
+        isSaved = false;
+        return true;
+    });
+
 }
 
 function showInfoSuccess() {
@@ -115,8 +125,10 @@ function showMessage(selec) {
 }
 
 function workWeekSizeChanged() {
-    selectWeekSize();
     isSaved = false;
+    scheduler.ignore_month = selectWeekSize();
+    scheduler.ignore_week = scheduler.ignore_month;
+    scheduler.updateView();
 }
 
 function selectWeekSize() {
@@ -128,7 +140,7 @@ function selectWeekSize() {
     } else if(selected == 6) {
         ignore.push(0);
     }
-    ignoreDays(ignore);
+    return ignoreDays(ignore);
 }
 
 function save() {
@@ -157,6 +169,7 @@ function save() {
         },
         error: function (e) {
             isSaved = false;
+            showInfoError();
         }
     });
 }
@@ -193,6 +206,10 @@ function showRange(elementName, begin, end) {
     hideOptionElements(elementName, 0, begin);
     showOptionElements(elementName, begin, end);
     hideOptionElements(elementName, end, 24);
+}
+
+function appointmentChanged() {
+    isSaved = false;
 }
 
 function hideOptionElements(elementName, begin, end) {

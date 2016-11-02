@@ -9,12 +9,8 @@ import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.entity.UserDetail;
 import com.hospitalsearch.service.*;
 import com.hospitalsearch.dto.NewDoctorRegistrationDTO;
-import com.hospitalsearch.dto.UserRegisterDTO;
 import com.hospitalsearch.entity.*;
-import com.hospitalsearch.util.Category;
-import com.hospitalsearch.util.Gender;
 import com.hospitalsearch.util.PrincipalConverter;
-import com.hospitalsearch.util.Specialization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.MailException;
@@ -28,7 +24,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -38,6 +33,8 @@ import java.util.*;
 
 /**
  * Created by igortsapyak on 24.05.16.
+ *
+ * Continued Lesia Koval
  */
 @Controller
 public class ManagerController {
@@ -68,9 +65,6 @@ public class ManagerController {
 
     private static String emailTemplate = "emailTemplate.vm";
 
-
-    private Integer doctorsPerPage = 10;
-
     @PreAuthorize("hasRole('MANAGER')")
     @RequestMapping(value = "/**/manage/doctor/edit", method = RequestMethod.GET)
     public ModelAndView editDoctor(@RequestParam("id") Long userId,
@@ -88,6 +82,7 @@ public class ManagerController {
         newDoctorRegistrationDTO.setPhone(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getPhone());
         newDoctorRegistrationDTO.setSpecialization(doctorInfoService.getById(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getId()).getSpecialization());
         newDoctorRegistrationDTO.setNameHospitalId(Long.valueOf(hospitalId));
+        newDoctorRegistrationDTO.setEducation(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getEducation());
         newDoctorRegistrationDTO.setUserId(userId);
         ModelAndView modelAndView = new ModelAndView("/editDoctor");
         modelAndView.addObject("newDoctorDto", newDoctorRegistrationDTO);
@@ -126,26 +121,25 @@ public class ManagerController {
             return "redirect:/manage/doctor/edit";
         }
         userService.update(newDoctorRegistrationDTO);
-        return "redirect:/attachedHospitals/" + newDoctorRegistrationDTO.getNameHospitalId() + "/manageDoctors/";
+        return "redirect:/manage/hospitals/" + newDoctorRegistrationDTO.getNameHospitalId() + "/manageDoctors/";
     }
 
-    @PreAuthorize("hasRole('MANAGER')")
-    @RequestMapping("/attachedHospitals")
+    @RequestMapping("/manage/hospitals")
     public String getHospitalsByManager(ModelMap model){
         List<Hospital> hospitals = managerService.getHospitalsByManager();
         if((hospitals.isEmpty())||hospitals==null){
             model.put("messageError", true);
-            return "manager/attachedHospitals";
+            return "manager/hospitals";
         }
         if(hospitals.size() > 1){
             model.put("hospitals", hospitals);
-            return "manager/attachedHospitals";
+            return "manager/hospitals";
         }
-        return "redirect:/attachedHospitals/"+hospitals.get(0).getId()+"/manageDoctors";
+        return "redirect:/manage/hospitals/"+hospitals.get(0).getId()+"/manageDoctors";
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @RequestMapping(value = "/attachedHospitals/{id}/manageDoctors", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/hospitals/{id}/manageDoctors", method = RequestMethod.GET)
     public String getDoctorsByManager(ModelMap model,@PathVariable ("id") Long hospitalId,
                                       @ModelAttribute ViewForManagerDTO dto,
                                       @RequestParam(value = "hospitalName", defaultValue = "") String hospitalName,
@@ -155,36 +149,35 @@ public class ManagerController {
         dto.setCurrentPage(page);
         dto.setAsc(asc);
         dto.setSort(sort);
-        dto.setPageSize(doctorsPerPage);
+        dto.setPageSize(10);
         List<DoctorSearchDTO> doctors =  managerService.getDoctorsByManagerAndHospital(hospitalId, dto);
+        if((doctors.isEmpty())||doctors==null){
+            model.put("emptyList", Boolean.TRUE);
+            return "manager/manageDoctors";
+        }
         if (dto.getTotalPage() > 1) {
             model.addAttribute("pagination", "pagination");
         }
         if (hospitalName.isEmpty()){
             hospitalName = hospitalService.getById(hospitalId).getName();
         }
-        model.addAttribute("hospitalName", hospitalName);
+        dto.setHospitalName(hospitalName);
         model.addAttribute("hospitalId", hospitalId);
         model.addAttribute("viewForManagerDTO", dto);
-        model.addAttribute("pageSize", dto.getPageSize());
         model.addAttribute("doctors", doctors);
         return "manager/manageDoctors";
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @RequestMapping(value = "/attachedHospitals/{id}/manageDoctors/search", method = RequestMethod.GET)
-    public String searchUser(@PathVariable ("id") Long hospitalId,
-                             @RequestParam(value = "hospitalName") String hospitalName,
-                             @RequestParam(value = "page", defaultValue = "1") Integer page,
-                             @ModelAttribute ViewForManagerDTO dto,
-                             ModelMap model) throws Exception {
-        dto.setPageSize(doctorsPerPage);
+    @RequestMapping(value = "/manage/hospitals/{id}/manageDoctors/search", method = RequestMethod.GET)
+    public String searchDoctorForManager(@PathVariable ("id") Long hospitalId,
+                               @ModelAttribute ("viewForManagerDTO") ViewForManagerDTO dto,
+                               ModelMap model) throws Exception {
         List <DoctorSearchDTO> doctors = managerService.searchDoctors(dto, hospitalId);
         if (dto.getTotalPage() > 1) {
             model.addAttribute("pagination", "pagination");
         }
         model.addAttribute("search", "search");
-        model.addAttribute("hospitalName", hospitalName);
         model.addAttribute("hospitalId", hospitalId);
         model.addAttribute("viewForManagerDTO", dto);
         model.addAttribute("doctors", doctors);
@@ -195,18 +188,11 @@ public class ManagerController {
     @RequestMapping(value = "/doctor/{d_id}/manage", method = RequestMethod.GET)
     public String getManage(
             @PathVariable("d_id") Long doctorId, ModelMap model) {
-        UserDetail userDetail = userDetailService.getById(doctorId);
+        DoctorInfo doctorInfo = doctorInfoService.getById(doctorId);
+        UserDetail userDetail = userDetailService.getById(doctorInfo.getUserDetails().getId());
         model.addAttribute("id", doctorInfoService.getIdByUserDetail(userDetail.getId()));
-        model.addAttribute("doctor", userDetailService.getById(doctorId));
+        model.addAttribute("doctor", userDetailService.getById(userDetail.getId()));
         return "manager/manage";
-    }
-
-    @ResponseBody
-    @PreAuthorize("hasRole('MANAGER')")
-    @RequestMapping(value = "/attachedHospitals/{id}/manageDoctors/setItemsPerPage/{value}", method = RequestMethod.GET)
-    public String setItemsPerPage(@PathVariable int value) {
-        doctorsPerPage = value;
-        return "done";
     }
 
 
@@ -232,7 +218,7 @@ public class ManagerController {
         Long hospitalId = Long.valueOf(request.getParameter("hospitalId"));
         List<NameDepartmensByHospitalDTO> nameDepartmensByHospitalDTOs =
                 hospitalService.getAllNameDepartmentsByHospitals(hospitalId);
-        String json = null;;
+        String json = null;
         json = new Gson().toJson(nameDepartmensByHospitalDTOs);
         response.setContentType("application/json");
         response.getWriter().write(json);
@@ -266,6 +252,19 @@ public class ManagerController {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
+    @RequestMapping(value = "/manage/hospitals/{id}/manageDoctors/delete/{doctorId}", method = RequestMethod.GET)
+    public String deleteUser(@PathVariable ("id") Long hospitalId,
+                             @PathVariable ("doctorId") Long doctorId,
+                             @ModelAttribute ("viewForManagerDTO") ViewForManagerDTO dto,
+                             Locale locale) throws ConnectException {
+        DoctorInfo doctorInfo = doctorInfoService.getById(doctorId);
+        UserDetail userDetail = userDetailService.getById(doctorInfo.getUserDetails().getId());
+        userService.changeStatus(userDetail.getUser().getId());
+        sendBannedMessageToUserById(userDetail.getUser().getId(), locale);
+        return "redirect:/manage/hospitals/"+hospitalId+"/manageDoctors";
+    }
+
     @RequestMapping(value = "/editHospitalsManagers", method = RequestMethod.GET)
     public String getManagersAndHospitals(Map<String, Object> model) {
         model.put("hospitals", hospitalService.getAll());
@@ -292,5 +291,17 @@ public class ManagerController {
         return "doctorsTwo";
     }
 
+    //utility methods
+    private void sendBannedMessageToUserById(Long id, Locale locale) throws ConnectException {
+        User user = userService.getById(id);
+        if (!user.getEnabled()) {
+            String bannedMessage = mailService.createBannedMessage(user, locale);
+            try {
+                mailService.sendMessage(user, messageSource.getMessage("mail.message.banned.title", null, locale), bannedMessage, emailTemplate);
+            }catch (Exception e){
+                //write log
+            }
 
+        }
+    }
 }

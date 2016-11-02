@@ -1,0 +1,56 @@
+.sorter{
+	background: no-repeat 95% 50%;
+	cursor: pointer;
+	white-space: normal;
+	font-weight: 900;
+	font-size:inherit
+}
+
+.sorter:hover{
+	color: #FFF;
+
+}
+
+.sorter-false {
+	background-image: url(../img/sorter/sort.png);
+}
+
+
+.sorter-asc {
+	background-image: url(../img/sorter/sort-descending.png);
+}
+
+.sorter-desc {
+	background-image: url(../img/sorter/sort-down.png);
+}
+
+
+
+/*
+.tablesorter-default thead .sorter-false {
+	background-image: none;
+}
+
+.tablesorter-default .header,
+.tablesorter-default .tablesorter-header {
+	background-image: url(../img/sorter/sort.png);
+	background-position: 95% 50%;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	white-space: normal;
+}
+
+
+.tablesorter-default thead .headerSortUp,
+.tablesorter-default thead .tablesorter-headerSortUp,
+.tablesorter-default thead .tablesorter-headerAsc {
+	background-image: url(../img/sorter/sort-descending.png);
+
+}
+.tablesorter-default thead .headerSortDown,
+.tablesorter-default thead .tablesorter-headerSortDown,
+.tablesorter-default thead .tablesorter-headerDesc {
+	background-image: url(../img/sorter/sort-down.png);
+
+}
+*/

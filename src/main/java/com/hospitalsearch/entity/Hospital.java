@@ -49,13 +49,25 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- *
  * @author Oleksandr Mukonin
  *
+ * Continued Lesia Koval
+ * Implemented hibernate search for hospitals
  */
+
+/**
+ * Such annotations as:
+ * - @Indexed
+ * - @AnalyzerDef
+ * - @DocumentId
+ * - @Field
+ * - @IndexedEmbedded
+ * are used only for hibernate search and YOU SHOULD NOT USE THEM for
+ * other field or entity if it`s not necessary
+* */
 @Entity
 @Table(name = "hospital")
-@Indexed
+@Indexed  //annotation for hibernate search
 @NamedQueries({
 	@NamedQuery(name = Hospital.GET_LIST_BY_BOUNDS, query = Hospital.GET_LIST_BY_BOUNDS_QUERY)
 })
@@ -84,13 +96,13 @@ public class Hospital {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hospital_gen")
 	@SequenceGenerator(name = "hospital_gen", sequenceName = "hospital_id_seq", initialValue = 1, allocationSize = 1)
-	@DocumentId
+	@DocumentId  //annotation for hibernate search
 	private Long id;
 
 	@NotEmpty(message = "This field is required.")
 	@Size(min = 5, max = 70, message = "Please enter at least 5 symbols and not more than 70 symbols.")
 	@Column(nullable = false)
-	@Field(analyze = Analyze.YES, analyzer = @Analyzer(definition = "ngram"))
+	@Field(analyze = Analyze.YES, analyzer = @Analyzer(definition = "ngram"))  //annotation for hibernate search
 	private String name;
 
 	@NotNull
@@ -107,7 +119,7 @@ public class Hospital {
 
 	@Embedded
 	@Valid
-	@IndexedEmbedded
+	@IndexedEmbedded  //annotation for hibernate search
 	@AttributeOverrides({
 		@AttributeOverride(name = "city", column = @Column(name = "city")),
 		@AttributeOverride(name = "country", column = @Column(name = "country")),
@@ -118,7 +130,7 @@ public class Hospital {
 	
 	@Size(max = 150, message = "Please enter not more than 150 symbols.")
 	@Column(nullable = false)
-	@Field(analyze = Analyze.YES, analyzer = @Analyzer(definition = "ngram"))
+	@Field(analyze = Analyze.YES, analyzer = @Analyzer(definition = "ngram"))  //annotation for hibernate search
 	private String description;
 
 	@Column(name = "imagepath")
@@ -128,7 +140,7 @@ public class Hospital {
 	@OneToMany(mappedBy="hospital", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@Fetch(value = FetchMode.SUBSELECT)
 	@Cache(region="entityCache",usage=CacheConcurrencyStrategy.READ_ONLY)
-	@IndexedEmbedded
+	@IndexedEmbedded  //annotation for hibernate search
 	private List<Department> departments;
 
 	@JsonIgnore

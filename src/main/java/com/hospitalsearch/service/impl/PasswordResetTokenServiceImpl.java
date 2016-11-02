@@ -59,8 +59,7 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
     public void createToken(String token, User user) {
         try {
             logger.info("create reset token by user: " + user);
-    		Integer RESET_PASSWORD_TOKEN_EXPIRATION = configService.RESET_PASSWORD_TOKEN_EXPIRATION();
-            PasswordResetToken passwordResetToken = new PasswordResetToken(token, user, RESET_PASSWORD_TOKEN_EXPIRATION);
+            PasswordResetToken passwordResetToken = new PasswordResetToken(token, user, configService.getResetPasswordToken());
             resetTokenDAO.save(passwordResetToken);
         } catch (Exception e) {
             logger.error("Error creating reset token: " + e);

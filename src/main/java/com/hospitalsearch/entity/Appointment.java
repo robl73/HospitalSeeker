@@ -3,6 +3,7 @@ package com.hospitalsearch.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hospitalsearch.util.CustomLocalDateTimeSerializer;
+import com.hospitalsearch.util.LocalDateTimeTimestampConverter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,9 +29,11 @@ public class Appointment {
 	private DoctorInfo doctorInfo;
 
 	@JsonSerialize(using = CustomLocalDateTimeSerializer.class)
+	@Convert(converter = LocalDateTimeTimestampConverter.class)
 	private LocalDateTime start_date;
 	
 	@JsonSerialize(using = CustomLocalDateTimeSerializer.class)
+	@Convert(converter = LocalDateTimeTimestampConverter.class)
 	private LocalDateTime end_date;
 
 	private String text;

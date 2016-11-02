@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <link rel="stylesheet" th:href="@{/css/moderationFeedbacks.css}"/>
+    <script th:src="@{/js/moderationFeedbacks.js}"></script>
+</head>
+<body>
+<section layout:fragment="content" name="top">
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default">
+                            <input type="checkbox" value="remove" autocomplete="off" name="autoremove"/>
+                            <span th:text="#{manager.autoremove}"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+
+                <div class="col-md-4">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default active">
+                            <input type="checkbox" value="NEW" checked="checked" autocomplete="off" name="status"/>
+                            <span th:text="#{manager.status.new}"></span>
+                        </label>
+                        <label class="btn btn-default">
+                            <input type="checkbox" value="OK" autocomplete="off" name="status"/>
+                            <span th:text="#{manager.status.ok}"></span>
+                        </label>
+                        <label class="btn btn-default">
+                            <input type="checkbox" value="BAD" autocomplete="off" name="status"/>
+                            <span th:text="#{manager.status.bad}"></span>
+                        </label>
+                    </div>
+                    <button type="button" class="btn btn-default" id="searchButton">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </div>
+
+            <br/><br/>
+            </div>
+            <h2 class="text-center" style="display: none;" id="noFeedbacks" th:text="#{manager.noFeedbacks}">Nothing to show</h2>
+            <div class="feedbacks">
+                <script th:inline="javascript">var firstPart = [[${feedbacks}]];</script>
+            </div>
+            <div class="text-center" style="display: none;" id="loading-image">
+                <img src="http://i.stack.imgur.com/FhHRx.gif" />
+                <p th:text="#{manager.wait}"></p>
+            </div>
+        </div>
+
+    </div>
+</section>
+</body>
+</html>

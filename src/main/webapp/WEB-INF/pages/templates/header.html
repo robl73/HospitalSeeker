@@ -38,11 +38,13 @@
                         th:text="#{header.menu.card}"
                         th:classappend="${#httpServletRequest.requestURL.toString().matches('.*/card.*')}?'active':''"
                         th:href="@{/card}">Card</a></li>
+
                 <li sec:authorize="hasRole('DOCTOR')"><a
                         th:class="menu"
                         th:classappend="${#httpServletRequest.requestURL.toString().matches('.*/patients.*')}?'active':''"
                         th:href="@{/patients}"
                         th:text="#{header.menu.patient}">Patients</a></li>
+
                 <li sec:authorize="hasRole('DOCTOR')"><a th:class="menu"
                                                          th:classappend="${#httpServletRequest.requestURL.toString().matches('.*/workscheduler.*')}?'active':''"
                                                          th:href="@{/workscheduler}" th:text="#{header.workscheduler}"></a></li>
@@ -50,10 +52,20 @@
                 <li sec:authorize="hasRole('MANAGER')">
                 <a href="#" class="nav navbar-nav dropdown dropdown-toggle" data-toggle="dropdown" th:text="#{manager.menu.actions}">
                     <span class="caret"></span></a>
+
                 <ul class="dropdown-menu" id="dropdawn">
+                    <li>
+                        <a th:href="@{/manage/hospitals}" class="menu">
+                            <span class="glyphicon glyphicon-calendar" th:text="' '+#{manager.menu.view.hospitals}"></span></a>
+                    </li>
                     <li>
                         <a th:href="@{/newDoctor}" class="menu">
                             <span class="glyphicon glyphicon-plus-sign" th:text="' '+#{manager.menu.add.new.doctor}"></span></a>
+                    </li>
+                    <li>
+                        <a th:href="@{/moderationFeedbacks}" class="menu">
+                            <span class="glyphicon glyphicon-check" th:text="| #{manager.menu.moderation}|"></span>
+                        </a>
                     </li>
                 </ul>
                 </li>
@@ -124,10 +136,15 @@
                         <span class="caret"></span> </a>
 
                     <ul class="dropdown-menu" id="dropdawn">
-                        <li>
+                        <li sec:authorize="hasRole('PATIENT')">
                             <a class="menu glyphicon glyphicon-user" data-toggle="modal" data-target="#myModal" data-backdrop="false"
-                               th:onclick="${userName.userDetails.lastName==null}?'editProfile()':'showPage()'" th:text="' '+#{header.principal.menu.profile}">
-                            <span class="glyphicon glyphicon-user"></span></a>
+                               th:onclick="${userName.userDetails.lastName==null}?'editPatientProfile()':'showPatientPage()'" th:text="' '+#{header.principal.menu.profile}">
+                                <span class="glyphicon glyphicon-user"></span></a>
+                        </li>
+                        <li>
+                            <a  sec:authorize="hasAnyRole('ADMIN','MANAGER')" class="menu glyphicon glyphicon-user" data-toggle="modal" data-target="#myModal" data-backdrop="false"
+                                th:onclick="${userName.userDetails.lastName==null}?'editProfile()':'showPage()'" th:text="' '+#{header.principal.menu.profile}">
+                                <span class="glyphicon glyphicon-user"></span></a>
                         </li>
                         <li><a class="menu" th:href="@{/logout}"> <span
                                 class="glyphicon glyphicon-log-out" th:text="' '+#{header.principal.log.out}"></span>
@@ -149,28 +166,13 @@
                                 </a>
                         </li>
 
-                        <!--<li th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})">-->
-                                <!--<a th:href="@{${currentUrl}(lang=ua)}"  class="menu">-->
-                                    <!--<img th:src="@{/img/ua.png}" th:text="#{ukrainian}"/>-->
-                                <!--</a>-->
-                            <!--&lt;!&ndash;<a th:href="@{ |${#httpServletRequest.requestURL.toString()+'?lang=ua'}| }" class="menu">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<img th:src="@{/img/ua.png}" th:text="#{ukrainian}"/>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                        <!--</li>-->
+                        
                         <li th:with="currentUrl=(${@currentUrlWithoutParam.apply('lang')})">
                             <a th:href="@{${currentUrl}(lang=en)}" class="menu">
                                 <img th:src="@{/img/en.png}"/> english
                             </a>
                         </li>
-                        <!--<li  th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})">-->
-                            <!--<a th:href="@{${currentUrl}(lang=en)}"  class="menu">-->
-                                <!--<img th:src="@{/img/en.png}"/> english-->
-                            <!--</a>-->
-                            <!--&lt;!&ndash;<a th:href="@{ |${#httpServletRequest.requestURL.toString()+'?lang=en'}|}" class="menu">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<img th:src="@{/img/en.png}"/> english&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                        <!--</li>-->
-
+                        
                     </ul>
                 </li>
 
@@ -182,104 +184,31 @@
         
         
         
-       <!--    <div th:rel="import" th:href="breadcrumb.html"  style="width: 100px; height: 100px;"></div>  -->
-       
- <!--      <div  style="width: 100px; height: 100px;"> <script>
-            $(function(){
-                $("#includedContent").load("breadcrumb.html");
-            });
-        </script>
-     </div> 
-      -->
-     
-  <!-- <div w3-include-html="breadcrumb.html" style="width: 100px; height: 100px;"></div>  -->
-  
-  <!-- <div layout:include="breadcrumb :: breadcrumbs" th:with="type='info', header='Info'" th:remove="tag">
-   -->
-  
-  <div th:replace="templates/breadcrumb::breadcrumbs"/>
+         
+  <div th:replace="templates/breadcrumb::breadcrumbs"></div>
           
-  <!--/* Implements alert content fragment with full-blown HTML content */-->
-     <!--  <h3>
-           <ol class="breadcrumb" th:remove="${patients}? none : all">
-                <li><a th:href="@{/patients(page=1)}" th:class="${hospital}?:'active'"
-                       th:text="#{header.menu.patient}" /></li>
-                <li th:remove="${userId}? none : all"><a
-                        th:href="@{/card/items(userId=${userId},page=1)}" th:class="${department}?:'active'"
-                        th:text="#{header.menu.card}" /></li>
-                <li th:remove="${cardItem}? none : all"><a
-                        th:href="@{/new/record(userId=${userId})}"
-                        th:class="${doctor}?:'active'" th:text="${cardItem.id==null}?#{card.record.create}:#{card.record.edit}" /></li>
-            </ol>  
-      
-            <ol class="breadcrumb" th:remove="${hospitals }? none : all">
-                <li><a th:href="@{/hospitals}" th:class="${hospital}?:'active'"
-                       th:text="'Hospitals'" /></li>
-                <li th:remove="${hospital}? none : all"><a
-                        th:href="@{|/hospital/${hospital.id}|}" th:class="${department}?:'active'"
-                        th:text="${hospital.name}" /></li>
-                <li th:remove="${department}? none : all"><a
-                        th:href="@{|/hospital/${hospital.id}/department/${department.id}|}"
-                        th:class="${doctor}?:'active'" th:text="${department.name}" /></li>
-                <li th:remove="${doctor}? none : all"><a
-                        th:href="@{/start(id=${doctor.id},did=${id})}" th:class="'active'"
-                        th:text="|${doctor.firstName} ${doctor.lastName}|" /></li>
-            </ol>
-            
-            
-              <ol class="breadcrumb" th:remove="${hospitals }? none : all">
-                <li><a th:href="@{/mapsearch}" th:class="${hospital}?:'active'"
-                       th:text="'Hospitals'" /></li>
-                       
-                <li th:remove="${hospital}? none : all"><a
-                        th:href="@{|/hospital/${hospital.id}|}" th:class="${department}?:'active'"
-                        th:text="${hospital.name}" /></li>
-                        
-                    
-                       department 
-                      <li th:remove="${department}? none : all"><a
-                        th:href="@{|/hospital/${hospital.id}/department/${department.id}|}"
-                        th:class="${doctor}?:'active'" th:text="${department.name}" /></li>
-                       or laboratory
-                <li th:remove="${diagnosisPanelInfos}? none : all"><a
-                        th:href="@{|/hospital/${hospital.id}/laboratory/${laboratory.id}|}"
-                        th:class="${diagnosisPanelInfos}?:'active'" th:text="'Laboratory'" /></li>
-                        
-                        doctor
-                       <li th:remove="${doctor}? none : all"><a
-                        th:href="@{/start(id=${doctor.id},did=${id})}" th:class="'active'"
-                        th:text="|${doctor.firstName} ${doctor.lastName}|" /></li>
-                        or diagnosisPanel
-                <li th:remove="${diagnosisPanel}? none : all"><a
-                        th:href="@{|/hospital/${hospital.id}/laboratory/${laboratory.id}/diagnosisPanel/${dpid}|}" 
-                        th:class="'active'"
-                        th:text="${panelName}" /></li>
-            </ol> 
-        </h3>  -->
+ 
     </div>
 
     <!--Search hospitals and doctors-->
     <div class="[ bootsnipp-search animate ]">
         <div class="[ container ]">
-            <div class="[search-hospital-container]"  style="display: inline-block; float:left; width: 45%;">
-                <form th:action="@{/hospitals}" id="search-hospital-form" class="[ form-inline ]" method="GET">
-                  <div class="[ input-group ]" style="z-index:1000000;width: 100%;">
+            <div class="[search-hospital-container]" style="display: inline-block; float:left; width: 45%;">
+                <form th:action="@{/hospitals}" id="search-hospital-form" class="[ form-inline ]" method="GET" role="search">
+                    <div class="[ input-group ]" style="z-index:1000000;width: 100%;">
 
 
-                     <div class="form-group" style="width: 92%;">
-                        	<input id="select_hospital_search"  style="border-color:#5bc0de; border-width:3px; width: 100%;" type="text" class="[ form-control ] dropdown-field" name="q"
+                        <div class="form-group" style="width: 92%;">
+                            <input id="select_hospital_search"  style="border-color:#5bc0de; border-width:3px; width: 100%;" type="text" class="[ form-control ] dropdown-field" name="q"
                                    th:placeholder="#{header.menu.searchbar.placeholder.hospitals}"/>
 
                         </div>
-                        <span class="[ input-group-btn ]" style="position: absolute;top:0;right:0; float: inherit; width:8%;">
-                        	<button type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;border-width:3px;"><span class="[ glyphicon glyphicon-search ]"></span></button>
+                        <span class="[ input-group-btn ]" style="position: absolute;top:0;right:0; float: inherit; width:8%;" th:title="#{header.menu.searchbar.hospital.tooltip}">
+                        	<button id="select_hospital_search_button" type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;border-width:3px;"><span class="[ glyphicon glyphicon-search ]"></span></button>
                         </span>
                     </div>
                 </form>
             </div>
-            
-            
-
 
             <div class="[search-doctor-container]" style="display: inline-block; width: 45%; float: right;">
                 <form th:action="@{/doctors}" id="search-doctor-form" class="[ form-inline ]" method="GET" role="search">
@@ -291,8 +220,8 @@
                                    th:placeholder="#{header.menu.searchbar.placeholder.doctors}"/>
 
                         </div>
-                        <span class="[ input-group-btn ]" style="position: absolute;top:0;right:0;float: inherit; width:8%">
-                        	<button type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;border-width:3px;"><span class="[ glyphicon glyphicon-search ]"></span></button>
+                        <span class="[ input-group-btn ]" style="position: absolute;top:0;right:0;float: inherit; width:8%" th:title="#{header.menu.searchbar.doctor.tooltip}">
+                        	<button id="select_doctor_search_button" type="submit" class="[ btn btn-info ]" style="display: inherit; float: inherit;border-width:3px;"><span class="[ glyphicon glyphicon-search ]"></span></button>
                         </span>
                     </div>
                 </form>

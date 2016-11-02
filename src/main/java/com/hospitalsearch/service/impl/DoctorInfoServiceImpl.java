@@ -9,8 +9,10 @@ import com.hospitalsearch.entity.DoctorInfo;
 import com.hospitalsearch.service.DoctorInfoService;
 import com.hospitalsearch.util.Page;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
  */
 @Service
 public class DoctorInfoServiceImpl implements DoctorInfoService {
+
     @Autowired
     private DoctorInfoDAO doctorInfoDAO;
 
@@ -49,6 +52,13 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
     @Override
     public DoctorInfo getById(Long id) {
         return doctorInfoDAO.getById(id);
+    }
+
+    @Override
+    public DoctorInfo getWithDepartments(Long id) {
+        DoctorInfo doc = doctorInfoDAO.getById(id);
+        Hibernate.initialize(doc.getDepartments());
+        return doc;
     }
 
     @Override
