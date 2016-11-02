@@ -1,5 +1,6 @@
 package com.hospitalsearch.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -12,14 +13,25 @@ import org.hibernate.search.annotations.*;
  * */
 @Entity
 @Table(name = "department")
-public class Department{
+public class Department implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_gen")
 	@SequenceGenerator(name = "department_gen", sequenceName = "department_id_seq", initialValue = 1, allocationSize = 1)
 	private Long id;
+        
+        @Embedded
+        @IndexedEmbedded
+        private DepartmentInfo departmentinfo;
 
-	@Field(analyze = Analyze.YES,analyzer = @Analyzer(definition = "ngram")) //annotation for hibernate search
+        public DepartmentInfo getDepartmentinfo() {
+            return departmentinfo;
+        }
+
+        public void setDepartmentinfo(DepartmentInfo departmentinfo) {
+            this.departmentinfo = departmentinfo;
+        }
+
 	private String name;
 
 	@ManyToMany(cascade = {CascadeType.ALL})

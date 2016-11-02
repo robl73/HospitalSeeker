@@ -37,4 +37,9 @@ public class Language {
 	public String toString() {
 		return "{Language: id = " + id + ", name = " + name + "}";
 	}
+        
+        public Language(){
+            this.name="en";}
+        
+        
 }

@@ -7,6 +7,1892 @@
                                         http://www.liquibase.org/xml/ns/dbchangelog 
                                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-   
+       
+ <!--  ===============================================================   -->
+<!--    
+    <changeSet author="Admin (generated)" id="1477681958681-1">
+        <createTable tableName="admintokenconfig">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(70)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-2">
+        <createTable tableName="appointment">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="BYTEA"/>
+            <column name="start_date" type="BYTEA"/>
+            <column name="text" type="VARCHAR(255)"/>
+            <column name="doctorinfo_id" type="BIGINT"/>
+            <column name="userdetail_id" type="BIGINT"/>
+            <column name="color" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-3">
+        <createTable tableName="carditem">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="complaint" type="TEXT"/>
+            <column name="date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="prescription" type="TEXT"/>
+            <column name="result" type="TEXT"/>
+            <column name="patientcard_id" type="BIGINT"/>
+            <column name="doctorinfo_id" type="BIGINT"/>
+            <column name="doctor_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-4">
+        <createTable tableName="department">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="imagepath" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="hospital_id" type="BIGINT"/>
+            <column name="aname" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="specialization" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-5">
+        <createTable tableName="department_doctorinfo">
+            <column name="departments_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="doctors_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-6">
+        <createTable tableName="departmentname">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="VARCHAR(2)"/>
+            <column name="specialization" type="VARCHAR(20)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-7">
+        <createTable tableName="diagnosispanel">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="laboratory_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-8">
+        <createTable tableName="diagnosispanel_test">
+            <column name="diagnosispanel_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tests_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-9">
+        <createTable tableName="diagnosispanellocalization">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="diagnosispanel_id" type="BIGINT"/>
+            <column name="language_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-10">
+        <createTable tableName="doctorinfo">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="specialization" type="VARCHAR(255)"/>
+            <column name="userdetails_id" type="BIGINT"/>
+            <column name="category" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-11">
+        <createTable tableName="events">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="BYTEA"/>
+            <column name="id_dhtmlx" type="BIGINT"/>
+            <column name="length" type="BIGINT"/>
+            <column name="pattern" type="VARCHAR(255)"/>
+            <column name="pid" type="BIGINT"/>
+            <column name="start_date" type="BYTEA"/>
+            <column name="text" type="VARCHAR(255)"/>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="scheduler_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-12">
+        <createTable tableName="feedback">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="BYTEA"/>
+            <column name="message" type="VARCHAR(255)"/>
+            <column name="consumer_id" type="BIGINT"/>
+            <column name="producer_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-13">
+        <createTable tableName="hospital">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="building" type="VARCHAR(5)"/>
+            <column name="city" type="VARCHAR(30)"/>
+            <column name="country" type="VARCHAR(30)"/>
+            <column name="street" type="VARCHAR(30)"/>
+            <column name="description" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="imagepath" type="VARCHAR(255)"/>
+            <column name="latitude" type="FLOAT8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="FLOAT8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-14">
+        <createTable tableName="hospital_users">
+            <column name="hospital_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="managers_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-15">
+        <createTable tableName="laboratory">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="hospital_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-16">
+        <createTable tableName="language">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-17">
+        <createTable tableName="password_reset_tokens">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expirydate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-18">
+        <createTable tableName="patientcard">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patientinfo_id" type="BIGINT"/>
+            <column name="userdetail_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-19">
+        <createTable tableName="patientinfo">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patientcard_id" type="BIGINT"/>
+            <column name="userdetail_id" type="BIGINT"/>
+            <column name="cardid" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-20">
+        <createTable tableName="persistent_logins">
+            <column name="series" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_used" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="token" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-21">
+        <createTable tableName="relativesinfo">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="relation" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-22">
+        <createTable tableName="role">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-23">
+        <createTable tableName="role_users">
+            <column name="users_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-24">
+        <createTable tableName="scheduler">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="app_size" type="SMALLINT"/>
+            <column name="day_end" type="SMALLINT"/>
+            <column name="day_start" type="SMALLINT"/>
+            <column name="week_size" type="SMALLINT"/>
+            <column name="doctorinfo_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-25">
+        <createTable tableName="test">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="diagnosispanel_id" type="BIGINT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="workschedule" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-26">
+        <createTable tableName="translator">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aname" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="specialization" type="VARCHAR(255)"/>
+            <column name="departmentid_id" type="BIGINT"/>
+            <column name="hospitalid_id" type="BIGINT"/>
+            <column name="languageid_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-27">
+        <createTable tableName="userdetail">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="birthdate" type="BYTEA"/>
+            <column name="firstname" type="VARCHAR(255)"/>
+            <column name="gender" type="VARCHAR(255)"/>
+            <column name="imagepath" type="VARCHAR(255)"/>
+            <column name="lastname" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="patientcard_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-28">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BOOL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="userdetails_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-29">
+        <createTable tableName="verifications_tokens">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expirydate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-30">
+        <createTable tableName="workscheduler">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="workscheduler" type="TEXT"/>
+            <column name="doctorinfo_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-31">
+        <insert tableName="admintokenconfig">
+            <column name="id" valueNumeric="1"/>
+            <column name="token" value="RESET_PASSWORD_TOKEN_EXPIRATION"/>
+            <column name="value" value="15"/>
+        </insert>
+        <insert tableName="admintokenconfig">
+            <column name="id" valueNumeric="2"/>
+            <column name="token" value="VERIFICATION_TOKEN_EXPIRATION"/>
+            <column name="value" value="36"/>
+        </insert>
+        <insert tableName="admintokenconfig">
+            <column name="id" valueNumeric="3"/>
+            <column name="token" value="REMEMBER_ME_TOKEN_EXPIRATION"/>
+            <column name="value" value="48"/>
+        </insert>
+        <insert tableName="admintokenconfig">
+            <column name="id" valueNumeric="4"/>
+            <column name="token" value="FILE_MAX_SIZE"/>
+            <column name="value" value="204800"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-32">
+        <insert tableName="appointment">
+            <column name="id" valueNumeric="34"/>
+            <column name="end_date" value="[B@1debc91c"/>
+            <column name="start_date" value="[B@687e4c93"/>
+            <column name="text" value="vasia"/>
+            <column name="doctorinfo_id" valueNumeric="6"/>
+            <column name="userdetail_id" valueNumeric="31"/>
+            <column name="color"/>
+        </insert>
+        <insert tableName="appointment">
+            <column name="id" valueNumeric="35"/>
+            <column name="end_date" value="[B@181e72d3"/>
+            <column name="start_date" value="[B@6ec7bce0"/>
+            <column name="text" value="vasua"/>
+            <column name="doctorinfo_id" valueNumeric="6"/>
+            <column name="userdetail_id" valueNumeric="31"/>
+            <column name="color"/>
+        </insert>
+        <insert tableName="appointment">
+            <column name="id" valueNumeric="36"/>
+            <column name="end_date" value="[B@2d272b0d"/>
+            <column name="start_date" value="[B@3727f0ee"/>
+            <column name="text" value="contact"/>
+            <column name="doctorinfo_id" valueNumeric="6"/>
+            <column name="userdetail_id" valueNumeric="31"/>
+            <column name="color"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-33">
+        <insert tableName="department">
+            <column name="id" valueNumeric="1"/>
+            <column name="imagepath" value="service1.png"/>
+            <column name="name" value="Diagnostician"/>
+            <column name="hospital_id" valueNumeric="1"/>
+            <column name="aname"/>
+            <column name="description"/>
+            <column name="specialization"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="2"/>
+            <column name="imagepath" value="service2.png"/>
+            <column name="name" value="Therapistician"/>
+            <column name="hospital_id" valueNumeric="1"/>
+            <column name="aname"/>
+            <column name="description"/>
+            <column name="specialization"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="3"/>
+            <column name="imagepath" value="service3.png"/>
+            <column name="name" value="Oncologian"/>
+            <column name="hospital_id" valueNumeric="2"/>
+            <column name="aname"/>
+            <column name="description"/>
+            <column name="specialization"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="4"/>
+            <column name="imagepath" value="service4.png"/>
+            <column name="name" value="Diagnostician"/>
+            <column name="hospital_id" valueNumeric="2"/>
+            <column name="aname"/>
+            <column name="description"/>
+            <column name="specialization"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="5"/>
+            <column name="imagepath" value="service1.png"/>
+            <column name="name" value="Therapistician"/>
+            <column name="hospital_id" valueNumeric="3"/>
+            <column name="aname"/>
+            <column name="description"/>
+            <column name="specialization"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="6"/>
+            <column name="imagepath" value="service2.png"/>
+            <column name="name" value="Oncologian"/>
+            <column name="hospital_id" valueNumeric="3"/>
+            <column name="aname"/>
+            <column name="description"/>
+            <column name="specialization"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="7"/>
+            <column name="imagepath" value="service3.png"/>
+            <column name="name" value="Diagnostician"/>
+            <column name="hospital_id" valueNumeric="4"/>
+            <column name="aname"/>
+            <column name="description"/>
+            <column name="specialization"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="8"/>
+            <column name="imagepath" value="service4.png"/>
+            <column name="name" value="Therapistician"/>
+            <column name="hospital_id" valueNumeric="4"/>
+            <column name="aname"/>
+            <column name="description"/>
+            <column name="specialization"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-34">
+        <insert tableName="department_doctorinfo">
+            <column name="departments_id" valueNumeric="1"/>
+            <column name="doctors_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="department_doctorinfo">
+            <column name="departments_id" valueNumeric="1"/>
+            <column name="doctors_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="department_doctorinfo">
+            <column name="departments_id" valueNumeric="2"/>
+            <column name="doctors_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="department_doctorinfo">
+            <column name="departments_id" valueNumeric="2"/>
+            <column name="doctors_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="department_doctorinfo">
+            <column name="departments_id" valueNumeric="3"/>
+            <column name="doctors_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="department_doctorinfo">
+            <column name="departments_id" valueNumeric="4"/>
+            <column name="doctors_id" valueNumeric="6"/>
+        </insert>
+        <insert tableName="department_doctorinfo">
+            <column name="departments_id" valueNumeric="5"/>
+            <column name="doctors_id" valueNumeric="7"/>
+        </insert>
+        <insert tableName="department_doctorinfo">
+            <column name="departments_id" valueNumeric="6"/>
+            <column name="doctors_id" valueNumeric="8"/>
+        </insert>
+        <insert tableName="department_doctorinfo">
+            <column name="departments_id" valueNumeric="7"/>
+            <column name="doctors_id" valueNumeric="9"/>
+        </insert>
+        <insert tableName="department_doctorinfo">
+            <column name="departments_id" valueNumeric="8"/>
+            <column name="doctors_id" valueNumeric="10"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-35">
+        <insert tableName="diagnosispanel">
+            <column name="id" valueNumeric="1"/>
+            <column name="laboratory_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="diagnosispanel">
+            <column name="id" valueNumeric="2"/>
+            <column name="laboratory_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-36">
+        <insert tableName="diagnosispanellocalization">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="Hormonal panel"/>
+            <column name="diagnosispanel_id" valueNumeric="1"/>
+            <column name="language_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="diagnosispanellocalization">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Гормональна панель"/>
+            <column name="diagnosispanel_id" valueNumeric="1"/>
+            <column name="language_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="diagnosispanellocalization">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="Infectious panel"/>
+            <column name="diagnosispanel_id" valueNumeric="2"/>
+            <column name="language_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="diagnosispanellocalization">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="Інфекційна панель"/>
+            <column name="diagnosispanel_id" valueNumeric="2"/>
+            <column name="language_id" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-37">
+        <insert tableName="doctorinfo">
+            <column name="id" valueNumeric="1"/>
+            <column name="specialization" value="DIAGNOSIS"/>
+            <column name="userdetails_id" valueNumeric="6"/>
+            <column name="category" value="INTERN"/>
+        </insert>
+        <insert tableName="doctorinfo">
+            <column name="id" valueNumeric="2"/>
+            <column name="specialization" value="NEUROLOGY"/>
+            <column name="userdetails_id" valueNumeric="7"/>
+            <column name="category" value="JUNIOR"/>
+        </insert>
+        <insert tableName="doctorinfo">
+            <column name="id" valueNumeric="3"/>
+            <column name="specialization" value="ENDOCRINOLOGY"/>
+            <column name="userdetails_id" valueNumeric="8"/>
+            <column name="category" value="SPECIALIST"/>
+        </insert>
+        <insert tableName="doctorinfo">
+            <column name="id" valueNumeric="4"/>
+            <column name="specialization" value="DIAGNOSIS"/>
+            <column name="userdetails_id" valueNumeric="9"/>
+            <column name="category" value="INTERN"/>
+        </insert>
+        <insert tableName="doctorinfo">
+            <column name="id" valueNumeric="5"/>
+            <column name="specialization" value="ONCOLOGY"/>
+            <column name="userdetails_id" valueNumeric="10"/>
+            <column name="category" value="JUNIOR"/>
+        </insert>
+        <insert tableName="doctorinfo">
+            <column name="id" valueNumeric="7"/>
+            <column name="specialization" value="ONCOLOGY"/>
+            <column name="userdetails_id" valueNumeric="12"/>
+            <column name="category" value="INTERN"/>
+        </insert>
+        <insert tableName="doctorinfo">
+            <column name="id" valueNumeric="6"/>
+            <column name="specialization" value="DIAGNOSIS"/>
+            <column name="userdetails_id" valueNumeric="11"/>
+            <column name="category" value="SPECIALIST"/>
+        </insert>
+        <insert tableName="doctorinfo">
+            <column name="id" valueNumeric="8"/>
+            <column name="specialization" value="NEUROLOGY"/>
+            <column name="userdetails_id" valueNumeric="13"/>
+            <column name="category" value="SPECIALIST"/>
+        </insert>
+        <insert tableName="doctorinfo">
+            <column name="id" valueNumeric="9"/>
+            <column name="specialization" value="DIAGNOSIS"/>
+            <column name="userdetails_id" valueNumeric="14"/>
+            <column name="category" value="JUNIOR"/>
+        </insert>
+        <insert tableName="doctorinfo">
+            <column name="id" valueNumeric="11"/>
+            <column name="specialization" value="ONCOLOGY"/>
+            <column name="userdetails_id" valueNumeric="16"/>
+            <column name="category" value="SPECIALIST"/>
+        </insert>
+        <insert tableName="doctorinfo">
+            <column name="id" valueNumeric="10"/>
+            <column name="specialization" value="ENDOCRINOLOGY"/>
+            <column name="userdetails_id" valueNumeric="15"/>
+            <column name="category" value="INTERN"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-38">
+        <insert tableName="events">
+            <column name="id" valueNumeric="27"/>
+            <column name="end_date" value="[B@278667fd"/>
+            <column name="id_dhtmlx" valueNumeric="1475231168602"/>
+            <column name="length"/>
+            <column name="pattern" value=""/>
+            <column name="pid"/>
+            <column name="start_date" value="[B@684b31de"/>
+            <column name="text" value="work 123"/>
+            <column name="type" value=""/>
+            <column name="scheduler_id" valueNumeric="46"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-39">
+        <insert tableName="feedback">
+            <column name="id" valueNumeric="1"/>
+            <column name="date" value="[B@e042c99"/>
+            <column name="message" value="xcvbg"/>
+            <column name="consumer_id" valueNumeric="8"/>
+            <column name="producer_id" valueNumeric="17"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-40">
+        <insert tableName="hospital">
+            <column name="id" valueNumeric="1"/>
+            <column name="building" value="137"/>
+            <column name="city" value="Chernivtsi"/>
+            <column name="country" value="Ukraine"/>
+            <column name="street" value="Holovna St"/>
+            <column name="description" value=""/>
+            <column name="imagepath" value="Hospital_1.jpg"/>
+            <column name="latitude" valueNumeric="48.2794394"/>
+            <column name="longitude" valueNumeric="25.943196899999975"/>
+            <column name="name" value="Chernivtsi Regional Clinical Hospital"/>
+        </insert>
+        <insert tableName="hospital">
+            <column name="id" valueNumeric="2"/>
+            <column name="building" value="11"/>
+            <column name="city" value="Chernivtsi"/>
+            <column name="country" value="Ukraine"/>
+            <column name="street" value="Lesi Ukrainky St"/>
+            <column name="description" value=""/>
+            <column name="imagepath" value="Hospital_2.jpg"/>
+            <column name="latitude" valueNumeric="48.2909805"/>
+            <column name="longitude" valueNumeric="25.929598499999997"/>
+            <column name="name" value="Miska Poliklinika"/>
+        </insert>
+        <insert tableName="hospital">
+            <column name="id" valueNumeric="3"/>
+            <column name="building" value="185В"/>
+            <column name="city" value="Chernivtsi"/>
+            <column name="country" value="Ukraine"/>
+            <column name="street" value="Ruska St"/>
+            <column name="description" value=""/>
+            <column name="imagepath" value="Hospital_3.jpg"/>
+            <column name="latitude" valueNumeric="48.2836641"/>
+            <column name="longitude" valueNumeric="25.973487500000033"/>
+            <column name="name" value="Angelholm"/>
+        </insert>
+        <insert tableName="hospital">
+            <column name="id" valueNumeric="4"/>
+            <column name="building" value="218"/>
+            <column name="city" value="Chernivtsi"/>
+            <column name="country" value="Ukraine"/>
+            <column name="street" value="Holovna St"/>
+            <column name="description" value=""/>
+            <column name="imagepath" value="Hospital_4.jpg"/>
+            <column name="latitude" valueNumeric="48.2556514"/>
+            <column name="longitude" valueNumeric="25.957666399999994"/>
+            <column name="name" value="Міська дитяча поліклініка №7"/>
+        </insert>
+        <insert tableName="hospital">
+            <column name="id" valueNumeric="5"/>
+            <column name="building" value="9Б"/>
+            <column name="city" value="Чернівці"/>
+            <column name="country" value="Украина"/>
+            <column name="street" value="вулиця Івасюка1"/>
+            <column name="description" value=""/>
+            <column name="imagepath" value=""/>
+            <column name="latitude" valueNumeric="48.26034689999999"/>
+            <column name="longitude" valueNumeric="25.94705440000007"/>
+            <column name="name" value="ппппппппп"/>
+        </insert>
+        <insert tableName="hospital">
+            <column name="id" valueNumeric="6"/>
+            <column name="building" value="2"/>
+            <column name="city" value="Чернівці"/>
+            <column name="country" value="Украина"/>
+            <column name="street" value="вулиця Ольги Гузар"/>
+            <column name="description" value="ehreththt"/>
+            <column name="imagepath" value=""/>
+            <column name="latitude" valueNumeric="48.275737"/>
+            <column name="longitude" valueNumeric="25.93991900000003"/>
+            <column name="name" value="zrhhrthrth"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-41">
+        <insert tableName="hospital_users">
+            <column name="hospital_id" valueNumeric="4"/>
+            <column name="managers_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="hospital_users">
+            <column name="hospital_id" valueNumeric="2"/>
+            <column name="managers_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="hospital_users">
+            <column name="hospital_id" valueNumeric="1"/>
+            <column name="managers_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="hospital_users">
+            <column name="hospital_id" valueNumeric="3"/>
+            <column name="managers_id" valueNumeric="4"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-42">
+        <insert tableName="laboratory">
+            <column name="id" valueNumeric="1"/>
+            <column name="description" value="laboratory for hospital1"/>
+            <column name="hospital_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-43">
+        <insert tableName="language">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="en"/>
+        </insert>
+        <insert tableName="language">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="ua"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-44">
+        <insert tableName="patientcard">
+            <column name="id" valueNumeric="3"/>
+            <column name="patientinfo_id" valueNumeric="3"/>
+            <column name="userdetail_id"/>
+        </insert>
+        <insert tableName="patientcard">
+            <column name="id" valueNumeric="4"/>
+            <column name="patientinfo_id" valueNumeric="4"/>
+            <column name="userdetail_id"/>
+        </insert>
+        <insert tableName="patientcard">
+            <column name="id" valueNumeric="5"/>
+            <column name="patientinfo_id" valueNumeric="5"/>
+            <column name="userdetail_id"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-45">
+        <insert tableName="patientinfo">
+            <column name="id" valueNumeric="3"/>
+            <column name="patientcard_id" valueNumeric="3"/>
+            <column name="userdetail_id" valueNumeric="31"/>
+            <column name="cardid"/>
+        </insert>
+        <insert tableName="patientinfo">
+            <column name="id" valueNumeric="4"/>
+            <column name="patientcard_id" valueNumeric="4"/>
+            <column name="userdetail_id" valueNumeric="21"/>
+            <column name="cardid"/>
+        </insert>
+        <insert tableName="patientinfo">
+            <column name="id" valueNumeric="5"/>
+            <column name="patientcard_id" valueNumeric="5"/>
+            <column name="userdetail_id" valueNumeric="25"/>
+            <column name="cardid"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-46">
+        <insert tableName="persistent_logins">
+            <column name="series" value="W6pYvNJS58EONcBz9XD/kw=="/>
+            <column name="last_used" valueDate="2016-09-28 15:21:56.415"/>
+            <column name="token" value="77/kG83uGGksJojMttooZA=="/>
+            <column name="username" value="a@a.co"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-47">
+        <insert tableName="role">
+            <column name="id" valueNumeric="1"/>
+            <column name="type" value="ADMIN"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" valueNumeric="2"/>
+            <column name="type" value="PATIENT"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" valueNumeric="3"/>
+            <column name="type" value="MANAGER"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" valueNumeric="4"/>
+            <column name="type" value="DOCTOR"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-48">
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="1"/>
+            <column name="role_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="2"/>
+            <column name="role_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="3"/>
+            <column name="role_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="4"/>
+            <column name="role_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="5"/>
+            <column name="role_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="6"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="7"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="8"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="9"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="10"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="11"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="12"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="13"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="14"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="15"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="16"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="17"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="18"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="19"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="20"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="21"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="22"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="23"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="24"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="25"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="26"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="28"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="29"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="30"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="31"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="32"/>
+            <column name="role_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="34"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="45"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="role_users">
+            <column name="users_id" valueNumeric="49"/>
+            <column name="role_id" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-49">
+        <insert tableName="scheduler">
+            <column name="id" valueNumeric="46"/>
+            <column name="app_size" valueNumeric="30"/>
+            <column name="day_end" valueNumeric="24"/>
+            <column name="day_start" valueNumeric="1"/>
+            <column name="week_size" valueNumeric="5"/>
+            <column name="doctorinfo_id" valueNumeric="6"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-50">
+        <insert tableName="test">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="test21"/>
+            <column name="diagnosispanel_id" valueNumeric="2"/>
+            <column name="description"/>
+            <column name="workschedule"/>
+        </insert>
+        <insert tableName="test">
+            <column name="id" valueNumeric="5"/>
+            <column name="name" value="test22"/>
+            <column name="diagnosispanel_id" valueNumeric="2"/>
+            <column name="description"/>
+            <column name="workschedule"/>
+        </insert>
+        <insert tableName="test">
+            <column name="id" valueNumeric="6"/>
+            <column name="name" value="test23"/>
+            <column name="diagnosispanel_id" valueNumeric="2"/>
+            <column name="description"/>
+            <column name="workschedule"/>
+        </insert>
+        <insert tableName="test">
+            <column name="id" valueNumeric="7"/>
+            <column name="name" value="test24"/>
+            <column name="diagnosispanel_id" valueNumeric="2"/>
+            <column name="description"/>
+            <column name="workschedule"/>
+        </insert>
+        <insert tableName="test">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="test11"/>
+            <column name="diagnosispanel_id" valueNumeric="1"/>
+            <column name="description"/>
+            <column name="workschedule"/>
+        </insert>
+        <insert tableName="test">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="test12"/>
+            <column name="diagnosispanel_id" valueNumeric="1"/>
+            <column name="description"/>
+            <column name="workschedule"/>
+        </insert>
+        <insert tableName="test">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="test13"/>
+            <column name="diagnosispanel_id" valueNumeric="1"/>
+            <column name="description"/>
+            <column name="workschedule"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-51">
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="22"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Tim"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Jonson"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="22"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="1"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Lars"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Urlich"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="1"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="2"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="James"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Hatfield"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="2"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="23"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Nicolas"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Cage"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="23"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="3"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Kurt"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Kobein"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="3"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="24"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Silvestr"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Stalone"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="24"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="5"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="James"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Nusted"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="5"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="4"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Kirk"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Hammet"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="4"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="6"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Gregory"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath" value="gh.jpg"/>
+            <column name="lastname" value="House"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="6"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="26"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Rhene"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Descartes"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="26"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="7"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Eric"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath" value="ef.jpg"/>
+            <column name="lastname" value="Foreman"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="7"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="28"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Dante"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Aligeri"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="28"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="10"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="James"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath" value="jw.jpg"/>
+            <column name="lastname" value="Wilson"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="10"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="11"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Chester"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath" value="cb.jpg"/>
+            <column name="lastname" value="Benington"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="11"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="29"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Grover"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Cleveland"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="29"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="12"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Chris"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath" value="ct.jpg"/>
+            <column name="lastname" value="Terk"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="12"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="13"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Jhon"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath" value="jd.jpg"/>
+            <column name="lastname" value="Dorian"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="13"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="14"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Jhared"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath" value="jl.jpg"/>
+            <column name="lastname" value="Leto"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="14"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="30"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Oscar"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Whield"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="30"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="16"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Marshal"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath" value="mm.jpg"/>
+            <column name="lastname" value="Matters"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="16"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="15"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Mike"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath" value="ms.jpg"/>
+            <column name="lastname" value="Shinoda"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="15"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="17"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Charles"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Darvin"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="17"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="18"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Ilay"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Nails"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="18"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="19"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Michael"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Luter"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="19"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="20"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Richard"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Rorshek"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="20"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="8"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Lisa"/>
+            <column name="gender" value="FEMALE"/>
+            <column name="imagepath" value="lc.jpg"/>
+            <column name="lastname" value="Cuddy"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="8"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="9"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname" value="Rhemy"/>
+            <column name="gender" value="FEMALE"/>
+            <column name="imagepath" value="rh.jpg"/>
+            <column name="lastname" value="Hadley"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="9"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="32"/>
+            <column name="address" value="Stokholm, abrakadabra 10, lenin prosp, stalin prov, jizni boli"/>
+            <column name="birthdate" value="[B@6b4283c4"/>
+            <column name="firstname" value="Asdsdw"/>
+            <column name="gender" value="FEMALE"/>
+            <column name="imagepath"/>
+            <column name="lastname" value="Dadesdfs"/>
+            <column name="phone" value="+38 (095) 435-7132"/>
+            <column name="user_id" valueNumeric="32"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="34"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname"/>
+            <column name="gender"/>
+            <column name="imagepath"/>
+            <column name="lastname"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="34"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="36"/>
+            <column name="address" value="dddddd"/>
+            <column name="birthdate" value="[B@d0865a3"/>
+            <column name="firstname" value="Dadsf"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath" value=""/>
+            <column name="lastname" value="Basdf"/>
+            <column name="phone" value="+38 (222) 222-2222"/>
+            <column name="user_id"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="31"/>
+            <column name="address" value="ds"/>
+            <column name="birthdate" value="[B@636bbbbb"/>
+            <column name="firstname" value="Queen"/>
+            <column name="gender" value="FEMALE"/>
+            <column name="imagepath" value=""/>
+            <column name="lastname" value="Marie"/>
+            <column name="phone" value="+38 (433) 333-3333"/>
+            <column name="user_id" valueNumeric="31"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="21"/>
+            <column name="address" value="fffffffffffffff"/>
+            <column name="birthdate" value="[B@7eae3764"/>
+            <column name="firstname" value="Sam"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath" value=""/>
+            <column name="lastname" value="Ferdinand"/>
+            <column name="phone" value="+38 (222) 222-2222"/>
+            <column name="user_id" valueNumeric="21"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="25"/>
+            <column name="address" value="qqqqqqqq"/>
+            <column name="birthdate" value="[B@10dc7d6"/>
+            <column name="firstname" value="Thomas"/>
+            <column name="gender" value="MALE"/>
+            <column name="imagepath" value=""/>
+            <column name="lastname" value="Auginas"/>
+            <column name="phone" value="+38 (222) 222-2222"/>
+            <column name="user_id" valueNumeric="25"/>
+            <column name="patientcard_id"/>
+        </insert>
+        <insert tableName="userdetail">
+            <column name="id" valueNumeric="40"/>
+            <column name="address"/>
+            <column name="birthdate"/>
+            <column name="firstname"/>
+            <column name="gender"/>
+            <column name="imagepath"/>
+            <column name="lastname"/>
+            <column name="phone"/>
+            <column name="user_id" valueNumeric="49"/>
+            <column name="patientcard_id"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-52">
+        <insert tableName="users">
+            <column name="id" valueNumeric="1"/>
+            <column name="email" value="admin@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$N3rWp7etmNY23Zf6kFNLV.D/sT0tSJ9jHRiS0xEgiCtI2L.OQbBqi"/>
+            <column name="userdetails_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="2"/>
+            <column name="email" value="manager.jh@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$xEHQ5YGjKO0.CED2gkMBsOK7eR555Zo9XAkYKjGJTQcyxHgpAWV7e"/>
+            <column name="userdetails_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="3"/>
+            <column name="email" value="manager.kk@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$Y8Ou0AQGW/6UuLB6d0cqhOGZXOVzfmH.0pJnWTYjEHPXjEICAqE9u"/>
+            <column name="userdetails_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="4"/>
+            <column name="email" value="manager.kh@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$2mZHnyUAbDsX8341uT1UT.fYNzey/q/TYtoOVQreYDrJsxP7v1N/K"/>
+            <column name="userdetails_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="5"/>
+            <column name="email" value="manager.jn@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$bP/ijok5uiAGC4UsSp/QIujdYXT5ixCwnKkndTYW.1ml3m349w0lS"/>
+            <column name="userdetails_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="6"/>
+            <column name="email" value="doctor.gh@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$FbRxp4PdXuFHK7kU8hemMezGFc.iGXH6Bs5z6gZCImhh8YM3ZJn2K"/>
+            <column name="userdetails_id" valueNumeric="6"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="7"/>
+            <column name="email" value="doctor.ef@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$Ah7jCL.GYHPWHXxQ4TPsJOok178L.SrKYIo5n3QmTy74LV1M0Clqi"/>
+            <column name="userdetails_id" valueNumeric="7"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="8"/>
+            <column name="email" value="doctor.lc@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$RjUyAGgaT0RW9wYXAJPGjuG1ooXdpBjI/4bQwmTbvMteimyiAjbum"/>
+            <column name="userdetails_id" valueNumeric="8"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="9"/>
+            <column name="email" value="doctor.rh@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$jyvm38NWsC3WDklbGTxMRurM6SNULHlOSOFFqPGTGp2.c.UZTpxJC"/>
+            <column name="userdetails_id" valueNumeric="9"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="10"/>
+            <column name="email" value="doctor.jw@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$18snRZ9iaK7iets6IN8XmOxTZiEebBCtUMLpY3/i72Nfk40iqbn2W"/>
+            <column name="userdetails_id" valueNumeric="10"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="11"/>
+            <column name="email" value="doctor.cb@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$eNhH/O6Gb/Kzoxc7fZZJYOA9HQuYB6Pz4mrG/DJd35zHk0Nu7.32y"/>
+            <column name="userdetails_id" valueNumeric="11"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="12"/>
+            <column name="email" value="doctor.ct@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$o3apAm429gfS2jRto.sHyOWAtQ..WgYC3HvThm3/8ZApV2gVqyTbO"/>
+            <column name="userdetails_id" valueNumeric="12"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="13"/>
+            <column name="email" value="doctor.jd@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$ZbbcxIGBQFE8IxcB4GI7BeDH/kmTvMmonbCL7z0aMDglrK.6U65aW"/>
+            <column name="userdetails_id" valueNumeric="13"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="14"/>
+            <column name="email" value="doctor.jl@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$bhW4V1uVETEQ/YSC3yQPm.lGPavROHB/fmzBtW0k3ppdZlABoMiiO"/>
+            <column name="userdetails_id" valueNumeric="14"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="15"/>
+            <column name="email" value="doctor.ms@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$Hazi7OuRrnnLd6gmNWLCpOYr6dksKORDM4Xl.hB3YXbE/wl6YgA46"/>
+            <column name="userdetails_id" valueNumeric="15"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="16"/>
+            <column name="email" value="doctor.mm@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$xeVfrEqprRSHSqo8yb/AWutiqEkLlVaNmrsWUxy5kYF5ksFcW17Iu"/>
+            <column name="userdetails_id" valueNumeric="16"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="17"/>
+            <column name="email" value="patient.cd@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$lH5Sg.gocRCIuO17BV1BW.sUjVvPTXA7UokUsWtt7ODSOuRNMVhGW"/>
+            <column name="userdetails_id" valueNumeric="17"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="18"/>
+            <column name="email" value="patient.in@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$ZNCZEfFLA/TZFuhk3aL1b.2KraEr7mSLGk5hWp9KliuBY8B5quryq"/>
+            <column name="userdetails_id" valueNumeric="18"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="19"/>
+            <column name="email" value="patient.ml@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$wtRRo7Q6O.wPv8E/7M4kMebWHgdFf0GZYotCj3nBUYR2HLxQFqPMm"/>
+            <column name="userdetails_id" valueNumeric="19"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="20"/>
+            <column name="email" value="patient.rr@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$DLdRb91MrBBhNxEr5AYXrOuSn5LieZFSXrVE7RZWEbglkdfsvptsm"/>
+            <column name="userdetails_id" valueNumeric="20"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="21"/>
+            <column name="email" value="patient.sf@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$4TW.tWhaI4xoSGPZhA4iseizzcRpQB/yNessm204M7o0qXgsdJYm."/>
+            <column name="userdetails_id" valueNumeric="21"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="22"/>
+            <column name="email" value="patient.tj@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$AqrcRbvJTENvc2bXHU0vReNy9vO1Bnz8cW2C5.ONPkTRCtG9jmgiC"/>
+            <column name="userdetails_id" valueNumeric="22"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="23"/>
+            <column name="email" value="patient.nc@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$TyN8NQEj8Pl7JbABIK67lOxLCssjO2K.7Qu3xKpesbs9dqczDWENa"/>
+            <column name="userdetails_id" valueNumeric="23"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="25"/>
+            <column name="email" value="patient.ta@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$2DEn8BQLvFy/.QPqJ1T9TOty5Hc4YVxABAz4HbWpJJDu0RajTc9VK"/>
+            <column name="userdetails_id" valueNumeric="25"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="26"/>
+            <column name="email" value="patient.rd@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$oRca1dIpFtruJW41JR.YXeg2XHSZpldCIlJcx/.rTvdOjBtP2M2Zy"/>
+            <column name="userdetails_id" valueNumeric="26"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="28"/>
+            <column name="email" value="patient.da@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$VJHmXNE7mA.RB/QpDhS3EuIlS6TAWOZO6HO3C0foMxR4TFwG6lQKe"/>
+            <column name="userdetails_id" valueNumeric="28"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="29"/>
+            <column name="email" value="patient.gc@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$nacXREY6RA3cwDlkRkAwM.lZoYwOgXYrfL.Eb13gX74lfqRqRi/VG"/>
+            <column name="userdetails_id" valueNumeric="29"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="30"/>
+            <column name="email" value="patient.ow@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$kGlMyGxVTCNltxtaxJPTweQKbZqzNzdqMIlDKxGPaMF704IyiJiRm"/>
+            <column name="userdetails_id" valueNumeric="30"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="31"/>
+            <column name="email" value="patient.qm@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$HRcBNI0bChY15zEhKAErKOWdcQHoxaFSd4MdqPDhDpEVmD8Mw.FJO"/>
+            <column name="userdetails_id" valueNumeric="31"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="32"/>
+            <column name="email" value="ilay888@yandex.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$j7Yu/kB1c/az2GChgZEj4eLerIFtiD66Z2e/BfZwagky0CXJquga2"/>
+            <column name="userdetails_id" valueNumeric="32"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="34"/>
+            <column name="email" value="a@a.co"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$tPXfII2a8Pnp4ACKioOXQeZKmpCGV.PCwH3mLnp8I6IiNuvxCfjp2"/>
+            <column name="userdetails_id" valueNumeric="34"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="45"/>
+            <column name="email" value="a@a.com"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$Pa.m/FUg8Mt6btTnDHgP6us93ZJs4rHiLxwgpTWwTI7UqzkSHl8cS"/>
+            <column name="userdetails_id" valueNumeric="36"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="24"/>
+            <column name="email" value="patient.ss@hospitals.ua"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$sjTOOUGvQ1qDZhRoPGYPYukYhQe6iTdF6/1xDqzBFVD2HHv5k2weS"/>
+            <column name="userdetails_id" valueNumeric="24"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="49"/>
+            <column name="email" value="lesiakoval12@gmail.com"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="password" value="$2a$10$rwP1z3jY4oOe0Myrqt8At.vCnX7CQmaMsTjBJ5pedH8TMYHXFL7Pa"/>
+            <column name="userdetails_id" valueNumeric="40"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-53">
+        <addPrimaryKey columnNames="id" constraintName="admintokenconfig_pkey" tableName="admintokenconfig"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-54">
+        <addPrimaryKey columnNames="id" constraintName="appointment_pkey" tableName="appointment"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-55">
+        <addPrimaryKey columnNames="id" constraintName="carditem_pkey" tableName="carditem"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-56">
+        <addPrimaryKey columnNames="id" constraintName="department_pkey" tableName="department"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-57">
+        <addPrimaryKey columnNames="id" constraintName="departmentname_pkey" tableName="departmentname"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-58">
+        <addPrimaryKey columnNames="id" constraintName="diagnosispanel_pkey" tableName="diagnosispanel"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-59">
+        <addPrimaryKey columnNames="id" constraintName="diagnosispanellocalization_pkey" tableName="diagnosispanellocalization"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-60">
+        <addPrimaryKey columnNames="id" constraintName="doctorinfo_pkey" tableName="doctorinfo"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-61">
+        <addPrimaryKey columnNames="id" constraintName="eventsPK" tableName="events"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-62">
+        <addPrimaryKey columnNames="id" constraintName="feedback_pkey" tableName="feedback"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-63">
+        <addPrimaryKey columnNames="id" constraintName="hospital_pkey" tableName="hospital"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-64">
+        <addPrimaryKey columnNames="id" constraintName="laboratory_pkey" tableName="laboratory"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-65">
+        <addPrimaryKey columnNames="id" constraintName="language_pkey" tableName="language"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-66">
+        <addPrimaryKey columnNames="id" constraintName="password_reset_tokensPK" tableName="password_reset_tokens"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-67">
+        <addPrimaryKey columnNames="id" constraintName="patientcard_pkey" tableName="patientcard"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-68">
+        <addPrimaryKey columnNames="id" constraintName="patientinfo_pkey" tableName="patientinfo"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-69">
+        <addPrimaryKey columnNames="series" constraintName="persistent_logins_pkey" tableName="persistent_logins"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-70">
+        <addPrimaryKey columnNames="id" constraintName="relativesinfo_pkey" tableName="relativesinfo"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-71">
+        <addPrimaryKey columnNames="id" constraintName="role_pkey" tableName="role"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-72">
+        <addPrimaryKey columnNames="users_id, role_id" constraintName="role_users_pkey" tableName="role_users"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-73">
+        <addPrimaryKey columnNames="id" constraintName="schedulerPK" tableName="scheduler"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-74">
+        <addPrimaryKey columnNames="id" constraintName="test_pkey" tableName="test"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-75">
+        <addPrimaryKey columnNames="id" constraintName="translator_pkey" tableName="translator"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-76">
+        <addPrimaryKey columnNames="id" constraintName="userdetail_pkey" tableName="userdetail"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-77">
+        <addPrimaryKey columnNames="id" constraintName="users_pkey" tableName="users"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-78">
+        <addPrimaryKey columnNames="id" constraintName="verifications_tokensPK" tableName="verifications_tokens"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-79">
+        <addPrimaryKey columnNames="id" constraintName="workscheduler_pkey" tableName="workscheduler"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-80">
+        <addUniqueConstraint columnNames="email" constraintName="uk_6dotkott2kjsp8vw4d0m25fb7" deferrable="false" disabled="false" initiallyDeferred="false" tableName="users"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-81">
+        <addUniqueConstraint columnNames="type" constraintName="uk_93vn3jeavtylq20tjdx2p2kkd" deferrable="false" disabled="false" initiallyDeferred="false" tableName="role"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-82">
+        <addUniqueConstraint columnNames="tests_id" constraintName="uk_htxantd7ckcn1eojpqak8xa18" deferrable="false" disabled="false" initiallyDeferred="false" tableName="diagnosispanel_test"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-83">
+        <addUniqueConstraint columnNames="token" constraintName="uk_mb4c7ta7x0g5jxjuaqw47ayov" deferrable="false" disabled="false" initiallyDeferred="false" tableName="persistent_logins"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-84">
+        <addUniqueConstraint columnNames="username" constraintName="uk_rpl2mjerve4d0pcau4usm8lmg" deferrable="false" disabled="false" initiallyDeferred="false" tableName="persistent_logins"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-85">
+        <addUniqueConstraint columnNames="departmentid_id, hospitalid_id, languageid_id" constraintName="uk_sdytx15sn9w60p63aey2wkbkk" deferrable="false" disabled="false" initiallyDeferred="false" tableName="translator"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-86">
+        <addForeignKeyConstraint baseColumnNames="userdetails_id" baseTableName="users" constraintName="FK_2xe4lqrkwymg4aoshgadolask" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="userdetail"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-87">
+        <addForeignKeyConstraint baseColumnNames="doctorinfo_id" baseTableName="carditem" constraintName="FK_32y3umi6mfuwbxmi9ub93ju9w" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doctorinfo"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-88">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="verifications_tokens" constraintName="FK_79hy0bqeu0oobh0thq8bgbae1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-89">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="userdetail" constraintName="FK_90967b34b8g7o7uyt8uujn4ya" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-90">
+        <addForeignKeyConstraint baseColumnNames="scheduler_id" baseTableName="events" constraintName="FK_h25bu5arkbwfh9fwpabk0x9e2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="scheduler"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-91">
+        <addForeignKeyConstraint baseColumnNames="doctorinfo_id" baseTableName="scheduler" constraintName="FK_io94dc8e3xgt37ggaiq0kcsl1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doctorinfo"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-92">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="password_reset_tokens" constraintName="FK_la2ts67g4oh2sreayswhox1i6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-93">
+        <addForeignKeyConstraint baseColumnNames="userdetail_id" baseTableName="patientinfo" constraintName="fk_1m7wpycqebo4p1hb1ciew8lju" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="userdetail"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-94">
+        <addForeignKeyConstraint baseColumnNames="userdetails_id" baseTableName="doctorinfo" constraintName="fk_1r6dadb3ajbaxwkpdx1v4u9n9" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="userdetail"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-95">
+        <addForeignKeyConstraint baseColumnNames="patientcard_id" baseTableName="carditem" constraintName="fk_23f7e1f3aoynlynkmrk6elwaq" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patientcard"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-96">
+        <addForeignKeyConstraint baseColumnNames="diagnosispanel_id" baseTableName="diagnosispanel_test" constraintName="fk_2qnrnsehvr1j83t6s2g4mduxm" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="diagnosispanel"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-97">
+        <addForeignKeyConstraint baseColumnNames="languageid_id" baseTableName="translator" constraintName="fk_4107o50up5stue36lhx5md8ca" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="language"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-98">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="role_users" constraintName="fk_67w5hj99v5nvjexfv0cf1mxus" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-99">
+        <addForeignKeyConstraint baseColumnNames="consumer_id" baseTableName="feedback" constraintName="fk_7uda74mreyd8pe0bc0rgm1ufe" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-100">
+        <addForeignKeyConstraint baseColumnNames="diagnosispanel_id" baseTableName="test" constraintName="fk_a0r4jk9cy2ljbbnqbt2gwm6q5" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="diagnosispanel"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-101">
+        <addForeignKeyConstraint baseColumnNames="doctorinfo_id" baseTableName="workscheduler" constraintName="fk_a5ufm3i0ew6t3nfua44q1mqvw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doctorinfo"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-102">
+        <addForeignKeyConstraint baseColumnNames="userdetail_id" baseTableName="appointment" constraintName="fk_b51bk1hxlblc0fq7l65dkcnc5" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="userdetail"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-103">
+        <addForeignKeyConstraint baseColumnNames="users_id" baseTableName="role_users" constraintName="fk_cunrd1kjdr3pwcekkhw8r5k2l" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-104">
+        <addForeignKeyConstraint baseColumnNames="departments_id" baseTableName="department_doctorinfo" constraintName="fk_ej88rho1obqsgettqaymg2ax8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="department"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-105">
+        <addForeignKeyConstraint baseColumnNames="patientcard_id" baseTableName="userdetail" constraintName="fk_exlldeucxpa91uwds0hpc97o" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patientcard"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-106">
+        <addForeignKeyConstraint baseColumnNames="patientcard_id" baseTableName="patientinfo" constraintName="fk_ft38uu60cjfl7q23ejvb78hk3" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patientcard"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-107">
+        <addForeignKeyConstraint baseColumnNames="diagnosispanel_id" baseTableName="diagnosispanellocalization" constraintName="fk_fxrd8a5g5ep9jq006cjajdb91" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="diagnosispanel"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-108">
+        <addForeignKeyConstraint baseColumnNames="hospital_id" baseTableName="laboratory" constraintName="fk_g00kag0p076otbfqpctaun7uv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="hospital"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-109">
+        <addForeignKeyConstraint baseColumnNames="tests_id" baseTableName="diagnosispanel_test" constraintName="fk_htxantd7ckcn1eojpqak8xa18" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="test"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-110">
+        <addForeignKeyConstraint baseColumnNames="doctorinfo_id" baseTableName="appointment" constraintName="fk_hx479pw4gje0ktsjfwvl9pwn8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doctorinfo"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-111">
+        <addForeignKeyConstraint baseColumnNames="doctors_id" baseTableName="department_doctorinfo" constraintName="fk_ibochgjqx1dyr7ysbeg0royt9" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="doctorinfo"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-112">
+        <addForeignKeyConstraint baseColumnNames="hospitalid_id" baseTableName="translator" constraintName="fk_inqwl40rlcrlwwgi8ibykm18b" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="hospital"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-113">
+        <addForeignKeyConstraint baseColumnNames="language_id" baseTableName="diagnosispanellocalization" constraintName="fk_keqodsg1j9d80f5t3ygphg92g" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="language"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-114">
+        <addForeignKeyConstraint baseColumnNames="departmentid_id" baseTableName="translator" constraintName="fk_m1t6t7ksxfhtyx1vuney6oy6q" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="department"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-115">
+        <addForeignKeyConstraint baseColumnNames="patientinfo_id" baseTableName="patientcard" constraintName="fk_nl0kd9nw0gugyysura8qqpymw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="patientinfo"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-116">
+        <addForeignKeyConstraint baseColumnNames="managers_id" baseTableName="hospital_users" constraintName="fk_o7prsdub8c63s5w469e06q83" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-117">
+        <addForeignKeyConstraint baseColumnNames="doctor_id" baseTableName="carditem" constraintName="fk_ohvlr9w2h9pvsj2bg12ox9b9" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-118">
+        <addForeignKeyConstraint baseColumnNames="userdetail_id" baseTableName="patientcard" constraintName="fk_ov506nbhqxddqios9pxlb21ie" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="userdetail"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-119">
+        <addForeignKeyConstraint baseColumnNames="producer_id" baseTableName="feedback" constraintName="fk_pvf13utfatebavsixvqxwo3ob" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-120">
+        <addForeignKeyConstraint baseColumnNames="laboratory_id" baseTableName="diagnosispanel" constraintName="fk_so96n0h0lp4sifueg3g9clwmj" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="laboratory"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-121">
+        <addForeignKeyConstraint baseColumnNames="hospital_id" baseTableName="department" constraintName="fk_spotjwwrelb9dhulkiivbl62b" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="hospital"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1477681958681-122">
+        <addForeignKeyConstraint baseColumnNames="hospital_id" baseTableName="hospital_users" constraintName="fk_tcu91xpek54a086jamuakvoh8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="hospital"/>
+    </changeSet>
+-->  
+    <!--  ===============================================================   -->
+ 
 
 </databaseChangeLog>
