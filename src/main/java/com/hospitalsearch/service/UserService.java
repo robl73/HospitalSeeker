@@ -21,6 +21,8 @@ public interface UserService {
 
     void update(User user);
 
+    void update(NewDoctorRegistrationDTO newDoctorRegistrationDTO);
+
     void changeStatus(Long id);
 
     @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -41,8 +43,6 @@ public interface UserService {
     User register(UserRegisterDTO dto);
 
     User register(NewDoctorRegistrationDTO dto);
-
-    void addNewUser(User newUser);
 
     void resetPassword(String email, String newPassword) throws ResetPasswordException;
 

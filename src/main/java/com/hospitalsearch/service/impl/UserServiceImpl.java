@@ -61,15 +61,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void addNewUser(User newUser) {
-        try {
-            logger.info("save user: " + newUser);
-            dao.save(newUser);
-        } catch (Exception e) {
-            logger.error("Error saving user: " + newUser, e);
-        }
-    }
-
     @Override
     public User register(UserRegisterDTO userRegisterDTO) {
         User user = new User();
@@ -86,7 +77,6 @@ public class UserServiceImpl implements UserService {
                 user.setUserRoles(new HashSet<>(Collections.singletonList(roleService.getByType("PATIENT"))));
             }
             save(user);
-//           addNewUser(user);
         } catch (Exception e) {
             System.out.println("Error register user");
             logger.error("Error register user: " + userRegisterDTO, e);
@@ -98,6 +88,7 @@ public class UserServiceImpl implements UserService {
     public User register(NewDoctorRegistrationDTO newDoctorRegistrationDTO) {
         User user = new User();
         try {
+            System.out.println(newDoctorRegistrationDTO);
             logger.info("register user: " + newDoctorRegistrationDTO);
             user.setEmail(newDoctorRegistrationDTO.getEmail().toLowerCase());
             user.setPassword(passwordEncoder.encode("password"));
@@ -108,7 +99,9 @@ public class UserServiceImpl implements UserService {
             userDetail.setLastName(newDoctorRegistrationDTO.getLastName());
             userDetail.setAddress(newDoctorRegistrationDTO.getAddress());
             userDetail.setBirthDate(newDoctorRegistrationDTO.getBirthDate());
-            userDetail.setPhone(newDoctorRegistrationDTO.getPhone());
+            if(!newDoctorRegistrationDTO.getPhone().isEmpty() && (!newDoctorRegistrationDTO.getPhone().equals("+38 "))) {
+                userDetail.setPhone(newDoctorRegistrationDTO.getPhone());
+            }
             userDetail.setImagePath(newDoctorRegistrationDTO.getImagePath());
 
             userDetail.setGender(newDoctorRegistrationDTO.getGender());
@@ -121,19 +114,44 @@ public class UserServiceImpl implements UserService {
 
             DoctorInfo doctorInfo = new DoctorInfo();
             List<Department> departments = new ArrayList<>();
-            if(!newDoctorRegistrationDTO.getNameDepartmentsId().equals(null)) {
+            if(newDoctorRegistrationDTO.getNameDepartmentsId() != null) {
                 departments.add(departmentDAO.getById(newDoctorRegistrationDTO.getNameDepartmentsId()));
             }
             doctorInfo.setDepartments(departments);
             doctorInfo.setSpecialization(newDoctorRegistrationDTO.getSpecialization());
             doctorInfo.setCategory(newDoctorRegistrationDTO.getCategory());
             user.setUserDetails(userDetail);
-            addNewUser(user);
+            dao.save(user);
+            doctorInfoDAO.save(doctorInfo);
         } catch (Exception e) {
             System.out.println("Error register user");
             logger.error("Error register user: " + newDoctorRegistrationDTO, e);
         }
         return user;
+    }
+
+    @Override
+    public void update(NewDoctorRegistrationDTO newDoctorRegistrationDTO) {
+            User user = dao.getById(newDoctorRegistrationDTO.getUserId());
+            user.setEmail(newDoctorRegistrationDTO.getEmail().toLowerCase());
+            UserDetail userDetail = user.getUserDetails();
+            userDetail.setFirstName(newDoctorRegistrationDTO.getFirstName());
+            userDetail.setLastName(newDoctorRegistrationDTO.getLastName());
+            userDetail.setAddress(newDoctorRegistrationDTO.getAddress());
+            userDetail.setBirthDate(newDoctorRegistrationDTO.getBirthDate());
+            if(!newDoctorRegistrationDTO.getPhone().isEmpty() && (!newDoctorRegistrationDTO.getPhone().equals("+"))) {
+                userDetail.setPhone(newDoctorRegistrationDTO.getPhone());
+            }
+            userDetail.setImagePath(newDoctorRegistrationDTO.getImagePath());
+            userDetail.setGender(newDoctorRegistrationDTO.getGender());
+            userDetail.setUser(user);
+            user.setUserDetails(userDetail);
+            DoctorInfo doctorInfo = doctorInfoDAO.getByUserDetailId(userDetail.getId());
+            doctorInfo.setSpecialization(newDoctorRegistrationDTO.getSpecialization());
+            doctorInfo.setCategory(newDoctorRegistrationDTO.getCategory());
+            user.setUserDetails(userDetail);
+            dao.update(user);
+            doctorInfoDAO.update(doctorInfo);
     }
 
     @Override

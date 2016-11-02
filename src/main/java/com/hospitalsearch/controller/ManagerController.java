@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -71,6 +72,64 @@ public class ManagerController {
     private Integer doctorsPerPage = 10;
 
     @PreAuthorize("hasRole('MANAGER')")
+    @RequestMapping(value = "/**/manage/doctor/edit", method = RequestMethod.GET)
+    public ModelAndView editDoctor(@RequestParam("id") Long userId,
+                                   @RequestParam("hospitalId") String hospitalId) {
+        NewDoctorRegistrationDTO newDoctorRegistrationDTO  = new NewDoctorRegistrationDTO();
+        newDoctorRegistrationDTO.setEmail(userService.getById(userId).getEmail());
+        newDoctorRegistrationDTO.setEnabled(userService.getById(userId).getEnabled());
+        newDoctorRegistrationDTO.setFirstName(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getFirstName());
+        newDoctorRegistrationDTO.setLastName(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getLastName());
+        newDoctorRegistrationDTO.setGender(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getGender());
+        newDoctorRegistrationDTO.setBirthDate(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getBirthDate());
+        newDoctorRegistrationDTO.setAddress(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getAddress());
+        newDoctorRegistrationDTO.setImagePath(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getImagePath());
+        newDoctorRegistrationDTO.setCategory(doctorInfoService.getById(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getId()).getCategory());
+        newDoctorRegistrationDTO.setPhone(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getPhone());
+        newDoctorRegistrationDTO.setSpecialization(doctorInfoService.getById(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getId()).getSpecialization());
+        newDoctorRegistrationDTO.setNameHospitalId(Long.valueOf(hospitalId));
+        newDoctorRegistrationDTO.setUserId(userId);
+        ModelAndView modelAndView = new ModelAndView("/editDoctor");
+        modelAndView.addObject("newDoctorDto", newDoctorRegistrationDTO);
+        modelAndView.addObject("edit", true);
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @RequestMapping(value = "/**/manage/doctor/view", method = RequestMethod.GET)
+    public ModelAndView viewDoctor(@RequestParam("id") Long userId) {
+        NewDoctorRegistrationDTO newDoctorRegistrationDTO  = new NewDoctorRegistrationDTO();
+        newDoctorRegistrationDTO.setEmail(userService.getById(userId).getEmail());
+        newDoctorRegistrationDTO.setEnabled(userService.getById(userId).getEnabled());
+        newDoctorRegistrationDTO.setFirstName(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getFirstName());
+        newDoctorRegistrationDTO.setLastName(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getLastName());
+        newDoctorRegistrationDTO.setGender(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getGender());
+        newDoctorRegistrationDTO.setBirthDate(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getBirthDate());
+        newDoctorRegistrationDTO.setAddress(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getAddress());
+        newDoctorRegistrationDTO.setImagePath(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getImagePath());
+        newDoctorRegistrationDTO.setCategory(doctorInfoService.getById(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getId()).getCategory());
+        newDoctorRegistrationDTO.setPhone(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getPhone());
+        newDoctorRegistrationDTO.setSpecialization(doctorInfoService.getById(userDetailService.getById(userService.getById(userId).getUserDetails().getId()).getId()).getSpecialization());
+        newDoctorRegistrationDTO.setUserId(userId);
+        ModelAndView modelAndView = new ModelAndView("/viewDoctor");
+        modelAndView.addObject("newDoctorDto", newDoctorRegistrationDTO);
+        modelAndView.addObject("edit", false);
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @RequestMapping(value = "/**/manage/doctor/edit", method = RequestMethod.POST)
+    public String editUser(@ModelAttribute("newDoctorDto") NewDoctorRegistrationDTO newDoctorRegistrationDTO,
+                           BindingResult result, ModelMap model,
+                            Locale locale, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "redirect:/manage/doctor/edit";
+        }
+        userService.update(newDoctorRegistrationDTO);
+        return "redirect:/attachedHospitals/" + newDoctorRegistrationDTO.getNameHospitalId() + "/manageDoctors/";
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
     @RequestMapping("/attachedHospitals")
     public String getHospitalsByManager(ModelMap model){
         List<Hospital> hospitals = managerService.getHospitalsByManager();
@@ -112,7 +171,7 @@ public class ManagerController {
         return "manager/manageDoctors";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MANAGER')")
     @RequestMapping(value = "/attachedHospitals/{id}/manageDoctors/search", method = RequestMethod.GET)
     public String searchUser(@PathVariable ("id") Long hospitalId,
                              @RequestParam(value = "hospitalName") String hospitalName,
@@ -155,11 +214,14 @@ public class ManagerController {
     @RequestMapping(value = "/newDoctor", method = RequestMethod.GET)
     public String getRegistration(@ModelAttribute("newDoctorDto") NewDoctorRegistrationDTO newDoctorRegistrationDTO,
                                   ModelMap model) {
-        newDoctorRegistrationDTO.setNameHospitals(hospitalService.getAllNameHospitalsByManager(
-                userService.getByEmail(PrincipalConverter.getPrincipal()).getId()));
-//        newDoctorRegistrationDTO.setCategorys(Arrays.asList( Category.values()));
-//        newDoctorRegistrationDTO.setSpecializations(Arrays.asList(Specialization.values()));
-        model.addAttribute("newDoctorDto", newDoctorRegistrationDTO);;
+        newDoctorRegistrationDTO.setNameHospitals(hospitalService
+                .getAllNameHospitalsByManager(userService.getByEmail(PrincipalConverter.getPrincipal()).getId()));
+        if(hospitalService
+                .getAllNameHospitalsByManager(userService.getByEmail(PrincipalConverter.getPrincipal()).getId()).size() >= 1){
+            newDoctorRegistrationDTO.setNameDepartment(hospitalService.getAllNameDepartmentsByHospitals(hospitalService
+                    .getAllNameHospitalsByManager(userService.getByEmail(PrincipalConverter.getPrincipal()).getId()).get(0).getId()));
+        }
+        model.addAttribute("newDoctorDto", newDoctorRegistrationDTO);
         model.addAttribute("edit", true);
         return "/newDoctor";
     }
@@ -179,9 +241,7 @@ public class ManagerController {
     @RequestMapping(value = "/newDoctor", method = RequestMethod.POST)
     public String newDoctorRegistration(@Valid @ModelAttribute("newDoctorDto") NewDoctorRegistrationDTO newDoctorRegistrationDTO,
                                         BindingResult result, ModelMap model, Locale locale) {
-        if (result.hasFieldErrors("firstName") || result.hasFieldErrors("lastName")
-                || result.hasFieldErrors("email")|| result.hasFieldErrors("education")
-                || result.hasFieldErrors("address")|| result.hasFieldErrors("birthDate")){
+        if (result.hasErrors()){
             model.addAttribute("edit", true);
             return "/newDoctor";
         }
@@ -205,12 +265,6 @@ public class ManagerController {
     private String getRandomToken() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
-
-//    @RequestMapping(value = "/manageDoctors", method = RequestMethod.GET)
-//    public String getDoctorsByManager(Map<String, Object> model) {
-//        model.put("doctors", managerService.getDoctorsByManager());
-//        return "manageDoctors";
-//    }
 
     @RequestMapping(value = "/editHospitalsManagers", method = RequestMethod.GET)
     public String getManagersAndHospitals(Map<String, Object> model) {

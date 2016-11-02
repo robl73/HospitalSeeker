@@ -6,12 +6,11 @@
     <meta charset="ISO-8859-1"/>
     <meta charset="UTF-8"/>
     <meta th:name="csrf-token" th:content="${_csrf.token}"/>
-    <title>Admin Dashboard</title>
+    <title>Manager Dashboard</title>
     <link rel="stylesheet" th:href="@{/css/stylish-portfolio.css}"/>
     <link rel="stylesheet" th:href="@{/css/animate.css}"/>
     <link rel="stylesheet" th:href="@{/css/theme.default.css}"/>
     <link rel="stylesheet" th:href="@{/css/view-admin-table.css}"/>
-
     <script th:src="@{/js/doctorTableForManager.js}"></script>
     <script th:src="@{/js/sortButtons.js}"></script>
     <script th:src="@{/js/modalView.js}"></script>
@@ -42,77 +41,8 @@
 
 
         <div class="box-content">
-            <!--<form class="form-inline" role="form" method="GET" th:object="${viewForManagerDTO}"-->
-                  <!--th:action="@{/attachedHospitals/{hospitalId}/manageDoctors/search(hospitalId=${hospitalId})}" id="searchForm">-->
-                <!--<input type="hidden" th:value="${hospitalId}" th:field="${hospitalId}"/>-->
-                <!--<input type="hidden" th:value="${hospitalName}" th:field="${hospitalName}"/>-->
-                <!--<div class="form-group">-->
-                    <!--<label class="filter-col" style="margin-right:0;" for="doctorPerPage"-->
-                           <!--th:text="#{manager.doctorstable.submenu.dropdown.itemPerPage.label}"></label>-->
-                    <!--<select id="doctorPerPage" class="form-control" th:field="${viewForManagerDTO.pageSize}" th:value="${viewForManagerDTO.pageSize}" >-->
-                        <!--<option th:each="number:${#numbers.sequence(10,50,10)}"-->
-                                <!--th:text="${number}"-->
-                                <!--th:value="${number}"-->
-                                <!--th:classappend="${number == viewForManagerDTO.pageSize}?'selected':''"/>-->
-                    <!--</select>-->
-                <!--</div>-->
-                <!--&lt;!&ndash; form group &ndash;&gt;-->
-                <!--<div class="form-group">-->
-                    <!--<label class="filter-col" style="margin-right:0;" for="pref-roleby"-->
-                           <!--th:text="#{manager.doctorstable.submenu.dropdown.specialization.label}"></label>-->
-                    <!--<select id="pref-roleby" class="form-control" th:field="${viewForManagerDTO.specialization}" th:value="${viewForManagerDTOspecialization}">-->
-                        <!--<option value="" th:text="#{manager.doctorstable.submenu.dropdown.all}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).DIAGNOSIS}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.diagnosis}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).PEDIATRICS}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.pediatrics}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).DENTISTRY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.dentistry}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).ONCOLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.oncology}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).GYNECOLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.gynecology}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).NEUROLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.neurology}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).OTORHINOLARYNGOLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.otorhinolaryngology}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).ENDOCRINOLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.endocrinology}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).CARDIOLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.cardiology}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).PSYCHIATRY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.psychiatry}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).ORTHOPEDICS}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.orthopedics}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).UROLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.urology}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).OPHTHALMOLOGY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.ophthalmology}"/>-->
-                        <!--<option th:value="${T(com.hospitalsearch.util.Specialization).SURGERY}" th:text="#{manager.doctorstable.submenu.dropdown.specialization.surgery}"/>-->
-                    <!--</select>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label class="filter-col" style="margin-right:0;" for="searchBy"-->
-                           <!--th:text="#{manager.doctorstable.submenu.dropdown.searchBy.label}"></label>-->
-                    <!--<select id="searchBy" name="searchBy" class="form-control">-->
-                        <!--<option th:value="allField" th:text="#{manager.doctorstable.submenu.dropdown.all}"></option>-->
-                        <!--<option th:value="email" th:text="#{manager.doctorstable.submenu.dropdown.searchBy.email}"></option>-->
-                        <!--<option th:value="firstName" th:text="#{manager.doctorstable.first.name}"></option>-->
-                        <!--<option th:value="lastName" th:text="#{manager.doctorstable.last.name}"></option>-->
-                        <!--<option th:value="specialization" th:text="#{manager.doctorstable.specialization}"></option>-->
-                    <!--</select>-->
-                <!--</div>-->
-
-                <!--<div class="form-group">-->
-                    <!--<input id="search" type="text" class="form-control" name="allField"-->
-                           <!--th:placeholder="#{manager.doctorstable.submenu.searchBy.placeholder}" autocomplete='off'/>-->
-                <!--</div>-->
-                <!--<button type="submit" class="btn btn-default" id="searchButton"><span-->
-                        <!--class="glyphicon glyphicon-search"></span></button>-->
-                <!--<button type="submit" class="btn btn-default" id="clearButton"><span-->
-                        <!--class="glyphicon glyphicon-refresh"></span></button>-->
-
-                <!--&lt;!&ndash;Needs to insert href to AddNewDoctor Form&ndash;&gt;-->
-                <!--<div class="pull-right btn-group">-->
-                    <!--<a type="button" th:href="@{/}"-->
-                       <!--class="btn btn-default"><span class="text-info"-->
-                                                     <!--th:text="#{manager.doctorstable.addNewDoctor.button}"></span></a>-->
-                <!--</div>-->
-                <!--<input th:value="*{currentPage}" th:field="*{currentPage}" id="currentPage" hidden="hidden"/>-->
-                <!--<input th:value="*{sort}" th:field="*{sort}" id="sortDto" hidden="hidden"/>-->
-                <!--<input th:value="*{asc}" th:field="*{asc}" id="ascDto" hidden="hidden"/>-->
-                <!--<input th:if="${search!=null}" th:value="${search}" th:field="${search}" id="searchDto" hidden="hidden"/>-->
-            <!--</form>-->
-            <!--Needs to insert href to AddNewDoctor Form-->
             <div class="pull-right btn-group">
-                <a type="button" th:href="@{/}"
+                <a type="button" th:href="@{/newDoctor}"
                    class="btn btn-default"><span class="text-info"
                                                  th:text="#{manager.doctorstable.addNewDoctor.button}"></span></a>
             </div>
@@ -175,22 +105,25 @@
                         <span th:if="${doctorSearchDTO.category==T(com.hospitalsearch.util.Category).JUNIOR}" th:text="#{manager.doctorstable.categoryValue.junior}"/>
                         <span th:if="${doctorSearchDTO.category==T(com.hospitalsearch.util.Category).SPECIALIST}" th:text="#{manager.doctorstable.categoryValue.specialist}"/>
                     </td>
+
                     <td class="center">
 
-                        <span data-placement="top" data-toggle="tooltip"
-                              th:title="#{admin.dashboard.users.show.title.tooltip.view}">
-                            <a class="btn button_user" href="#" th:attr="data-id=${doctorSearchDTO.doctorId}" type="submit"
-                               data-toggle="modal" data-target="#viewModal" id="viewUser" style="padding: 4px 9px;">
+                         <span data-placement="top" data-toggle="tooltip"
+                               th:title="#{admin.dashboard.users.show.title.tooltip.edit}">
+
+                            <a class="btn button_user" href="#"
+                               th:attr="data-id='manage/doctor/view?id='+${doctorSearchDTO.doctorId}"
+                               type="submit" data-toggle="modal"  data-target="#editUserModal" id="viewUser">
                                 <i class="glyphicon glyphicon-zoom-in icon-white"></i>
                             </a>
                         </span>
 
-                        <span data-placement="top" data-toggle="tooltip"
-                              th:title="#{admin.dashboard.users.show.title.tooltip.edit}">
-                            <a class="btn button_user" href="#"
-                               type="submit" data-toggle="modal" data-target="#editUserModal" id="ediUser" style="padding: 4px 9px;">
-                               <!--th:attr="data-id='admin/users/edit?id='+${doctorSearchDTO.doctorId}"-->
+                         <span data-placement="top" data-toggle="tooltip"
+                               th:title="#{admin.dashboard.users.show.title.tooltip.edit}">
 
+                            <a class="btn button_user" href="#"
+                               th:attr="data-id='manage/doctor/edit?id='+${doctorSearchDTO.doctorId} +',hospitalId='+${hospitalId}"
+                               type="submit" data-toggle="modal" data-target="#editUserModal" id="ediUser">
                                 <i class="glyphicon glyphicon-edit icon-white"></i>
                             </a>
                         </span>
