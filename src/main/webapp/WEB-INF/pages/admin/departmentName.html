@@ -140,8 +140,10 @@
    
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
-        <button type="reset" class="btn btn-default">Cancel</button>
-        <button type="submit" class="btn btn-primary">Add</button>
+        <button type="reset" class="btn btn-default" 
+                th:text="#{admin.dashboard.department.show.form.button.cancel}">Cancel</button>
+        <button type="submit" class="btn btn-primary" 
+                th:text="#{admin.dashboard.department.show.form.button.add}">Add</button>
       </div>
     </div>
   </fieldset>
@@ -152,9 +154,9 @@
         
         
 <!-- ============================================================= -->   
-<a href="#" class="btn btn-primary" 
-                           
-                           th:href="@{/manager/manageDepartments}">Departments</a>    
+<a href="#" class="btn btn-primary"                           
+                           th:href="@{/manager/manageDepartments}" 
+                           th:text="#{admin.dashboard.department.show.form.button.departments}">Departments</a>    
 <!-- ============================================================= -->
             <table class="responstable" id="allDepartment">
                 <thead>
@@ -190,7 +192,8 @@
                     
                     <td><a href="#" class="btn btn-primary" 
                            th:attr="data-id=${departmentname.id}" 
-                           th:href="@{/admin/deleteDepartmentName(id=${departmentname.id})}">Delete</a></td>
+                           th:href="@{/admin/deleteDepartmentName(id=${departmentname.id})}"
+                           th:text="#{admin.dashboard.department.show.table.button.delete}">Delete</a></td>
 
                 </tr>
                 </tbody>

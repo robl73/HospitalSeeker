@@ -47,34 +47,34 @@
 <!-- ============================================================= --> 
     
 <!-- ============================================================= -->   
-     <h1 th:text="#{admin.dashboard.department.show.table.header}" class="all text-center" style="margin-bottom: 40px;"/> 
+     <h1 th:text="#{manager.dashboard.department.show.table.header}" class="all text-center" style="margin-bottom: 40px;"/> 
 <!-- ============================================================= -->
             <table class="responstable" id="allDepartment">
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th><i th:text="#{admin.dashboard.department.show.table.header.aname}"></i>
+                    <th><i th:text="#{manager.dashboard.department.show.table.header.aname}"></i>
                         <button class="btn sorter sorter-false pull-right" id="aname"
                                 th:onclick="'javascript:sort(event);'"></button>
                     </th>
-                    <th><i th:text="#{admin.dashboard.department.show.table.header.specialization}"></i>
+                    <th><i th:text="#{manager.dashboard.department.show.table.header.specialization}"></i>
                         <button class="btn sorter sorter-false pull-right" id="specialization"
                                 th:onclick="'javascript:sort(event);'"></button>
                     </th>
-                    <th><i th:text="#{admin.dashboard.department.show.table.header.description}"></i>
+                    <th><i th:text="#{manager.dashboard.department.show.table.header.description}"></i>
                         <button class="btn sorter sorter-false pull-right" id="description"
                                 th:onclick="'javascript:sort(event);'"></button>
                     </th>
-                    <th><i th:text="#{admin.dashboard.department.show.table.header.name}"></i>
+                    <th><i th:text="#{manager.dashboard.department.show.table.header.name}"></i>
                         <button class="btn sorter sorter-false pull-right" id="name"
                                 th:onclick="'javascript:sort(event);'"></button>
                     </th>
-                    <th><i th:text="#{admin.dashboard.department.show.table.header.imagePath}"></i>
+                    <th><i th:text="#{manager.dashboard.department.show.table.header.imagePath}"></i>
                         <button class="btn sorter sorter-false pull-right" id="imagePath"
                                 th:onclick="'javascript:sort(event);'"></button>
                     </th>
                     
-                    <th><i th:text="#{admin.dashboard.department.show.table.header.action}"></i></th>
+                    <th><i th:text="#{manager.dashboard.department.show.table.header.action}"></i></th>
                 </tr>
                 </thead>
 
@@ -106,7 +106,8 @@
                         
                         <a href="#" class="btn btn-primary" 
                            th:attr="data-id=${department.id}" 
-                           th:href="@{/manager/translator(departmentid=${department.id},hospitalid=${hospitalid})}">Translate</a>
+                           th:href="@{/manager/translator(departmentid=${department.id},hospitalid=${hospitalid})}"
+                           th:text="#{manager.dashboard.department.show.table.button.translate}">Translate</a>
    
                     </td>
 

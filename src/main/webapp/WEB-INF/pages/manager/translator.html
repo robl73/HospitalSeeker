@@ -50,7 +50,7 @@
   <form class="form-horizontal" th:action="@{/manager/translator}" method="POST" 
         th:object="${translatorDTO}" >
   <fieldset>
-    <legend th:text="#{admin.dashboard.department.show.form.headerdepartment}">Legend</legend>
+    <legend th:text="#{manager.dashboard.department.show.form.headerdepartment}">Legend</legend>
     
 <!--<input type="hidden"  th:field="*{hospitalID.id}"/> 
 <input type="hidden"  th:field="*{departmentID.id}"/>-->
@@ -73,7 +73,7 @@
    
     <div class="form-group">
       <label for="departmentinfo.aname" class="col-lg-2 control-label"
-             th:text="#{admin.dashboard.department.show.table.header.aname}">aname</label>
+             th:text="#{manager.dashboard.department.show.table.header.aname}">aname</label>
       <div class="col-lg-10">
                 <input class="form-control"  placeholder="aname" type="text" 
                        th:field="*{departmentinfo.aname}" th:errorclass="has-error"></input>   
@@ -101,7 +101,7 @@
    
     <div class="form-group">
       <label for="departmentinfo.specialization" class="col-lg-2 control-label"
-             th:text="#{admin.dashboard.department.show.table.header.specialization}">specialization</label>
+             th:text="#{manager.dashboard.department.show.table.header.specialization}">specialization</label>
       <div class="col-lg-10">
         <input class="form-control" placeholder="specialization" type="text"  
                th:field="*{departmentinfo.specialization}" th:errorclass="has-error"></input>
@@ -130,7 +130,7 @@
   
     <div class="form-group">
       <label for="departmentinfo.description" class="col-lg-2 control-label"
-             th:text="#{admin.dashboard.department.show.table.header.description}">description</label>
+             th:text="#{manager.dashboard.department.show.table.header.description}">description</label>
       <div class="col-lg-10">
             <input class="form-control" placeholder="description" type="text" 
                    th:field="*{departmentinfo.description}" th:errorclass="has-error" ></input>   
@@ -149,7 +149,7 @@
    
       <div class="form-group">
       <label for="languageid" class="col-lg-2 control-label" 
-             th:text="#{admin.dashboard.department.show.table.header.language}">Selects</label>
+             th:text="#{manager.dashboard.department.show.table.header.language}">Selects</label>
       <div class="col-lg-10">
         <select class="form-control"  th:field="*{languageid}">
             
@@ -172,8 +172,10 @@
    
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
-        <button type="reset" class="btn btn-default">Cancel</button>
-        <button type="submit" class="btn btn-primary">Add</button>
+        <button type="reset" class="btn btn-default" 
+                th:text="#{manager.dashboard.department.show.form.button.cancel}">Cancel</button>
+        <button type="submit" class="btn btn-primary" 
+                th:text="#{manager.dashboard.department.show.form.button.add}">Add</button>
       </div>
     </div>
   </fieldset>
@@ -186,7 +188,7 @@
 <!-- ============================================================= -->   
 <a href="#" class="btn btn-primary"                            
                            th:href="@{'/manager/manageDepartments/'+${hospitalid}}"
-                           th:text="#{admin.dashboard.department.show.form.footerdepartment}">Departments</a>    
+                           th:text="#{manager.dashboard.department.show.form.footerdepartment}">Departments</a>    
 <!-- ============================================================= -->
 
 
